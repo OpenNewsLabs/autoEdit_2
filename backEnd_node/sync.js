@@ -9,9 +9,9 @@
 		var options = { };
 		var Transcription = new LinvoDB(modelName, schema, options); // New model; Doc is the constructor
 		LinvoDB.dbPath = process.cwd() //+"/backEnd_node/db"; 
-		console.log("DB PATH")
-		console.log(process.cwd())
-		console.log(LinvoDB.dbPath)
+		// console.log("DB PATH")
+		// console.log(process.cwd())
+		// console.log(LinvoDB.dbPath)
 
 
 	// from https://www.safaribooksonline.com/library/view/developing-backbonejs-applications/9781449328535/ch03.html#backbones-sync-api
@@ -25,21 +25,21 @@
 	*/
 	MyAPI.prototype.create = function(model, success, error){
 
-		console.log(model)
-		console.log(model.attributes)
+		// console.log(model)
+		// console.log(model.attributes)
+
 		var newElement = model.toJSON();
 		
 		var transcription = new Transcription(newElement);
 
 		transcription.save(function(err) { 
 	    	// Document is saved
-	    	console.log(transcription._id);
+	    	// console.log(transcription._id);
 		});
 
 
-		console.log(process.cwd())
+		// console.log(process.cwd())
 
-	var meta;
 
 
 
@@ -61,8 +61,8 @@
 
 		cbMetadata:function(respM){
 
-			console.log("RESP")
-			console.log(respM)
+			// console.log("RESP")
+			// console.log(respM)
 			meta = respM;
 
 		 // Transcription.findOne({ _id: transcription.id }, function (err, transcription) {
@@ -91,7 +91,7 @@
 			 // Transcription.findOne({ _id: transcription.id }, function (err, transcription) {
 			  // doc is the document Mars
 			  // If no document is found, doc is null
-			  console.log(resp.videoOgg)
+			  // console.log(resp.videoOgg)
 			  transcription.videoOgg = resp.videoOgg;
 			  transcription.processedVideo = resp.processedVideo;
 			  
@@ -109,10 +109,10 @@
 	*/
 	MyAPI.prototype.findAll = function(model, success, error){
 
-		console.log("model")
+		// console.log("model")
 
 		Transcription.find({}, function (err, transcriptions) {
-			console.log(transcriptions)
+			// console.log(transcriptions)
 			success(transcriptions);
 		});
 	}
@@ -137,7 +137,7 @@
 
 			console.info("ABOUT TO UPDATING/SAVING")
 			var startTime = Date.now()
-			console.log(model.toJSON())
+			// console.log(model.toJSON())
 
 			  Transcription.findOne({ _id: model.get("_id") }, function(err, doc) {
 				    // doc.inhabited = false;
@@ -170,8 +170,8 @@
 	*/
 	MyAPI.prototype.patch = function(model, success, error){
 
-		console.log('about to patch')
-		console.log(model.toJSON())
+		// console.log('about to patch')
+		// console.log(model.toJSON())
 
 		  Transcription.findOne({ _id: model.get("_id") }, function(err, doc) {
 		    // doc.inhabited = false;
@@ -202,7 +202,7 @@
 	* Destroy  
 	*/
 	MyAPI.prototype.destroy = function(model, success, error){
-		console.log("DELETE SYNC")
+		// console.log("DELETE SYNC")
 
 		Transcription.findOne(model._id, function(err, transcription) {
 
@@ -217,7 +217,7 @@
 	}
 
 	//////////
-	 // var api = new MyAPI();
+	 var api = new MyAPI();
 	 /////////
 
 	Backbone.sync = function(method, model, options) {
@@ -236,7 +236,7 @@
 	    }
 	  }
 
-		console.log('about to sync')
+		// console.log('about to sync')
 
 
 	///////////////////////////////////////////////////
@@ -244,26 +244,26 @@
 
 	  switch (method) {
 	    case 'create':
-	 	   var api = new MyAPI();
+	 	   // var api = new MyAPI();
 	      return api.create(model, success, error);
 
 	    case 'update':
-	    var api = new MyAPI();
+	    // var api = new MyAPI();
 	      return api.update(model, success, error);
 
 	    case 'patch':
-	    var api = new MyAPI();
+	    // var api = new MyAPI();
 	      return api.patch(model, success, error);
 
 	    case 'delete':
-	    var api = new MyAPI();
+	    // var api = new MyAPI();
 	      return api.destroy(model, success, error);
 
 	    case 'read':
 	      // if (model.attributes[model.idAttribute]) {
 	      //   return MyAPI.find(model, success, error);
 	      // } else {
-	      	var api = new MyAPI();
+	      	// var api = new MyAPI();
 	        return api.findAll(model, success, error);
 	      // }
 	  }
