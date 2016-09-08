@@ -217,7 +217,7 @@
 	}
 
 	//////////
-	 var api = new MyAPI();
+	 // var api = new MyAPI();
 	 /////////
 
 	Backbone.sync = function(method, model, options) {
@@ -244,26 +244,26 @@
 
 	  switch (method) {
 	    case 'create':
-	 	   // var api = new MyAPI();
+	 	   var api = new MyAPI();
 	      return api.create(model, success, error);
 
 	    case 'update':
-	    // var api = new MyAPI();
+	    var api = new MyAPI();
 	      return api.update(model, success, error);
 
 	    case 'patch':
-	    // var api = new MyAPI();
+	    var api = new MyAPI();
 	      return api.patch(model, success, error);
 
 	    case 'delete':
-	    // var api = new MyAPI();
+	    var api = new MyAPI();
 	      return api.destroy(model, success, error);
 
 	    case 'read':
 	      // if (model.attributes[model.idAttribute]) {
 	      //   return MyAPI.find(model, success, error);
 	      // } else {
-	      	// var api = new MyAPI();
+	      	var api = new MyAPI();
 	        return api.findAll(model, success, error);
 	      // }
 	  }
