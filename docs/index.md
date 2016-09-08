@@ -26,7 +26,7 @@ A desktop app for OS X that takes in a video or audio file, returns a transcript
 
 ### How can I use it?
 
-1. [Setup Speech to Text service of choice](/user_manual/setup.html)
+1. [Setup Speech to Text service of choice]() /user_manual/setup.html
 	-  IBM Watson STT Service.
 	-  Gentle offline Open source STT.
 <!-- find bluemix tutorial on IBM site -->
