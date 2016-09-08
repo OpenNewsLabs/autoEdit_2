@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width">
+
+        <title>Papercuts : Github</title>
+        <meta name="description" content="Text based video editing">
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/syntax.css">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+
+        <div class="container">
+            <div class="row">
+                <div  class="col-sm-12 col-lg-6">
+                    <h4><a class="brand" href="/">Papercuts</a>
+    <small>Text based video editing</small>
+
+
+</h4>
+
+
+
+                </div>
+                  <div  class="col-sm-12 col-lg-2">
+                 <h5> <a href="https://github.com/OpenNewsLabs" target="_blank">github</a></h5>
+                </div>
+                  <div  class="col-sm-12 col-lg-2">
+                 <h5> <a href="https://db.tt/BNedAjt2"  target="_blank">Demo</a> </h5>
+                </div>
+                 <div  class="col-sm-12 col-lg-2">
+                 <h5> <a href="https://github.com/OpenNewsLabs/gentle_stt_node" target="_blank">Download OSX app</a> </h5>
+                </div>
+            </div>
+
+            <div class="row">
+                
+                
+                    <div id="navigation" class="col-sm-2">
+                        <ul class="nav nav-list">
+    <li><a href="/">Home</a></li>
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Developers</li>
+            
+            <li data-order=""><a href="/system_manual/doc.html">Documentation</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/intro.html">Intro</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/licence.html">Licence</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/deployment.html">Deployment</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/test-suite.html">Test suite</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/configuration.html">Configuration</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/dependencies.html">Dependencies</a></li>
+        
+            
+            <li data-order=""><a href="/system_manual/prerequisites.html">Prerequisites</a></li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">User Manual</li>
+            
+            <li data-order=""><a href="/user_manual/uninstalling.html">Uninstalling</a></li>
+        
+            
+            <li data-order=""><a href="/user_manual/usage.html">User Manual </a></li>
+        
+            
+            <li data-order=""><a href="/user_manual/setup.html">Setup: STT APIs</a></li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">Wiki</li>
+            
+            <li data-order=""><a href="/wiki/wiki.html">Wiki</a></li>
+        
+    
+        
+        
+
+        
+    
+        
+        
+
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">FAQs</li>
+            
+            <li data-order=""><a href="/faqs/faqs.html">FAQs</a></li>
+        
+    
+        
+        
+
+        
+            
+                <li class="nav-header">github</li>
+            
+            <li data-order=""><a href="/github/github.html">Github</a></li>
+        
+    
+<!-- List additional links. It is recommended to add a divider
+    e.g. <li class="divider"></li> first to break up the content. -->
+</ul>
+
+                    </div>
+
+                    <div id="content" class="col-sm-10">
+                        <div class="page-header">
+    <h2>Github
+        
+    </h2>
+</div>
+
+<p><a href="">Link to github project</a></p>
+
+<!-- Move in navbar  togethere with link for demo and download -->
+
+
+                    </div>
+                
+            </div>
+
+            
+
+            <div class="row">
+                <div id="footer" class="col-sm-12">
+                    Documentation for <a href="https://github.com/bruth/jekyll-docs-template">Papercuts</a>
+
+                </div>
+            </div>
+        </div>
+
+        <script>
+            function orderNav() {
+                var list,
+                    section,
+                    header,
+                    sections = [],
+                    lists = {},
+                    headers = {};
+
+                var navUl = document.querySelectorAll('#navigation ul')[0],
+                    navLis = document.querySelectorAll('#navigation ul li');
+
+                if (!navUl) return;
+
+                for (var i = 0; i < navLis.length; i++) {
+                    var order, li = navLis[i];
+
+                    if (li.classList.contains('nav-header')) {
+                        section = li.textContent || li.innerText;
+                        sections.push(section);
+                        headers[section] = li;
+                        continue;
+                    }
+
+                    if (!lists[section]) {
+                        lists[section] = [];
+                    }
+
+                    order = parseFloat(li.getAttribute('data-order'))
+                    lists[section].push([order, li]);
+                }
+
+                for (var i = 0; i < sections.length; i++) {
+                    section = sections[i];
+                    list = lists[section].sort(function(a, b) {
+                        return a[0] - b[0];
+                    });
+
+                    if (header = headers[section]) {
+                        navUl.appendChild(header);
+                    }
+                    for (var j = 0; j < list.length; j++) {
+                        navUl.appendChild(list[j][1]);
+                    }
+                }
+            }
+
+            if (document.querySelectorAll) orderNav();
+        </script>
+        
+    </body>
+</html>

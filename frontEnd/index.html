@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title></title>
+  <link rel="stylesheet" href="vendor/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="public/css/custom.css">
+</head>
+<body>
+  <!-- Jquery, bootstrap, underscore, and backnone -->
+<!-- <script src="vendor/jquery.min2.js"></script> -->
+<script> 
+//Add jquery globally so that boostrap and other vendor can use it inside NWJS packed app.
+// global.$ = $;
+// $("#main").html("upppp")
+// window.$ = $;
+
+
+function loadExtScript(src, callback) {
+  var s = document.createElement('script');
+  s.src = src;
+  document.body.appendChild(s);
+
+  s.onload = function () {
+    // if loaded...call the callback
+    if(callback){callback(s)}
+  }
+}
+
+
+function loadJQueryExtScript(src, callback) {
+  var s = document.createElement('script');
+  s.src = src;
+  document.head.appendChild(s);
+
+  s.onload = function () {
+    // if loaded...call the callback
+
+    /// open links in real browser 
+    //https://github.com/nwjs/nw.js/issues/1162
+    $('a[target=_blank]').on('click', function(){
+       require('nw.gui').Shell.openExternal( this.href );
+       return false;
+    });
+    ///
+
+    if(callback){callback(s)}
+  }
+}
+
+/**
+* To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
+*/
+loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
+
+      //set jquery for bootstrap  
+
+     // if (typeof require === "function") {
+       // window.jQuery = window.$  = require("jquery");
+    // }else{
+
+       // window.jQuery = window.$  = $;
+    // }
+
+     loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
+
+       loadExtScript("vendor/underscore-min.js",function(){
+          loadExtScript("vendor/backbone-min.js",function(){
+
+ loadExtScript("vendor/backbone.async.js",function(){
+
+          loadExtScript("../backEnd_node/sync.js",function(){
+  
+            //app.js backbone files 
+           loadExtScript("js/models/transcription.js",function(){
+               loadExtScript("js/collections/transcriptions.js",function(){
+                 loadExtScript("js/views/transcription_index.js",function(){
+                     loadExtScript("js/views/transcription_show.js",function(){
+                        loadExtScript("js/views/transcription_form.js",function(){
+                          loadExtScript("js/router.js",function(){
+                               console.log("loaded stuff")
+
+                               //DEMO for client side only 
+                                 loadExtScript("demo_jr.js", function(){
+                                  console.log("demo initialised")
+                                  // demoTranscription()
+                                  //by adding and not saving this only works 
+                                  app.TranscriptionsList.add(jesselynRadackTranscription);
+                                 });
+
+                                 // jesselynRadackTranscription.save();
+                              //end Demo
+    }) 
+                          }) 
+                        }) 
+                    }) 
+                  }) 
+                }) 
+               }) 
+            })
+         })
+      })
+  })
+})
+
+
+</script>
+  <!-- <script src="vendor/bootstrap-3.3.6-dist/js/bootstrap.js" charset="utf-8"></script> -->
+<!--   <script type="text/javascript"  src="vendor/underscore-min.js"></script>
+  <script type="text/javascript"  src="vendor/backbone-min.js"></script> -->
+  <!-- client side utilities  -->
+  <script src="date_now/index.js"></script>
+  <script src="edl_composer/index.js"></script>
+  <script src="srt/index.js"></script>
+
+  <!-- Config file, app name, backend erver url-->
+  <script src="../config.js"></script>
+  <!-- App.js backbone files -->
+
+
+<!-- NAVBAR  -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+ <!-- Brand and toggle get grouped for better mobile display -->
+ <div class="navbar-header">
+   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+     <span class="sr-only">Toggle navigation</span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+     <span class="icon-bar"></span>
+   </button>
+   <a class="navbar-brand" id="brandAppName" href="index.html#transcriptions">
+     <!-- <img alt="Brand" class="img-responsive" src="lotusLogo.png"> -->
+     <!--App name programatically added here  -->
+     </a>
+ </div>
+ <!-- Collect the nav links, forms, and other content for toggling -->
+ <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+   <ul class="nav navbar-nav navbar-right">
+     <li ><a href="#transcriptions">
+       Transcriptions</a>
+     </li>
+     <li >
+       <a href="#transcriptions/new">
+       New</a>
+     </li>
+     <li><a href="http://goo.gl/forms/X81rftPRp277pJH33"  target="_blank">Help</a></li>
+      <li><a href="https://db.tt/BNedAjt2"  target="_blank">Demo</a></li>
+   </ul>
+
+ </div><!-- /.navbar-collapse -->
+</div><!-- /.container-fluid -->
+</nav>
+<!-- NAVBAR END -->
+
+
+  <div id="main">
+  </div>
+
+
+<!-- /////////////////////////////////////////////////////////////////////////// -->
+<!-- /////////////////////////////////////////////////////////////////////////// -->
+<!-- //////////////////////   TEMPLATES  ////////////////////////////////////// -->
+
+<!-- Home page template -->
+  <script id="homePage" type="text/template">
+  <br><br>
+  <div class='container'>
+    <p class='lead text-center text-muted' style='font-size:2.5em;'>
+      <span class='glyphicon glyphicon-film' aria-hidden='true'></span>
+      <span class='glyphicon glyphicon-headphones' aria-hidden='true'></span>
+    </p>
+    <p class='lead text-center text-muted'>You don't have any transcriptions</p>
+    <p class='text-center'>
+      <a href='#transcriptions/new'>Add an audio or video file</a> to get it
+    </p>
+    <p class='text-center'>automatically transcribed</p>
+  </div>
+</script>
+<!--  End home page template-->
+
+<!-- Transcription Show page -->
+ <script id="transcriptionShow" type="text/template">
+  <div class="container">
+    <div class="row">
+      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">
+        <!-- Breadcrumb  -->
+        <ol class="breadcrumb">
+          <li><a href="#transcriptions">Transcriptions</a></li>
+          <li class="active"><%= title %></a></li>
+        </ol>
+        <!--  end Breadcrumb -->
+      </div><!-- ./col -->
+      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">
+        
+        <!-- Single button  EXPORT -->
+<div class="btn-group  hidden-print">
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Export  
+    <span class="glyphicon glyphicon-save"></span>
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+<!-- EDL -->
+    <li>
+      <a id="exportEdlChronological">
+      <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+      EDL  - Chronological
+      </a>
+
+    </li>
+    <li>
+
+      <a id="exportEdlSelectionOrder" >
+         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+       EDL - Selection order 
+      </a>
+
+    </li>
+
+<!-- CAPTIONS -->
+    <li role="separator" class="divider"></li>
+    <li >
+      <a  id="expoertCaptionsSrt" >
+          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>
+        Captions - srt
+      </a>
+
+    </li>
+
+   <!--  <li>
+      <a  id="expoertCaptionsSrtEDL" >
+        <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>
+        Captions - srt - EDL - beta
+      </a>
+
+    </li> -->
+
+<!-- PLAIN TEXT - TRANSCRIPTION-->
+    <li role="separator" class="divider"></li>
+    <li >
+      <a  id="exportPlainText">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Plain Text - Transcription 
+      </a>
+
+    </li>
+    <li >
+
+      <a id="exportTimecodedTranscription">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Timecoded Text - Transcription 
+      </a>
+
+    </li>
+
+<!-- PLAIN TEXT - EDL-->
+    <li role="separator" class="divider"></li>
+      <li >
+
+      <a  id="exportPlainTextEDL">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Plain Text - EDL, Chronological
+      </a>
+
+    </li>
+
+
+      <li >
+
+      <a  id="exportPlainTextEDLSelOrder">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Plain Text - EDL, Selection Order
+      </a>
+
+    </li>
+    <li role="separator" class="divider"></li>
+      <li >
+
+      <a id="exportPlainTimecodedTextEDL">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Timecoded Text - EDL, Chronological
+      </a>
+
+    </li>
+
+      <li >
+
+      <a id="exportPlainTimecodedTextEDLSelOrder">
+        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+      Timecoded Text - EDL, Selection Order
+      </a>
+
+    </li>
+  
+<!-- JSON -->
+    <li role="separator" class="divider"></li>
+    <li >
+      <a id="exportJsonTranscription">
+      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+      Json - transcription
+      </a>
+
+    </li>
+    <li  >
+
+    <a  id="exportJsonEDL">
+      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+      Json - EDL, Chronological
+      </a>
+    </li>
+    <li  >
+      <a  id="exportJsonEDLSelOrder">
+      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+      Json - EDL, Selection Order
+      </a>
+    </li>
+
+<!-- HTML5 MEDIA -->
+    <li >
+      <a  id="exporthtml5Video">
+      <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+      HTML5 Video - webm
+      </a>
+    </li>
+    <li >
+      <a  id="exportAudio">
+      <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>
+      HTML5 Audio - Wav
+      </a>
+    </li>
+
+<!-- Folder containing index.html with interactive transcription, with remote bootstrap + html5 video + wav + json of transcription. -->
+ <!--      <li class="disabled">
+      <a  >
+      <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>
+      Interactive transcript
+      </a>
+    </li> -->
+
+
+  </ul>
+</div>
+
+
+
+<!-- Split button -->
+<!-- <div class="btn-group">
+  <a type="button" id="exportEdl"  class="btn btn-primary">Export</a>
+  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <span class="caret"></span>
+    <span class="sr-only">Toggle Dropdown</span>
+  </button>
+  <ul class="dropdown-menu">
+    <li>
+
+      <a type="button" id="exportEdl"  class="btn btn-link">EDL - Selection order </a></li>
+    <li class="disabled"><a  id="exportEdl"  >EDL  - Chronological</a></li>
+    <li role="separator" class="divider"></li>
+    <li class="disabled"><a href="#">Captions - srt</a></li>
+    <li role="separator" class="divider"></li>
+    <li class="disabled"><a href="#">Plain Text</a></li>
+    <li class="disabled"><a href="#">Timecoded Text</a></li>
+    <li role="separator" class="divider"></li>
+    <li class="disabled"><a href="#">Json</a></li>
+    <li class="disabled"><a href="#">HTML5 Video</a></li>
+  </ul>
+</div>
+ -->
+
+
+
+      <!--   <a id="exportEdl" class="btn btn-primary hidden-print" >
+       Export EDL
+        <span class="glyphicon glyphicon-scissors" aria-hidden="true"></span>
+        </a>
+ -->
+
+      </div><!-- ./col -->
+    </div><!-- ./row -->
+
+    <!--TODO: Remove this div . check view backbone to see if in use tho -->
+      <div id="clientSideEDLhelp" ></div>
+    <!-- end of remove this div  -->
+
+
+<!-- <div class="alert alert-info alert-dismissible hidden-print" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>You are in hilight mode.</strong> <p>Click on a word to start a selection to include in your Edit Decision List (EDL) video sequence.</p>
+</div>
+ -->
+
+  <div class="row">
+    <!-- Video -->
+    <div class="col-sm-3 col-md-3 col-lg-3 ">
+<!-- hidden-xs  -->
+<div class="hidden-print" id="media">
+  <!--  Media -->
+    <!--  if audio has been processed but video has not -->
+    <!-- There could also be logic here to check if it's safari, and if it's safari move to audio only  -->
+    <!-- also check media type if audio only then use audio  -->
+    <% if(processedAudio && !processedVideo) { %>
+   
+     <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+         Video is being processed  
+         <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate text-muted" aria-hidden="true"></span>    
+      </div>
+
+      <!-- progress circle line if type of media is video -->
+      <audio id="<%= 'videoId_'+ id %>"   width="10%" controls>
+        <source src="<%= audioFile %>" type="audio/wav">
+          Your browser does not support the audio element.
+      </audio>
+  <% }else if (processedVideo) { %>
+
+<!-- ///////////////////////// -->
+      <!-- if using safari on ios  -->
+     <% if (window.userAgentSafari) { %>
+     <!-- Repeating audio code -->
+        <!-- progress circle line if type of media is video -->
+      <audio id="<%= 'videoId_'+ id %>"   width="10%" controls>
+        <source src="<%= audioFile %>" type="audio/wav">
+          Your browser does not support the audio element.
+      </audio>
+
+      <!-- end repeating audio code -->
+
+     <% }else{ %> <!-- else if using safari  -->
+
+        <!-- if video has been processed -->
+        <video id="<%= 'videoId_'+ id %>" controls  poster="" width="100%"  webkit-playsinline>
+          <% if(videoOgg) { %>
+          <!-- TODO: video type should be a var, videoOgg var should be changed to videoHTML5?or add new line with webm? -->
+            <source src="<%= videoOgg %>" type="video/webm">
+              <% }else{ %>
+            <source src="" type="video/ogg">
+              <% }%>
+              Your browser does not support the video tag.
+          </video>
+
+     <% }%> <!-- if using safari  -->
+<!-- ///////////////////////// -->
+
+
+  <% }else { %>
+    <p>Media preview not ready </p>
+  <% } %>
+
+<!-- Single button -->
+<!-- <div class="btn-group">
+  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Preview <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a id="playPreviewChrono" >ChronologicalOrder</a></li>
+    <li><a  id="playPreviewSelOrd">Selection Order</a></li>
+  </ul>
+</div> -->
+
+  <!-- Metadata info button -->
+    <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
+    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata
+    </a>
+  <!-- End metadata info button  -->
+
+</div> <!-- media -->
+
+<div class="collapse" id="collapseMetadata">
+    <dl>
+      <dt class="text-muted">Speech To Text System</dt>
+      <dd><kbd><%= sttEngine %></kbd></dd>
+      <dt class="text-muted">File name</dt>
+      <dd><kbd><%= metadata.fileName %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">File Path Name</dt>
+      <dd><kbd><%= metadata.filePathName %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">Date </dt>
+      <dd><kbd><%= metadata.date %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">Reel Name </dt>
+      <dd><kbd><%= metadata.reelName %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">Timecode</dt>
+      <dd><kbd><%= metadata.timecode %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">fps </dt>
+      <dd><kbd><%= metadata.fps %></kbd></dd>
+      <!-- <br> -->
+      <dt class="text-muted">Duration</dt>
+      <dd><kbd><%= fromSeconds(metadata.duration) %></kbd> <span  class="text-muted"></span></dd>
+      <!-- <br> -->
+      <dt class="text-muted">Description </dt>
+      <dd  class="text-muted description"> <%= description %></dd>
+    </dl>
+</div>
+</div><!-- ./col -->
+  
+    <!-- Transcription -->
+    <div class="col-xs-12 col-sm-9 col-lg-9 col-xl-9">
+      <div class="panel panel-default">
+        <div class="panel-heading hidden-print">
+          <div class="row">
+          <div class="col-xs-12 col-sm-7 col-lg-7 col-xl-7">
+            <div class="btn-group" role="group" aria-label="...">
+              <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>
+        <!--       <button type="button" class="btn btn-default">Read</button> -->
+              <button type="button"  id="editWords" class="btn btn-default" >Edit</button>
+            </div>
+
+<a type="button" id="clearHighlights" class="btn btn-default" >
+ <!-- <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>  -->
+<!-- <img src="./public/img/hilighter.png"> -->
+<!-- hilighter icon -->
+
+<!-- end hilighter icon -->
+ Clear highlights
+ </a>
+
+<!-- Save -->
+<!-- <a type="button" id="save" class="btn btn-default" >
+ <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> 
+ </a>
+ -->
+
+
+          </div>
+          <!-- search box -->
+          <div class="col-xs-12 col-sm-5 col-lg-5 col-xl-5">
+            <div class="input-group">
+             <span class="input-group-addon">
+               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+             </span>
+             <input type="text" class="form-control" id="searchCurrentTranscription" placeholder="Find in transcript">
+            </div>
+          </div>
+          <!-- end search box -->
+          </div>
+        </div>
+        <div class="panel-body transcription">
+          <!-- Paragaph module -->
+          <% _.each(text, function(paragraph) { %>
+          <dl class="dl-horizontal">
+            <dt><%= paragraph.speaker %>
+               </dt> <dt>
+              <!-- fir is the first  -->
+              <a data-start-time="<%= paragraph.paragraph[0].line[0].startTime %>" data-video-id="<%= 'videoId_'+ id  %>" class="timecodes"><%= fromSeconds(paragraph.paragraph[0].line[0].startTime) %></a>
+            </dt>
+              <% _.each(paragraph.paragraph, function(lines) { %>
+              <% _.each(lines, function(line) { %>
+            <dd >
+              <!-- <p> -->
+                <% _.each(line, function(word) { %>
+                  <span  contenteditable="false" class="words text-muted" data-transcription-id="<%= id %>"  data-paragaph-id="<%= paragraph.id %>"  data-word-id="<%= word.id %>" data-line-id="<%= line.id %>" data-reel-name="<%= metadata.reelName %>" data-clip-name="<%= metadata.fileName %>"
+            data-video-id="<%= 'videoId_'+ id %>"
+            data-speaker="<%= paragraph.speaker %>" data-src="<%= videoOgg %>" data-audio-file="<%= audioFile %>" data-start-time="<%= word.startTime %>" data-text="<%= word.text %>" data-end-time="<%= word.endTime %>"><%= word.text %> </span>
+                  <% }) %>
+              <!-- </p> -->
+           </dd>
+             <% }) %>
+            <% }) %>
+          </dl>
+          <% }) %>
+          <!-- ./paragraph module -->
+      </div>
+    </div>
+    </div><!-- ./col transcription-->
+  </div><!-- ./row   -->
+  </div><!-- ./container -->
+  </script>
+<!-- End Transcription Show page -->
+
+<!-- Transcriptions Index -->
+  <script id="transcriptionIndex" type="text/template">
+
+    <div class="row">
+        <% if(!status) { %>
+          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">
+          <!--  not ready -->
+          <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled><%= title %> </button>
+          <button type="button" class="btn btn-lg btn-link"  disabled>
+            <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
+            &nbsp;
+            &nbsp;
+          
+          </button>
+          
+          <p><%= description %></p>
+
+            </div>
+            <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">
+            <!-- edit btn -->
+             <!--  <button type="button"  class="btn btn-default btn-xs editBtn" disabled>
+                <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">
+              </button> -->
+              <!-- delete button -->
+              <button type="button"     class="btn btn-danger btn-xs deleteBtn" disabled>
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+              </button>
+            </div>
+        <% }else{ %>
+          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">
+          <button type="button" class="btn btn-lg btn-link showBtn controls" ><%= title %></button>
+          <p><%= description %></p>
+          </div>
+          <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">
+          <!-- edit btn -->
+         <!--    <button type="button"  class="btn  btn-default btn-xs editBtn" disabled>
+              <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">
+            </button> -->
+            <!-- delete btn -->
+            <button type="button"  class="btn btn-danger btn-xs deleteBtn">
+              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </button>
+          </div>
+        <% } %>
+    </div>
+    <hr>
+  </script>
+<!-- End Transcriptions Index -->
+
+<!-- Transcription form  -->
+ <script id="transcriptionFormTemplate" type="text/template" >
+
+   <div class="container">
+     <!-- Breadcrumb  -->
+        <ol class="breadcrumb">
+          <li><a href="#transcriptions">Transcriptions</a></li>
+          <li class="active">New </a></li>
+        </ol>
+        <!--  end Breadcrumb -->
+    <form id="form">
+    <!-- File "upload" -->
+    <div class="row">
+      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+        <div class="form-group">
+          <label for="fileUpload">File input</label>
+          <input  name="file" type="file" id="inputMediaFile">
+          <p class="help-block">Chose an audio or video file to transcribe</p>
+        </div>
+
+        <!-- Online/offline -->
+      <div class="form-group">
+        <label for="radioSTT">Speech To Text System</label><br>
+        <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label>
+        <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline)</label>
+        <p class="help-block">Chose what speech to text system you'd like to use. IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English.</p>
+      </div>
+        <!-- languages -->
+      <div class="form-group">
+        <label for="languageModel">Language:</label>
+        <select class="form-control" id="languageModel">
+          <option value="en-US_BroadbandModel" >US English  - Broadband</option> 
+            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>
+          <!-- <option disabled>_________</option> -->
+          <option value="en-UK_BroadbandModel">UK English - Broadband </option>
+          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>
+          <!-- <option disabled>_________</option> -->
+        
+          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>
+          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>
+          <!-- <option disabled>_________</option> -->
+          <option value="fr-FR_BroadbandModel">French - Broadband</option>  
+          <!-- <option disabled>_________</option> -->
+          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>
+          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>
+          <!-- <option disabled>_________</option> -->
+          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>
+          <!-- <option disabled>_________</option>          -->
+          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>
+          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>
+          <!-- <option disabled>_________</option> -->
+          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>
+          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>
+        </select>
+         <p class="help-block">Chose the language of your media file. The default is English US.</p>
+         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>
+   <!--       <p class="help-block"> <b>Broadband</b> is for audio that is sampled at a minimum rate of 16 KHz.</p>
+         <p class="help-block"> <b>Narrowband</b> is for audio that is sampled at a minimum rate of 8 KHz.</p>
+         -->
+      </div>
+
+
+<p> </p>
+
+      </div><!-- ./col -->
+
+      <!-- Title and description -->
+      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+        <div class="form-group">
+          <label for="title">Title of Transcription</label>
+          <input type="text" name="title" value="<%= title %>" class="form-control" id="title" placeholder="e.g. Interview with Mark Zuckerberg">
+        </div>
+        <div class="form-group">
+          <label for="description">Description (optional)</label>
+          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Facebook CEO about Facebook Live"><%= description %>
+          </textarea>
+        </div>
+    </div><!-- ./col -->
+
+    <!-- Save  -->
+    </div><!-- ./row -->
+    <div class="row">
+        <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">
+         <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->
+          <a id="submitBtn" class="btn btn-primary">Save Transcription</a>
+          <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>
+      </div><!-- ./col -->
+      </div><!-- ./row -->
+  </form>
+  </div>
+  </script>
+<!-- End Transcription form -->
+
+
+<!-- //////////////////////   END TEMPLATES  ////////////////////////////////// -->
+<!-- /////////////////////////////////////////////////////////////////////////// -->
+<!-- /////////////////////////////////////////////////////////////////////////// -->
+
+
+<!-- Backbone client side app  -->
+<!-- <script src="js/models/transcription.js"></script>
+<script src="js/collections/transcriptions.js"></script>
+<script src="js/views/transcription_index.js"></script>
+<script src="js/views/transcription_show.js"></script>
+<script src="js/views/transcription_form.js"></script>
+<script src="js/router.js"></script> -->
+<!-- End Backbone client side app -->
+
+<script>
+  /**
+  *To allow code reuse it detects if we are running this front end in NWJS and if so it sets up the mac os x menues. 
+  * if not, does not thing. but sets a window variable to be able to detect this state elsewhere in the app. 
+  * it means same front end code could be used standalone on the web or packaged as desktop app without too much tweaking.
+  */
+  document.addEventListener("DOMContentLoaded", function(event) { 
+//  $( document ).ready(function() {
+   
+    setAppName(config.appName);
+
+    if (typeof require === "function") {
+      // global.frontEndEnviromentNWJS = true;
+      window.frontEndEnviromentNWJS = true;
+      window.ibmWatsonKeysSet = false;
+      // process.env.UV_THREADPOOL_SIZE = 50;
+
+      // console.info(" console.log(process.env.UV_THREADPOOL_SIZE)")
+      // console.log(process.env.UV_THREADPOOL_SIZE)
+
+      // For mobile version safari doesn't play webm
+        window.userAgentSafari = false; 
+      //
+      try{
+        console.info("USING NWJS")
+        var gui = require('nw.gui');
+        // Create menu
+        var menu = new gui.Menu({ type: 'menubar' });
+        //Default mac menu bar comands + copy, cut, paste
+        //TODO: replace with variable for app name, centralize from package.json name.
+        menu.createMacBuiltin(config.appName);
+        // Append Menu to Window
+        gui.Window.get().menu = menu;
+
+        console.info("process.versions['node-webkit']")
+        console.info(process.versions['node-webkit'])
+        console.info("process.versions['node']")
+        console.info(process.versions['node'])
+
+        // global.$= require("./vendor/jquery.min.js")
+
+        /*
+        * set watson API keys
+        */
+        //then read it, parse to json and assign keys to Watson module.
+        
+        fs = require("fs")
+        if (fs.existsSync('./wttskeys.json')) {
+            console.info("WATSON KEYS EXISTS")
+          readWatsonAPIKeys(function(ke){
+            global.keys = ke;
+             window.ibmWatsonKeysSet = true;
+          })
+        }else{
+          //if it doesn't exists then prompt uset to add keys
+          console.info("WATSON KEYS DON T EXIST")
+          getWatsonAPIKeysFromUser(function(ki){
+            global.keys = ki;
+             window.ibmWatsonKeysSet = true;
+          })
+        }
+
+
+      } catch (error) {
+          console.info("NOT USING NWJS "+error)
+      }
+    }else{
+      // global.frontEndEnviromentNWJS = false;
+      console.info("NOT USING NWJS ")
+      //TODO : move this logic before loading of the other scripts
+      //and add demo jr script inside last loaded script if in nwjs client side mode.
+
+      // loadScript("demo_jr.js", initialiseDemo);
+
+      //TODO: require demo but how to require file from js src?
+      // <script src="./demo_jr.js"><\/script>
+      window.frontEndEnviromentNWJS = false;
+
+
+      //Detecting if browser is safari 
+      //usecase, safari not supporting webm, so switching to audio in transcript preview
+
+      var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+      var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
+      var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
+      var is_safari = navigator.userAgent.indexOf("Safari") > -1;
+      var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
+      if ((is_chrome)&&(is_safari)) { is_safari = false; }
+      if ((is_chrome)&&(is_opera)) { is_chrome = false; }
+
+
+      //Chrome as both safari and chrome in the user agent 
+      if (navigator.userAgent.indexOf('Safari') != -1 && 
+          navigator.userAgent.indexOf('Chrome') == -1) {
+        // alert('Its Safari');
+        console.info("it's safari")
+        window.userAgentSafari = true ;
+      }else{
+         window.userAgentSafari = false; 
+       //end Detecting if browser is safari 
+      }
+
+
+    }
+});
+
+/**
+* Helper function to set the name of the app programmaticlally 
+*/
+  function setAppName(name){
+    //name in navbar brand element
+document.getElementById("brandAppName").innerHTML =name;//or innerText = ?
+    //$("#brandAppName").text(name);
+    // Name in page document title
+    document.title =name;
+  }
+
+/**
+* Helper functions to initialise demo transcriptions for client only version
+*/
+
+//   function loadScript(url, callback){
+//     // Adding the script tag to the head as suggested before
+//     var body = document.getElementsByTagName('body')[0];
+//     var script = document.createElement('script');
+//     script.type = 'text/javascript';
+//     script.src = url;
+
+//     // Then bind the event to the callback function.
+//     // There are several events for cross browser compatibility.
+//     script.onreadystatechange = callback;
+//     script.onload = callback;
+
+//     // Fire the loading
+//     body.appendChild(script);
+// }
+
+// var initialiseDemo = function() {
+//   console.log("demo")
+//   demoTranscription()
+//    // Here, do what ever you want
+// };
+
+/**************************************************************
+* Watson IBM Keys helpef functions 
+*/
+
+/**
+* Function to set watson API Keys from user input
+*/
+function getWatsonAPIKeysFromUser(cb){
+  var apiKeyUsername = prompt("Please enter IBM API Key Username", "");
+  var aPIKeyPassword = prompt("Please enter IBM API Key Password", "");
+  // validation
+  // TODO: check if this means both conditions have to be true
+  if ((apiKeyUsername != null)&&(aPIKeyPassword!= null)) {
+    alert("IBM Watson Speech to text API Keys \n " +"API key 1: "+ apiKeyUsername + "\n API Key 2: "+aPIKeyPassword)
+    saveWatsonAPIKeys(apiKeyUsername,aPIKeyPassword)
+    cb({username: apiKeyUsername, password: aPIKeyPassword})
+  } else {
+    //do nothing if click cancell instead of ok on confirm
+    //TODO: raise error? send notification?
+      return;
+  }
+}
+
+/*
+* takes in username and password IBM keys
+* saves file containing json api keys with username and password attribtues
+*/
+function saveWatsonAPIKeys(username, password){
+  var watsonKeys={};
+  watsonKeys.username = username;
+  watsonKeys.password = password;
+  fs.writeFileSync('wttskeys.json', JSON.stringify(watsonKeys) );
+}
+
+/*
+* reads file containing json api keys with username and password attribtues
+* returns json object.
+*/
+function readWatsonAPIKeys(cb){
+  var k =  JSON.parse(fs.readFileSync('wttskeys.json').toString());
+  cb(k)
+}
+/**************************************************************/
+
+  </script>
+
+
+</body>
+</html>

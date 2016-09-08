@@ -1,0 +1,43 @@
+{
+  "name": "Papercuts",
+  "version": "1.0.0",
+  "description": "Text based video editing app",
+  "main": "frontEnd/index.html",
+  "chromium-args": "--mixed-context",
+  "dom_storage_quota": 5,
+  "window": {
+    "show": true,
+    "frame": true,
+    "toolbar": true,
+    "always_on_top": false,
+    "fullscreen": false,
+    "show_in_taskbar": true,
+    "transparent": false,
+    "icon": "nw.icns",
+    "width": 800,
+    "height": 600,
+    "position": "mouse",
+    "min_width": 400,
+    "min_height": 500
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nw ",
+    "build": "node deploy.js",
+    "testing": "echo hello"
+  },
+  "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "install": "^0.8.1",
+    "jquery": "2.1.0",
+    "level-js": "^2.2.4",
+    "linvodb3": "^3.24.0",
+    "lodash": "^4.15.0",
+    "npm": "^3.10.6",
+    "nw-builder": "^2.2.6",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {}
+}
