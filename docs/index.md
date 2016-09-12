@@ -3,15 +3,10 @@ layout: default
 title: "Overview"
 ---
 
-## autoEdit 2 
-
----
-
-### What is it?
 
 A desktop app for OS X that takes in a video or audio file, returns a transcription using third party STT(Speech To Text) service and allows you select text you want to include in your video sequence. 
 
-<img src="{{ site.baseurl }}/img/tutorial/0_diagram.png" class="img-responsive" alt="Overview diagram">
+<img src="{{ site.baseurl }}/img/tutorial/0_diagram.png" class="sixtypercent" alt="Overview diagram">
 
 <!-- use diagram from blog post -->
 
@@ -19,7 +14,7 @@ Check out the [user manual for]({{ site.baseurl }}/user_manual/usage.html) for m
 
 ### Interactive Demo 
 
-Check out [the interactive demo]({{site.demo}}) 
+Check out [the interactive demo]({{site.demo}}){:target="_blank"} 
 
 To get to demo of transcription 
 
@@ -29,7 +24,7 @@ To get to demo of transcription
 
 Then you can click on the words to jump to corresponding part in video. Select some text. And export selections.
 
-<img src="{{ site.baseurl }}/img/gif/3_transcription.gif" class="img-responsive" alt="Interactive demo">
+<img src="{{ site.baseurl }}/img/gif/3_transcription.gif" class="sixtypercent" alt="Interactive demo">
 
 ### How can I use it?
 
