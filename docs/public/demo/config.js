@@ -1,4 +1,4 @@
 var config ={
   serverUrl: "http://localhost:3000",
-  appName : "autoEdit2"
+  appName : "autoEdit 2"
 }
