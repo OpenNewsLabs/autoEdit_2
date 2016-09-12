@@ -1,5 +1,5 @@
 {
-  "name": "Papercuts",
+  "name": "autoEdit2",
   "version": "1.0.0",
   "description": "Text based video editing app",
   "main": "frontEnd/index.html",
@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "backbone": "^1.3.3",
+    "fluent-ffmpeg": "^2.1.0",
     "install": "^0.8.1",
     "jquery": "2.1.0",
     "level-js": "^2.2.4",
@@ -37,6 +38,7 @@
     "lodash": "^4.15.0",
     "npm": "^3.10.6",
     "nw-builder": "^2.2.6",
+    "threads": "^0.7.0",
     "underscore": "^1.8.3"
   },
   "devDependencies": {}

@@ -10,3 +10,6 @@ Using [jekyll-docs-template](https://github.com/bruth/jekyll-docs-template) see 
 ```
 ruby bin/jekyll-page "Some Page Title" ref
 ```
+
+
+ruby bin/jekyll-page "Installing" user_manual

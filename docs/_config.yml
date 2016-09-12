@@ -1,5 +1,5 @@
 # Site title and subtitle. This is used in _includes/header.html
-title: 'Papercuts'
+title: 'autoEdit 2'
 subtitle: 'Text based video editing'
 
 # if you wish to integrate disqus on pages set your shortname here
@@ -15,7 +15,7 @@ google_analytics_id: ''
 navigation: 2
 
 # URL to source code, used in _includes/footer.html
-codeurl: 'https://github.com/bruth/jekyll-docs-template'
+codeurl: 'https://github.com/OpenNewsLabs/autoEdit_2'
 
 # Default categories (in order) to appear in the navigation
 sections: [
@@ -32,9 +32,9 @@ sections: [
 # path (e.g. on GitHub pages) leave off the trailing slash, e.g. /my-project
 baseurl: ''
 
-github: "https://github.com/OpenNewsLabs"
-demo: "https://db.tt/BNedAjt2"
-download: "https://github.com/OpenNewsLabs/gentle_stt_node"
+github: "https://github.com/OpenNewsLabs/autoEdit_2"
+demo: "https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html"
+download: "https://github.com/OpenNewsLabs/autoEdit_2/releases"
 # Dates are not included in permalinks
 permalink: none
 

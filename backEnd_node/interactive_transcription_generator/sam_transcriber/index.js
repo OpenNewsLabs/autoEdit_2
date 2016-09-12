@@ -90,8 +90,11 @@ var Transcriber = function (){};
                 //convert Watson json to System specs transcription json
                 parseSamJsonToTranscripJson(watsonSttJson, function(transcriptJson){
                 
-                    console.log(JSON.stringify(transcriptJson, null, "\t"))
-                    fs.writeFileSync("/"+config.videoFile+".json",JSON.stringify(transcriptJson, null, "\t"))
+                  //TO PRINT OUT TRANSCRIPTION
+                    // console.log(JSON.stringify(transcriptJson, null, "\t"))
+
+                    // fs.writeFileSync("/"+config.videoFile+".json",JSON.stringify(transcriptJson, null, "\t"))
+                    
                     if(callback){callback(transcriptJson)}else{return transcriptJson};
                 })//parseIBMsttToTranscripJson
 

@@ -7,6 +7,7 @@ var config = {
 	destFolder:"" 
 }
 */
+var fs = require("fs");
 
 var path = require("path");
 
@@ -23,12 +24,15 @@ InteractiveTranscriptionGenerator.prototype.generate = function(config){
 	var Transcriber = require("./sam_transcriber/index.js");
 	var HTML5video = require("./video_to_html5_webm/index.js");
 	var MetadataReader = require("./video_metadata_reader/index.js");
-	console.log(process.cwd())
+	// console.log(process.cwd())
 
 	//NOTE_if running index_example, need to change the path of bin
 	var ffmpegPath =  ""+process.cwd()+"/backEnd_node/interactive_transcription_generator/bin/ffmpeg";
+	// var ffmpegPath =  "./interactive_transcription_generator/bin/ffmpeg";
 	//TODO: move to local bin
-  	var ffprobePath = ""+process.cwd()+"/backEnd_node/interactive_transcription_generator/bin/ffprobe";
+	 var ffprobePath = ""+process.cwd()+"/backEnd_node/interactive_transcription_generator/bin/ffprobe";
+
+  	// var ffprobePath = "./interactive_transcription_generator/bin/ffprobe";
 
 	var videoFile = config.videoUrl;
 	//TODO: do .tmp/audio  folder for audio files in root of sails
@@ -71,7 +75,7 @@ InteractiveTranscriptionGenerator.prototype.generate = function(config){
 var tmpTranscription = new  Transcriber({});
 
   tmpTranscription.transcribe({
-    videoFile:videoFile ,
+    videoFile: config.videoUrl,
     // keys: global.keys,
     keys: config.keys,
     audioFileOutput: audioFileAbsolutePath,
@@ -80,13 +84,15 @@ var tmpTranscription = new  Transcriber({});
   	tmpPath: tmpFolder,
   	languageModel: config.languageModel,
   	sttEngine: config.sttEngine,
+
     callback: function(respTranscriptJson){
-			console.log("###############-ITG Done transcribing")
+			console.log("###############-ITG Done transcribing"+videoFile)
+			console.log("consig.videoUrl "+ config.videoUrl)
       // console.log(JSON.stringify(respTranscriptJson));
 
  
-      		var created = {}
-			var paragraphs = [{"id":0,	"speaker": "Unamed Speaker 1","paragraph":{}}	];
+      		var created = {};
+			var paragraphs = [{"id":0,	"speaker": "Unamed Speaker ","paragraph":{}}];
 			//update paragraphs of transcription
 			paragraphs[0].paragraph = respTranscriptJson;
 
@@ -101,12 +107,19 @@ var tmpTranscription = new  Transcriber({});
 	        // console.log("created.audioFile")
 	        // console.log(created.audioFile)
 	        audioFileAbsolutePath;
-	        created.processedAudio= true;
 
-	        console.log("###############-ITG updates transcription")
+	        created.processedAudio= true;
+	        created.id = config.id;
+	        created.videoFile = videoFile;
+
+	        console.log("###############-ITG updates transcription"+videoFile)
 
 	       	if(config.cbTranscription){
+	       		console.info("inside interactive_transcription_generator index created.videoFile: "+ created.videoFile)
+	       		fs.writeFileSync("/"+created.videoFile+".json",JSON.stringify(created, null,"\t"))
+
 	       		config.cbTranscription(created)
+
 	       	}
 		  	//Callback to save 
 
@@ -120,7 +133,7 @@ var tmpTranscription = new  Transcriber({});
 		  file: videoFile,
 		  ffprobePath: ffprobePath,
 		  callback: function(resp){
-				console.log("###############-ITG metadata")
+				console.log("###############-ITG metadata "+videoFile)
 		    // console.log(JSON.stringify(resp));
 				//add metadata to transcription
 				// created.metadata = resp;

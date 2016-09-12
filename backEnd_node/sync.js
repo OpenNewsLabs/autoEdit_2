@@ -1,5 +1,7 @@
 	if (window.frontEndEnviromentNWJS) {
 
+		var spawn = require('threads').spawn;
+
 		var fs = require("fs");
 		var LinvoDB = require("linvodb3");
 		//https://github.com/Ivshti/linvodb3
@@ -26,17 +28,38 @@
 	MyAPI.prototype.create = function(model, success, error){
 
 		// console.log(model)
-		// console.log(model.attributes)
+		console.log("model.attributes")
+		console.log(model.attributes)
 
 		var newElement = model.toJSON();
-		
+
+		console.info("newElement")
+		console.log(newElement)
+		console.log(newElement._id)
+		console.log(newElement.id)
+		// console.log(newElement.get("id"))
+		// console.log(newElement.attributes.id)
+		// console.log(newElement.attributes._id)
+
 		var transcription = new Transcription(newElement);
 
+		console.info("transcription")
+		console.log(transcription)
+
 		transcription.save(function(err) { 
+
+			console.info("transcription after save")
+			console.log(transcription)
+
+			console.log(transcription._id)
+			// console.log(transcription.id)
+			// console.log(transcription.get("id"))
+			// console.log(transcription.attributes.id)
+			// console.log(transcription.attributes._id)
 	    	// Document is saved
 	    	// console.log(transcription._id);
-		});
-
+	
+		});//first transcription save 
 
 		// console.log(process.cwd())
 
@@ -48,7 +71,10 @@
 
 	var iTg = new InteractiveTranscriptionGenerator();
 
+	console.log("videoUrl before iTG "+ newElement.videoUrl)
+
 	iTg.generate({
+		id: transcription._id,
 		videoUrl: newElement.videoUrl,
 		title: newElement.title,
 		description: newElement.description, 
@@ -63,43 +89,55 @@
 
 			// console.log("RESP")
 			// console.log(respM)
-			meta = respM;
-
-		 // Transcription.findOne({ _id: transcription.id }, function (err, transcription) {
-		
-			  transcription.metadata = respM;
-			   transcription.save(function(err) { /* we have updated the Earth doc */ }); 
-			// });
+		  meta = respM;
+		 
+		 console.log("cbMetadata -before: "+ transcription._id)
+		 
+		 Transcription.findOne({ _id: transcription._id }, function (err, trs1) {
+				 	console.log("cbMetadata -after findOne: "+ trs1._id)
+			  trs1.metadata = respM;
+			   trs1.save(function(err) { /* we have updated the Earth doc */ }); 
+			});
 
 		},
 		cbTranscription: function(resp){
+			console.log("videoUrl after cbTranscription iTG " +newElement.videoUrl)
+			console.log("videoUrl after cbTranscription iTG " +resp.videoFile)
 
-			 // Transcription.findOne({ _id: transcription.id }, function (err, transcription) {
+			console.log("resp from cbTranscription")
+			console.log(resp)
+			console.log("cbTranscription -before: "+ transcription._id)
+			console.log("resp id: "+ resp.id)
+			 Transcription.findOne({ _id: resp.id }, function (err, trs2) {
+			 	console.log("cbTranscription -after findOne: "+ trs2._id)
 			  // doc is the document Mars
 			  // If no document is found, doc is null
-			  transcription.audioFile = resp.audioFile;
-			  transcription.processedAudio = resp.processedAudio;
-			  transcription.text = resp.text;
-			  transcription.status = resp.status;
+			  trs2.audioFile = resp.audioFile;
+			  trs2.processedAudio = resp.processedAudio;
+			  trs2.text = resp.text;
+			  trs2.status = resp.status;
 
-			  transcription.save(function(err) { /* we have updated the Earth doc */ }); 
-			// });
+			  trs2.save(function(err) { /* we have updated the Earth doc */ }); 
+			});
 
 		}, 
 		cbVideo: function(resp){
-
-			 // Transcription.findOne({ _id: transcription.id }, function (err, transcription) {
+			console.log("cbVideo -before: "+ transcription._id)
+			 Transcription.findOne({ _id: transcription._id}, function (err, trs3) {
+			 	 	console.log("cbVideo -after findOne: "+ trs3._id)
 			  // doc is the document Mars
 			  // If no document is found, doc is null
 			  // console.log(resp.videoOgg)
-			  transcription.videoOgg = resp.videoOgg;
-			  transcription.processedVideo = resp.processedVideo;
+			  trs3.videoOgg = resp.videoOgg;
+			  trs3.processedVideo = resp.processedVideo;
 			  
-			  transcription.save(function(err) { /* we have updated the Earth doc */ }); 
-			// });
+			  trs3.save(function(err) { /* we have updated the Earth doc */ }); 
+			});
 
 		}
 	})
+
+	
 
 		success(model);
 	}
