@@ -10,7 +10,7 @@ A desktop app for OS X that takes in a video or audio file, returns a transcript
 
 <!-- use diagram from blog post -->
 
-Check out the [user manual for]({{ site.baseurl }}/user_manual/usage.html) for more info on how to use it.
+Check out the [user manual for]({{ site.baseurl }}/user_manual/usage.html) for walkthrough on how to use it.
 
 ### Interactive Demo 
 
@@ -19,8 +19,8 @@ Check out [the interactive demo]({{site.demo}}){:target="_blank"}
 To get to demo of transcription 
 
 1. Click on `new`
-2. Then click on `Transcriptions`
-3. Click `Jesselyn Radack`
+2. Click on `Transcriptions`
+3. Then click on the transcription
 
 Then you can click on the words to jump to corresponding part in video. Select some text. And export selections.
 
@@ -37,6 +37,12 @@ Then you can click on the words to jump to corresponding part in video. Select s
 3. [Check out the user manual for a more detailed tutorial]({{site.baseurl}}/user_manual/usage.html)   
 
 
+### Open source 
+
+This is an [open source project]({{site.github}}){:target="_blank"} 
+created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/){:target="_blank"} . You can contribute and/or propose ideas you have for this project. 
+
+This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues){:target="_blank"} .
 
 ### Credits 
 

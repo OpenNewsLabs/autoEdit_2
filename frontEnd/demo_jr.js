@@ -16,8 +16,8 @@ var jesselynRadackTranscription = new app.Transcription({
     "filePathName": "/Users/pietropassarelli/Dropbox/WB\ full\ interviews/JR\ cam\ B\ transcription.mp4",
     "fileName": "JR\ cam\ B\ transcription.mp4",
     "date": "2016-02-18 16:38:20",
-    "reelName": "WIP_Card_1",
-    "timecode": "00:01:18:56",
+    "reelName": "NA",
+    "timecode": "NA",
     "fps": "1/25",
     "duration": 2485.248
   },

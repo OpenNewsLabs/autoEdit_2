@@ -93,16 +93,16 @@ var EDLline = function(event, tapeIn, offset){
 
   this.compose = function(){
     console.log("inpoint");
-    console.log(this.clipInPoint());
-    console.log(this.clipInPoint()+this.offset);
+    console.log(fromSeconds(this.clipInPoint()));
+    console.log(fromSeconds(this.clipInPoint()+this.offset));
     console.log("outpoint");
-    console.log(this.clipOutPoint());
-    console.log(this.clipOutPoint()+this.offset);
+    console.log(fromSeconds(this.clipOutPoint()));
+    console.log(fromSeconds(this.clipOutPoint()+this.offset));
     
     var res ="";
     //Handling lack of reel name in clip.
     if(this.reelName != "NA" ){
-       res =  ""+this.n()+"   "+this.reelName7digit()+" AX  AA/V  C  "
+       res =  ""+this.n()+"   "+this.reelName7digit()+"  AA/V  C  "
     }else{
        res =  ""+this.n()+"   "+" AX  AA/V  C  "
     }
@@ -130,7 +130,7 @@ var EDLline = function(event, tapeIn, offset){
 /*
 * Timecode conversion code from https://www.npmjs.com/package/node-timecodes and extracted to use outside of npm node modules on client side
 */
-function padNumber(nb) {
+var padNumber = function (nb) {
   var length = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
 
   while (('' + nb).length < length) {
@@ -140,7 +140,7 @@ function padNumber(nb) {
 }
 
 /* converts time in seconds to timecode */
-function fromSeconds(seconds) {
+var fromSeconds = function (seconds) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
   var defaultFrameRate = 25;
   var _ref$frameRate = _ref.frameRate;
@@ -164,7 +164,7 @@ function fromSeconds(seconds) {
 ///for srt composer
 
 
-function fromSecondsForSrt(seconds) {
+var fromSecondsForSrt = function (seconds) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
   var defaultFrameRate = 25;
   var _ref$frameRate = _ref.frameRate;
