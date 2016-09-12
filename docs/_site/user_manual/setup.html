@@ -79,15 +79,15 @@
 
         
             
-                <li class="nav-header">User Manual</li>
+                <li class="nav-header">A User Manual</li>
             
             <li data-order=""><a href="/autoEdit_2/user_manual/installing.html">Installing</a></li>
         
             
-            <li data-order=""><a href="/autoEdit_2/user_manual/uninstalling.html">Uninstalling</a></li>
+            <li data-order=""><a href="/autoEdit_2/user_manual/usage.html">User Manual </a></li>
         
             
-            <li data-order=""><a href="/autoEdit_2/user_manual/usage.html">User Manual </a></li>
+            <li data-order=""><a href="/autoEdit_2/user_manual/uninstalling.html">Uninstalling</a></li>
         
             
             <li data-order=""><a href="/autoEdit_2/user_manual/setup.html">Setup: STT APIs</a></li>
@@ -151,6 +151,8 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
 
 <h3 id="overview">Overview</h3>
 
+<hr />
+
 <h4 id="ibm-watson-stt-service">IBM Watson STT Service</h4>
 
 <p>Pros:</p>
@@ -168,6 +170,8 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
   <li>Need to provide card details for pay as you go fee.</li>
   <li>is in the cloud so no offline support.</li>
 </ul>
+
+<hr />
 
 <h4 id="gentle-open-source-stt">Gentle Open Source STT</h4>
 
@@ -188,27 +192,75 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
   <li>At the moment not as fast as IBM one.</li>
 </ul>
 
+<hr />
+
 <h3 id="setup">Setup</h3>
 
-<h4 id="ibm-bluemix-speech-to-text-api-keys">IBM Bluemix Speech To Text API Keys</h4>
+<hr />
 
-<p>For a tutorial on how to get IBM Bluemix API keys for the Speech to Text service follow this link <a href="">link</a></p>
+<h4 id="get-ibm-bluemix-speech-to-text-api-keys">GET IBM Bluemix Speech To Text API Keys</h4>
+
+<p>Here to <a href="https://console.ng.bluemix.net/catalog/services/speech-to-text" target="_blank">get API keys for IBM Bluemix Watson Speech To Text service</a></p>
 
 <!-- find link -->
+
+<h4 id="add-the-api-keys-to-the-app-at-startup">Add the API keys to the app at startup</h4>
 
 <p>When you first launch the app by double clicking on it a prompt asks for IBM Watson username and password API keys, these are then stored inside the app.</p>
 
 <!-- Keyboard shortcut to reset them? -->
 
-<h4 id="gentle-stt-open-source--free">Gentle STT, Open Source + Free</h4>
+<p><img src="/autoEdit_2/img/gif/apiKeys.gif" class="sixtypercent" alt="Getting started adding media" /></p>
+
+<p>That’s it. the API keys are now stored inside the app with this one time setup. and you can now use the it.</p>
+
+<p>Now you are ready to chose IBM as an option when adding a new transcription. Go back to the <a href="/autoEdit_2/user_manual/usage.html">user manual</a> to continue.</p>
+
+<hr />
+
+<h4 id="gentle-stt-open-source-free-and-offline">Gentle STT, Open Source, free and offline</h4>
 
 <h5 id="first-time-setup">first time setup</h5>
 
 <p>Frist time you launch this version of the app it will download the …</p>
 
-<h5 id="launching-local-server">launching local server</h5>
+<ul>
+  <li>
+    <p>1.Download <a href="https://github.com/lowerquality/gentle/releases/tag/0.9.1">Gentle version 0.9.1</a> about <code class="highlighter-rouge">104mb</code></p>
+  </li>
+  <li>
+    <p>2.start the Gentle app</p>
+  </li>
+  <li>
+    <p>3.click <code class="highlighter-rouge">Enable full transcription</code>, this will dowload the language model comonent to be able to work offline.</p>
+  </li>
+</ul>
 
-<p>click etc..</p>
+<p><img src="/autoEdit_2/img/gentle_enable_full_transcription.png" class="sixtypercent" alt="enable_full_transcription" /></p>
+
+<!-- ![enable_full_transcription](/img/gentle_enable_full_transcription.png) -->
+
+<ul>
+  <li>
+    <p>4.restart the app</p>
+  </li>
+  <li>
+    <p>5.the Gentle server is now up and running.</p>
+  </li>
+</ul>
+
+<p>Future times, you just need to launch gentle anche check local host is working.</p>
+
+<h5 id="launching-gentles-local-server">Launching Gentle’s local server</h5>
+<p>If you already done the initial setup downloading the language model as described above, all you need to do when using gentle is click <code class="highlighter-rouge">open in browser</code></p>
+
+<p><img src="/autoEdit_2/img/gentle_open_in_browser.png" class="sixtypercent" alt="gentle_open_in_browser" /></p>
+
+<p>this will open your default browser with this page, and this means the Gentle server is running locally.</p>
+
+<p><img src="/autoEdit_2/img/gentle_browser.png" class="sixtypercent" alt=" gentle_browser" /></p>
+
+<p>Now you are ready to chose Gentle as an option when adding a new transcription. Go back to the <a href="/autoEdit_2/user_manual/usage.html">user manual</a> to continue.</p>
 
 <!-- See node module readme insturcitons for how to launch server  https://github.com/OpenNewsLabs/gentle_stt_node -->
 
@@ -221,7 +273,9 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
 
             <div class="row">
                 <div id="footer" class="col-sm-12">
-                    Documentation for <a href="https://github.com/OpenNewsLabs/autoEdit_2">autoEdit 2</a>
+                    Documentation for <a href="https://github.com/OpenNewsLabs/autoEdit_2">autoEdit 2</a> | 
+
+<a href="mailto:info@autoEdit.io?Subject=autoEdit%202%20question">info@autoEdit.io</a>
 
                 </div>
             </div>

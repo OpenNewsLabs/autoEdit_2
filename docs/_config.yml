@@ -1,6 +1,7 @@
 # Site title and subtitle. This is used in _includes/header.html
 title: 'autoEdit 2'
 subtitle: 'Text based video editing'
+email: 'info@autoEdit.io'
 
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''
@@ -20,7 +21,7 @@ codeurl: 'https://github.com/OpenNewsLabs/autoEdit_2'
 # Default categories (in order) to appear in the navigation
 sections: [
     ['system_manual', 'Developers'],
-    ['user_manual', 'User Manual'],
+    ['user_manual', 'A User Manual'],
     ['wiki', 'Wiki'],
     ['download', 'download'],
      ['demo', 'demo'],
@@ -35,6 +36,8 @@ baseurl: '/autoEdit_2'
 github: "https://github.com/OpenNewsLabs/autoEdit_2"
 demo: "https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html"
 download: "https://github.com/OpenNewsLabs/autoEdit_2/releases"
+
+
 # Dates are not included in permalinks
 permalink: none
 

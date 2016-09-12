@@ -20,7 +20,7 @@ To get to demo of transcription
 
 1. Click on `new`
 2. Click on `Transcriptions`
-3. Then click on the transcription
+3. Then click on the title of the transcription
 
 Then you can click on the words to jump to corresponding part in video. Select some text. And export selections.
 
