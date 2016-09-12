@@ -102,7 +102,7 @@ var EDLline = function(event, tapeIn, offset){
     var res ="";
     //Handling lack of reel name in clip.
     if(this.reelName != "NA" ){
-       res =  ""+this.n()+"   "+this.reelName7digit()+" AX  AA/V  C  "
+       res =  ""+this.n()+"   "+this.reelName7digit()+"  AA/V  C  "
     }else{
        res =  ""+this.n()+"   "+" AX  AA/V  C  "
     }
