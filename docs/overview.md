@@ -44,7 +44,7 @@ Then you can click on the words to jump to corresponding part in video. Select s
 
 ---
 
-### How can I use it?
+### Getting started
 
 1. [Setup Speech to Text service of choice]({{ site.baseurl }}/user_manual/setup.html){:target="_blank"} 
 	-  IBM Watson STT Service.
