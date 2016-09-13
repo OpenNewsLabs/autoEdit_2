@@ -7,8 +7,8 @@ body {
     color: #555;
     padding-top: 50px;
 
-    -webkit-font-smoothing: antialiased;
-    -webkit-overflow-scrolling: touch;
+    /*-webkit-font-smoothing: antialiased;*/
+    /*-webkit-overflow-scrolling: touch;*/
 }
 
 /* Titles */
