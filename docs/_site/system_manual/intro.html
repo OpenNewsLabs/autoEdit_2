@@ -12,6 +12,10 @@
         <link rel="stylesheet" href="/autoEdit_2/css/syntax.css">
         <link rel="stylesheet" href="/autoEdit_2/css/custom.css">
         <link rel="stylesheet" href="/autoEdit_2/css/main.css">
+
+        <script src="/autoEdit_2/js/jquery.min.1.12.4.js"></script>
+        <script src="/autoEdit_2/js/bootstrap.js"></script>
+        
     </head>
     <body>
 
@@ -180,6 +184,12 @@
         </div>
 
         <script>
+
+        $(function () {
+          $('[data-toggle="popover"]').popover()
+        })
+
+
             function orderNav() {
                 var list,
                     section,

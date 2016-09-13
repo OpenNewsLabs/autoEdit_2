@@ -12,6 +12,10 @@
         <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/custom.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+
+        <script src="{{ site.baseurl }}/js/jquery.min.1.12.4.js"></script>
+        <script src="{{ site.baseurl }}/js/bootstrap.js"></script>
+        
     </head>
     <body>
 
@@ -72,6 +76,12 @@
         </div>
 
         <script>
+
+        $(function () {
+          $('[data-toggle="popover"]').popover()
+        })
+
+
             function orderNav() {
                 var list,
                     section,

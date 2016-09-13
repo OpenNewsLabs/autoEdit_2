@@ -63,3 +63,14 @@ redcarpet:
         'tables',
         'hardwrap'
     ]
+
+
+definitions:
+    edl:
+        title: "E.D.L."
+        description: "stands for Edit Decision List"
+
+
+links: 
+    ibm_stt: "www."
+    gentle: "https://lowerquality.com/gentle/"

@@ -12,6 +12,10 @@
         <link rel="stylesheet" href="/autoEdit_2/css/syntax.css">
         <link rel="stylesheet" href="/autoEdit_2/css/custom.css">
         <link rel="stylesheet" href="/autoEdit_2/css/main.css">
+
+        <script src="/autoEdit_2/js/jquery.min.1.12.4.js"></script>
+        <script src="/autoEdit_2/js/bootstrap.js"></script>
+        
     </head>
     <body>
 
@@ -146,8 +150,12 @@
     </h2>
 </div>
 
-<p>There are two options for speech to text APIs that you can use with this system.
-One is the IBM Watson STT and the Other is the Gentle STT.</p>
+<p>There are two options for speech to text APIs that you can use with this system.</p>
+
+<ol>
+  <li>One is the IBM Watson STT</li>
+  <li>the Other is the open source Gentle STT.</li>
+</ol>
 
 <h3 id="overview">Overview</h3>
 
@@ -181,7 +189,7 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
   <li>Free as in free speech as well as in free beer.</li>
   <li>working locally on your machine. no internet connection needed</li>
   <li>because of that, good for sensitive material.</li>
-  <li>Open source <a href="">github repo</a> and <a href="https://github.com/OpenNewsLabs/gentle_stt_node">I made a node module to work with the API</a>.</li>
+  <li>Open source <a href="https://lowerquality.com/gentle" target="_blank">github repo</a>  and <a href="https://github.com/OpenNewsLabs/gentle_stt_node" target="_blank">I made a node module to work with the API</a> .</li>
 </ul>
 
 <p>Cons:</p>
@@ -226,7 +234,7 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
 
 <ul>
   <li>
-    <p>1.Download <a href="https://github.com/lowerquality/gentle/releases/tag/0.9.1">Gentle version 0.9.1</a> about <code class="highlighter-rouge">104mb</code></p>
+    <p>1.Download <a href="https://github.com/lowerquality/gentle/releases/tag/0.9.1" target="_blank">Gentle version 0.9.1</a>  about <code class="highlighter-rouge">104mb</code></p>
   </li>
   <li>
     <p>2.start the Gentle app</p>
@@ -282,6 +290,12 @@ One is the IBM Watson STT and the Other is the Gentle STT.</p>
         </div>
 
         <script>
+
+        $(function () {
+          $('[data-toggle="popover"]').popover()
+        })
+
+
             function orderNav() {
                 var list,
                     section,
