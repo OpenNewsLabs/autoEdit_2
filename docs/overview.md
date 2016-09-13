@@ -1,11 +1,11 @@
 ---
-layout: landing
-title: "Home"
+layout: default
+title: "Overview"
 ---
 
 <!-- ## autoEdit 2 <small>Text based video editing </small> -->
 
-<!-- 
+
 ### How does it work?
 
 A desktop app for OS X that given a video or audio file, returns a transcription using third party STT(Speech To Text) service and allows you select text you want to include in your video sequence. 
@@ -20,7 +20,7 @@ A desktop app for OS X that given a video or audio file, returns a transcription
 
 
 <img src="{{ site.baseurl }}/img/tutorial/0_diagram.png" class="sixtypercent" alt="Overview diagram">
- -->
+
 <!-- use diagram from blog post -->
 
 

@@ -21,7 +21,7 @@
 
         <div class="container">
             <div class="row">
-                <div  class="col-sm-6 col-md-6 col-lg-6">
+             <!--    <div  class="col-sm-6 col-md-6 col-lg-6">
                     {% include header.html %}
 
                 </div>
@@ -33,13 +33,18 @@
                 </div>
                  <div  class="col-sm-2  col-md-2 col-lg-2">
                  <h5> <a href="{{site.download}}" target="_blank">Download OSX app</a> </h5>
+                </div> -->
+                <div  class="col-sm-12 col-md-12 col-lg-12">
+                     {% include header_landing.html %}
                 </div>
+
             </div>
+            <br><br><br>
 
             <div class="row">
                 {% assign post_count = site.posts|size %}
                 {% if site.navigation != 0 and site.navigation == 1 or post_count > 0 %}
-                    <div id="navigation" class="col-sm-2">
+                    <div  class="col-sm-2">
                         {% include navigation.html %}
                     </div>
 

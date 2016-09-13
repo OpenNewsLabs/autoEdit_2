@@ -30,31 +30,8 @@
   <body data-spy="scroll" data-offset="0" data-target="#navigation">
 
     <!-- Fixed navbar -->
-	    <div id="navigation" class="navbar navbar-default navbar-fixed-top">
-	      <div class="container">
-	        <div class="navbar-header">
-	          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	            <span class="icon-bar"></span>
-	          </button>
-	          <a class="navbar-brand" href="#"><b>autoEdit 2</b></a>
-	        </div>
-	        <div class="navbar-collapse collapse">
-	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#home" class="smothscroll">Home</a></li>
-	            <!-- <li><a href="#desc" class="smothscroll">Description</a></li> -->
-	            <!-- <li><a href="#showcase" class="smothScroll">Showcase</a></li> -->
-	            <!-- <li><a href="#contact" class="smothScroll">Contact</a></li> -->
-	          
-	             <li><a href="{{site.baseurl}}/user_manual/usage.html" target="_blank" class="smothScroll">Guide</a></li>
-	             <li><a href="{{site.github}}" class="smothScroll" target="_blank">Github</a></li>
-	             <li><a href="{{site.demo}}" class="smothScroll" target="_blank">Demo</a></li>
-	              <li><a href="{{site.download}}" class="smothScroll" target="_blank">Download Os xapp</a></li>
-	          </ul>
-	        </div><!--/.nav-collapse -->
-	      </div>
-	    </div>
+    
+	 {% include header_landing.html %}
 
 
 	<section id="home" name="home"></section>
@@ -62,8 +39,8 @@
 	    <div class="container">
 	    	<div class="row centered">
 	    		<div class="col-lg-12">
-					<h1>Welcome To <b>autoEdit 2</b></h1>
-					<h3>Text based video editing.</h3>
+					<h1><b>autoEdit 2</b></h1>
+					<h3>Text based video editing</h3>
 					<br>
 	    		</div>
 	    		
