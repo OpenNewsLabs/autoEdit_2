@@ -24,12 +24,12 @@ The user can then select text and export a video sequence to the video editing s
 ## Ready to use release 
 
 see [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
-All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
+All you need to get started is IBM Watson API Blumix keys and/or a version of Gentle Open source STT app running locally on your mac. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
 
 And the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
 
 
-## Launching the app 
+## Launching the app in development
 
 For developers
 
