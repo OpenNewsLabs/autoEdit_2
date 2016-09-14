@@ -1,5 +1,6 @@
 # autoEdit V2
 
+## Description
 
 Fast text based video editing deesktop app for Mac OSX. Built in node NWJS and backbone.
 Making video production faster, easier and more accessible.
@@ -10,6 +11,11 @@ Uses [NWJS boilerplate](https://github.com/pietrop/nwjs_boilerplate)  as a start
 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how 
 [the demo](https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html#transcriptions) is run, with an hard coded backbone model.
+
+## Key features
+- 5min transcription time
+- Multi language
+- Can work offline 
 
 
 ## Overview of how the app works
@@ -140,8 +146,24 @@ When you first clone the project, this file shoudl not be there.
 ---
 
 ## Contributing
-Feel free to get in touch with any questions. for the project and send me a pull request.
+Feel free to get in touch with any questions. For the the project and send me a pull request.
 
+## Issue reporting
+This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues){:target="_blank"} or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
+
+
+## Licence
+
+```
+The MIT License (MIT)
+Copyright (c) 2016  Pietro Passarelli
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
 
 ## Contributors
 
