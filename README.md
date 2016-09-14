@@ -1,6 +1,6 @@
 # autoEdit V2
 
-## Description
+<!-- ## Description -->
 
 Fast text based video editing deesktop app for Mac OSX. Built in node NWJS and backbone.
 Making video production faster, easier and more accessible.
