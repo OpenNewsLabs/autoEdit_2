@@ -22,7 +22,7 @@ The user can then select text and export a video sequence to the video editing s
 ## Ready to use release 
 
 See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
-All you need to get started is IBM Watson API Blumix keys and/or a version of Gentle Open source STT app running locally on your mac. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) as well as the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
+All you need to get started is IBM Watson API Blumix keys and/or a version of Gentle Open source STT app running locally on your mac. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) as well as the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html).
 
 
 ## Launching the app in development
@@ -40,6 +40,24 @@ npm start
 ```
 
 You'd also need to get IBM watson STT keys or have the Gentle Open source app running locally [see the guide for instructions on setting this up ](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
+
+## Packaging /deploying the app 
+
+From terminal from root of app, run 
+
+```bash
+npm run build
+```
+
+This creates a folder called `build` where you can find your packaged app. 
+
+before deployment you may want to change the toolabr visible to false. in `package.json`
+
+```json
+"toolbar": false,
+```
+
+[more info on deploy/packaging of app in nwjs boilerplate project](lhttps://github.com/pietrop/nwjs_boilerplate#deploy)
 
 ---
 
@@ -103,15 +121,8 @@ backbone front end . `demo_jr.js` is the code that runs the demo when index is r
 [Project page, on github pages](https://opennewslabs.github.io/autoEdit_2/).
 
 ### `deploy.js`
-`node deploy.js` from terminal from root of app, creates a folder called `build` where you can find your packaged app. 
 
-or 
-
-```
-npm run build
-```
-
-[more info on deploy/packaging of app in nwjs boilerplate project](lhttps://github.com/pietrop/nwjs_boilerplate#deploy)
+Deployment script. [more info on deploy/packaging of app in nwjs boilerplate project](lhttps://github.com/pietrop/nwjs_boilerplate#deploy)
 
 ### `cache` 
 is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time
