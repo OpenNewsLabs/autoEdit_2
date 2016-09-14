@@ -51,12 +51,12 @@
 	        </div>
 	        <div class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="#home" class="smothscroll">Home</a></li>
+	            <li class="active"><a href="/autoEdit_2/" class="smothscroll">Home</a></li>
 	            <!-- <li><a href="#desc" class="smothscroll">Description</a></li> -->
 	            <!-- <li><a href="#showcase" class="smothScroll">Showcase</a></li> -->
 	            <!-- <li><a href="#contact" class="smothScroll">Contact</a></li> -->
 	          
-	             <li><a href="/autoEdit_2/user_manual/usage.html" target="_blank" class="smothScroll">Guide</a></li>
+	             <li><a href="/autoEdit_2/user_manual/usage.html" class="smothScroll">Guide</a></li>
 	             <li><a href="https://github.com/OpenNewsLabs/autoEdit_2" class="smothScroll" target="_blank">Github</a></li>
 	             <li><a href="https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html" class="smothScroll" target="_blank">Demo</a></li>
 	              <li><a href="https://github.com/OpenNewsLabs/autoEdit_2/releases" class="smothScroll" target="_blank">Download Os xapp</a></li>
@@ -70,94 +70,22 @@
             <br><br><br>
 
             <div class="row">
-                
-                
+                <!-- 
+                 -->
                     <div  class="col-sm-2">
                         <ul class="nav nav-list">
     <li><a href="/autoEdit_2/">Home</a></li>
-    
-        
-        
 
         
-            
-                <li class="nav-header">Developers</li>
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/doc.html">Documentation</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/intro.html">Intro</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/licence.html">Licence</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/deployment.html">Deployment</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/test-suite.html">Test suite</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/configuration.html">Configuration</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/dependencies.html">Dependencies</a></li>
-        
-            
-            <li data-order=""><a href="/autoEdit_2/system_manual/prerequisites.html">Prerequisites</a></li>
-        
-    
-        
-        
-
-        
-            
-                <li class="nav-header">A User Manual</li>
-            
             <li data-order=""><a href="/autoEdit_2/user_manual/installing.html">Installing</a></li>
         
-            
             <li data-order=""><a href="/autoEdit_2/user_manual/usage.html">User Manual </a></li>
         
-            
             <li data-order=""><a href="/autoEdit_2/user_manual/uninstalling.html">Uninstalling</a></li>
         
-            
             <li data-order=""><a href="/autoEdit_2/user_manual/setup.html">Setup: STT APIs</a></li>
         
-    
-        
-        
-
-        
-            
-                <li class="nav-header">Wiki</li>
-            
-            <li data-order=""><a href="/autoEdit_2/wiki/wiki.html">Wiki</a></li>
-        
-    
-        
-        
-
-        
-    
-        
-        
-
-        
-    
-        
-        
-
-        
-            
-                <li class="nav-header">FAQs</li>
-            
-            <li data-order=""><a href="/autoEdit_2/faqs/faqs.html">FAQs</a></li>
-        
-    
-<!-- List additional links. It is recommended to add a divider
-    e.g. <li class="divider"></li> first to break up the content. -->
+ 
 </ul>
 
                     </div>
@@ -173,7 +101,7 @@
 
 
                     </div>
-                
+               <!--   -->
             </div>
 
             
@@ -190,58 +118,58 @@
 
         <script>
 
-        $(function () {
-          $('[data-toggle="popover"]').popover()
-        })
+        // $(function () {
+        //   $('[data-toggle="popover"]').popover()
+        // })
 
 
-            function orderNav() {
-                var list,
-                    section,
-                    header,
-                    sections = [],
-                    lists = {},
-                    headers = {};
+        //     function orderNav() {
+        //         var list,
+        //             section,
+        //             header,
+        //             sections = [],
+        //             lists = {},
+        //             headers = {};
 
-                var navUl = document.querySelectorAll('#navigation ul')[0],
-                    navLis = document.querySelectorAll('#navigation ul li');
+        //         var navUl = document.querySelectorAll('#navigation ul')[0],
+        //             navLis = document.querySelectorAll('#navigation ul li');
 
-                if (!navUl) return;
+        //         if (!navUl) return;
 
-                for (var i = 0; i < navLis.length; i++) {
-                    var order, li = navLis[i];
+        //         for (var i = 0; i < navLis.length; i++) {
+        //             var order, li = navLis[i];
 
-                    if (li.classList.contains('nav-header')) {
-                        section = li.textContent || li.innerText;
-                        sections.push(section);
-                        headers[section] = li;
-                        continue;
-                    }
+        //             if (li.classList.contains('nav-header')) {
+        //                 section = li.textContent || li.innerText;
+        //                 sections.push(section);
+        //                 headers[section] = li;
+        //                 continue;
+        //             }
 
-                    if (!lists[section]) {
-                        lists[section] = [];
-                    }
+        //             if (!lists[section]) {
+        //                 lists[section] = [];
+        //             }
 
-                    order = parseFloat(li.getAttribute('data-order'))
-                    lists[section].push([order, li]);
-                }
+        //             order = parseFloat(li.getAttribute('data-order'))
+        //             lists[section].push([order, li]);
+        //         }
 
-                for (var i = 0; i < sections.length; i++) {
-                    section = sections[i];
-                    list = lists[section].sort(function(a, b) {
-                        return a[0] - b[0];
-                    });
+        //         for (var i = 0; i < sections.length; i++) {
+        //             section = sections[i];
+        //             list = lists[section].sort(function(a, b) {
+        //                 return a[0] - b[0];
+        //             });
 
-                    if (header = headers[section]) {
-                        navUl.appendChild(header);
-                    }
-                    for (var j = 0; j < list.length; j++) {
-                        navUl.appendChild(list[j][1]);
-                    }
-                }
-            }
+        //             if (header = headers[section]) {
+        //                 navUl.appendChild(header);
+        //             }
+        //             for (var j = 0; j < list.length; j++) {
+        //                 navUl.appendChild(list[j][1]);
+        //             }
+        //         }
+        //     }
 
-            if (document.querySelectorAll) orderNav();
+        //     if (document.querySelectorAll) orderNav();
         </script>
         
     </body>

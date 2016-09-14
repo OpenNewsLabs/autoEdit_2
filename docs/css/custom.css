@@ -8,3 +8,8 @@
     color: #999;
     text-align: center;
 }
+
+a.more {
+    font-size: 15px!important;
+    color: green!important;
+}

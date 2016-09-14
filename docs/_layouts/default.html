@@ -42,20 +42,20 @@
             <br><br><br>
 
             <div class="row">
-                {% assign post_count = site.posts|size %}
-                {% if site.navigation != 0 and site.navigation == 1 or post_count > 0 %}
+                <!-- {% assign post_count = site.posts|size %}
+                {% if site.navigation != 0 and site.navigation == 1 or post_count > 0 %} -->
                     <div  class="col-sm-2">
-                        {% include navigation.html %}
+                        {% include navigation_user_manual.html %}
                     </div>
 
                     <div id="content" class="col-sm-10">
                         {{ content }}
                     </div>
-                {% else %}
+               <!--  {% else %}
                     <div id="content" class="col-sm-12">
                         {{ content }}
                     </div>
-                {% endif %}
+                {% endif %} -->
             </div>
 
             {% if page.disqus == 1 %}
@@ -82,58 +82,58 @@
 
         <script>
 
-        $(function () {
-          $('[data-toggle="popover"]').popover()
-        })
+        // $(function () {
+        //   $('[data-toggle="popover"]').popover()
+        // })
 
 
-            function orderNav() {
-                var list,
-                    section,
-                    header,
-                    sections = [],
-                    lists = {},
-                    headers = {};
+        //     function orderNav() {
+        //         var list,
+        //             section,
+        //             header,
+        //             sections = [],
+        //             lists = {},
+        //             headers = {};
 
-                var navUl = document.querySelectorAll('#navigation ul')[0],
-                    navLis = document.querySelectorAll('#navigation ul li');
+        //         var navUl = document.querySelectorAll('#navigation ul')[0],
+        //             navLis = document.querySelectorAll('#navigation ul li');
 
-                if (!navUl) return;
+        //         if (!navUl) return;
 
-                for (var i = 0; i < navLis.length; i++) {
-                    var order, li = navLis[i];
+        //         for (var i = 0; i < navLis.length; i++) {
+        //             var order, li = navLis[i];
 
-                    if (li.classList.contains('nav-header')) {
-                        section = li.textContent || li.innerText;
-                        sections.push(section);
-                        headers[section] = li;
-                        continue;
-                    }
+        //             if (li.classList.contains('nav-header')) {
+        //                 section = li.textContent || li.innerText;
+        //                 sections.push(section);
+        //                 headers[section] = li;
+        //                 continue;
+        //             }
 
-                    if (!lists[section]) {
-                        lists[section] = [];
-                    }
+        //             if (!lists[section]) {
+        //                 lists[section] = [];
+        //             }
 
-                    order = parseFloat(li.getAttribute('data-order'))
-                    lists[section].push([order, li]);
-                }
+        //             order = parseFloat(li.getAttribute('data-order'))
+        //             lists[section].push([order, li]);
+        //         }
 
-                for (var i = 0; i < sections.length; i++) {
-                    section = sections[i];
-                    list = lists[section].sort(function(a, b) {
-                        return a[0] - b[0];
-                    });
+        //         for (var i = 0; i < sections.length; i++) {
+        //             section = sections[i];
+        //             list = lists[section].sort(function(a, b) {
+        //                 return a[0] - b[0];
+        //             });
 
-                    if (header = headers[section]) {
-                        navUl.appendChild(header);
-                    }
-                    for (var j = 0; j < list.length; j++) {
-                        navUl.appendChild(list[j][1]);
-                    }
-                }
-            }
+        //             if (header = headers[section]) {
+        //                 navUl.appendChild(header);
+        //             }
+        //             for (var j = 0; j < list.length; j++) {
+        //                 navUl.appendChild(list[j][1]);
+        //             }
+        //         }
+        //     }
 
-            if (document.querySelectorAll) orderNav();
+        //     if (document.querySelectorAll) orderNav();
         </script>
         {% if site.google_analytics_id != "" %}
         {% include google_analytics.html %}
