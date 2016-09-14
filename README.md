@@ -149,7 +149,7 @@ When you first clone the project, this file shoudl not be there.
 Feel free to get in touch with any questions. For the the project and send me a pull request.
 
 ## Issue reporting
-This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues){:target="_blank"} or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
+This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues) or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
 
 
 ## Licence
