@@ -63,7 +63,7 @@ before deployment you may want to change the toolabr visible to false. in `packa
 
 ## Folders structure
 
-```
+```bash
 .
 ├── README.md
 ├── backEnd_node
