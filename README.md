@@ -143,6 +143,7 @@ is where the wav files are kept, and the deleted, when sending split chunks to w
 ###`wttskeys.json` 
 at root level is where watson API keys are ketp, this file is in gitignore to avoid accidentally pushing it to github. 
 When you first clone the project, this file shoudl not be there. 
+
 ---
 
 ## Contributing
