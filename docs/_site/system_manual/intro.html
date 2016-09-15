@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width">
 
-        <title>autoEdit 2 : Intro</title>
+        <title>autoEdit 2 : Intro to system manual </title>
         <meta name="description" content="Fast text based video editing">
 
         <link rel="stylesheet" href="/autoEdit_2/css/bootstrap.min.css" >
@@ -61,6 +61,13 @@
 	             <li><a href="https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html" class="smothScroll" target="_blank">Demo</a></li>
 	              <li><a href="https://github.com/OpenNewsLabs/autoEdit_2/releases" class="smothScroll" target="_blank">Download Os xapp</a></li>
 	          </ul>
+
+	          <ul class="nav navbar-nav navbar-right">
+	           	<li><a href="/autoEdit_2/system_manual/intro.html">Documentation</a></li>
+	          	<li><a href="mailto:info@autoEdit.io?Subject=autoEdit%202">Contact</a></li>
+
+	         	</ul>
+
 	        </div><!--/.nav-collapse -->
 	      </div>
 	    </div>
@@ -77,13 +84,21 @@
     <li><a href="/autoEdit_2/">Home</a></li>
 
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/installing.html">Installing</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/doc.html">Documentation</a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/usage.html">User Manual </a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/intro.html">Intro to system manual </a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/uninstalling.html">Uninstalling</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/licence.html">Licence</a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/setup.html">Setup: STT APIs</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/deployment.html">Deployment</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/configuration.html">Configuration</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/dependencies.html">Dependencies</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/test-suite.html">Test Suite </a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/components.html">Components</a></li>
         
  
 </ul>
@@ -92,26 +107,86 @@
 
                     <div id="content" class="col-sm-10">
                         <div class="page-header">
-    <h2>Intro
+    <h2>Intro to system manual 
         
     </h2>
 </div>
 
-<h3 id="intro-to-system-manual">Intro to system manual</h3>
+<h2 id="folders-structure">Folders structure</h2>
 
-<h3 id="note-on-projects-spawn-from-this-project">note on projects spawn from this project</h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>.
+├── README.md
+├── backEnd_node
+│   ├── autoEdit2API.js
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── sam_transcriber
+│   ├── spec
+│   ├── sync.js
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+├── build
+│   └──  ...
+├── cache
+│   └── ...
+├── config.js
+├── deploy.js
+├── docs
+│   └── ...
+├── frontEnd
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor
+├── media
+│   ├── JR_cam_B_transcription.mp4.wav
+│   ├── JR_cam_B_transcription.mp4.webm
+│   ├── ...
+│   └── keep.md
+├── node_modules
+├── nw.icns
+├── package.json
+├── tmp_media
+│   ├── ...
+│   └── keep.md
+├── tree.md
+└── wttskeys.json
 
-<ul>
-  <li><a href="https://github.com/pietrop/nwjs_boilerplate#deploy">NWJS Boilerplate</a></li>
-  <li>…</li>
-</ul>
+</code></pre>
+</div>
 
-<p>a bunch of other components some of which not used in the final version such as</p>
+<h3 id="backendnode"><code class="highlighter-rouge">backEnd_node</code>,</h3>
+<p>overwrighting backbone.sync method and using node modules for backend
+for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
 
-<ul>
-  <li><a href="https://github.com/pietrop/srtParserComposer">srt parser /composer</a> also on <a href="https://www.npmjs.com/package/srt_parser_composer">npm</a></li>
-  <li><a href="https://github.com/voxmedia/captions_burner">Captions burner </a></li>
-</ul>
+<h3 id="frontend"><code class="highlighter-rouge">frontEnd</code></h3>
+<p>backbone front end . <code class="highlighter-rouge">demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
+
+<p><code class="highlighter-rouge">js</code> contains the backbone project.</p>
+
+<h3 id="docs"><code class="highlighter-rouge">docs</code></h3>
+<p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.</p>
+
+<h3 id="deployjs"><code class="highlighter-rouge">deploy.js</code></h3>
+
+<p>Deployment script. <a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
+
+<h3 id="cache"><code class="highlighter-rouge">cache</code></h3>
+<p>is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time</p>
+
+<h3 id="tmdmedia"><code class="highlighter-rouge">tmd_media</code></h3>
+<p>is where the wav files are kept, and the deleted, when sending split chunks to watson.</p>
+
+<h3 id="media"><code class="highlighter-rouge">media</code></h3>
+<p>is where video webm previews and audio wav files for transcriptions are kept.</p>
+
+<h3 id="wttskeysjson"><code class="highlighter-rouge">wttskeys.json</code></h3>
+<p>at root level is where watson API keys are ketp, this file is in gitignore to avoid accidentally pushing it to github. 
+When you first clone the project, this file shoudl not be there.</p>
 
 
                     </div>

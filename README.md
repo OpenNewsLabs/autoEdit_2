@@ -30,6 +30,8 @@ The user can then select text and export a video sequence to the video editing s
 See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
 All you need to get started is IBM Watson API Blumix keys and/or a version of Gentle Open source STT app running locally on your mac. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) as well as the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html).
 
+## Folder structure 
+[See documentation](/system_manual/intro.html) for breakdown explanation.
 
 ## Launching the app in development
 
@@ -49,100 +51,12 @@ You'd also need to get IBM watson STT keys or have the Gentle Open source app ru
 
 ## Packaging /deploying the app 
 
-From terminal from root of app, run 
+See [documentation on packaging/deploying the app](https://opennewslabs.github.io/autoEdit_2/system_manual/deployment.html)
 
-```bash
-npm run build
-```
-
-This creates a folder called `build` where you can find your packaged app. 
-
-before deployment you may want to change the toolabr visible to false. in `package.json`
-
-```json
-"toolbar": false,
-```
-
-[more info on deploy/packaging of app in nwjs boilerplate project](lhttps://github.com/pietrop/nwjs_boilerplate#deploy)
 
 ---
 
-## Folders structure
 
-```bash
-.
-├── README.md
-├── backEnd_node
-│   ├── autoEdit2API.js
-│   ├── bin
-│   ├── gentle_stt_node
-│   ├── sam_transcriber
-│   ├── spec
-│   ├── sync.js
-│   ├── video_metadata_reader
-│   └── video_to_html5_webm
-├── build
-│   └──  ...
-├── cache
-│   └── ...
-├── config.js
-├── deploy.js
-├── docs
-│   └── ...
-├── frontEnd
-│   ├── date_now
-│   ├── demo_jr.js
-│   ├── edl_composer
-│   ├── index.html
-│   ├── js
-│   ├── public
-│   ├── srt
-│   └── vendor
-├── media
-│   ├── JR_cam_B_transcription.mp4.wav
-│   ├── JR_cam_B_transcription.mp4.webm
-│   ├── ...
-│   └── keep.md
-├── node_modules
-├── nw.icns
-├── package.json
-├── tmp_media
-│   ├── ...
-│   └── keep.md
-├── tree.md
-└── wttskeys.json
-
-```
-
-### `backEnd_node`,
- overwrighting backbone.sync method and using node modules for backend
-for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.
-
-###`frontEnd`, 
-backbone front end . `demo_jr.js` is the code that runs the demo when index is runned in client side mode in the browser.
-
-`js` contains the backbone project.
-
-### `docs` 
-[Project page, on github pages](https://opennewslabs.github.io/autoEdit_2/).
-
-### `deploy.js`
-
-Deployment script. [more info on deploy/packaging of app in nwjs boilerplate project](lhttps://github.com/pietrop/nwjs_boilerplate#deploy)
-
-### `cache` 
-is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time
-
-
-### `tmd_media` 
-is where the wav files are kept, and the deleted, when sending split chunks to watson.
-
-### `media`
- is where video webm previews and audio wav files for transcriptions are kept. 
-
-###`wttskeys.json` 
-at root level is where watson API keys are ketp, this file is in gitignore to avoid accidentally pushing it to github. 
-When you first clone the project, this file shoudl not be there. 
 
 ---
 

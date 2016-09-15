@@ -61,6 +61,13 @@
 	             <li><a href="https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html" class="smothScroll" target="_blank">Demo</a></li>
 	              <li><a href="https://github.com/OpenNewsLabs/autoEdit_2/releases" class="smothScroll" target="_blank">Download Os xapp</a></li>
 	          </ul>
+
+	          <ul class="nav navbar-nav navbar-right">
+	           	<li><a href="/autoEdit_2/system_manual/intro.html">Documentation</a></li>
+	          	<li><a href="mailto:info@autoEdit.io?Subject=autoEdit%202">Contact</a></li>
+
+	         	</ul>
+
 	        </div><!--/.nav-collapse -->
 	      </div>
 	    </div>
@@ -77,13 +84,21 @@
     <li><a href="/autoEdit_2/">Home</a></li>
 
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/installing.html">Installing</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/doc.html">Documentation</a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/usage.html">User Manual </a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/intro.html">Intro to system manual </a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/uninstalling.html">Uninstalling</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/licence.html">Licence</a></li>
         
-            <li data-order=""><a href="/autoEdit_2/user_manual/setup.html">Setup: STT APIs</a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/deployment.html">Deployment</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/configuration.html">Configuration</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/dependencies.html">Dependencies</a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/test-suite.html">Test Suite </a></li>
+        
+            <li data-order=""><a href="/autoEdit_2/system_manual/components.html">Components</a></li>
         
  
 </ul>
@@ -97,15 +112,38 @@
     </h2>
 </div>
 
-<p>Use deployment script, from root of app.</p>
+<p>From terminal from root of app, run the  deployment script</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>node deploy.js
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install 
 </code></pre>
 </div>
 
-<p>As explained in <a href="https://github.com/pietrop/nwjs_boilerplate#deploy">NWJS Boilerplate</a> that has been abstracted form this project</p>
+<p>Then</p>
 
-<!-- use script -->
+<div class="highlighter-rouge"><pre class="highlight"><code>npm run build
+</code></pre>
+</div>
+
+<p>This creates a folder called <code class="highlighter-rouge">build</code> where you can find your packaged app.</p>
+
+<p>before deployment you may want to change the toolabr visible to false. in <code class="highlighter-rouge">package.json</code></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="s2">"toolbar"</span><span class="err">:</span><span class="w"> </span><span class="kc">false</span><span class="err">,</span><span class="w">
+</span></code></pre>
+</div>
+
+<p><a href="https://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a>
+<!-- use script --></p>
+
+<!-- 
+Need to change the deployment script so that it ignores the 
+- build folder 
+- cache 
+- docs folder 
+- Notes
+- wttskeys.json 
+and any video or audio files. 
+ -->
 
 
                     </div>
