@@ -32,7 +32,7 @@ All you need to get started is IBM Watson API Blumix keys and/or a version of Ge
 
 ## Folder structure 
 
-[See documentation](/system_manual/intro.html) for breakdown explanation.
+[See documentation](https://opennewslabs.github.io/autoEdit_2/system_manual/intro.html) for breakdown explanation.
 
 ## Launching the app in development
 
