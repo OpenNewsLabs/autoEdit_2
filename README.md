@@ -31,6 +31,7 @@ See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to d
 All you need to get started is IBM Watson API Blumix keys and/or a version of Gentle Open source STT app running locally on your mac. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) as well as the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html).
 
 ## Folder structure 
+
 [See documentation](/system_manual/intro.html) for breakdown explanation.
 
 ## Launching the app in development
@@ -52,10 +53,6 @@ You'd also need to get IBM watson STT keys or have the Gentle Open source app ru
 ## Packaging /deploying the app 
 
 See [documentation on packaging/deploying the app](https://opennewslabs.github.io/autoEdit_2/system_manual/deployment.html)
-
-
----
-
 
 
 ---
