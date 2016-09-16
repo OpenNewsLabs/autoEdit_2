@@ -1,3 +1,6 @@
 [submodule "autoEdit_2.wiki"]
 	path = autoEdit_2.wiki
 	url = https://github.com/OpenNewsLabs/autoEdit_2.wiki.git
+[submodule "wiki"]
+	path = wiki
+	url = git://github.com/OpenNewsLabs/autoEdit_2.wiki.git
