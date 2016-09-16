@@ -24,7 +24,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nw ",
     "build": "node deploy.js",
-    "testing": "echo hello"
+    "test": "jasmine",
+    "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch"
+
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "ISC",
