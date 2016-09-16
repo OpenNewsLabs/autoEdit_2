@@ -1,4 +1,3 @@
-# implementation notes 
 
 ## Context
 
