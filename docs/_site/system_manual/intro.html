@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width">
 
-        <title>autoEdit 2 : Intro to system manual </title>
+        <title>autoEdit 2 : Folders structure</title>
         <meta name="description" content="Fast text based video editing">
 
         <link rel="stylesheet" href="/autoEdit_2/css/bootstrap.min.css" >
@@ -51,14 +51,14 @@
 	        </div>
 	        <div class="navbar-collapse collapse">
 	          <ul class="nav navbar-nav">
-	            <li class="active"><a href="/autoEdit_2/" class="smothscroll">Home</a></li>
+	            <li ><a href="/autoEdit_2/" class="smothscroll">Home</a></li>
 	            <!-- <li><a href="#desc" class="smothscroll">Description</a></li> -->
 	            <!-- <li><a href="#showcase" class="smothScroll">Showcase</a></li> -->
 	            <!-- <li><a href="#contact" class="smothScroll">Contact</a></li> -->
 	          
 	             <li><a href="/autoEdit_2/user_manual/usage.html" class="smothScroll">Guide</a></li>
 	             <li><a href="https://github.com/OpenNewsLabs/autoEdit_2" class="smothScroll" target="_blank">Github</a></li>
-	             <li><a href="https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html" class="smothScroll" target="_blank">Demo</a></li>
+	             <li><a href="/autoEdit_2/public/demo/frontEnd/index.html" class="smothScroll" target="_blank">Demo</a></li>
 	              <li><a href="https://github.com/OpenNewsLabs/autoEdit_2/releases" class="smothScroll" target="_blank">Download Os xapp</a></li>
 	          </ul>
 
@@ -86,7 +86,7 @@
         
             <li data-order=""><a href="/autoEdit_2/system_manual/doc.html">Documentation</a></li>
         
-            <li data-order=""><a href="/autoEdit_2/system_manual/intro.html">Intro to system manual </a></li>
+            <li data-order=""><a href="/autoEdit_2/system_manual/intro.html">Folders structure</a></li>
         
             <li data-order=""><a href="/autoEdit_2/system_manual/licence.html">Licence</a></li>
         
@@ -107,12 +107,10 @@
 
                     <div id="content" class="col-sm-10">
                         <div class="page-header">
-    <h2>Intro to system manual 
+    <h2>Folders structure
         
     </h2>
 </div>
-
-<h2 id="folders-structure">Folders structure</h2>
 
 <div class="highlighter-rouge"><pre class="highlight"><code>.
 ├── README.md
@@ -153,17 +151,40 @@
 ├── tmp_media
 │   ├── ...
 │   └── keep.md
-├── tree.md
 └── wttskeys.json
 
 </code></pre>
 </div>
 
-<h3 id="backendnode"><code class="highlighter-rouge">backEnd_node</code>,</h3>
-<p>overwrighting backbone.sync method and using node modules for backend
+<h3 id="backendnode"><code class="highlighter-rouge">backEnd_node</code></h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>├── backEnd_node
+│   ├── autoEdit2API.js
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── sam_transcriber
+│   ├── spec
+│   ├── sync.js
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+</code></pre>
+</div>
+
+<p>Overwrighting backbone.sync method and using node modules for backend
 for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
 
 <h3 id="frontend"><code class="highlighter-rouge">frontEnd</code></h3>
+<div class="highlighter-rouge"><pre class="highlight"><code>├── frontEnd
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor
+</code></pre>
+</div>
+
 <p>backbone front end . <code class="highlighter-rouge">demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
 
 <p><code class="highlighter-rouge">js</code> contains the backbone project.</p>
@@ -185,8 +206,9 @@ for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
 <p>is where video webm previews and audio wav files for transcriptions are kept.</p>
 
 <h3 id="wttskeysjson"><code class="highlighter-rouge">wttskeys.json</code></h3>
-<p>at root level is where watson API keys are ketp, this file is in gitignore to avoid accidentally pushing it to github. 
-When you first clone the project, this file shoudl not be there.</p>
+<p>At root level is where watson API keys are ketp, this file is in <code class="highlighter-rouge">.gitignore</code> to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there.</p>
+
+<p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual to see how user ir prompted to add IBM keys on startup</a></p>
 
 
                     </div>

@@ -6,11 +6,13 @@ date: 2016-09-07 17:33:42
 ---
 
 
-Coming soon ...
+Using jasmine for testing. 
 
-Using jasmine
-
+From root of app run 
 
 ```
-jasmine
+npm run test
 ```
+
+
+At the moment testing are incomplete, and mostly on a module bases within individual packages . 

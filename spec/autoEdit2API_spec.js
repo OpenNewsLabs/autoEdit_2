@@ -1,10 +1,10 @@
-
-
+var autoEdit2API = require("../backEnd_node/autoEdit2API.js")
 
 describe("autoEdit2API create", function() {
 
  beforeEach(function() {
  	this.API = new autoEdit2API();
+  this.model = {};
  });
 
  afterEach(function() {
@@ -12,7 +12,10 @@ describe("autoEdit2API create", function() {
  });
 
   it("contains spec with an expectation", function() {
-    expect(true).toBe(false);
+
+
+    expect(this.API.create(this.model)).toBe("path_to_video");
+
   });
 
 
@@ -22,7 +25,7 @@ describe("autoEdit2API create", function() {
 
 xdescribe("autoEdit2API Read", function() {
   xit("contains spec with an expectation", function() {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
   });
 
 
@@ -30,7 +33,7 @@ xdescribe("autoEdit2API Read", function() {
 
 xdescribe("autoEdit2API Update", function() {
   xit("contains spec with an expectation", function() {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
   });
 
 
@@ -39,7 +42,7 @@ xdescribe("autoEdit2API Update", function() {
 
 xdescribe("autoEdit2API Delete", function() {
   xit("contains spec with an expectation", function() {
-    expect(true).toBe(false);
+    expect(true).toBe(true);
   });
 
 
