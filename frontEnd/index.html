@@ -69,7 +69,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
        loadExtScript("vendor/underscore-min.js",function(){
           loadExtScript("vendor/backbone-min.js",function(){
 
- loadExtScript("vendor/backbone.async.js",function(){
+ // loadExtScript("vendor/backbone.async.js",function(){
 
           loadExtScript("../backEnd_node/sync.js",function(){
   
@@ -88,6 +88,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
                                   // demoTranscription()
                                   //by adding and not saving this only works 
                                   app.TranscriptionsList.add(jesselynRadackTranscription);
+                                  app.TranscriptionsList.add(jesselynRadackManualTranscription);
                                  });
 
                                  // jesselynRadackTranscription.save();
@@ -98,7 +99,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
                     }) 
                   }) 
                 }) 
-               }) 
+               // }) 
             })
          })
       })
@@ -755,7 +756,15 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       //
       try{
         console.info("USING NWJS")
+        //requiring env variables  https://github.com/motdotla/dotenv
+        require('dotenv').config()
+
         var gui = require('nw.gui');
+   
+        //adding asbolute relative path to root of app
+        //https://github.com/pietrop/nwjs_boilerplate#local-modules-path
+        require('app-module-path').addPath(".");
+
         // Create menu
         var menu = new gui.Menu({ type: 'menubar' });
         //Default mac menu bar comands + copy, cut, paste
