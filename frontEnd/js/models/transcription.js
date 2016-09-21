@@ -80,6 +80,8 @@ app.Transcription = Backbone.Model.extend({
 //https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name
 },{
 
+   modelType: "transcription",
+
   //TODO: change this to returnSrt coz that's what it is doing
   //and make rturns srtJson in helper function in model 
 
@@ -169,14 +171,14 @@ returnPlainTextTimecoded: function(attr){
       function createPlainTextTimecoded(srtJsonContent, cb){
         var lines = "";
 
-        var head="Transcription: "+attr.title+"\n\n"
-        head += "Description: "+attr.description+"\n\n"
-        head += "File name: " +attr.metadata.fileName +"\n\n"
-        head += "File path: "+attr.metadata.filePathName +"\n\n"
-        head += "Reel: "+attr.metadata.reelName +"\n"
-        head += "Camera Timecode: "+attr.metadata.timecode +"\n"
-        head += "fps: "+attr.metadata.fps +"\n"
-        head += "Duration: "+fromSeconds(attr.metadata.duration)+"\n"
+        var head= "Transcription: "   + attr.title+"\n\n"
+        head +=   "Description: "     + attr.description+"\n\n"
+        head +=   "File name: "       + attr.metadata.fileName +"\n\n"
+        head +=   "File path: "       + attr.metadata.filePathName +"\n\n"
+        head +=   "Reel: "            + attr.metadata.reelName +"\n"
+        head +=   "Camera Timecode: " + attr.metadata.timecode +"\n"
+        head +=   "fps: "             + attr.metadata.fps +"\n"
+        head +=   "Duration: "        + fromSeconds(attr.metadata.duration)+"\n"
         // 
         for(var i=0; i< srtJsonContent.length; i++){
 

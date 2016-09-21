@@ -13,8 +13,6 @@ After you download and install FFmpeg, open your terminal and lets get down to b
 
 Basic FFmpeg commands:
 
-
-
 To convert a video to another format, lets say mpg, you need to type the following:
 
 ```
@@ -52,12 +50,13 @@ Trim your video:
 ffmpeg -i originalFile.mp4 -ss 10 -t 12 newFile.mp4
 ```
 
--ss is the start time and -t specifies the duration. You can use -to instead of t
+`-ss` is the start time and `-t` specifies the duration. You can use `-t` o instead of `t`
 
 to specify the end time instead.
 
 
 Create images from video:
+
 ```
 ffmpeg -i video.mpg -f image2 output%d.jpg
 ```

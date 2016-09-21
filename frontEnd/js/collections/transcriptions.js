@@ -43,6 +43,10 @@ var TranscriptionsList = Backbone.Collection.extend({
     }
 
 
+},{
+  modelType: "transcriptions"
+
+
 });
 
 
