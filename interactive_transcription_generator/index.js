@@ -104,7 +104,7 @@ var generate = function(config) {
 
       if(config.cbTranscription){
         console.info("inside interactive_transcription_generator index created.videoFile: "+ created.videoFile);
-        fs.writeFileSync("/"+created.videoFile+".json",JSON.stringify(created, null,"\t"));
+        // fs.writeFileSync("/"+created.videoFile+".json",JSON.stringify(created, null,"\t"));
 
         config.cbTranscription(created);
       }
