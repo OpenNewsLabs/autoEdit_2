@@ -88,9 +88,11 @@
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             console.log("cbMetadata -after findOne: "+ trs._id);
             trs.metadata = respM;
-            trs.save(function(err) { /* we have updated the Earth doc */ });
+            trs.save(function(err) {
+              /* we have updated the Earth doc */
+              app.trigger('updateTranscription:'+trs._id);
+            });
           });
-
         },
         cbTranscription: function(resp){
           console.log("videoUrl after cbTranscription iTG " +newElement.videoUrl);
@@ -109,9 +111,11 @@
             trs.text = resp.text;
             trs.status = resp.status;
 
-            trs.save(function(err) { /* we have updated the Earth doc */ });
+            trs.save(function(err) {
+              /* we have updated the Earth doc */
+              app.trigger('updateTranscription:'+trs._id);
+            });
           });
-
         },
         cbVideo: function(resp){
           console.log("cbVideo -before: "+ transcription._id);
@@ -123,7 +127,10 @@
             trs.videoOgg = resp.videoOgg;
             trs.processedVideo = resp.processedVideo;
 
-            trs.save(function(err) { /* we have updated the Earth doc */ });
+            trs.save(function(err) {
+              /* we have updated the Earth doc */
+              app.trigger('updateTranscription:'+trs._id);
+            });
           });
 
         }

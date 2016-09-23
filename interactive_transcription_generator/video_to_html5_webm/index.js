@@ -21,29 +21,17 @@ var convert = function(config){
     //setting ffmpeg bin
     ffmpeg.setFfmpegPath(config.ffmpegBin);
   }else{
-    console.warn("ffmpeg binary path not defined, so using system one. if available.")
+    console.warn("ffmpeg binary path not defined, so using system one. if available.");
   }
 
-  var command = ffmpeg(videoSrc)
+  ffmpeg(videoSrc)
     .output(outputName)
     .withVideoCodec('libvpx')
     .addOptions(['-qmin 0', '-qmax 50', '-crf 5'])
     .withVideoBitrate(1024)
     .withAudioCodec('libvorbis')
-    .on('end',
-      function(){
-        if(callback){
-          callback(outputName)
-        }else{
-          //  console.log('Finished processing');
-        }
-      })
-        .run();
-      // return output;
-}
-
-module.exports = {
-  convert : function(config){
-    return convert(config);
-  }//,
+    .on('end', function(){ callback(outputName); })
+    .run();
 };
+
+module.exports = convert;

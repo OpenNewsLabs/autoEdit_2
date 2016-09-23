@@ -1,6 +1,7 @@
-var app = app ||{};
+var app = app || {};
+_.extend(app, Backbone.Events);
 
-var TranscriptionRouter =Backbone.Router.extend({
+var TranscriptionRouter = Backbone.Router.extend({
   routes: {
     "" : "index",
     "transcriptions": "transcriptionsList",

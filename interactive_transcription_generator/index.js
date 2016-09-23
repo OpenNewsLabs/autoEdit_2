@@ -13,7 +13,7 @@ var path = require("path");
 var generate = function(config) {
   //TODO: adda tmp word folder, and dest folder in var?
   var transcribe = require("./sam_transcriber/index.js");
-  var HTML5video = require("./video_to_html5_webm/index.js");
+  var convert_video = require("./video_to_html5_webm/index.js");
   var MetadataReader = require("./video_metadata_reader/index.js");
   // console.log(process.cwd())
 
@@ -139,7 +139,7 @@ var generate = function(config) {
   /////////////////////////////////////////
 
   ////spawn new process 
-  HTML5video.convert({
+  convert_video({
     src: videoFile,
     outputName: oggOutputNamePath,
     ffmpegBin: ffmpegPath,

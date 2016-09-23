@@ -10,7 +10,7 @@ function parseSamJsonToTranscripJson(transcriptionJson){
     // console.log(line)
     // console.log(i)
     for(var k =0; k< oldLine.words.length; k++){
-      var oldWord = oldLine.words[k]
+      var oldWord = oldLine.words[k];
       // console.log("word")
       // console.log(oldWord)
       // console.log(k)
@@ -38,7 +38,7 @@ function parseSamJsonToTranscripJson(transcriptionJson){
 
       wordCounter+=1;//
     }
-    result.push(line)
+    result.push(line);
     line ={"line":[]};
   }
 

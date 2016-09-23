@@ -1,4 +1,4 @@
-  var app = app || {};
+var app = app || {};
 
 //View for collection
 app.TranscriptionsListView = Backbone.View.extend({
@@ -6,16 +6,16 @@ app.TranscriptionsListView = Backbone.View.extend({
   className: "container",
 
   initialize: function(){
-      // this.listenTo(this.model, "change", this.render);
-      // this.listenTo(this.collection, "reset", this.render);
-      // this.listenTo(this.collection, "fetch", this.render);
-      // this.listenTo(this.collection, "add", this.render);
+    // this.listenTo(this.model, "change", this.render);
+    // this.listenTo(this.collection, "reset", this.render);
+    // this.listenTo(this.collection, "fetch", this.render);
+    // this.listenTo(this.collection, "add", this.render);
 
-     // setInterval(function(){ 
-     //    if(app.transcriptionRouter.transcriptionsList.remaining().length >0){
-     //       app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
-     //    } 
-     //  }, 30000);//in milliseconds 
+    // setInterval(function(){ 
+    //    if(app.transcriptionRouter.transcriptionsList.remaining().length >0){
+    //       app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
+    //    } 
+    //  }, 30000);//in milliseconds 
 
 
 
@@ -23,8 +23,8 @@ app.TranscriptionsListView = Backbone.View.extend({
     //   console.log("transcriptions up to date ")
     // }
 
-    
-  
+
+
     // this.collection =  app.transcriptionRouter.transcriptionsList;    // UPDATED
     this.collection.fetch({reset: true});   // NEW
     // this.render();
@@ -36,12 +36,12 @@ app.TranscriptionsListView = Backbone.View.extend({
   render: function(){
     // console.log(this.collection.fetch())
     //if there are  transcriptions it shows
-   //this.collection.length != 0
+    //this.collection.length != 0
     if(!this.collection.isEmpty()){
-        $(this.el).empty();
-        this.collection.each(this.addOne, this);
-        return this;
-    //if there are no transcriptions it shows helpfull message to create a new one
+      $(this.el).empty();
+      this.collection.each(this.addOne, this);
+      return this;
+      //if there are no transcriptions it shows helpfull message to create a new one
     }else{
       // this.$el.append 
       this.$el.html($('#homePage').html());
@@ -55,20 +55,20 @@ app.TranscriptionsListView = Backbone.View.extend({
   }
 });
 
-
-
-
-
-
 //////////////////////////////////////////////////////////
- /////////single view for model for  list/for collection
- app.TranscriptionListElement = Backbone.View.extend({
-   tagName: 'div',
-   className: 'media',
-   //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
+/////////single view for model for  list/for collection
+app.TranscriptionListElement = Backbone.View.extend({
+  tagName: 'div',
+  className: 'media',
+  //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
   //  id: 'transcription-n',
- initialize: function() {
-    // this.listenTo(this.model, "change", this.render);
+  initialize: function() {
+    var self = this;
+    this.listenTo(app, "updateTranscription:"+this.model.get('_id'), function() {
+      self.model.fetch({success: function() {
+        self.render();
+      }});
+    });
   },
 
   events:{
@@ -92,19 +92,19 @@ app.TranscriptionsListView = Backbone.View.extend({
 
     var r = confirm("You sure you want to delete this transcription?");
     if (r == true) {
-        //TODO: find and delete transcription here. also remove from collection.
-        // var tmpTranscription = TBVEapp.transcriptionList.get({"cid":this.model.cid});
-        // tmpTranscription.destroy();
+      //TODO: find and delete transcription here. also remove from collection.
+      // var tmpTranscription = TBVEapp.transcriptionList.get({"cid":this.model.cid});
+      // tmpTranscription.destroy();
 
-        //TODO: not sure if this the right way to re-render page?
-        this.model.destroy()
-        //or use router?navigate?
-        // $('#main').html(this.render().el);
-        alert("Transcription has been deleted")
+      //TODO: not sure if this the right way to re-render page?
+      this.model.destroy()
+      //or use router?navigate?
+      // $('#main').html(this.render().el);
+      alert("Transcription has been deleted")
 
 
     } else {
-        alert("Transcription was not deleted")
+      alert("Transcription was not deleted")
 
     }
   },
@@ -113,12 +113,12 @@ app.TranscriptionsListView = Backbone.View.extend({
     alert("Edit transcription")
   },
 
- template: _.template($('#transcriptionIndex').html()),
+  template: _.template($('#transcriptionIndex').html()),
 
- render: function(){
-   var sectionTemplate = this.template(this.model.attributes);
-   this.$el.html(sectionTemplate);
-   return this;
- }
+  render: function(){
+    var sectionTemplate = this.template(this.model.attributes);
+    this.$el.html(sectionTemplate);
+    return this;
+  }
 });
 //////////////////////////////////////////////////////////
