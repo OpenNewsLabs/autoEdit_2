@@ -66,7 +66,7 @@
 
 
 
-	var InteractiveTranscriptionGenerator = require(process.cwd()+"/backEnd_node/interactive_transcription_generator/index.js");
+	var InteractiveTranscriptionGenerator = require("../interactive_transcription_generator/index.js");
 
 
 	var iTg = new InteractiveTranscriptionGenerator();
