@@ -39,10 +39,12 @@
     "linvodb3": "^3.24.0",
     "lodash": "^4.15.0",
     "npm": "^3.10.6",
+    "nw": "^0.12.3",
     "nw-builder": "^2.2.6",
     "thread": "0.0.2",
     "threads": "^0.7.0",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "watson-developer-cloud": "^2.4.1"
   },
   "devDependencies": {}
 }

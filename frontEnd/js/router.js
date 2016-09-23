@@ -47,15 +47,19 @@ var TranscriptionRouter =Backbone.Router.extend({
 
   transcriptionsList: function(){
     console.log("transcriptions list")
-    console.log(this)
+
+    this.transcriptionsListView = new app.TranscriptionsListView(
+      {collection: this.transcriptionsList});
+
+    var transcriptionsListView = this.transcriptionsListView;
 
     //TODO load from model db with fetch
     //TODO to fix this need to do MyAPI.js and override Backbone.sync() method.
     // this.transcriptionsList = new TranscriptionsList();
     // this.transcriptionsListView = new TranscriptionsListView({collection: this.transcriptionsList});
-     this.transcriptionsList.fetch();
-     this.transcriptionsListView = new app.TranscriptionsListView({collection: this.transcriptionsList});
-     $('#main').html(this.transcriptionsListView.render().el);
+    this.transcriptionsList.fetch({success: function() {
+      $('#main').html(transcriptionsListView.render().el);
+    }});
   },
 
   newTranscription: function(){
