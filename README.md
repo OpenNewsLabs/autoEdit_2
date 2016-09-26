@@ -49,6 +49,8 @@ You'd also need to get IBM watson STT keys or have the Gentle Open source app ru
 
 ## Folders structure
 
+<!-- TODO: needs updating  -->
+
 ```
 .
 ├── README.md
