@@ -1,6 +1,6 @@
 {
   "name": "autoEdit2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Text based video editing app",
   "main": "frontEnd/index.html",
   "chromium-args": "--mixed-context",

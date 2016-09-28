@@ -54,26 +54,11 @@ function loadJQueryExtScript(src, callback) {
 * To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
 */
 loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
-
-      //set jquery for bootstrap  
-
-     // if (typeof require === "function") {
-       // window.jQuery = window.$  = require("jquery");
-    // }else{
-
-       // window.jQuery = window.$  = $;
-    // }
-
      loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
-
        loadExtScript("vendor/underscore-min.js",function(){
           loadExtScript("vendor/backbone-min.js",function(){
-
- // loadExtScript("vendor/backbone.async.js",function(){
-
-          loadExtScript("js/sync.js",function(){
-  
-            //app.js backbone files 
+         loadExtScript("js/sync.js",function(){
+              //app.js backbone files 
            loadExtScript("js/models/transcription.js",function(){
                loadExtScript("js/collections/transcriptions.js",function(){
                  loadExtScript("js/views/transcription_index.js",function(){
@@ -97,7 +82,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
                                  // jesselynRadackTranscription.save();
                               //end Demo
-    }) 
+                              }) 
                           }) 
                         }) 
                     }) 
@@ -467,7 +452,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
   <!-- Metadata info button -->
     <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
-    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Metadata
+    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info
     </a>
   <!-- End metadata info button  -->
 
