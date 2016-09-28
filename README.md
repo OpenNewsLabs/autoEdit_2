@@ -6,7 +6,7 @@
 Fast text based video editing deesktop app for Mac OSX. Built in node NWJS and backbone.
 Making video production faster, easier and more accessible.
 
-![Transcription ](/docs/gif/3_transcription.gif)
+![Transcription ](/docs/img/gif/3_transcription.gif)
 
 Uses [NWJS boilerplate](https://github.com/pietrop/nwjs_boilerplate)  as a starting point.
 
