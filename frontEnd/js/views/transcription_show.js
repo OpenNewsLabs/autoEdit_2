@@ -61,12 +61,12 @@ app.TranscriptionView = Backbone.View.extend({
     "mouseup .transcription": "selectingWords",
     "click #clearHighlights": "clearHighlights",
 
-     "click #editWords": "makeEditable",
-     "click #highlightWords": "makeHilightable",
+    "click #editWords": "makeEditable",
+    "click #highlightWords": "makeHilightable",
 
-     "click #save": "save",
+    "click #save": "save",
 
-     "click #playPreviewChrono": "playPreviewChrono",
+    "click #playPreviewChrono": "playPreviewChrono",
 
     "click #playPreviewSelOrd": "playPreviewSelOrd",
     

@@ -38,9 +38,7 @@ console.log("################# .send_to_watson")
 // https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
 
 /*
-
 languageModel for ib can only be one of these, as string
-
 ar-AR_BroadbandModel
 en-UK_BroadbandModel
 en-UK_NarrowbandModel
@@ -55,9 +53,7 @@ pt-BR_BroadbandModel
 pt-BR_NarrowbandModel
 zh-CN_BroadbandModel
 zh-CN_NarrowbandModel
-
 */
-
 
   speech_to_text = watson.speech_to_text({
     username: keys.username,

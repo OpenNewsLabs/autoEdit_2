@@ -92,7 +92,8 @@ var generate = function(config) {
       var tmpAudioDir = appRootFolderForMedia;
       var tmpAudioName = path.parse(audioFileAbsolutePath).base;
       //".." because root is index which is inside `frontEnd` and 
-      created.audioFile =  ".."+config.destFolder+"/"+tmpAudioName;
+      created.audioFile =  audioFileName;
+      // created.audioFile =  ".."+config.destFolder+"/"+tmpAudioName;
       // console.log("created.audioFile")
       // console.log(created.audioFile)
 

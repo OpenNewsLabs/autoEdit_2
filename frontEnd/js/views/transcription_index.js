@@ -11,11 +11,12 @@ app.TranscriptionsListView = Backbone.View.extend({
     // this.listenTo(this.collection, "fetch", this.render);
     // this.listenTo(this.collection, "add", this.render);
 
-    // setInterval(function(){ 
-    //    if(app.transcriptionRouter.transcriptionsList.remaining().length >0){
-    //       app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
-    //    } 
-    //  }, 30000);//in milliseconds 
+    //Temporary way to auto update on transcription status change 
+    setInterval(function(){ 
+       if(app.transcriptionRouter.transcriptionsList.remaining().length >0){
+          app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
+       } 
+     }, 30000);//in milliseconds 
 
 
 
@@ -63,12 +64,12 @@ app.TranscriptionListElement = Backbone.View.extend({
   //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
   //  id: 'transcription-n',
   initialize: function() {
-    var self = this;
-    this.listenTo(app, "updateTranscription:"+this.model.get('_id'), function() {
-      self.model.fetch({success: function() {
-        self.render();
-      }});
-    });
+    // var self = this;
+    // this.listenTo(app, "updateTranscription:"+this.model.get('_id'), function() {
+    //   self.model.fetch({success: function() {
+    //     self.render();
+    //   }});
+    // });
   },
 
   events:{
@@ -97,10 +98,13 @@ app.TranscriptionListElement = Backbone.View.extend({
       // tmpTranscription.destroy();
 
       //TODO: not sure if this the right way to re-render page?
-      this.model.destroy()
+      this.model.destroy({success: function(model, response) {
+        app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
+      }})
+
       //or use router?navigate?
       // $('#main').html(this.render().el);
-      alert("Transcription has been deleted")
+      // alert("Transcription has been deleted")
 
 
     } else {

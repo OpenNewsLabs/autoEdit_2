@@ -1,4 +1,5 @@
 if (window.frontEndEnviromentNWJS) {
+  var fs = require("fs")
   var transcription_generate = require("../interactive_transcription_generator/index.js");
   
   var path = require('path');
@@ -50,7 +51,7 @@ if (window.frontEndEnviromentNWJS) {
             trs.metadata = respM;
             trs.save(function(err) {
               /* we have updated the Earth doc */
-              app.trigger('updateTranscription:'+trs._id);
+              // app.trigger('updateTranscription:'+trs._id);
             });
           });
         },
@@ -69,7 +70,7 @@ if (window.frontEndEnviromentNWJS) {
             trs.text = resp.text;
             trs.status = resp.status;
             trs.save(function(err) {
-              app.trigger('updateTranscription:'+trs._id);
+              // app.trigger('updateTranscription:'+trs._id);
             });
           });
         },
@@ -80,7 +81,7 @@ if (window.frontEndEnviromentNWJS) {
             trs.videoOgg = resp.videoOgg;
             trs.processedVideo = resp.processedVideo;
             trs.save(function(err) {
-              app.trigger('updateTranscription:'+trs._id);
+              // app.trigger('updateTranscription:'+trs._id);
             });
           });
 
@@ -177,6 +178,13 @@ if (window.frontEndEnviromentNWJS) {
     if(model.constructor.modelType == "transcription"){
       Transcription.findOne(model._id, function(err, transcription) {
         transcription.remove(function() {
+          //removing media ssociated with transcription.
+          if(model.attributes.processedVideo){
+            fs.unlinkSync( model.attributes.videoOgg);     
+          }
+          // if(model.attributes.processedAudio){
+            fs.unlinkSync( model.attributes.audioFile); 
+          // }
           success(model);
         });//remove 
       });//find
