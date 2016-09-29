@@ -83,7 +83,9 @@ app.Transcription = Backbone.Model.extend({
   //TODO: change this to returnSrt coz that's what it is doing
   //and make rturns srtJson in helper function in model 
 
- function loopThroughStuff(text, cb){
+  returnSrtContent: function(text){
+
+      function loopThroughStuff(text, cb){
         // var text = app.TranscriptionsList.get(8).get("text");
 
         var newLinesAr = []
@@ -91,67 +93,24 @@ app.Transcription = Backbone.Model.extend({
         var counter = 1
         
         _.each(text, function(paragraphs){
-
            _.each(paragraphs.paragraph, function(paragraph){
-            //keep it to even number so that it can be split across two lines
-            var numberOfWords = 16;
-            //numberOfWords is over two lines, so to check if need to split we check if the words in one line are
-            //above the number of words for one line.
-            if(paragraph.line.length > (numberOfWords)){
-              // console.log(JSON.stringify(paragraph))
-              // console.log(JSON.stringify(paragraph.line.length))
-              // console.log("---")
-              var regroupLines = split(paragraph.line, numberOfWords)
-              // console.log(regroupLines)
-              //make srt lines 
-              _.each(regroupLines, function(l){
-                console.log(JSON.stringify(l))
-                console.log("---")
-                 newLine.id = counter;
-                 counter+=1;
-                 newLine.startTime = fromSecondsForSrt(l[0].startTime);
-                 newLine.endTime = fromSecondsForSrt(l[l.length-1].endTime);
-                 newLine.text = "";
-                _.each(l, function(w){
-                  // console.log("---");
-                  // console.log(JSON.stringify(w));
-                  newLine.text += w.text.replace(/%HESITATION /g, "") +" ";
-                  // newLine.text = newLine.text.replace(/%HESITATION /g, "");  
-                })//words
-                  //split text line into two lines 
-                  var wordsInOneLine = numberOfWords/2;
-                  var lineWordsAr = newLine.text.split(" ")
-                  var firstLine =  lineWordsAr.slice(0,wordsInOneLine)
-                  var secondLine = lineWordsAr.slice(wordsInOneLine, numberOfWords)
-                  //replacing text with two lines 
-                  newLine.text = firstLine.join(" ") + "\n"+secondLine.join(" ");
-                  newLine.text = newLine.text.replace(/%HESITATION /g, "");  
-                  // end split text line into two lines
-                  newLinesAr.push(newLine)
-                  newLine={}
-              })//lines in regrouped lines
+            newLine.id = counter;
+            counter+=1
 
-            }else{
-              newLine.id = counter;
-              counter+=1
-              newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
-              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length -1].endTime)
-              newLine.text = ""
-              _.each(paragraph.line, function(word){
-                // console.log(word)
-                newLine.text += word.text.replace(/%HESITATION /g, "") +" "
-              })//line
-
-              newLinesAr.push(newLine)
-              newLine={}
-            }
-           
-            
+            newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
+            newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length -1].endTime)
+            newLine.text = ""
+            _.each(paragraph.line, function(word){
+              // console.log(word)
+              newLine.text += word.text +" "
+            })//line
+            newLinesAr.push(newLine)
+            newLine={}
           })//paragraph
         })//paragraphs
 
         cb(newLinesAr)
-    }
+      }
 
       //in order to sue this 
       //TODO: this needs to be moved/used from the srt lib
