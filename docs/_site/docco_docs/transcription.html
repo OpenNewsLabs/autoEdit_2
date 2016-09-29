@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>transcription.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>transcription.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+ <span class="hljs-keyword">var</span> app = app || {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="http://backbonejs.org/#Model">http://backbonejs.org/#Model</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>app.Transcription = Backbone.Model.extend({
+  <span class="hljs-attr">idAttribute</span>: <span class="hljs-string">'_id'</span>,
+  <span class="hljs-attr">urlRoot</span>: config.serverUrl+<span class="hljs-string">"/transcription"</span>,
+  <span class="hljs-attr">defaults</span>: {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>title: “Default Title “,
+description: “Default Description”,
+original file path
+videoUrl: “/“,
+url:”/“,
+sttEngine: “ibm”,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    languageModel: <span class="hljs-string">"en-US_BroadbandModel"</span>, <span class="hljs-comment">//default is american US broadband model</span>
+    counterForPaperCuts: <span class="hljs-number">0</span>,
+    <span class="hljs-attr">audioFile</span>: <span class="hljs-literal">undefined</span>,
+    <span class="hljs-attr">processedAudio</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">processedVideo</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">status</span>: <span class="hljs-literal">false</span>,
+    <span class="hljs-attr">highlights</span>: [],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>orderedPaperCuts:[],</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    videoOgg:<span class="hljs-literal">undefined</span>,
+    <span class="hljs-attr">metadata</span>:<span class="hljs-literal">undefined</span>,
+    <span class="hljs-attr">text</span>: <span class="hljs-literal">undefined</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>status is marked as false by default and turned to true when transcription has been processed
+get date from metadata of video</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>validate
+<a href="http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html">http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html</a>
+or
+<a href="https://github.com/thedersen/backbone.validation">https://github.com/thedersen/backbone.validation</a>
+example <a href="https://jsfiddle.net/thedersen/udXL5/">https://jsfiddle.net/thedersen/udXL5/</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  validate: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attributes</span>)</span>{
+    <span class="hljs-keyword">if</span>(!attributes.title){
+      <span class="hljs-keyword">return</span> <span class="hljs-string">"Remember to set a title for your section."</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>}else if(!attributes.videoUrl){
+  return “Remember to pick a video file”;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>initializer</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  initialize: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>catch error if invalid initialization.
+console.log(‘This model has been initialized.’);
+this.id = this._id;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">"invalid"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, error</span>)</span>{
+      <span class="hljs-built_in">console</span>.info(error);
+    });
+    
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>console.info(‘- Values for this model have changed.’);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    });
+
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change:text'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'text value for this model has changed.'</span>);
+    });
+
+     <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+     
+    });
+
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>app.TranscriptionsList.get(1).constructor.returnSrtJson()
+<a href="https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name">https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>},{
+
+   <span class="hljs-attr">modelType</span>: <span class="hljs-string">"transcription"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>TODO: change this to returnSrt coz that’s what it is doing
+and make rturns srtJson in helper function in model </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+ returnSrtContent: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>helper function to split array in equal parts
+from <a href="http://stackoverflow.com/questions/8188548/splitting-a-js-array-into-n-arrays">http://stackoverflow.com/questions/8188548/splitting-a-js-array-into-n-arrays</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">split</span>(<span class="hljs-params">arr, n</span>) </span>{
+    <span class="hljs-keyword">var</span> res = [];
+    <span class="hljs-keyword">while</span> (arr.length) {
+      res.push(arr.splice(<span class="hljs-number">0</span>, n));
+    }
+    <span class="hljs-keyword">return</span> res;
+  }
+
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>var text = app.TranscriptionsList.get(8).get(“text”);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> newLinesAr = []
+    <span class="hljs-keyword">var</span> newLine ={}
+    <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
+    _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>)</span>{
+      _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>)</span>{ 
+        <span class="hljs-keyword">if</span>(paragraph.line.length &gt; <span class="hljs-number">8</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>console.log(JSON.stringify(paragraph))
+console.log(JSON.stringify(paragraph.line.length))
+console.log(“—“)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> regroupLines = split(paragraph.line, <span class="hljs-number">8</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>console.log(regroupLines)
+make srt lines </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          _.each(regroupLines, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">l</span>)</span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(l))
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"---"</span>)
+             newLine.id = counter;
+             counter+=<span class="hljs-number">1</span>;
+             newLine.startTime = fromSecondsForSrt(l[<span class="hljs-number">0</span>].startTime);
+             newLine.endTime = fromSecondsForSrt(l[l.length<span class="hljs-number">-1</span>].endTime);
+             newLine.text = <span class="hljs-string">""</span>;
+            _.each(l, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">w</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>console.log(“—“);
+console.log(JSON.stringify(w));</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              newLine.text += w.text +<span class="hljs-string">" "</span>;
+            })<span class="hljs-comment">//words</span>
+              newLinesAr.push(newLine)
+              newLine={}
+          })<span class="hljs-comment">//lines in regrouped lines</span>
+        }<span class="hljs-keyword">else</span>{
+          newLine.id = counter;
+          counter+=<span class="hljs-number">1</span>
+          newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
+          newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length <span class="hljs-number">-1</span>].endTime)
+          newLine.text = <span class="hljs-string">""</span>
+          _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>console.log(word)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            newLine.text += word.text +<span class="hljs-string">" "</span>
+          })<span class="hljs-comment">//line</span>
+          newLinesAr.push(newLine)
+          newLine={}
+        }           
+      })<span class="hljs-comment">//paragraph</span>
+    })<span class="hljs-comment">//paragraphs</span>
+    cb(newLinesAr)
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>in order to sue this 
+TODO: this needs to be moved/used from the srt lib</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
+    <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
+      srtLineO = srtJsonContent[i];
+      lines+=srtLineO.id+<span class="hljs-string">"\n"</span>;
+      lines+=srtLineO.startTime+<span class="hljs-string">" --&gt; "</span>+srtLineO.endTime+<span class="hljs-string">"\n"</span>;
+      lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
+    }
+    <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> lines};
+  }
+
+  loopThroughStuff(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
+    result = createSrtContent(res)
+  })  
+
+  <span class="hljs-keyword">return</span> result;
+ },
+
+
+<span class="hljs-attr">returnPlainTextTimecoded</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attr</span>)</span>{
+  <span class="hljs-built_in">console</span>.log(attr)
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>)</span>{
+
+        <span class="hljs-keyword">var</span> newLinesAr = []
+        <span class="hljs-keyword">var</span> newLine ={}
+        <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
+        
+        _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>)</span>{
+           _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>)</span>{
+            newLine.id = counter;
+            counter+=<span class="hljs-number">1</span>
+
+            newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
+            newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length <span class="hljs-number">-1</span>].endTime)
+            newLine.speaker = paragraphs.speaker;
+            newLine.text = <span class="hljs-string">""</span>
+            _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>console.log(word)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>              newLine.text += word.text +<span class="hljs-string">" "</span>
+            })<span class="hljs-comment">//line</span>
+            newLinesAr.push(newLine)
+            newLine={}
+          })<span class="hljs-comment">//paragraph</span>
+        })<span class="hljs-comment">//paragraphs</span>
+
+        cb(newLinesAr)
+      }
+
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPlainTextTimecoded</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
+        <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+
+        <span class="hljs-keyword">var</span> head= <span class="hljs-string">"Transcription: "</span>   + attr.title+<span class="hljs-string">"\n\n"</span>
+        head +=   <span class="hljs-string">"Description: "</span>     + attr.description+<span class="hljs-string">"\n\n"</span>
+        head +=   <span class="hljs-string">"File name: "</span>       + attr.metadata.fileName +<span class="hljs-string">"\n\n"</span>
+        head +=   <span class="hljs-string">"File path: "</span>       + attr.metadata.filePathName +<span class="hljs-string">"\n\n"</span>
+        head +=   <span class="hljs-string">"Reel: "</span>            + attr.metadata.reelName +<span class="hljs-string">"\n"</span>
+        head +=   <span class="hljs-string">"Camera Timecode: "</span> + attr.metadata.timecode +<span class="hljs-string">"\n"</span>
+        head +=   <span class="hljs-string">"fps: "</span>             + attr.metadata.fps +<span class="hljs-string">"\n"</span>
+        head +=   <span class="hljs-string">"Duration: "</span>        + fromSeconds(attr.metadata.duration)+<span class="hljs-string">"\n"</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
+
+          srtLineO = srtJsonContent[i];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>lines+=srtLineO.id+”\n”;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          lines+=<span class="hljs-string">"["</span>+srtLineO.startTime+<span class="hljs-string">"\t"</span>+srtLineO.endTime+<span class="hljs-string">"\t"</span>+srtLineO.speaker +<span class="hljs-string">"]"</span>+<span class="hljs-string">"\n"</span>;
+          lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
+        
+        }
+
+        <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> head+<span class="hljs-string">"\n\n"</span>+lines};
+      }
+
+      loopThroughStuff(attr.text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
+         result = createPlainTextTimecoded(res)
+      })
+          
+
+    <span class="hljs-keyword">return</span> result;
+
+},
+
+
+  <span class="hljs-attr">returnEDLSrtJson</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>TODO: refactor, this is duplicate move to helper in module?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
+        <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
+          srtLineO = srtJsonContent[i];
+          lines+=srtLineO.id+<span class="hljs-string">"\n"</span>;
+          lines+=srtLineO.startTime+<span class="hljs-string">" --&gt; "</span>+srtLineO.endTime+<span class="hljs-string">"\n"</span>;
+          lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
+        }
+
+        <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> lines};
+      }
+
+     result =   createSrtContent(text)
+
+      <span class="hljs-keyword">return</span> result;
+
+  }
+
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

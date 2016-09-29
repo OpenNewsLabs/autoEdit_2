@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>send_to_watson.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>send_to_watson.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>SESSION + JSON</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
+* Transcription is then saved as a file. and path of that file is returned.
+https://www.ibm.com/watson/developercloud/speech-to-text/
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="https://github.com/watson-developer-cloud/node-sdk#speech-to-text">https://github.com/watson-developer-cloud/node-sdk#speech-to-text</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> watson = <span class="hljs-built_in">require</span>(<span class="hljs-string">'watson-developer-cloud'</span>);
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p> Initialise var so that scope allows to set api keys
+and use it inside <code>watsonTranscibe()</code> function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> speech_to_text;
+
+<span class="hljs-comment">/**
+* takes in json of api keys
+* `var keys = {username: "",password: ""}``
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>function setAPIkeys(keys){
+  speech_to_text = watson.speech_to_text({
+    username: keys.username,
+    password: keys.password,
+    version: ‘v1’
+  });
+}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-comment">/**
+* takes in autio file path
+* returns callback with file path to text file containing transcriptions.
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>TODO: pass param of language </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> SendToWatson = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{}
+
+SendToWatson.prototype.send = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">audioFile,keys, languageModel, cb</span>)</span>{
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"################# .send_to_watson"</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>dictionary that matches language with IBM language  models
+<a href="https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models">https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-comment">/*
+languageModel for ib can only be one of these, as string
+ar-AR_BroadbandModel
+en-UK_BroadbandModel
+en-UK_NarrowbandModel
+en-US_BroadbandModel
+en-US_NarrowbandModel
+es-ES_BroadbandModel
+es-ES_NarrowbandModel
+fr-FR_BroadbandModel
+ja-JP_BroadbandModel
+ja-JP_NarrowbandModel
+pt-BR_BroadbandModel
+pt-BR_NarrowbandModel
+zh-CN_BroadbandModel
+zh-CN_NarrowbandModel
+*/</span>
+
+  speech_to_text = watson.speech_to_text({
+    <span class="hljs-attr">username</span>: keys.username,
+    <span class="hljs-attr">password</span>: keys.password,
+    <span class="hljs-attr">version</span>: <span class="hljs-string">'v1'</span>
+  });
+
+  <span class="hljs-keyword">var</span> params = {
+    <span class="hljs-attr">audio</span>: fs.createReadStream(audioFile),
+    <span class="hljs-attr">content_type</span>: <span class="hljs-string">'audio/wav'</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>ndicates whether time alignment is returned for each word. The default is false.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    timestamps: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>Indicates whether multiple final results that represent consecutive phrases separated by long pauses are returned. If true, such phrases are returned; if false (the default), recognition ends after the first “end of speech” incident is detected.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    continuous: <span class="hljs-literal">true</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>The time in seconds after which, if only silence (no speech) is detected in submit  ted audio, the connection is closed with a 400 response code. The default is 30 seconds. Useful for stopping audio submission from a live microphone when a user simply walks away. Use -1 for infinity.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    inactivity_timeout: <span class="hljs-number">-1</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Indicates whether a confidence measure in the range of 0 to 1 is returned for each word. The default is false.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    word_confidence: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">word_alternatives</span>: <span class="hljs-number">0.9</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>model_id: ‘en-US_BroadbandModel’</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    model: languageModel
+  };
+
+  speech_to_text.recognize(params, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, transcript</span>) </span>{
+    <span class="hljs-keyword">if</span> (err)
+    <span class="hljs-built_in">console</span>.log(err);
+    <span class="hljs-keyword">else</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>console.log(JSON.stringify(transcript, null, 2));</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(cb){cb(transcript)}<span class="hljs-keyword">else</span>{ <span class="hljs-keyword">return</span> transcript}
+  });
+}<span class="hljs-comment">//transcribe</span>
+
+<span class="hljs-comment">/**
+* Helper function to extracts file name from file path string
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getFileName</span>(<span class="hljs-params">fileNameWithPath</span>)</span>{
+  <span class="hljs-keyword">return</span> fileNameWithPath.split(<span class="hljs-string">"/"</span>).pop()
+}
+
+
+<span class="hljs-built_in">module</span>.exports = SendToWatson;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>module.exports.setKeys = setAPIkeys;</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

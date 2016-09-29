@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>autoEdit2API.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>autoEdit2API.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS) {
+  <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>)
+  <span class="hljs-keyword">var</span> transcription_generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../interactive_transcription_generator/index.js"</span>);
+  
+  <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+  <span class="hljs-keyword">var</span> LinvoDB = <span class="hljs-built_in">require</span>(<span class="hljs-string">"linvodb3"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO:change db with medea</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  LinvoDB.defaults.store = { <span class="hljs-attr">db</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">"level-js"</span>) };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>TODO: db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
+LinvoDB.dbPath = process.cwd()+”/db”; </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> transcriptionModel = <span class="hljs-string">"transcription"</span>;
+  <span class="hljs-keyword">var</span> schema = { }; <span class="hljs-comment">// Non-strict always, can be left empty</span>
+  <span class="hljs-keyword">var</span> options = { };
+  <span class="hljs-keyword">var</span> Transcription = <span class="hljs-keyword">new</span> LinvoDB(transcriptionModel, schema, options);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>LinvoDB.dbPath = process.cwd() </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-keyword">var</span> autoEdit2API = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">method, model, options</span>)</span>{
+    autoEdit2API[method](model, options.success, options.error)
+  }
+
+  <span class="hljs-comment">/**
+  * Create 
+  */</span>
+  autoEdit2API.create = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+      
+      <span class="hljs-keyword">var</span> newElement = model.toJSON();
+      <span class="hljs-keyword">var</span> transcription = <span class="hljs-keyword">new</span> Transcription(newElement);
+
+      transcription.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+        model.set(transcription);
+        success(model);
+      });<span class="hljs-comment">//first transcription save</span>
+
+      transcription_generate({
+        <span class="hljs-attr">id</span>: transcription._id,
+        <span class="hljs-attr">videoUrl</span>: newElement.videoUrl,
+        <span class="hljs-attr">title</span>: newElement.title,
+        <span class="hljs-attr">description</span>: newElement.description,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>TODO: this is hardcoded, and this variable is not used, fix me!</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        tmpWorkFolder:<span class="hljs-string">"/"</span>,
+        <span class="hljs-attr">destFolder</span>:<span class="hljs-string">"/media"</span>,
+        <span class="hljs-attr">keys</span>: global.keys,
+        <span class="hljs-attr">languageModel</span>: newElement.languageModel,
+        <span class="hljs-attr">sttEngine</span>: newElement.sttEngine,
+        <span class="hljs-attr">cbMetadata</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">respM</span>)</span>{
+          meta = respM;
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbMetadata -before: "</span>+ transcription._id);
+          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbMetadata -after findOne: "</span>+ trs._id);
+            trs.metadata = respM;
+            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+              <span class="hljs-comment">/* we have updated the Earth doc */</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+        },
+        <span class="hljs-attr">cbTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"videoUrl after cbTranscription iTG "</span> +newElement.videoUrl);
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"videoUrl after cbTranscription iTG "</span> +resp.videoFile);
+
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp from cbTranscription"</span>);
+          <span class="hljs-built_in">console</span>.log(resp);
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbTranscription -before: "</span>+ transcription._id);
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp id: "</span>+ resp.id);
+          Transcription.findOne({ <span class="hljs-attr">_id</span>: resp.id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbTranscription -after findOne: "</span>+ trs._id);
+            trs.audioFile = resp.audioFile;
+            trs.processedAudio = resp.processedAudio;
+            trs.text = resp.text;
+            trs.status = resp.status;
+            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+        },
+        <span class="hljs-attr">cbVideo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{
+          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbVideo -before: "</span>+ transcription._id);
+          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbVideo -after findOne: "</span>+ trs._id);
+            trs.videoOgg = resp.videoOgg;
+            trs.processedVideo = resp.processedVideo;
+            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+
+        }<span class="hljs-comment">//video cb</span>
+      });<span class="hljs-comment">//transcription_generate</span>
+    }<span class="hljs-comment">//if transcription model </span>
+  }<span class="hljs-comment">//create</span>
+
+  <span class="hljs-comment">/**
+  * Read - Find all  and fine One
+  fine one not currently in use  
+  */</span>
+  autoEdit2API.read = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>If a colleciton</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (model.models) {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"a collection"</span>)
+      <span class="hljs-built_in">console</span>.log(model.constructor.modelType)
+      <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcriptions"</span>){
+        Transcription.find({}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcriptions</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>console.log(transcriptions)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          success(transcriptions);
+        });
+      }<span class="hljs-comment">//if transcription collection</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>if a model </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }<span class="hljs-keyword">else</span> {
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"a model"</span>)
+      <span class="hljs-built_in">console</span>.log(model.constructor.modelType)
+      <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+        Transcription.findOne({ <span class="hljs-attr">_id</span>: model._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcription</span>) </span>{     
+            success(transcription)
+        });
+      }<span class="hljs-comment">//if transcription model </span>
+    }<span class="hljs-comment">//if else </span>
+  }<span class="hljs-comment">//read</span>
+
+  <span class="hljs-comment">/**
+  * Update 
+  */</span>
+  autoEdit2API.update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+      Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>TODO: there’s got to be a better way to do this</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        doc.text                = model.attributes.text;
+        doc.languageModel       = model.attributes.languageModel;
+        doc.counterForPaperCuts = model.attributes.counterForPaperCuts;
+        doc.processedAudio      = model.attributes.processedAudio;
+        doc.processedVideo      = model.attributes.processedVideo;
+        doc.status              = model.attributes.status;
+        doc.highlights          = model.attributes.highlights;
+        doc.title               = model.attributes.title;
+        doc.videoUrl            = model.attributes.videoUrl;
+        doc.sttEngine           = model.attributes.sttEngine;
+        doc.audioFile           = model.attributes.audioFile;
+        doc.metadata            = model.attributes.metadata;
+
+        doc.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+          success(model);
+        });
+      });<span class="hljs-comment">//Transcription "update"</span>
+    }<span class="hljs-comment">//if transcription </span>
+  }<span class="hljs-comment">//update</span>
+
+  <span class="hljs-comment">/**
+  * Update/patch 
+  */</span>
+  autoEdit2API.patch = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+       Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>TODO: there’s got to be a better way to do this</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        doc.text                = model.attributes.text;
+        doc.languageModel       = model.attributes.languageModel;
+        doc.counterForPaperCuts = model.attributes.counterForPaperCuts;
+        doc.processedAudio      = model.attributes.processedAudio;
+        doc.processedVideo      = model.attributes.processedVideo;
+        doc.status              = model.attributes.status;
+        doc.highlights          = model.attributes.highlights;
+        doc.title               = model.attributes.title;
+        doc.videoUrl            = model.attributes.videoUrl;
+        doc.sttEngine           = model.attributes.sttEngine;
+        doc.audioFile           = model.attributes.audioFile;
+        doc.metadata            = model.attributes.metadata;
+
+        doc.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
+          success(model);
+        });<span class="hljs-comment">//save</span>
+      });<span class="hljs-comment">//transcription "patch"</span>
+    }<span class="hljs-comment">//if</span>
+  }
+
+  <span class="hljs-comment">/**
+  * Destroy  
+  */</span>
+  autoEdit2API.delete = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+      Transcription.findOne(model._id, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, transcription</span>) </span>{
+        transcription.remove(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>removing media ssociated with transcription.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(model.attributes.processedVideo){
+            fs.unlinkSync( model.attributes.videoOgg);     
+          }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>if(model.attributes.processedAudio){</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            fs.unlinkSync( model.attributes.audioFile);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>}</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          success(model);
+        });<span class="hljs-comment">//remove </span>
+      });<span class="hljs-comment">//find</span>
+    }<span class="hljs-comment">//if transcription</span>
+  }
+
+  <span class="hljs-built_in">module</span>.exports = autoEdit2API;
+}<span class="hljs-comment">//if in NWJS enviroment </span></pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

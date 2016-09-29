@@ -63,7 +63,7 @@
 	          </ul>
 
 	          <ul class="nav navbar-nav navbar-right">
-	           	<li><a href="/autoEdit_2/system_manual/intro.html">Documentation</a></li>
+	           	<li><a href="/autoEdit_2/system_manual/doc.html">Documentation</a></li>
 	          	<li><a href="mailto:info@autoEdit.io?Subject=autoEdit%202">Contact</a></li>
 
 	         	</ul>
@@ -112,7 +112,69 @@
     </h2>
 </div>
 
-<p>coming soon..</p>
+<ol>
+  <li>
+    <p><a href="/autoEdit_2/docco_docs/autoEdit2API.html" target="_blank">Docco style code documentation</a></p>
+  </li>
+  <li>
+    <p><a href="/autoEdit_2/jsdoc_docs/index.html" target="_blank">JSdoc style code documentation</a></p>
+  </li>
+</ol>
+
+<h3 id="updating-documentation-with-docco">Updating documentation with Docco</h3>
+
+<p>Using <a href="http://jashkenas.github.io/docco/">docco</a> for documentation inspired by <a href="http://samwize.com/2014/01/31/the-best-documentation-generator-for-node/">this</a> blog post.
+In conjunction with json doc.</p>
+
+<p>install docco globally</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install docco -g
+</code></pre>
+</div>
+
+<p>to re-generate documentation run from root of app</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm run document_docco
+</code></pre>
+</div>
+
+<p>this puts documentation in <code class="highlighter-rouge">/docs/docco_docs</code> folder.</p>
+
+<h4 id="docco-config">Docco config</h4>
+
+<p>The setup for this is done in <code class="highlighter-rouge">package.json</code> scripts where the folders/files to consider for documentations and destination folder(<code class="highlighter-rouge">-o</code>) are specified.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="s2">"document_docco"</span><span class="err">:</span><span class="w"> </span><span class="s2">"docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js"</span><span class="err">,</span><span class="w">
+</span></code></pre>
+</div>
+
+<h3 id="updating-documentation-with-jsdoc">Updating documentation with JSDoc</h3>
+
+<p>install jsdoc locally</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install jsdoc -save
+</code></pre>
+</div>
+
+<p>Edit config file as explain in <a href="http://samwize.com/2014/01/31/the-best-documentation-generator-for-node/" target="_blank">blog post</a></p>
+
+<blockquote>
+  <p>This is because you need to edit the config file in the module at .<code class="highlighter-rouge">/node_modules/jsdoc/config.json</code>. And this part of the information is at <a href="http://usejsdoc.org/about-configuring-jsdoc.html">usejsdoc.org</a>.</p>
+</blockquote>
+
+<p>to re-generate documentation run from root of app</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm run document_jsdoc
+</code></pre>
+</div>
+
+<h4 id="jsdoc-config">Jsdoc config</h4>
+
+<p>This executes the script in <code class="highlighter-rouge">package.json</code>, and places the documentation inside of <code class="highlighter-rouge">/docs/jsdoc_docs</code>.</p>
+
+<p><code class="highlighter-rouge">json
+ "document_jsdoc": "./node_modules/.bin/jsdoc *.js  --destination ./docs/jsdoc_docs  ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js"
+</code></p>
 
 
                     </div>

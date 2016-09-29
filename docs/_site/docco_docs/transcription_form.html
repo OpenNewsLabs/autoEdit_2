@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>transcription_form.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>transcription_form.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <p>or could use <a href="https://github.com/powmedia/backbone-forms">https://github.com/powmedia/backbone-forms</a>  ?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> app = app || {};
+
+app.TranscriptionFormView = Backbone.View.extend({
+  <span class="hljs-attr">template</span>: _.template($(<span class="hljs-string">'#transcriptionFormTemplate'</span>).html()), 
+  <span class="hljs-attr">events</span> :{
+  	<span class="hljs-string">'click #submitBtn'</span>: <span class="hljs-string">'save'</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>submit : ‘save’</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  },
+
+  <span class="hljs-attr">save</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+  	e.preventDefault();
+  	<span class="hljs-keyword">var</span> newTitle = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=title]'</span>).val();
+    <span class="hljs-keyword">var</span> newDescription = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'textarea[name=description]'</span>).val();;
+    <span class="hljs-keyword">var</span> newFilePath = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=file]'</span>).val();
+    <span class="hljs-keyword">var</span> newLanguage = $(<span class="hljs-string">'#languageModel'</span>).find(<span class="hljs-string">":selected"</span>)[<span class="hljs-number">0</span>].value;
+
+    <span class="hljs-keyword">var</span> sttEngine; 
+    <span class="hljs-keyword">if</span>($(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked){
+      sttEngine= <span class="hljs-string">"ibm"</span>;
+    }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>($(<span class="hljs-string">'#genelteOption'</span>)[<span class="hljs-number">0</span>].checked){
+       sttEngine= <span class="hljs-string">"gentle"</span>;
+    }
+    
+    <span class="hljs-keyword">var</span> newSTTLanguage = $(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked
+
+  	<span class="hljs-keyword">this</span>.model.save({<span class="hljs-attr">title</span>: newTitle, <span class="hljs-attr">description</span>: newDescription,<span class="hljs-attr">videoUrl</span>:newFilePath, <span class="hljs-attr">languageModel</span>: newLanguage, <span class="hljs-attr">sttEngine</span>: sttEngine},{
+      <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mode, response, option</span>)</span>{
+            
+           Backbone.history.navigate(<span class="hljs-string">"transcriptions"</span>, {<span class="hljs-attr">trigger</span>:<span class="hljs-literal">true</span>}); 
+      },
+      <span class="hljs-attr">error</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, xhr,options</span>)</span>{
+        <span class="hljs-keyword">var</span> errors = <span class="hljs-built_in">JSON</span>.parse(xhr.responseText).errors;
+        alert(<span class="hljs-string">"ops, something when wrong with saving the transcription:"</span> + errors)
+      }
+    });
+ 
+ 
+
+  },
+  <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.attributes));
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+});</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>TODO try this and see if it stops dupplicate issues 
+<a href="https://github.com/powmedia/backbone-forms#usage">https://github.com/powmedia/backbone-forms#usage</a>
+Once the user is done with the form, call <code>form.commit()</code> to apply the updated values to the model. I
+f there are validation errors they will be returned. See validation for more information.</p>
+
+            </div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

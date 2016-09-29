@@ -40,10 +40,12 @@ function loadJQueryExtScript(src, callback) {
 
     /// open links in real browser 
     //https://github.com/nwjs/nw.js/issues/1162
-    $('a[target=_blank]').on('click', function(){
+    if (typeof require === "function") {
+      $('a[target=_blank]').on('click', function(){
        require('nw.gui').Shell.openExternal( this.href );
        return false;
-    });
+      });
+    }
     ///
 
     if(callback){callback(s)}
@@ -54,26 +56,11 @@ function loadJQueryExtScript(src, callback) {
 * To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
 */
 loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
-
-      //set jquery for bootstrap  
-
-     // if (typeof require === "function") {
-       // window.jQuery = window.$  = require("jquery");
-    // }else{
-
-       // window.jQuery = window.$  = $;
-    // }
-
      loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
-
        loadExtScript("vendor/underscore-min.js",function(){
           loadExtScript("vendor/backbone-min.js",function(){
-
- loadExtScript("vendor/backbone.async.js",function(){
-
-          loadExtScript("../backEnd_node/sync.js",function(){
-  
-            //app.js backbone files 
+         loadExtScript("js/sync.js",function(){
+              //app.js backbone files 
            loadExtScript("js/models/transcription.js",function(){
                loadExtScript("js/collections/transcriptions.js",function(){
                  loadExtScript("js/views/transcription_index.js",function(){
@@ -87,27 +74,23 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
                                   console.log("demo initialised")
                                   // demoTranscription()
                                   //by adding and not saving this only works 
-                                  app.TranscriptionsList.add([
+                                   app.TranscriptionsList.add([
                                     jesselynRadackTranscription, 
                                     jesselynRadackManualTranscription,
                                     jesselynRadacGentleTranscription,
                                     laurenRabaino
-                                  ]);
-
-            
-                                   // app.TranscriptionsList.add(jesselynRadacGentleTranscription);
-
+                                  ]);   
                                  });
 
                                  // jesselynRadackTranscription.save();
                               //end Demo
-    }) 
+                              }) 
                           }) 
                         }) 
                     }) 
                   }) 
                 }) 
-               }) 
+               // }) 
             })
          })
       })
@@ -181,7 +164,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <span class='glyphicon glyphicon-film' aria-hidden='true'></span>
       <span class='glyphicon glyphicon-headphones' aria-hidden='true'></span>
     </p>
-    <p class='lead text-center text-muted'>You don't have any transcriptions</p>
+    <p class='lead text-center text-muted'>You dont have any transcriptions</p>
     <p class='text-center'>
       <a href='#transcriptions/new'>Add an audio or video file</a> to get it
     </p>
@@ -203,189 +186,163 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <!--  end Breadcrumb -->
       </div><!-- ./col -->
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">
-        
-        <!-- Single button  EXPORT -->
-<div class="btn-group  hidden-print">
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Export  
-    <span class="glyphicon glyphicon-save"></span>
-    <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-<!-- EDL -->
-    <li>
-      <a id="exportEdlChronological">
-      <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-      EDL  - Chronological
-      </a>
+     
 
-    </li>
-    <li>
+<!-- Export modal + button -->
 
-      <a id="exportEdlSelectionOrder" >
-         <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
-       EDL - Selection order 
-      </a>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">
+  Export <span class="glyphicon glyphicon-save"></span>
+</button>
 
-    </li>
-
-<!-- CAPTIONS -->
-    <li role="separator" class="divider"></li>
-    <li >
-      <a  id="expoertCaptionsSrt" >
-          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>
-        Captions - srt
-      </a>
-
-    </li>
-
-   <!--  <li>
-      <a  id="expoertCaptionsSrtEDL" >
-        <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>
-        Captions - srt - EDL - beta
-      </a>
-
-    </li> -->
-
-<!-- PLAIN TEXT - TRANSCRIPTION-->
-    <li role="separator" class="divider"></li>
-    <li >
-      <a  id="exportPlainText">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Plain Text - Transcription 
-      </a>
-
-    </li>
-    <li >
-
-      <a id="exportTimecodedTranscription">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Timecoded Text - Transcription 
-      </a>
-
-    </li>
-
-<!-- PLAIN TEXT - EDL-->
-    <li role="separator" class="divider"></li>
-      <li >
-
-      <a  id="exportPlainTextEDL">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Plain Text - EDL, Chronological
-      </a>
-
-    </li>
+<!-- Modal -->
+<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>
 
 
-      <li >
+      </div>
+      <div class="modal-body">
+       <!-- Export options -->
+        <h2><small>Video sequence </small></h2>
+        <p>You can export an EDL(edit decision list) to open a video sequence of your text selections inthe video editing software of choice. See user manual for more on this.
 
-      <a  id="exportPlainTextEDLSelOrder">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Plain Text - EDL, Selection Order
-      </a>
+        <!-- <a href='https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice' target='_blank'><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.</p>-->
 
-    </li>
-    <li role="separator" class="divider"></li>
-      <li >
+        <p>You can export your selections for a video sequence chronologically as they appear in the video or in the selection order you made them </p> 
 
-      <a id="exportPlainTimecodedTextEDL">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Timecoded Text - EDL, Chronological
-      </a>
-
-    </li>
-
-      <li >
-
-      <a id="exportPlainTimecodedTextEDLSelOrder">
-        <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-      Timecoded Text - EDL, Selection Order
-      </a>
-
-    </li>
-  
-<!-- JSON -->
-    <li role="separator" class="divider"></li>
-    <li >
-      <a id="exportJsonTranscription">
-      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-      Json - transcription
-      </a>
-
-    </li>
-    <li  >
-
-    <a  id="exportJsonEDL">
-      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-      Json - EDL, Chronological
-      </a>
-    </li>
-    <li  >
-      <a  id="exportJsonEDLSelOrder">
-      <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
-      Json - EDL, Selection Order
-      </a>
-    </li>
-
-<!-- HTML5 MEDIA -->
-    <li >
-      <a  id="exporthtml5Video">
-      <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
-      HTML5 Video - webm
-      </a>
-    </li>
-    <li >
-      <a  id="exportAudio">
-      <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>
-      HTML5 Audio - Wav
-      </a>
-    </li>
-
-<!-- Folder containing index.html with interactive transcription, with remote bootstrap + html5 video + wav + json of transcription. -->
- <!--      <li class="disabled">
-      <a  >
-      <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>
-      Interactive transcript
-      </a>
-    </li> -->
-
-
-  </ul>
-</div>
-
-
-
-<!-- Split button -->
-<!-- <div class="btn-group">
-  <a type="button" id="exportEdl"  class="btn btn-primary">Export</a>
-  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="caret"></span>
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <ul class="dropdown-menu">
-    <li>
-
-      <a type="button" id="exportEdl"  class="btn btn-link">EDL - Selection order </a></li>
-    <li class="disabled"><a  id="exportEdl"  >EDL  - Chronological</a></li>
-    <li role="separator" class="divider"></li>
-    <li class="disabled"><a href="#">Captions - srt</a></li>
-    <li role="separator" class="divider"></li>
-    <li class="disabled"><a href="#">Plain Text</a></li>
-    <li class="disabled"><a href="#">Timecoded Text</a></li>
-    <li role="separator" class="divider"></li>
-    <li class="disabled"><a href="#">Json</a></li>
-    <li class="disabled"><a href="#">HTML5 Video</a></li>
-  </ul>
-</div>
- -->
-
-
-
-      <!--   <a id="exportEdl" class="btn btn-primary hidden-print" >
-       Export EDL
-        <span class="glyphicon glyphicon-scissors" aria-hidden="true"></span>
+        <!-- Btn Edl - chronological order | -->
+        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+          EDL  - Chronological order
         </a>
- -->
+
+        <!-- Btn EDL - selection order  -->
+        <a id="exportEdlSelectionOrder" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+          EDL - selection order 
+        </a></p>
+
+        <hr>
+        <h2><small>Captions </small></h2>
+
+        <p>Export captions of the full transcription </p>
+
+        <!-- Btn Captions - srt -->
+        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>
+          Captions - srt
+        </a></p>
+
+        <hr>
+        <h2><small>Plain text  </small></h2>
+
+        <p>You can export the text of the transcription as plain text without timecodes.</p>
+
+        <!-- Btn Plain text transcription. -->
+        <p><a id="exportPlainText" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Plain text transcription
+        </a></p>
+         
+        <p>You can also export timecoded plain text of the full transcription.</p>
+
+        <!-- Btn  Timecoded plain text transcription. -->
+        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Timecoded plain text transcription
+        </a></p>
+
+
+        <h2><small>Plain text - Selections </small> </h2>
+
+       <p> You can get your text selections as plain text in chronological or selection order without timecodes</p>
+
+        <!-- Btn Palin Text Chronological -->
+        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Palin Text EDL Chronological 
+        </a>
+        <!-- Btn Plain Text Selection Order -->
+        <a id="exportPlainTextEDLSelOrder" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Plain Text EDL Selection Order
+        </a>
+        <br> <br>
+         <p> You can get your text selections as plain text in chronological or selection order with timecodes.</p>
+
+        <!-- Btn Timecoded Palin Text Chronological -->
+        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Timecoded Text EDL Chronological
+        </a>
+
+        <!-- Btn Timecoded Palin Text Selection Order -->
+        <a id="exportPlainTimecodedTextEDLSelOrder" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+          Timecoded Text EDL Selection Order
+        </a></p>
+
+        <hr>
+
+        <h2><small>Developer’s options </small> </h2>
+        <p>These are some advanced export options for developers.</p>
+
+        <h3><small>Json </small></h3>
+        <p>JSON of full transcription </p>
+
+        <!-- Btn Json of transcription  -->
+        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+          Json of transcription
+        </a></p>
+
+        <p>JSON of selections in chronological order as they appear in the video. Equivalent to EDL Chronological order.</p>
+
+        <!-- Btn Json  EDL Chronological -->
+        <p><a id="exportJsonEDL" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+            Json  EDL Chronological
+        </a></p>
+
+        <p>JSON of selections in order they where selected. Equivalent to EDL selection order.</p>
+
+        <!-- Btn Json  EDL Chronological -->
+        <p><a id="exportJsonEDLSelOrder" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>
+          Json  EDL Chronological 
+        </a></p>
+
+        <h3><small>HTML5 Media  </small></h3>
+
+        <p>You can also export HTML5 audio and Video previews generated by the app. </p>
+
+        <!-- Btn HTML5 Webm video -->
+        <p><a id="exporthtml5Video" class="btn btn-primary btn-sm">
+          <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
+          HTML5 Webm video 
+        </a>
+
+        <!-- Btn HTML5 Wav audio -->
+        <a id="exportAudio" class="btn btn-primary btn-sm">
+          <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>
+          HTML5 Wav audio 
+        </a></p>
+
+       <!-- End export option -->
+      </div>
+      <div class="modal-footer" >
+        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>
+       <!--  <button type="button" class="btn btn-primary">Save changes</button> -->
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Export end modal + button -->   
+  
 
       </div><!-- ./col -->
     </div><!-- ./row -->
@@ -656,11 +613,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <label for="radioSTT">Speech To Text System</label><br>
         <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label>
         <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline)</label>
-        <p class="help-block">Chose what speech to text system you'd like to use. IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English.</p>
+        <p class="help-block">Chose what speech to text system you d like to use. IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. See manual for more.</p>
       </div>
         <!-- languages -->
       <div class="form-group">
-        <label for="languageModel">Language:</label>
+        <label for="languageModel">IBM Language:</label>
         <select class="form-control" id="languageModel">
           <option value="en-US_BroadbandModel" >US English  - Broadband</option> 
             <option value="en-US_NarrowbandModel">US English  - Narrowband</option>
@@ -694,6 +651,10 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
 
 <p> </p>
+
+<!--
+<p class="help-block">For more info on how to decide between the two and extra setup needed to use gentile to work offline see user manual.  <a href='https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice' target='_blank'><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>. -->
+        </p>
 
       </div><!-- ./col -->
 
@@ -764,7 +725,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       //
       try{
         console.info("USING NWJS")
+        //requiring env variables  https://github.com/motdotla/dotenv
+
         var gui = require('nw.gui');
+   
+        //adding asbolute relative path to root of app
+        //https://github.com/pietrop/nwjs_boilerplate#local-modules-path
+        require('app-module-path').addPath(".");
+
         // Create menu
         var menu = new gui.Menu({ type: 'menubar' });
         //Default mac menu bar comands + copy, cut, paste

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>trimmer.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>trimmer.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+* use `ffmpeg-fluent` and trims audio or video.
+* example usage
+
+```
+var trimmer = require('./index.js')
+
+trimmer.trim({
+	src:"debate_test.wav", 
+	input: 773,
+	duration:20,
+	outputName:"debate_test_trimmed.wav",
+	callback: function(){
+		console.log("done")
+	}
+})
+```
+*/</span> 
+
+<span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
+<span class="hljs-keyword">var</span> command = ffmpeg();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO: needs to take in bin of ffmpeg with fluent set ffmpeg </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">var</span> trim = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">config</span>)</span>{
+
+	<span class="hljs-keyword">var</span> callback;
+
+	<span class="hljs-keyword">if</span>(config.callback){
+		callback = config.callback
+	}
+
+	<span class="hljs-keyword">if</span>(config.ffmpegBin){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>setting ffmpeg bin</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		ffmpeg.setFfmpegPath(config.ffmpegBin);
+	}<span class="hljs-keyword">else</span>{
+		<span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available."</span>)
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>set ffmpeg bin path if optional</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>absolute file path relative to computer root</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> videoSrc= config.src;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>seconds or hh:mm:ss.mms</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> input = config.input;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>seconds</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> duration = config.duration; 
+	<span class="hljs-keyword">var</span> outputName = config.outputName;
+
+
+	ffmpeg(videoSrc)
+				.seekInput(input)
+				.setDuration(duration)
+				.output(outputName)
+				.on(<span class="hljs-string">'end'</span>, 
+					<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>console.log(“Timmer inside split”);
+console.log(outputName)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				   		<span class="hljs-keyword">if</span>(callback){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>console.log(“went into callback”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>				   			callback(outputName, input)
+				   		}
+				  }).run();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>return output;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>}
+
+<span class="hljs-comment">/**
+* to test test cutting video in isolation uncomment following code 
+* and make sure you have a file `debate_test.mp4` in the same folder
+*/</span>
+
+
+
+<span class="hljs-built_in">module</span>.exports = {
+		<span class="hljs-attr">trim</span> : <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">config</span>)</span>{
+		<span class="hljs-keyword">return</span> trim(config);
+	}<span class="hljs-comment">//,</span>
+};</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

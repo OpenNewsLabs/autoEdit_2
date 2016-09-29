@@ -58,9 +58,12 @@ function loadJQueryExtScript(src, callback) {
 loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
      loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
        loadExtScript("vendor/underscore-min.js",function(){
-          loadExtScript("vendor/backbone-min.js",function(){
+          loadExtScript("vendor/backbone-min.js",function(){  
+            // backbone.mousetrap.js
          loadExtScript("js/sync.js",function(){
               //app.js backbone files 
+          loadExtScript("vendor/mousetrap.js",function(){
+          loadExtScript("vendor/backbone.mousetrap.js",function(){
            loadExtScript("js/models/transcription.js",function(){
                loadExtScript("js/collections/transcriptions.js",function(){
                  loadExtScript("js/views/transcription_index.js",function(){
@@ -87,10 +90,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
                               }) 
                           }) 
                         }) 
+                      }) 
                     }) 
                   }) 
                 }) 
-               // }) 
+               }) 
             })
          })
       })
@@ -187,6 +191,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       </div><!-- ./col -->
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">
      
+
 
 <!-- Export modal + button -->
 
@@ -426,11 +431,72 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
   </ul>
 </div> -->
 
+
+<!--Speed input -->
+<div class="form-group">
+    <label for="speedControll">Playback Speed</label>
+    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
+</div>
+<!--end of Speed input -->
+
   <!-- Metadata info button -->
     <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info
     </a>
   <!-- End metadata info button  -->
+
+
+  <!--Keyboard shortcuts -->
+<!-- Small modal -->
+<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".keybaord-shortcuts-modal">shortcuts</button>
+
+<div class="modal fade keybaord-shortcuts-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+     <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h1 class="modal-title" ><small>Kayboad shortcuts </small></h1>
+      </div>
+      <div class="modal-body">
+    <div class="container">
+
+      <h2><small>Video playback</small></h2>
+
+      <h3><small>Pause/Play</small></h3>
+      <kbd>command</kbd>+<kbd>k</kbd> 
+      <br>Or  <br><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> 
+      
+      <h3><small>Faster</small></h3>
+      <p>Increase video playback rate</p>
+      <kbd>command</kbd>+<kbd>l</kbd> 
+
+      <h3><small>Slower</small></h3>
+      <p>Decrease video playback rate</p>
+      <kbd>command</kbd>+<kbd>j</kbd>
+
+      <h3><small>Fast forward <code>5</code> seconds</small></h3>
+      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> <br>Or<br>
+      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd> 
+
+      <h3><small>Rewind <code>5</code>  seconds</small></h3>
+      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> <br>Or <br>
+       <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd> 
+
+      <h2><small>Volume</small></h2>
+
+      <h3><small>Increase volume</small></h3>
+      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> 
+
+      <h3><small>Decrease volume</small></h3>
+      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> 
+
+    </div>
+     </div>
+    </div>
+  </div>
+</div>
+
+<!-- end Keyboard shortcuts -->
 
 </div> <!-- media -->
 
@@ -463,6 +529,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <dd  class="text-muted description"> <%= description %></dd>
     </dl>
 </div>
+
+
+
+
+
 </div><!-- ./col -->
   
     <!-- Transcription -->

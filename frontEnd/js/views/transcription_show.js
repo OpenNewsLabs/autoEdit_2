@@ -1,7 +1,5 @@
 // $(document).ready(function(){
 
-
-
 var app = app || {};
 
 app.TranscriptionView = Backbone.View.extend({
@@ -51,8 +49,133 @@ app.TranscriptionView = Backbone.View.extend({
       } 
       // this.render();
 
+      //set speed input
+     // var speedDisplay =  document.getElementById("speedInput").value = 0;
+
       //
    },
+    keyboardEvents: {
+        'command+j': 'slowVideo',
+        'control+j': 'slowVideo',
+        'command+k': 'pausePlayVideo',
+        'control+k': 'pausePlayVideo',
+        'command+shift+k': 'pausePlayVideo',
+        'control+shift+k': 'pausePlayVideo',
+        'command+l': 'fastVideo',
+        'control+l': 'fastVideo',
+        'command+shift+l': 'fastForwardVideo',
+        'control+shift+l': 'fastForwardVideo',
+        'command+shift+j': 'rewindVideo',
+        'control+shift+j': 'rewindVideo',
+        'command+shift+up': 'volumeUp',
+        'control+shift+up': 'volumeUp',
+        'command+shift+down': 'volumeDown',
+        'control+shift+down': 'volumeDown',
+        'command+shift+right': 'fastForwardVideo',
+        'control+shift+right': 'fastForwardVideo',
+        'command+shift+left': 'rewindVideo',
+        'control+shift+left': 'rewindVideo'
+    },
+
+    slowVideo: function(ev){
+       ev.preventDefault();
+      // alert("slow video") 'videoId_'+ id
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.currentTime = wordStartTime;
+      // videoElem.play();
+       if(videoElem.playbackRate <= 0.5){
+        videoElem.playbackRate =  0.5 ;
+       }else{
+         videoElem.playbackRate = videoElem.playbackRate - 0.5 ;
+       }
+
+       if (videoElem.paused) {
+            videoElem.play();
+        } 
+        // else {
+        //     videoElem.pause();
+        // }
+
+        this.updateSpeedDisplay(videoElem.playbackRate)
+    },
+
+    fastVideo: function(ev){
+      // alert("Fast video")
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.currentTime = wordStartTime;
+      // videoElem.play();
+       if(videoElem.playbackRate >= 4){
+        videoElem.playbackRate = 4 ;
+       }else{
+         videoElem.playbackRate = videoElem.playbackRate + 0.5 ;
+       }
+
+       if (videoElem.paused) {
+            videoElem.play();
+        } 
+        // else {
+        //     videoElem.pause();
+        // }
+
+        this.updateSpeedDisplay(videoElem.playbackRate)
+    },
+
+    pausePlayVideo: function(ev){
+      // alert("pause video")
+       var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.pause();
+       if (videoElem.paused) {
+            videoElem.play();
+        } else {
+            videoElem.pause();
+        }
+    },
+
+     volumeDown: function(ev){
+      // alert("pause video")
+       var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.pause();
+       
+       if(videoElem.volume <=0){
+        videoElem.volume =0
+       }else{
+        videoElem.volume -= 0.2;
+       }
+    },
+
+     volumeUp: function(ev){
+      // alert("pause video")
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.volume += 0.2;
+    },
+
+    fastForwardVideo: function(ev){
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.currentTime += 5;
+      // if (videoElem.paused) {
+      //       videoElem.play();
+      //   } else {
+      //       videoElem.pause();
+      //   }
+    },
+
+    rewindVideo: function(ev){
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.currentTime -= 5;
+    },
+
+    updateSpeedDisplay: function(speed){
+      //subtracting 1 because playback rate default / nromal is 1. but for display to user makes more sense to have zero as default
+       document.getElementById("speedInput").value = speed-1;
+
+    },
 
   events:{
     "click span.words": "playWord",
