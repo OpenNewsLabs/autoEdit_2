@@ -1,11 +1,9 @@
-/*
-* 
+/**
+* @file provides a function to convert srt line object json to srt file content as string
+* originally from https://github.com/pietrop/srtParserComposer and https://www.npmjs.com/package/srt_parser_composer 
+*  Expecting srtJsonContent to be like so
 
-from https://github.com/pietrop/srtParserComposer
-https://www.npmjs.com/package/srt_parser_composer 
-
-Expecting srtJsonContent to be like so
-
+```json
 [
   {
     "id": "1",
@@ -31,10 +29,10 @@ Expecting srtJsonContent to be like so
     "endTime": "00:00:16,869",
     "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
   },
-
-
-returns string 
-
+```
+*
+* it returns a string like so
+```
 1
 00:00:00,160 --> 00:00:04,890
 There’s this door on the 10th floor I just
@@ -54,13 +52,16 @@ How often? “like 30% of the time.”
 00:00:14,290 --> 00:00:16,869
 Have you seen people misuse it?
 All the time. Every day. Constantly.
-
-
+```
+* @author Pietro Passarelli 
 */
 
-
-
-
+/**
+ * Srt composer from json of lines objets
+ * @param {json} srtContent
+ * @param {cb} callback
+ * @todo add error handling and error.
+ */
 function createSrtContent(srtJsonContent, cb){
   var lines = "";
   for(var i=0; i< srtJsonContent.length; i++){
@@ -69,6 +70,6 @@ function createSrtContent(srtJsonContent, cb){
     lines+=srtLineO.startTime+" --> "+srtLineO.endTime+"\n";
     lines+=srtLineO.text+"\n";
   }
-
+  //TODO figure out if callback here is redundant and could just return
   if(cb){cb(lines)}else{return lines};
 }

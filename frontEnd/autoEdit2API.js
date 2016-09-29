@@ -1,37 +1,66 @@
+/**
+ * @file Manages the backend of the app by overwrighting backbone.sync function
+ * @author Pietro Passarelli 
+ * @requires fs
+ * @requires path
+ * @requires linvodb
+ * @requires level-js
+ * @requires interactive_transcription_generator/index.js
+ * @todo Write documentation.
+ * @todo add error handling and error callbacks
+ */
+
+//checking that we are in NWJS enviroment 
 if (window.frontEndEnviromentNWJS) {
   var fs = require("fs")
   var transcription_generate = require("../interactive_transcription_generator/index.js");
-  
   var path = require('path');
   var LinvoDB = require("linvodb3");
-  //TODO:change db with medea
   LinvoDB.defaults.store = { db: require("level-js") };
-  //TODO: db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
+  //TODO:change db with medea
+  //+db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
   // LinvoDB.dbPath = process.cwd()+"/db"; 
+
+  //setting up transcription model in database.
   var transcriptionModel = "transcription";
-  var schema = { }; // Non-strict always, can be left empty
+  // Non-strict always, can be left empty
+  var schema = { }; 
   var options = { };
   var Transcription = new LinvoDB(transcriptionModel, schema, options);
-  // LinvoDB.dbPath = process.cwd() 
 
+  /**
+  * API Object to override Backnone.sync
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */
   var autoEdit2API = function(method, model, options){
     autoEdit2API[method](model, options.success, options.error)
   }
 
   /**
-  * Create 
+  * Create functionality, mapped to REST POST
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model containing db id
   */
   autoEdit2API.create = function(model, success, error){
     if( model.constructor.modelType == "transcription"){
       
       var newElement = model.toJSON();
+      //create transcription element to save in db 
       var transcription = new Transcription(newElement);
-
+      //save transcription in db
       transcription.save(function(err) {
+        //updating backbone with saved transcritpion, containing db id
         model.set(transcription);
+        //returning saved transcription callback
         success(model);
-      });//first transcription save
-
+      });
+      // using interactive_transcription_generator to generate metadata, 
+      // transcription json 
+      // webm video preview 
       transcription_generate({
         id: transcription._id,
         videoUrl: newElement.videoUrl,
@@ -45,85 +74,96 @@ if (window.frontEndEnviromentNWJS) {
         sttEngine: newElement.sttEngine,
         cbMetadata:function(respM){
           meta = respM;
-          console.log("cbMetadata -before: "+ transcription._id);
+          //update current transcription with metadata data
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.log("cbMetadata -after findOne: "+ trs._id);
+            console.info("got metadata for transcription: "+transcription._id)
             trs.metadata = respM;
+            //saving current transcription
             trs.save(function(err) {
-              /* we have updated the Earth doc */
               // app.trigger('updateTranscription:'+trs._id);
             });
           });
         },
         cbTranscription: function(resp){
-          console.log("videoUrl after cbTranscription iTG " +newElement.videoUrl);
-          console.log("videoUrl after cbTranscription iTG " +resp.videoFile);
-
-          console.log("resp from cbTranscription");
-          console.log(resp);
-          console.log("cbTranscription -before: "+ transcription._id);
-          console.log("resp id: "+ resp.id);
+          //updating current transcription with transcription json.
           Transcription.findOne({ _id: resp.id }, function (err, trs) {
-            console.log("cbTranscription -after findOne: "+ trs._id);
+            console.info("got transcription json for transcription: "+ trs._id);
+            //updating transcription attributes with result
             trs.audioFile = resp.audioFile;
             trs.processedAudio = resp.processedAudio;
             trs.text = resp.text;
             trs.status = resp.status;
+            //saving current transcription 
             trs.save(function(err) {
               // app.trigger('updateTranscription:'+trs._id);
             });
           });
         },
         cbVideo: function(resp){
-          console.log("cbVideo -before: "+ transcription._id);
+          //updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id}, function (err, trs) {
-            console.log("cbVideo -after findOne: "+ trs._id);
+            console.info("got video webm back for transcription: "+ trs._id);
+            //updating transcription attributes with result
             trs.videoOgg = resp.videoOgg;
             trs.processedVideo = resp.processedVideo;
+            //saving current transcription 
             trs.save(function(err) {
               // app.trigger('updateTranscription:'+trs._id);
             });
           });
-
-        }//video cb
-      });//transcription_generate
-    }//if transcription model 
-  }//create
+        }
+      });
+    }
+  }
 
   /**
-  * Read - Find all  and fine One
-  fine one not currently in use  
+  * Read functionality,Find all  and fine One, mapped to REST GET
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.read = function(model, success, error){
     //If a colleciton
     if (model.models) {
-      console.log("a collection")
-      console.log(model.constructor.modelType)
+      console.info("Collection:" +model.constructor.modelType )
+      //for transcription model
       if( model.constructor.modelType == "transcriptions"){
+        //look in database
         Transcription.find({}, function (err, transcriptions) {
-          // console.log(transcriptions)
+          //return transcription collection 
           success(transcriptions);
         });
       }//if transcription collection
-    //if a model 
     }else {
-      console.log("a model")
-      console.log(model.constructor.modelType)
+      //if a model 
+      console.info("Model: "+model.constructor.modelType)
+      //for transcription model
       if(model.constructor.modelType == "transcription"){
+        //looks in database using transcription id
         Transcription.findOne({ _id: model._id }, function (err, transcription) {     
+            //return transcription model
             success(transcription)
         });
-      }//if transcription model 
-    }//if else 
-  }//read
+      }
+    }
+  }
 
   /**
-  * Update 
+  * Update functionality, mapped to REST PUT
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.update = function(model, success, error){
+    //for transcription model
     if(model.constructor.modelType == "transcription"){
+      //looks in database using transcription id
       Transcription.findOne({ _id: model.get("_id") }, function(err, doc) {
         //TODO: there's got to be a better way to do this
+        //NOTE: rather then using update, which did not seemed to be optimised for speed.
+        //uses `findOne`, replaces attributes with new once.
         doc.text                = model.attributes.text;
         doc.languageModel       = model.attributes.languageModel;
         doc.counterForPaperCuts = model.attributes.counterForPaperCuts;
@@ -136,16 +176,21 @@ if (window.frontEndEnviromentNWJS) {
         doc.sttEngine           = model.attributes.sttEngine;
         doc.audioFile           = model.attributes.audioFile;
         doc.metadata            = model.attributes.metadata;
-
+        //saving transcription to database
         doc.save(function(err) {
+          //returning sucess callback with backbone model to client side
           success(model);
         });
-      });//Transcription "update"
-    }//if transcription 
-  }//update
+      });
+    } 
+  }
 
   /**
-  * Update/patch 
+  * Patch functionality, mapped to REST PUT
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.patch = function(model, success, error){
     if(model.constructor.modelType == "transcription"){
@@ -166,25 +211,34 @@ if (window.frontEndEnviromentNWJS) {
 
         doc.save(function(err) {
           success(model);
-        });//save
-      });//transcription "patch"
-    }//if
+        });
+      });
+    }
   }
 
   /**
-  * Destroy  
+  * Delete functionality, mapped to REST Delete
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.delete = function(model, success, error){
+    ///for transcription model
     if(model.constructor.modelType == "transcription"){
+      //looks in database using transcription id
       Transcription.findOne(model._id, function(err, transcription) {
+        //deletes transcription from db
         transcription.remove(function() {
-          //removing media ssociated with transcription.
+          //removing media associated with transcription.
+          //TODO: this only deletes the video if the video has done processing.
+          // this means incomplete vidoes are left in the folder if the transcription is deleted
           if(model.attributes.processedVideo){
             fs.unlinkSync( model.attributes.videoOgg);     
           }
-          // if(model.attributes.processedAudio){
+          //if the trascription has been shown the audio will always be present because is needed to generate the text transcription
             fs.unlinkSync( model.attributes.audioFile); 
-          // }
+          //returns sucess callback
           success(model);
         });//remove 
       });//find

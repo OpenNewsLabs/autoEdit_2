@@ -223,12 +223,17 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS) {
-  <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>)
-  <span class="hljs-keyword">var</span> transcription_generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../interactive_transcription_generator/index.js"</span>);
-  
-  <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
-  <span class="hljs-keyword">var</span> LinvoDB = <span class="hljs-built_in">require</span>(<span class="hljs-string">"linvodb3"</span>);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @file Manages the backend of the app by overwrighting backbone.sync function
+ * @author Pietro Passarelli 
+ * @requires fs
+ * @requires path
+ * @requires linvodb
+ * @requires level-js
+ * @requires interactive_transcription_generator/index.js
+ * @todo Write documentation.
+ * @todo add error handling and error callbacks
+ */</span></pre></div></div>
             
         </li>
         
@@ -239,11 +244,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>TODO:change db with medea</p>
+              <p>checking that we are in NWJS enviroment </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  LinvoDB.defaults.store = { <span class="hljs-attr">db</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">"level-js"</span>) };</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS) {
+  <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>)
+  <span class="hljs-keyword">var</span> transcription_generate = <span class="hljs-built_in">require</span>(<span class="hljs-string">"../interactive_transcription_generator/index.js"</span>);
+  <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+  <span class="hljs-keyword">var</span> LinvoDB = <span class="hljs-built_in">require</span>(<span class="hljs-string">"linvodb3"</span>);
+  LinvoDB.defaults.store = { <span class="hljs-attr">db</span>: <span class="hljs-built_in">require</span>(<span class="hljs-string">"level-js"</span>) };</pre></div></div>
             
         </li>
         
@@ -254,15 +264,11 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>TODO: db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
+              <p>TODO:change db with medea
++db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
 LinvoDB.dbPath = process.cwd()+”/db”; </p>
 
             </div>
-            
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> transcriptionModel = <span class="hljs-string">"transcription"</span>;
-  <span class="hljs-keyword">var</span> schema = { }; <span class="hljs-comment">// Non-strict always, can be left empty</span>
-  <span class="hljs-keyword">var</span> options = { };
-  <span class="hljs-keyword">var</span> Transcription = <span class="hljs-keyword">new</span> LinvoDB(transcriptionModel, schema, options);</pre></div></div>
             
         </li>
         
@@ -273,34 +279,11 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>LinvoDB.dbPath = process.cwd() </p>
+              <p>setting up transcription model in database.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-  <span class="hljs-keyword">var</span> autoEdit2API = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">method, model, options</span>)</span>{
-    autoEdit2API[method](model, options.success, options.error)
-  }
-
-  <span class="hljs-comment">/**
-  * Create 
-  */</span>
-  autoEdit2API.create = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
-    <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
-      
-      <span class="hljs-keyword">var</span> newElement = model.toJSON();
-      <span class="hljs-keyword">var</span> transcription = <span class="hljs-keyword">new</span> Transcription(newElement);
-
-      transcription.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
-        model.set(transcription);
-        success(model);
-      });<span class="hljs-comment">//first transcription save</span>
-
-      transcription_generate({
-        <span class="hljs-attr">id</span>: transcription._id,
-        <span class="hljs-attr">videoUrl</span>: newElement.videoUrl,
-        <span class="hljs-attr">title</span>: newElement.title,
-        <span class="hljs-attr">description</span>: newElement.description,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> transcriptionModel = <span class="hljs-string">"transcription"</span>;</pre></div></div>
             
         </li>
         
@@ -310,6 +293,126 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Non-strict always, can be left empty</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> schema = { }; 
+  <span class="hljs-keyword">var</span> options = { };
+  <span class="hljs-keyword">var</span> Transcription = <span class="hljs-keyword">new</span> LinvoDB(transcriptionModel, schema, options);
+
+  <span class="hljs-comment">/**
+  * API Object to override Backnone.sync
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */</span>
+  <span class="hljs-keyword">var</span> autoEdit2API = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">method, model, options</span>)</span>{
+    autoEdit2API[method](model, options.success, options.error)
+  }
+
+  <span class="hljs-comment">/**
+  * Create functionality, mapped to REST POST
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */</span>
+  autoEdit2API.create = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+      
+      <span class="hljs-keyword">var</span> newElement = model.toJSON();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>create transcription element to save in db </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> transcription = <span class="hljs-keyword">new</span> Transcription(newElement);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>save transcription in db</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      transcription.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>updating backbone with saved transcritpion, containing db id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        model.set(transcription);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>returning saved transcription callback</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        success(model);
+      });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>using interactive_transcription_generator to generate metadata, 
+transcription json 
+webm video preview </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      transcription_generate({
+        <span class="hljs-attr">id</span>: transcription._id,
+        <span class="hljs-attr">videoUrl</span>: newElement.videoUrl,
+        <span class="hljs-attr">title</span>: newElement.title,
+        <span class="hljs-attr">description</span>: newElement.description,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
               <p>TODO: this is hardcoded, and this variable is not used, fix me!</p>
 
@@ -321,163 +424,7 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
         <span class="hljs-attr">languageModel</span>: newElement.languageModel,
         <span class="hljs-attr">sttEngine</span>: newElement.sttEngine,
         <span class="hljs-attr">cbMetadata</span>:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">respM</span>)</span>{
-          meta = respM;
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbMetadata -before: "</span>+ transcription._id);
-          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbMetadata -after findOne: "</span>+ trs._id);
-            trs.metadata = respM;
-            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
-              <span class="hljs-comment">/* we have updated the Earth doc */</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            });
-          });
-        },
-        <span class="hljs-attr">cbTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"videoUrl after cbTranscription iTG "</span> +newElement.videoUrl);
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"videoUrl after cbTranscription iTG "</span> +resp.videoFile);
-
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp from cbTranscription"</span>);
-          <span class="hljs-built_in">console</span>.log(resp);
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbTranscription -before: "</span>+ transcription._id);
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"resp id: "</span>+ resp.id);
-          Transcription.findOne({ <span class="hljs-attr">_id</span>: resp.id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbTranscription -after findOne: "</span>+ trs._id);
-            trs.audioFile = resp.audioFile;
-            trs.processedAudio = resp.processedAudio;
-            trs.text = resp.text;
-            trs.status = resp.status;
-            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            });
-          });
-        },
-        <span class="hljs-attr">cbVideo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{
-          <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbVideo -before: "</span>+ transcription._id);
-          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"cbVideo -after findOne: "</span>+ trs._id);
-            trs.videoOgg = resp.videoOgg;
-            trs.processedVideo = resp.processedVideo;
-            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>            });
-          });
-
-        }<span class="hljs-comment">//video cb</span>
-      });<span class="hljs-comment">//transcription_generate</span>
-    }<span class="hljs-comment">//if transcription model </span>
-  }<span class="hljs-comment">//create</span>
-
-  <span class="hljs-comment">/**
-  * Read - Find all  and fine One
-  fine one not currently in use  
-  */</span>
-  autoEdit2API.read = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>If a colleciton</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (model.models) {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"a collection"</span>)
-      <span class="hljs-built_in">console</span>.log(model.constructor.modelType)
-      <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcriptions"</span>){
-        Transcription.find({}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcriptions</span>) </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>console.log(transcriptions)</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>          success(transcriptions);
-        });
-      }<span class="hljs-comment">//if transcription collection</span></pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-11">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-11">&#182;</a>
-              </div>
-              <p>if a model </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    }<span class="hljs-keyword">else</span> {
-      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"a model"</span>)
-      <span class="hljs-built_in">console</span>.log(model.constructor.modelType)
-      <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
-        Transcription.findOne({ <span class="hljs-attr">_id</span>: model._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcription</span>) </span>{     
-            success(transcription)
-        });
-      }<span class="hljs-comment">//if transcription model </span>
-    }<span class="hljs-comment">//if else </span>
-  }<span class="hljs-comment">//read</span>
-
-  <span class="hljs-comment">/**
-  * Update 
-  */</span>
-  autoEdit2API.update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
-    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
-      Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
+          meta = respM;</pre></div></div>
             
         </li>
         
@@ -488,6 +435,436 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
+              <p>update current transcription with metadata data</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"got metadata for transcription: "</span>+transcription._id)
+            trs.metadata = respM;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>saving current transcription</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+        },
+        <span class="hljs-attr">cbTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>updating current transcription with transcription json.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          Transcription.findOne({ <span class="hljs-attr">_id</span>: resp.id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"got transcription json for transcription: "</span>+ trs._id);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>updating transcription attributes with result</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            trs.audioFile = resp.audioFile;
+            trs.processedAudio = resp.processedAudio;
+            trs.text = resp.text;
+            trs.status = resp.status;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>saving current transcription </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+        },
+        <span class="hljs-attr">cbVideo</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resp</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>updating current transcription with webm html5 video preview.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          Transcription.findOne({ <span class="hljs-attr">_id</span>: transcription._id}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, trs</span>) </span>{
+            <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"got video webm back for transcription: "</span>+ trs._id);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>updating transcription attributes with result</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            trs.videoOgg = resp.videoOgg;
+            trs.processedVideo = resp.processedVideo;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>saving current transcription </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            trs.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>app.trigger(‘updateTranscription:’+trs._id);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            });
+          });
+        }
+      });
+    }
+  }
+
+  <span class="hljs-comment">/**
+  * Read functionality,Find all  and fine One, mapped to REST GET
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */</span>
+  autoEdit2API.read = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>If a colleciton</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (model.models) {
+      <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Collection:"</span> +model.constructor.modelType )</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>for transcription model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>( model.constructor.modelType == <span class="hljs-string">"transcriptions"</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>look in database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Transcription.find({}, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcriptions</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>return transcription collection </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          success(transcriptions);
+        });
+      }<span class="hljs-comment">//if transcription collection</span>
+    }<span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>if a model </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Model: "</span>+model.constructor.modelType)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>for transcription model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>looks in database using transcription id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        Transcription.findOne({ <span class="hljs-attr">_id</span>: model._id }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, transcription</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>return transcription model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            success(transcription)
+        });
+      }
+    }
+  }
+
+  <span class="hljs-comment">/**
+  * Update functionality, mapped to REST PUT
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */</span>
+  autoEdit2API.update = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>for transcription model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>looks in database using transcription id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>TODO: there’s got to be a better way to do this
+NOTE: rather then using update, which did not seemed to be optimised for speed.
+uses <code>findOne</code>, replaces attributes with new once.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        doc.text                = model.attributes.text;
+        doc.languageModel       = model.attributes.languageModel;
+        doc.counterForPaperCuts = model.attributes.counterForPaperCuts;
+        doc.processedAudio      = model.attributes.processedAudio;
+        doc.processedVideo      = model.attributes.processedVideo;
+        doc.status              = model.attributes.status;
+        doc.highlights          = model.attributes.highlights;
+        doc.title               = model.attributes.title;
+        doc.videoUrl            = model.attributes.videoUrl;
+        doc.sttEngine           = model.attributes.sttEngine;
+        doc.audioFile           = model.attributes.audioFile;
+        doc.metadata            = model.attributes.metadata;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>saving transcription to database</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        doc.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>returning sucess callback with backbone model to client side</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          success(model);
+        });
+      });
+    } 
+  }
+
+  <span class="hljs-comment">/**
+  * Patch functionality, mapped to REST PUT
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
+  */</span>
+  autoEdit2API.patch = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
+    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
+       Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
               <p>TODO: there’s got to be a better way to do this</p>
 
             </div>
@@ -508,68 +885,75 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
         doc.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
           success(model);
         });
-      });<span class="hljs-comment">//Transcription "update"</span>
-    }<span class="hljs-comment">//if transcription </span>
-  }<span class="hljs-comment">//update</span>
-
-  <span class="hljs-comment">/**
-  * Update/patch 
-  */</span>
-  autoEdit2API.patch = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
-    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
-       Transcription.findOne({ <span class="hljs-attr">_id</span>: model.get(<span class="hljs-string">"_id"</span>) }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, doc</span>) </span>{</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-13">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
-              </div>
-              <p>TODO: there’s got to be a better way to do this</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>        doc.text                = model.attributes.text;
-        doc.languageModel       = model.attributes.languageModel;
-        doc.counterForPaperCuts = model.attributes.counterForPaperCuts;
-        doc.processedAudio      = model.attributes.processedAudio;
-        doc.processedVideo      = model.attributes.processedVideo;
-        doc.status              = model.attributes.status;
-        doc.highlights          = model.attributes.highlights;
-        doc.title               = model.attributes.title;
-        doc.videoUrl            = model.attributes.videoUrl;
-        doc.sttEngine           = model.attributes.sttEngine;
-        doc.audioFile           = model.attributes.audioFile;
-        doc.metadata            = model.attributes.metadata;
-
-        doc.save(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>) </span>{
-          success(model);
-        });<span class="hljs-comment">//save</span>
-      });<span class="hljs-comment">//transcription "patch"</span>
-    }<span class="hljs-comment">//if</span>
+      });
+    }
   }
 
   <span class="hljs-comment">/**
-  * Destroy  
+  * Delete functionality, mapped to REST Delete
+  * @param {object} method - Backbone RESTfull method request.
+  * @param {object} model - Backbone model being handled.
+  * @param {object} options - Sucess or failure callback.
   */</span>
-  autoEdit2API.delete = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{
-    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){
-      Transcription.findOne(model._id, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, transcription</span>) </span>{
-        transcription.remove(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+  autoEdit2API.delete = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, success, error</span>)</span>{</pre></div></div>
             
         </li>
         
         
-        <li id="section-14">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
-              <p>removing media ssociated with transcription.</p>
+              <p>/for transcription model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(model.constructor.modelType == <span class="hljs-string">"transcription"</span>){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>looks in database using transcription id</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      Transcription.findOne(model._id, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, transcription</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>deletes transcription from db</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        transcription.remove(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>removing media associated with transcription.
+TODO: this only deletes the video if the video has done processing.
+this means incomplete vidoes are left in the folder if the transcription is deleted</p>
 
             </div>
             
@@ -580,13 +964,13 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
         </li>
         
         
-        <li id="section-15">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
-              <p>if(model.attributes.processedAudio){</p>
+              <p>if the trascription has been shown the audio will always be present because is needed to generate the text transcription</p>
 
             </div>
             
@@ -595,13 +979,13 @@ LinvoDB.dbPath = process.cwd()+”/db”; </p>
         </li>
         
         
-        <li id="section-16">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
-              <p>}</p>
+              <p>returns sucess callback</p>
 
             </div>
             

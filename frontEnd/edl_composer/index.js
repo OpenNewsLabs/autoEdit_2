@@ -1,51 +1,106 @@
+/**
+* @file ELD composer to create Edit Decision List.
+* @author Pietro Passarelli 
+* @todo Write documentation.
+* @todo add error handling and error callbacks
+* EDL, Edit Decision List, is a plain text format that describes a video sequence. It can be opened in a video editing software to reconnect media to assemble a video sequence.
+* [Apple EDL spec]{@link https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%26section=1%26tasks=true
+}
+* >"In an EDL, each clip in your sequence is represented by a line of text called an event, which has a unique event number. A clip in an EDL is defined by a source reel name and two pairs of timecode In and Out points. The first pair of timecode numbers describes the source tape (or clip) In and Out points. The second pair describes the timecode location where that clip should be placed onto a master tape (or Timeline)."
+* The EDL class here represents the EDL as an Object. That can take in a json sequence to generate a string conforming to the specs described above.
+* Example usage, takes in a sequence. and `.compose()` is ued to generate the EDL.
 
-/*
-https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%26section=1%26tasks=true
-"In an EDL, each clip in your sequence is represented by a line of text called an event, which has a unique event number. A clip in an EDL is defined by a source reel name and two pairs of timecode In and Out points. The first pair of timecode numbers describes the source tape (or clip) In and Out points. The second pair describes the timecode location where that clip should be placed onto a master tape (or Timeline)."
+```js
+var edlSqDemo = {
+    "title": "Demo Title of project",
+    //offset is option default is "00:00:00:00"
+    "offset": "00:00:28:08",
+    "events":  [
+      { "id":1,
+        "startTime": 10,
+        "endTime": 20,
+        "reelName":"SomeReelName",
+        "clipName":"Something.mov"
+      },
+      { "id":2,
+        "startTime": 45,
+        "endTime": 55,
+        "reelName":"SomeOtherReelName",
+        "clipName":"SomethingElse.mov"
+      },
+        { "id":2,
+        "startTime": 45,
+        "endTime": 55,
+        "reelName":"NA",
+        "clipName":"SomethingElse.mov"
+      }
+    ]
+}
+
+var edl = new EDL(edlSqDemo)
+console.log(edl.compose())
+```
+
 */
 
+/**
+* Represents an EDL Object.
+* @constructor
+* @param {Object} config - EDL video sequence as JSON
+* @param {string} config.title - Title of the EDL video sequence
+* @param {string} config.offset - The camera timecode, eg free run, rec run, time of day, repsent a time offset from the time relative to the beginning of the video file timeline. in format of timecode eg "00:00:28:08" such as "hh:mm:ss:ms" because that's how cameras write it in the metadata of the file.
+* @param {Object[]} config.events - array of video segment makind up the EDL sequence
+* @param {string} config.events[].id - "id" of video segment
+* @param {number} config.events[].startTime - start time of video segment in seconds
+* @param {number} config.events[].endTime - end time of video segment in seconds
+* @param {string} config.events[].reelName - reel name of video segment, generally the name of the card the footage was filmed on or not available
+* @param {string} config.events[].clipName - file name that the video segment belongs to. Only file name. no path.
+* @returns {stirng} EDL - and EDL string that can written to file to import EDL into video editing software.
+*/
 var EDL = function (config){
+  //creating head of EDL with project title.
   this.head = "TITLE: "+config.title+"\nFCM: NON-DROP FRAME\n\n";
-
-     this.offset = 0;//"00:00:00:00";
-     console.log("EDL index offset")
-      console.log(config.offset)
-    if(config.offset!= "NA"){
-      //converting offset to seconds, because in camera metadata comes in as hh:mm:ss:ms
-      console.log("assigning offset")
-      console.log(config.offset)
-      this.offset = toSeconds(config.offset) ;
-      console.info("offset EDL index assigned")
-      console.log(config.offset)
-      console.log(this.offset)
-    }
-
-
+  //by default setting offset to zero, equivalent to as if it was "00:00:00:00"
+  this.offset = 0;
+  //if offset exists
+  if(config.offset!= "NA"){
+    //converting offset to seconds
+    this.offset = toSeconds(config.offset) ;
+  }
+  //creating body of the EDL 
   this.body = function(){
-    console.log(config)
-    // if(config.offset){
-      // var startTimecode =config.offset ;//"00:00:00:00";
-    // }else{
-       var startTimecode =0 ;//"00:00:00:00";
-    // }
+    //startime relative to EDL sequence always starts from zero, equivvalent to "00:00:00:00" 
+    var startTimecode =0 ;
+    //story EDL sequence segments in array
     var edlBody = [];
+    //iterate over sequence events segments to make the edl body
     for(var j = 0; j < config.events.length; j++){
       var event =  config.events[j];
-
-        var edlLine = new EDLline(event, startTimecode, this.offset)
-        //set start timecode for next to tape out of current.
-        startTimecode = edlLine.tapeOut();
-        edlBody.push(edlLine.compose());
+      //creating EDL Lines, startTimecode passed as second param so that it can increment for every line
+      var edlLine = new EDLline(event, startTimecode, this.offset)
+      //set startTimecode to increment for next line by keeping value of current.
+      startTimecode = edlLine.tapeOut();
+      //transform segment into string 
+      edlBody.push(edlLine.compose());
     }
-    return edlBody.join("");
+      return edlBody.join("");
   }
-
+  //putting the EDL togethere by joining head and body
   this.compose = function(){
     return this.head + this.body();
   }
-
 }
-
+/**
+* Represents an EDL Line for the EDL body.
+* @constructor
+* @param {Object[]} config.events - array of video segment makind up the EDL sequence
+* @param {string} config.events[].id - "id" of video segment
+* @param {number} config.events[].startTime - start time of video segment in seconds
+* @param {number} config.events[].endTime - end time of video segment in seconds
+* @param {string} config.events[].reelName - reel name of video segment, generally the name of the card the footage was filmed on or not available
+* @param {string} config.events[].clipName - file name that the video segment belongs to. Only file name. no path.
+* @function {stirng} EDL - and EDL string  for an EDL line.
+*/
 var EDLline = function(event, tapeIn, offset){
     
   this.offset = offset;
@@ -91,14 +146,7 @@ var EDLline = function(event, tapeIn, offset){
     // return 890;
   };
 
-  this.compose = function(){
-    console.log("inpoint");
-    console.log(fromSeconds(this.clipInPoint()));
-    console.log(fromSeconds(this.clipInPoint()+this.offset));
-    console.log("outpoint");
-    console.log(fromSeconds(this.clipOutPoint()));
-    console.log(fromSeconds(this.clipOutPoint()+this.offset));
-    
+  this.compose = function(){    
     var res ="";
     //Handling lack of reel name in clip.
     if(this.reelName != "NA" ){
@@ -106,12 +154,9 @@ var EDLline = function(event, tapeIn, offset){
     }else{
        res =  ""+this.n()+"   "+" AX  AA/V  C  "
     }
-
     res+=fromSeconds(this.clipInPoint()+this.offset)+" "+fromSeconds(this.clipOutPoint()+this.offset)+" ";
     res+=fromSeconds(this.tapeIn)+" "+fromSeconds(this.tapeOut())+"\n";
-
     res+= "* FROM CLIP NAME: "+this.clipName+"\n";
-
     //Handling lack of reel name in clip.
     if(this.reelName != "NA" ){
       res+="FINAL CUT PRO REEL: "+this.reelName+" REPLACED BY: "+this.reelName7digit()+"\n\n";
@@ -123,12 +168,14 @@ var EDLline = function(event, tapeIn, offset){
 
 }
 
-//TODO: check on module export class.
-// module.export = EDL;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /*
-* Timecode conversion code from https://www.npmjs.com/package/node-timecodes and extracted to use outside of npm node modules on client side
+* [Timecode conversion code from and extracted to use outside of npm node modules on client side]{@link  https://www.npmjs.com/package/node-timecodes}
+*/
+
+/**
+* to make timecode consistent eg 00:05:00:00 vs 00:5:00:00
+* @param{nb} digit - integer to make into two digits if not by adding a zero
 */
 var padNumber = function (nb) {
   var length = arguments.length <= 1 || arguments[1] === undefined ? 2 : arguments[1];
@@ -139,7 +186,11 @@ var padNumber = function (nb) {
   return nb;
 }
 
-/* converts time in seconds to timecode */
+/**
+* converts time in seconds to timecode 
+* @param{number} seconds - seconds to convdert to 00:00:00:00
+* @returns {string} result - returns string "hh:mm:ss:ms" eg "00:00:00:00"
+*/
 var fromSeconds = function (seconds) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
   var defaultFrameRate = 25;
@@ -160,10 +211,13 @@ var fromSeconds = function (seconds) {
 
   return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ':' + suffix;
 }
-///////////////////////////////////////////////////////////////////////////////////////////////
-///for srt composer
 
-
+/**
+* converts time in seconds to timecode for srt file 
+* [modified from ]{@link https://github.com/Synchronized-TV/node-timecodes/blob/master/src/toSeconds.js}
+* @param{number} seconds - seconds to convdert to 00:00:00,00
+* @returns {string} result - returns string "hh:mm:ss:ms" eg "00:00:00,00"
+*/
 var fromSecondsForSrt = function (seconds) {
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
   var defaultFrameRate = 25;
@@ -185,10 +239,11 @@ var fromSecondsForSrt = function (seconds) {
   return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ',' + suffix+"0";
 }
 
-///////
-//modified from https://github.com/Synchronized-TV/node-timecodes/blob/master/src/toSeconds.js
-
-/*convert timecodes to seconds*/
+/**
+* converts timecode to seconds eg "00:00:00:00" -> 0.
+* @param{string} seconds - timecode to convert to seconds
+* @returns {number} seconds - returns number of seconds 
+*/
 function toSeconds(timecode, fr){
   //option to convert passing in frame rate
   var frameRate;
@@ -201,37 +256,5 @@ function toSeconds(timecode, fr){
   var  tc = timecode.split(':');
   return parseFloat(tc[0] * 60 * 60 + parseInt(tc[1], 10) * 60 + parseInt(tc[2], 10) + parseInt(tc[3], 10) / frameRate);
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-//////////////////Example usage
-
-// var edlSqDemo = {
-//     "title": "Demo Title of project",
-//     //offset is option default is "00:00:00:00"
-//     "offset": "00:00:28:08",
-//     "events":  [
-//       { "id":1,
-//         "startTime": 10,
-//         "endTime": 20,
-//         "reelName":"SomeReelName",
-//         "clipName":"Something.mov"
-//       },
-//       { "id":2,
-//         "startTime": 45,
-//         "endTime": 55,
-//         "reelName":"SomeOtherReelName",
-//         "clipName":"SomethingElse.mov"
-//       },
-        // { "id":2,
-//         "startTime": 45,
-//         "endTime": 55,
-//         "reelName":"NA",
-//         "clipName":"SomethingElse.mov"
-//       }
-//     ]
-// }
-//
-//
-// var edl = new EDL(edlSqDemo)
-// console.log(edl.compose())

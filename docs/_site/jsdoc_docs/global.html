@@ -102,70 +102,6 @@
 
 
 <div class="description">
-    module to read video metadata needed for EDL
-reel, timecode, fps.
-TODO: replace "NA" with undefined?
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_video_metadata_reader_index.js.html">interactive_transcription_generator/video_metadata_reader/index.js</a>, <a href="interactive_transcription_generator_video_metadata_reader_index.js.html#line7">line 7</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="ffmpeg"><span class="type-signature"></span>ffmpeg<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
     Takes in an audio file, and splits at 5 minutes intervalls.
 NOTE: technically this does not guarantee that each file will be less then 100mb, altho seems to work with no problems is not 100% sure.
 TODO: figure out how to make sure each file does not exceeen 100mb (othwerwise it be rejected by IBM Watson STT service )
@@ -213,6 +149,70 @@ takes in file, tmp folder where to put audio files trimmed. and a callback tha r
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="ffmpeg"><span class="type-signature"></span>ffmpeg<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    module to read video metadata needed for EDL
+reel, timecode, fps.
+TODO: replace "NA" with undefined?
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="interactive_transcription_generator_video_metadata_reader_index.js.html">interactive_transcription_generator/video_metadata_reader/index.js</a>, <a href="interactive_transcription_generator_video_metadata_reader_index.js.html#line7">line 7</a>
     </li></ul></dd>
     
 
@@ -492,6 +492,183 @@ https://www.ibm.com/watson/developercloud/speech-to-text/
 
     
         <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="autoEdit2API"><span class="type-signature"></span>autoEdit2API<span class="signature">(method, model, options)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    API Object to override Backnone.sync
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>method</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Backbone RESTfull method request.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>model</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Backbone model being handled.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Sucess or failure callback.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontEnd_autoEdit2API.js.html">frontEnd/autoEdit2API.js</a>, <a href="frontEnd_autoEdit2API.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
             
@@ -1167,13 +1344,13 @@ returns callback with file path to text file containing transcriptions.
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#convert">convert</a></li><li><a href="global.html#ffmpeg">ffmpeg</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#readVideoMetadataForEDL">readVideoMetadataForEDL</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#watson">watson</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convert">convert</a></li><li><a href="global.html#ffmpeg">ffmpeg</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#readVideoMetadataForEDL">readVideoMetadataForEDL</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#watson">watson</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Thu Sep 29 2016 15:29:16 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Thu Sep 29 2016 16:19:47 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
