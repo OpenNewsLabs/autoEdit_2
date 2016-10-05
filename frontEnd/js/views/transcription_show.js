@@ -55,28 +55,87 @@ app.TranscriptionView = Backbone.View.extend({
       //
    },
     keyboardEvents: {
-        'command+j': 'slowVideo',
-        'control+j': 'slowVideo',
-        'command+k': 'pausePlayVideo',
-        'control+k': 'pausePlayVideo',
-        'command+shift+k': 'pausePlayVideo',
-        'control+shift+k': 'pausePlayVideo',
-        'command+l': 'fastVideo',
-        'control+l': 'fastVideo',
-        'command+shift+l': 'fastForwardVideo',
-        'control+shift+l': 'fastForwardVideo',
-        'command+shift+j': 'rewindVideo',
-        'control+shift+j': 'rewindVideo',
-        'command+shift+up': 'volumeUp',
-        'control+shift+up': 'volumeUp',
-        'command+shift+down': 'volumeDown',
-        'control+shift+down': 'volumeDown',
-        'command+shift+right': 'fastForwardVideo',
-        'control+shift+right': 'fastForwardVideo',
-        'command+shift+left': 'rewindVideo',
-        'control+shift+left': 'rewindVideo'
+        'command+k'           : 'pausePlayVideo',
+        'control+k'           : 'pausePlayVideo',
+        'command+shift+k'     : 'pausePlayVideo',
+        'control+shift+k'     : 'pausePlayVideo',
+        'command+j'           : 'slowVideo',
+        'control+j'           : 'slowVideo',
+        'command+l'           : 'fastVideo',
+        'control+l'           : 'fastVideo',
+        'command+shift+l'     : 'fastForwardVideo',
+        'control+shift+l'     : 'fastForwardVideo',
+        'command+shift+right' : 'fastForwardVideo',
+        'control+shift+right' : 'fastForwardVideo',
+        'command+shift+j'     : 'rewindVideo',
+        'control+shift+j'     : 'rewindVideo',
+        'command+shift+left'  : 'rewindVideo',
+        'control+shift+left'  : 'rewindVideo',
+        'command+shift+up'    : 'volumeUp',
+        'control+shift+up'    : 'volumeUp',
+        'command+shift+down'  : 'volumeDown',
+        'control+shift+down'  : 'volumeDown',
+        'shift+/'             : 'showHideShortcuts'
     },
 
+  events:{
+    "click #rewindVideo"      : "rewindVideo",
+    "click #pausePlayVideo"   : "pausePlayVideo",
+    "click #slowVideo"        : "slowVideo",
+    "click #fastVideo"        : "fastVideo",
+    "click #fastForwardVideo" : "fastForwardVideo",
+    "click #volumeDown"       : "volumeDown",
+    "click #volumeUp"         : "volumeUp",
+    "click #rewindVideo"      : "rewindVideo",
+
+    "click span.words": "playWord",
+    "click .timecodes": "playWord",
+    "keyup #searchCurrentTranscription" :"search",
+    "mouseup .transcription": "selectingWords",
+    "click #clearHighlights": "clearHighlights",
+
+    "click #editWords": "makeEditable",
+    "click #highlightWords": "makeHilightable",
+
+    "click #save": "save",
+
+    "click #playPreviewChrono": "playPreviewChrono",
+
+    "click #playPreviewSelOrd": "playPreviewSelOrd",
+    
+    "click #exportEdlChronological": "exportEdlChronological",
+    "click #exportEdlSelectionOrder": "exportEdlSelectionOrder",
+
+    "click #exportPlainText": "exportPlainText",
+
+    "click #exportTimecodedTranscription": "exportTimecodedTranscription",
+    
+    "click #exportJsonEDL": "exportJsonEDL",
+    "click #exportJsonEDLSelOrder": "exportJsonEDLSelOrder",
+    "click #exportJsonTranscription": "exportJsonTranscription",
+   
+
+    "click #exportPlainTextEDL": "exportPlainTextEDL",
+    "click #exportPlainTextEDLSelOrder": "exportPlainTextEDLSelOrder",
+    "click #exportPlainTimecodedTextEDL": "exportPlainTimecodedTextEDL",
+    "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
+
+    "click #expoertCaptionsSrt": "expoertCaptionsSrt",
+    "click #expoertCaptionsSrtEDL": "expoertCaptionsSrtEDL",
+
+    "click #exporthtml5Video": "exporthtml5Video",
+
+    "click #exportAudio": "exportAudio"
+
+  },
+
+  showHideShortcuts: function(){
+    console.log("show shorcuts")
+    document.getElementById("shortcuts").click()
+
+  },
+
+  //Keyboard shortcuts for playback and volume control
     slowVideo: function(ev){
        ev.preventDefault();
       // alert("slow video") 'videoId_'+ id
@@ -177,47 +236,7 @@ app.TranscriptionView = Backbone.View.extend({
 
     },
 
-  events:{
-    "click span.words": "playWord",
-    "click .timecodes": "playWord",
-    "keyup #searchCurrentTranscription" :"search",
-    "mouseup .transcription": "selectingWords",
-    "click #clearHighlights": "clearHighlights",
-
-    "click #editWords": "makeEditable",
-    "click #highlightWords": "makeHilightable",
-
-    "click #save": "save",
-
-    "click #playPreviewChrono": "playPreviewChrono",
-
-    "click #playPreviewSelOrd": "playPreviewSelOrd",
-    
-    "click #exportEdlChronological": "exportEdlChronological",
-    "click #exportEdlSelectionOrder": "exportEdlSelectionOrder",
-
-    "click #exportPlainText": "exportPlainText",
-
-    "click #exportTimecodedTranscription": "exportTimecodedTranscription",
-    
-    "click #exportJsonEDL": "exportJsonEDL",
-    "click #exportJsonEDLSelOrder": "exportJsonEDLSelOrder",
-    "click #exportJsonTranscription": "exportJsonTranscription",
-   
-
-    "click #exportPlainTextEDL": "exportPlainTextEDL",
-    "click #exportPlainTextEDLSelOrder": "exportPlainTextEDLSelOrder",
-    "click #exportPlainTimecodedTextEDL": "exportPlainTimecodedTextEDL",
-    "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
-
-    "click #expoertCaptionsSrt": "expoertCaptionsSrt",
-    "click #expoertCaptionsSrtEDL": "expoertCaptionsSrtEDL",
-
-    "click #exporthtml5Video": "exporthtml5Video",
-
-    "click #exportAudio": "exportAudio"
-
-  },
+    //end of playback volume control
 
 
 save: function(){
@@ -266,6 +285,16 @@ save: function(){
 
 makeHilightable: function(){
 
+  var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+
+  var hilightNotice = "<div class='alert alert-info alert-dismissible hidden-print' role='alert' id='hilightModeNotice'>";
+  hilightNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+  hilightNotice += "<strong>You are in hilight mode.</strong>";
+  hilightNotice +="<p>Select words to include in your Edit Decision List (EDL) video sequence.</p>";
+  hilightNotice +="</div>";
+
+
+
  var status = false;
   if( $("#highlightWords").hasClass("btn-primary")){
     status = true;
@@ -298,8 +327,14 @@ makeHilightable: function(){
   $("#highlightWords").addClass("btn-primary")
   $("#highlightWords").addClass("active")
 
+
+
   //disable editable on words 
   $('.words').attr('contenteditable','false');
+
+
+     //add hilight notice 
+   modeNotice.innerHTML = hilightNotice;
 }
 
 
@@ -308,11 +343,30 @@ makeHilightable: function(){
 
 makeEditable: function(){
 
+var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+ //remove hilight mode notice 
+
+// add text editing notice 
+var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> "
+  editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"
+  editNotice +="<strong>You are in text edit mode.</strong>" 
+  editNotice +="<p>Click on a word to edit. User <code>cmd</code> + <code>a</code> to select a word. Use tab or click to move to the next word.</p>"
+  editNotice+="</div>"
+
+
+
+
+
   var status = false;
   if( $("#editWords").hasClass("btn-primary")){
     status = true;
+   
+
   }else{
     status = false
+
+   
+
   }
 
   if(status){
@@ -321,13 +375,19 @@ makeEditable: function(){
    $("#editWords").removeClass("btn-primary")
    $("#editWords").addClass("btn-default")
 
+   $("#highlightWords").removeClass("btn-default")
+   $("#highlightWords").addClass("btn-primary")
+   $("#highlightWords").addClass("active")
 
- $("#highlightWords").removeClass("btn-default")
- $("#highlightWords").addClass("btn-primary")
- $("#highlightWords").addClass("active")
+   //disable editable on words 
+  $('.words').attr('contenteditable','false');
 
- //disable editable on words 
-$('.words').attr('contenteditable','false');
+
+    //remove edit notice 
+   // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
+
+
+
 
 
 
@@ -344,6 +404,17 @@ $('.words').attr('contenteditable','false');
  //enable content editable
  $('.words').attr('contenteditable','true');
 
+
+
+  //remove hilight notice 
+ // modeNotice.removeChild(document.getElementById("hilightModeNotice")) ;
+
+ //add edit notice 
+ modeNotice.innerHTML = editNotice;
+
+
+
+
  // listener on word changed 
 
 var contents = $('.words').html();
@@ -352,17 +423,6 @@ var contents = $('.words').html();
 $( ".words" ).on( "focusout", { model: this.model }, function(event) {
   //pause word 
  var model = event.data.model;
- // console.log("model")
- // console.log(model)
- //   $("#videoId_10")[0].pause();
- //  // $("#videoId_"+ model.attributes.id)[0];
-
- //  console.log("video")
- //  // console.log(video)
-  
-
-// console.log("CALLED")
-
 
   var tmpWordId  =  $( this )[0].dataset.wordId;
   var tmpWordText = $( this ).text();

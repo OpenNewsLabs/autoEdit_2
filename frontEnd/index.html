@@ -162,7 +162,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
 <!-- Home page template -->
 <script id="homePage" type="text/template">
-  <br><br>
+  <br><br><br><br>
   <div class='container'>
     <p class='lead text-center text-muted' style='font-size:2.5em;'>
       <span class='glyphicon glyphicon-film' aria-hidden='true'></span>
@@ -170,9 +170,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
     </p>
     <p class='lead text-center text-muted'>You dont have any transcriptions</p>
     <p class='text-center'>
-      <a href='#transcriptions/new'>Add an audio or video file</a> to get it
+      <a href='#transcriptions/new'>Add an audio or video file</a> to get it <br>automatically transcribed
     </p>
-    <p class='text-center'>automatically transcribed</p>
   </div>
 </script>
 <!--  End home page template-->
@@ -356,12 +355,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <div id="clientSideEDLhelp" ></div>
     <!-- end of remove this div  -->
 
-
-<!-- <div class="alert alert-info alert-dismissible hidden-print" role="alert">
+<div id="hilightModeNoticeContainer">
+<div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <strong>You are in hilight mode.</strong> <p>Click on a word to start a selection to include in your Edit Decision List (EDL) video sequence.</p>
+  <strong>You are in hilight mode.</strong> 
+  <p>Select words to include in your Edit Decision List (EDL) video sequence.</p>
 </div>
- -->
+</div>
+ 
 
   <div class="row">
     <!-- Video -->
@@ -432,12 +433,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 </div> -->
 
 
-<!--Speed input -->
-<div class="form-group">
-    <label for="speedControll">Playback Speed</label>
-    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
-</div>
-<!--end of Speed input -->
 
   <!-- Metadata info button -->
     <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
@@ -448,59 +443,117 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
   <!--Keyboard shortcuts -->
 <!-- Small modal -->
-<button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target=".keybaord-shortcuts-modal">shortcuts</button>
 
-<div class="modal fade keybaord-shortcuts-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">
+  shortcuts
+</a>
+
+
+
+<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h1 class="modal-title" ><small>Kayboad shortcuts </small></h1>
-      </div>
-      <div class="modal-body">
-    <div class="container">
-
-      <h2><small>Video playback</small></h2>
-
+    <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4>Playback Shortcuts</h4>
+  </div>
+     <div class="modal-body">
       <h3><small>Pause/Play</small></h3>
-      <kbd>command</kbd>+<kbd>k</kbd> 
-      <br>Or  <br><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> 
+        <kbd>command</kbd>+<kbd>k</kbd> 
+        <p class="text-muted"> Or </p> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> 
       
       <h3><small>Faster</small></h3>
-      <p>Increase video playback rate</p>
-      <kbd>command</kbd>+<kbd>l</kbd> 
+        <kbd>command</kbd>+<kbd>l</kbd> 
+        <p class="text-muted">Increase video playback rate</p>
 
       <h3><small>Slower</small></h3>
-      <p>Decrease video playback rate</p>
-      <kbd>command</kbd>+<kbd>j</kbd>
+        <kbd>command</kbd>+<kbd>j</kbd>
+        <p class="text-muted">Decrease video playback rate</p>
 
       <h3><small>Fast forward <code>5</code> seconds</small></h3>
-      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> <br>Or<br>
-      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> 
+        <p class="text-muted"> Or </p> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd> 
 
       <h3><small>Rewind <code>5</code>  seconds</small></h3>
-      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd> <br>Or <br>
-       <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd> 
-
-      <h2><small>Volume</small></h2>
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd>
+        <p class="text-muted"> Or </p> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd> 
 
       <h3><small>Increase volume</small></h3>
-      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> 
 
       <h3><small>Decrease volume</small></h3>
-      <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> 
+        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> 
+
+        <hr>
+         <h3><small>Show keyboard shortcuts</small></h3>
+        <kbd>shift</kbd>+<kbd>/</kbd> 
 
     </div>
-     </div>
-    </div>
-  </div>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+</div>
+</div>
+</div>
+<!-- end Keyboard shortcuts -->
+
+
+<h4><small>Playback Speed</small></h4>
+
+<!--Speed input -->
+<div class="form-group">
+   <!--<label for="speedControll">Playback Speed</label>-->
+    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
+</div>
+<!--end of Speed input -->
+
+
+  <!-- rewind  -->
+  <div class="btn-group" role="group" aria-label="...">
+  <button type="button" id="rewindVideo"  data-toggle="tooltip" data-placement="bottom" title="rewind 5 seconds cmd + shift + j" class="btn btn-default btn-xs">  
+    <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+  
+  <!-- decrease speed -->
+  <button type="button"  id="slowVideo"  data-toggle="tooltip" data-placement="bottom" title="speed decrease command+j"   class="btn btn-default btn-xs"> 
+    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+  </button>
+
+  <!-- play/pause  -->
+  <button type="button" id="pausePlayVideo"   data-toggle="tooltip" data-placement="bottom" title="cmd + k"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  /
+    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+  </button>
+
+  <!-- increase speed  -->
+  <button type="button" id="fastVideo"  data-toggle="tooltip" data-placement="bottom" title="speed increase command+l"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+  </button>
+  
+  <!-- Fast forward -->
+  <button type="button"  id="fastForwardVideo" data-toggle="tooltip" data-placement="bottom" title="Fast forward 5 seconds command+shift+l"  class="btn btn-default btn-xs">  
+    <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>
 </div>
 
-<!-- end Keyboard shortcuts -->
+
+
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" id="volumeDown"  class="btn btn-default btn-xs">
+   <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>
+  </button>
+  <button type="button"  id="volumeUp"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+  </button>
+</div>
+
 
 </div> <!-- media -->
 
 <div class="collapse" id="collapseMetadata">
+ <div class="well">
     <dl>
       <dt class="text-muted">Speech To Text System</dt>
       <dd><kbd><%= sttEngine %></kbd></dd>
@@ -528,9 +581,9 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <dt class="text-muted">Description </dt>
       <dd  class="text-muted description"> <%= description %></dd>
     </dl>
+</div> <!--end metadada info well-->
 </div>
-
-
+<!--end metadada info -->
 
 
 
@@ -672,11 +725,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
     <form id="form">
     <!-- File "upload" -->
     <div class="row">
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
         <div class="form-group">
-          <label for="fileUpload">File input</label>
+          <label for="fileUpload">Choose an audio or video file to transcribe</label>
           <input  name="file" type="file" id="inputMediaFile">
-          <p class="help-block">Chose an audio or video file to transcribe</p>
+          
         </div>
 
         <!-- Online/offline -->
@@ -730,7 +783,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       </div><!-- ./col -->
 
       <!-- Title and description -->
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
         <div class="form-group">
           <label for="title">Title of Transcription</label>
           <input type="text" name="title" value="<%= title %>" class="form-control" id="title" placeholder="e.g. Interview with Mark Zuckerberg">
