@@ -850,7 +850,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       try{
         console.info("USING NWJS")
         //requiring env variables  https://github.com/motdotla/dotenv
-
         var gui = require('nw.gui');
    
         //adding asbolute relative path to root of app
@@ -892,6 +891,27 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
              window.ibmWatsonKeysSet = true;
           })
         }
+
+
+        /**
+        * adding NWJS console keyboard shortcut to be able to trigger that in production 
+        */
+        var option = {
+        key : "Ctrl+Alt+J",
+        active : function() {
+          console.log("Global desktop keyboard shortcut: " + this.key + " active."); 
+          require('nw.gui').Window.get().showDevTools();
+        },
+        failed : function(msg) {
+          // :(, fail to register the |key| or couldn't parse the |key|.
+          console.log(msg);
+        }
+      };
+      // Create a shortcut with |option|.
+      var shortcut = new gui.Shortcut(option);
+      // Register global desktop shortcut, which can work without focus.
+      gui.App.registerGlobalHotKey(shortcut);
+      //end of console keyboard shortcut
 
 
       } catch (error) {
