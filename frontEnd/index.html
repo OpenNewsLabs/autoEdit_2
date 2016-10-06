@@ -451,45 +451,80 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
 
 <div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-  <div class="modal-dialog modal-sm" role="document">
+  <div class="modal-dialog " role="document">
     <div class="modal-content">
     <div class="modal-header">
        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h4>Playback Shortcuts</h4>
+    <h4>Keyboard Shortcuts</h4>
   </div>
      <div class="modal-body">
-      <h3><small>Pause/Play</small></h3>
-        <kbd>command</kbd>+<kbd>k</kbd> 
-        <p class="text-muted"> Or </p> 
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> 
-      
-      <h3><small>Faster</small></h3>
-        <kbd>command</kbd>+<kbd>l</kbd> 
-        <p class="text-muted">Increase video playback rate</p>
 
-      <h3><small>Slower</small></h3>
-        <kbd>command</kbd>+<kbd>j</kbd>
-        <p class="text-muted">Decrease video playback rate</p>
-
-      <h3><small>Fast forward <code>5</code> seconds</small></h3>
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> 
-        <p class="text-muted"> Or </p> 
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd> 
-
-      <h3><small>Rewind <code>5</code>  seconds</small></h3>
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd>
-        <p class="text-muted"> Or </p> 
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd> 
-
-      <h3><small>Increase volume</small></h3>
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> 
-
-      <h3><small>Decrease volume</small></h3>
-        <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> 
-
-        <hr>
-         <h3><small>Show keyboard shortcuts</small></h3>
-        <kbd>shift</kbd>+<kbd>/</kbd> 
+         <div class="table-responsive">
+       <table class="table table-striped  table-hover">   
+        <tbody> 
+          <tr> 
+            <th scope="row">Pause/Play</th> 
+              <td> <kbd>cmd</kbd>+<kbd>k</kbd></td> 
+              <td>Play pause video</td>
+            </tr> 
+            <tr> 
+              <th scope="row"></th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> </td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Faster</th> 
+                <td> <kbd>command</kbd>+<kbd>l</kbd> </td> 
+                <td>Increase video playback rate</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Slower</th> 
+                <td> <kbd>command</kbd>+<kbd>j</kbd> </td> 
+                <td>Decrease video playback rate</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Fast forward</th> 
+                <td>  <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> </td> 
+                <td>Fast forward <code>5</code> seconds</td>
+              </tr> 
+              <tr> 
+                <th scope="row"></th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd></td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Rewind</th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd></td> 
+                <td>Rewind <code>5</code>  seconds</td>
+              </tr> 
+              <tr> 
+                <th scope="row"></th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd></td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Increase volume</th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> </td> 
+                <td>Raises the audio volume</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Decrease volume</th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> </td> 
+                <td>Lowers the audio volume</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Show keyboard shortcuts</th> 
+                <td> <kbd>shift</kbd>+<kbd>/</kbd> </td> 
+                <td>Shows this cheat sheet witht keyboard shortcuts</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Show inspector console</th> 
+                <td> <kbd>Alt</kbd>+<kbd>cmd</kbd>+<kbd>j</kbd> </td> 
+                <td>Shows nwsj V8 inspector console, for developers, debugging</td>
+              </tr> 
+        </tbody>
+      </table>
+    </div>
 
     </div>
      <div class="modal-footer">
