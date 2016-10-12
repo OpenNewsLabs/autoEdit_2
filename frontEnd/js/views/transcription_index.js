@@ -73,7 +73,8 @@ app.TranscriptionListElement = Backbone.View.extend({
   },
 
   events:{
-    "click button.showBtn": "showTranscription",
+    // "click button.showBtn": "showTranscription",
+    "click #transcriptionCard": "showTranscription",
     "click button.editBtn": "editTranscription",
     "click button.deleteBtn": "deleteTranscription"
   },

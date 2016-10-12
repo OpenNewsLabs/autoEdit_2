@@ -32,8 +32,10 @@ var generate = function(config) {
   videoFileName = videoFileName.replace(/\s+/g,"_");
   var currentDir = process.cwd().split(path.sep)[process.cwd().split(path.sep).length -1];
 
-  var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName + ".wav";
-  var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName + ".webm";
+  //Make audio and webm file unique. Eg so that if upload same video twice it gets different audio and video preview.
+  //by using `timeNowFileName()`  in `frontEnd/date_now/index.js`
+  var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
+  var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
 
   // TODO: use system application data folder
   var appRootFolderForMedia = config.tmpWorkFolder;

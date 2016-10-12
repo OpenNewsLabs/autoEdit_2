@@ -4,7 +4,9 @@ var app = app || {};
 app.TranscriptionFormView = Backbone.View.extend({
   template: _.template($('#transcriptionFormTemplate').html()), 
   events :{
-  	'click #submitBtn': 'save'
+  	'click #submitBtn': 'save',
+    'click #gentleSetupLink': "gentleSetupLink"
+
   	// submit : 'save'
   },
 
@@ -35,8 +37,12 @@ app.TranscriptionFormView = Backbone.View.extend({
       }
     });
  
- 
+  },
 
+  gentleSetupLink: function(){
+    if( window.frontEndEnviromentNWJS ){
+      require('nw.gui').Shell.openExternal('https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#gentle-stt-open-source-free-and-offline');
+    }
   },
   render: function(){
     this.$el.html(this.template(this.model.attributes));

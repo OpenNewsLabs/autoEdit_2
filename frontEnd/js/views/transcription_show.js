@@ -125,7 +125,9 @@ app.TranscriptionView = Backbone.View.extend({
 
     "click #exporthtml5Video": "exporthtml5Video",
 
-    "click #exportAudio": "exportAudio"
+    "click #exportAudio": "exportAudio",
+
+    "click #edlUserManualInfo": "edlUserManualInfo"
 
   },
 
@@ -350,12 +352,8 @@ var modeNotice =  document.getElementById("hilightModeNoticeContainer")
 var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> "
   editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"
   editNotice +="<strong>You are in text edit mode.</strong>" 
-  editNotice +="<p>Click on a word to edit. User <code>cmd</code> + <code>a</code> to select a word. Use tab or click to move to the next word.</p>"
-  editNotice+="</div>"
-
-
-
-
+  editNotice +="<p>Click on a word to edit. Use <code>cmd</code> + <code>a</code> to select a word. Tab or click to move to the next word.</p>"
+  editNotice +="</div>"
 
   var status = false;
   if( $("#editWords").hasClass("btn-primary")){
@@ -573,6 +571,11 @@ if(config.fileContent == ""){
        var fs = require("fs");
       fs.writeFileSync(process.env.HOME+"/Desktop/"+fileName, fileContent );
        alert(fileName+" Saved on the desktop");
+
+       //opening folder item has been saved in, desktop, and opening file. might be confusing for EDL.
+       // require('nw.gui').Shell.showItemInFolder(process.env.HOME+"/Desktop/"+fileName);
+       // require('nw.gui').Shell.openItem(process.env.HOME+"/Desktop/"+fileName);
+
     }else{
       //if client side not running inside NWJS then 
       //creates a blob on the client size 
@@ -671,10 +674,9 @@ if(config.fileContent == ""){
     var fileName = this.nameFileHelper(this.model.get("title"),"srt"); 
     //this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
 
- var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
+    var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
 
-this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
-
+    this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
     
 
   },
@@ -934,6 +936,13 @@ exportAudio: function(){
   }else{
     alert("Feature not availeble in this context ")
   }
+},
+
+
+edlUserManualInfo: function(){
+   if( window.frontEndEnviromentNWJS ){
+      require('nw.gui').Shell.openExternal('https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice');
+    }
 },
 
 //export/copy file helper

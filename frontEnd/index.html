@@ -56,52 +56,50 @@ function loadJQueryExtScript(src, callback) {
 * To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
 */
 loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
-     loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
-       loadExtScript("vendor/underscore-min.js",function(){
-          loadExtScript("vendor/backbone-min.js",function(){  
-            // backbone.mousetrap.js
-         loadExtScript("js/sync.js",function(){
-              //app.js backbone files 
+  loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
+    loadExtScript("vendor/underscore-min.js",function(){
+      loadExtScript("vendor/backbone-min.js",function(){  
+        // backbone.mousetrap.js
+        loadExtScript("js/sync.js",function(){
+          //app.js backbone files 
           loadExtScript("vendor/mousetrap.js",function(){
-          loadExtScript("vendor/backbone.mousetrap.js",function(){
-           loadExtScript("js/models/transcription.js",function(){
-               loadExtScript("js/collections/transcriptions.js",function(){
-                 loadExtScript("js/views/transcription_index.js",function(){
-                     loadExtScript("js/views/transcription_show.js",function(){
-                        loadExtScript("js/views/transcription_form.js",function(){
-                          loadExtScript("js/router.js",function(){
-                               console.log("loaded stuff")
-
-                               //DEMO for client side only 
-                                 loadExtScript("demo_jr.js", function(){
-                                  console.log("demo initialised")
-                                  // demoTranscription()
-                                  //by adding and not saving this only works 
-                                   app.TranscriptionsList.add([
-                                    jesselynRadackTranscription, 
-                                    jesselynRadackManualTranscription,
-                                    jesselynRadacGentleTranscription,
-                                    laurenRabaino
-                                  ]);   
-                                 });
-
-                                 // jesselynRadackTranscription.save();
-                              //end Demo
-                              }) 
-                          }) 
+            loadExtScript("vendor/backbone.mousetrap.js",function(){
+              loadExtScript("js/models/transcription.js",function(){
+                loadExtScript("js/collections/transcriptions.js",function(){
+                  loadExtScript("js/views/transcription_index.js",function(){
+                    loadExtScript("js/views/transcription_show.js",function(){
+                      loadExtScript("js/views/transcription_form.js",function(){
+                        loadExtScript("js/router.js",function(){
+                          console.log("loaded stuff")
+                          
+                          //DEMO for client side only 
+                          loadExtScript("demo_jr.js", function(){
+                            console.log("demo initialised")
+                            // demoTranscription()
+                            //by adding and not saving this only works 
+                            app.TranscriptionsList.add([
+                              jesselynRadackTranscription, 
+                              jesselynRadackManualTranscription,
+                              jesselynRadacGentleTranscription,
+                              laurenRabaino
+                            ]);   
+                          });
+                          
+                          // jesselynRadackTranscription.save();
+                          //end Demo
                         }) 
                       }) 
                     }) 
                   }) 
                 }) 
-               }) 
-            })
-         })
+              }) 
+            }) 
+          }) 
+        })
       })
+    })
   })
 })
-
-
 </script>
   <!-- <script src="vendor/bootstrap-3.3.6-dist/js/bootstrap.js" charset="utf-8"></script> -->
 <!--   <script type="text/javascript"  src="vendor/underscore-min.js"></script>
@@ -212,7 +210,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <div class="modal-body">
        <!-- Export options -->
         <h2><small>Video sequence </small></h2>
-        <p>You can export an EDL(edit decision list) to open a video sequence of your text selections inthe video editing software of choice. See user manual for more on this.
+        <p>You can export an EDL(edit decision list) to open a video sequence of your text selections int he video editing software of choice. See user manual for more on this
+         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.
 
         <!-- <a href='https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice' target='_blank'><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.</p>-->
 
@@ -359,7 +358,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 <div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
   <strong>You are in hilight mode.</strong> 
-  <p>Select words to include in your Edit Decision List (EDL) video sequence.</p>
+  <p>Select words to include in your final output (EDL video sequence, plain text, etc.)</p>
 </div>
 </div>
  
@@ -415,40 +414,9 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
      <% }%> <!-- if using safari  -->
 <!-- ///////////////////////// -->
-
-
   <% }else { %>
     <p>Media preview not ready </p>
   <% } %>
-
-<!-- Single button -->
-<!-- <div class="btn-group">
-  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Preview <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a id="playPreviewChrono" >ChronologicalOrder</a></li>
-    <li><a  id="playPreviewSelOrd">Selection Order</a></li>
-  </ul>
-</div> -->
-
-
-
-  <!-- Metadata info button -->
-    <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
-    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info
-    </a>
-  <!-- End metadata info button  -->
-
-
-  <!--Keyboard shortcuts -->
-<!-- Small modal -->
-
-<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">
-  shortcuts
-</a>
-
-
 
 <div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
   <div class="modal-dialog " role="document">
@@ -537,16 +505,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 <!-- end Keyboard shortcuts -->
 
 
-<h4><small>Playback Speed</small></h4>
-
-<!--Speed input -->
-<div class="form-group">
-   <!--<label for="speedControll">Playback Speed</label>-->
-    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
-</div>
-<!--end of Speed input -->
-
-
   <!-- rewind  -->
   <div class="btn-group" role="group" aria-label="...">
   <button type="button" id="rewindVideo"  data-toggle="tooltip" data-placement="bottom" title="rewind 5 seconds cmd + shift + j" class="btn btn-default btn-xs">  
@@ -574,6 +532,17 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 </div>
 
 
+<h4><small>Playback Speed</small></h4>
+
+<!--Speed input -->
+<div class="form-group">
+   <!--<label for="speedControll">Playback Speed</label>-->
+    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
+</div>
+<!--end of Speed input -->
+
+
+
 
 <div class="btn-group" role="group" aria-label="...">
   <button type="button" id="volumeDown"  class="btn btn-default btn-xs">
@@ -583,9 +552,26 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
     <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
   </button>
 </div>
-
-
 </div> <!-- media -->
+
+
+<hr>
+
+  <!-- Metadata info button -->
+    <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
+    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info
+    </a>
+  <!-- End metadata info button  -->
+
+
+  <!--Keyboard shortcuts -->
+<!-- Small modal -->
+
+<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">
+  shortcuts
+</a>
+
+
 
 <div class="collapse" id="collapseMetadata">
  <div class="well">
@@ -727,7 +713,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
               </button>
             </div>
         <% }else{ %>
-          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">
+          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">
           <button type="button" class="btn btn-lg btn-link showBtn controls" ><%= title %></button>
           <p><%= description %></p>
           </div>
@@ -769,10 +755,15 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
         <!-- Online/offline -->
       <div class="form-group">
-        <label for="radioSTT">Speech To Text System</label><br>
+        <label for="radioSTT">Speech To Text Transcription System</label><br>
         <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label>
         <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline)</label>
-        <p class="help-block">Chose what speech to text system you d like to use. IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. See manual for more.</p>
+        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Follow the link for more info on setting it up
+     <a id="gentleSetupLink" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.
+  
+        </p>
+
+
       </div>
         <!-- languages -->
       <div class="form-group">
