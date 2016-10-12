@@ -880,6 +880,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
    
         //adding asbolute relative path to root of app
         //https://github.com/pietrop/nwjs_boilerplate#local-modules-path
+        //TODO: check if this is necessay, or whether it should be .. or if it make a difference at all.
         require('app-module-path').addPath(".");
 
         // Create menu
@@ -894,6 +895,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         console.info(process.versions['node-webkit'])
         console.info("process.versions['node']")
         console.info(process.versions['node'])
+        console.info("process.versions")
+        console.info(process.versions)
 
         // global.$= require("./vendor/jquery.min.js")
 
@@ -904,10 +907,10 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         
         fs = require("fs")
         if (fs.existsSync('./wttskeys.json')) {
-            console.info("WATSON KEYS EXISTS")
+          console.info("WATSON KEYS EXISTS")
           readWatsonAPIKeys(function(ke){
             global.keys = ke;
-             window.ibmWatsonKeysSet = true;
+            window.ibmWatsonKeysSet = true;
           })
         }else{
           //if it doesn't exists then prompt uset to add keys
@@ -941,7 +944,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
 
       } catch (error) {
-          console.info("NOT USING NWJS "+error)
+        console.info("NOT USING NWJS "+error)
       }
     }else{
       // global.frontEndEnviromentNWJS = false;

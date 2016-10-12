@@ -16,10 +16,11 @@ if (window.frontEndEnviromentNWJS) {
   var transcription_generate = require("../interactive_transcription_generator/index.js");
   var path = require('path');
   var LinvoDB = require("linvodb3");
-  LinvoDB.defaults.store = { db: require("level-js") };
+  LinvoDB.defaults.store = { db:  require('level-js') }; //medea level-js
   //TODO:change db with medea
   //+db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
-  // LinvoDB.dbPath = process.cwd()+"/db"; 
+  // LinvoDB.dbPath = path.join(process.cwd(), "/db"); 
+  // LinvoDB.dbPath = require('nw.gui').App.dataPath;
 
   //setting up transcription model in database.
   var transcriptionModel = "transcription";
@@ -69,6 +70,7 @@ if (window.frontEndEnviromentNWJS) {
         //TODO: this is hardcoded, and this variable is not used, fix me!
         tmpWorkFolder:"/",
         destFolder:"/media",
+        // destFolder: ,
         keys: global.keys,
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
