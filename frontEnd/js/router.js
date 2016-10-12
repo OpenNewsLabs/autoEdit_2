@@ -23,7 +23,7 @@ var TranscriptionRouter = Backbone.Router.extend({
       $('#main').html("<div class='container-fluid'><h1>Welcome! - </h1><p>Go to <code>new</code> to transcribe a new media</p><p><code>Transcriptions</code> to view transcriptions in the system</p></div>");
   },
 
-  transcriptionsList: function(){
+  transcriptionsList: function() {
     console.log("transcriptions list")
 
     this.transcriptionsListView = new app.TranscriptionsListView(
@@ -36,7 +36,7 @@ var TranscriptionRouter = Backbone.Router.extend({
     }});
   },
 
-  newTranscription: function(){
+  newTranscription: function() {
     console.info("new transcription")
     var  newTranscription = new app.Transcription({title: "", description: ""});//{title: "Video Interview "+getTimeNow(), description: getTimeNow()}
 
@@ -46,7 +46,7 @@ var TranscriptionRouter = Backbone.Router.extend({
   },
 
 
-  showTranscription: function(cid){
+  showTranscription: function(cid) {
     console.info(cid)
     //TODO: is this the right way to do this???
     console.log("wtf")

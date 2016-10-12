@@ -30,12 +30,15 @@ var generate = function(config) {
   // var audioFileName = "./"+path.parse(videoFile).base+".wav";
   var videoFileName = path.parse(videoFile).base;
   videoFileName = videoFileName.replace(/\s+/g,"_");
-  var currentDir = process.cwd().split(path.sep)[process.cwd().split(path.sep).length -1];
+  // var currentDir = process.cwd().split(path.sep)[process.cwd().split(path.sep).length -1];
 
   //Make audio and webm file unique. Eg so that if upload same video twice it gets different audio and video preview.
   //by using `timeNowFileName()`  in `frontEnd/date_now/index.js`
-  var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
-  var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
+  // var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
+  // var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
+
+  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
+  var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
 
   // TODO: use system application data folder
   var appRootFolderForMedia = config.tmpWorkFolder;
@@ -44,8 +47,10 @@ var generate = function(config) {
   var audioFileAbsolutePath = audioFileName;
 
   // TODO: use system temp folder
-  var tmpFolderCwd = process.cwd() + "/tmp_media";
-  var tmpFolder = path.resolve(tmpFolderCwd);
+  // var tmpFolderCwd = process.cwd() + "/tmp_media";
+  // var tmpFolder = path.resolve(tmpFolderCwd);
+  var tmpFolder = config.tmpWorkFolder;
+
 
 
   // var newTranscription= {

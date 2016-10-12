@@ -58,6 +58,7 @@ node_modules
 
 # ignoring watson api keys
 wttskeys.json
+wttskeys_dev.json
 
 #exclude demo media
 demo_media

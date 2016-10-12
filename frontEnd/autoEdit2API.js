@@ -16,11 +16,11 @@ if (window.frontEndEnviromentNWJS) {
   var transcription_generate = require("../interactive_transcription_generator/index.js");
   var path = require('path');
   var LinvoDB = require("linvodb3");
-  LinvoDB.defaults.store = { db:  require('level-js') }; //medea level-js
+  LinvoDB.defaults.store = { db:  require("medeadown") }; //medea level-js
   //TODO:change db with medea
   //+db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
   // LinvoDB.dbPath = path.join(process.cwd(), "/db"); 
-  // LinvoDB.dbPath = require('nw.gui').App.dataPath;
+  LinvoDB.dbPath = window.config.dataPath;
 
   //setting up transcription model in database.
   var transcriptionModel = "transcription";
@@ -59,6 +59,27 @@ if (window.frontEndEnviromentNWJS) {
         //returning saved transcription callback
         success(model);
       });
+
+      //setting up media folders for media and tmp media on local file system, user libary application support folder 
+      var tmpMediaFolder = window.config.dataPath+"/tmp_media";
+      var mediaFolder = window.config.dataPath+"/media"
+      //if media folder does not exists create it
+      if (!fs.existsSync(tmpMediaFolder)){
+        console.log("tmpMediaFolder folder not present, creating tmpMediaFolder folder")
+          fs.mkdirSync(tmpMediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("tmpMediaFolder folder was already present")
+      }
+      //if temp media folder does not exists create it
+      if (!fs.existsSync(mediaFolder)){
+        console.log("mediaFolder folder not present, creating mediaFolder folder")
+          fs.mkdirSync(mediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("mediaFolder folder was already present")
+      }
+
       // using interactive_transcription_generator to generate metadata, 
       // transcription json 
       // webm video preview 
@@ -68,9 +89,10 @@ if (window.frontEndEnviromentNWJS) {
         title: newElement.title,
         description: newElement.description,
         //TODO: this is hardcoded, and this variable is not used, fix me!
-        tmpWorkFolder:"/",
-        destFolder:"/media",
-        // destFolder: ,
+        // tmpWorkFolder:"/",
+        // destFolder:"/media",
+        tmpWorkFolder: tmpMediaFolder,
+        destFolder: mediaFolder,
         keys: global.keys,
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,

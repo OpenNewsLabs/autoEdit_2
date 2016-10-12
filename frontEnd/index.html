@@ -865,19 +865,20 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       // global.frontEndEnviromentNWJS = true;
       window.frontEndEnviromentNWJS = true;
       window.ibmWatsonKeysSet = false;
-      // process.env.UV_THREADPOOL_SIZE = 50;
 
-      // console.info(" console.log(process.env.UV_THREADPOOL_SIZE)")
-      // console.log(process.env.UV_THREADPOOL_SIZE)
-
+      //adding App.dataPath to config global variable. so that can required outside of index.html context. eg "/Users/pietropassarelli/Library/Application Support/autoEdit2". cannot put it inside try block coz scope restrictions. can then ref as `window.config.dataPath`
+      config.dataPath = require('nw.gui').App.dataPath;
+   
       // For mobile version safari doesn't play webm
-        window.userAgentSafari = false; 
+      window.userAgentSafari = false; 
+
       //
       try{
         console.info("USING NWJS")
         //requiring env variables  https://github.com/motdotla/dotenv
         var gui = require('nw.gui');
-   
+
+
         //adding asbolute relative path to root of app
         //https://github.com/pietrop/nwjs_boilerplate#local-modules-path
         //TODO: check if this is necessay, or whether it should be .. or if it make a difference at all.
@@ -906,7 +907,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         //then read it, parse to json and assign keys to Watson module.
         
         fs = require("fs")
-        if (fs.existsSync('./wttskeys.json')) {
+        config.watsonKeysPath = config.dataPath+'/wttskeys.json';
+        if (fs.existsSync(config.watsonKeysPath)) {
           console.info("WATSON KEYS EXISTS")
           readWatsonAPIKeys(function(ke){
             global.keys = ke;
@@ -1036,7 +1038,7 @@ function getWatsonAPIKeysFromUser(cb){
   // validation
   // TODO: check if this means both conditions have to be true
   if ((apiKeyUsername != null)&&(aPIKeyPassword!= null)) {
-    alert("IBM Watson Speech to text API Keys \n " +"API key 1: "+ apiKeyUsername + "\n API Key 2: "+aPIKeyPassword)
+    alert("IBM Watson Speech to text API Keys \n " +"API key 1: "+ apiKeyUsername + "\n API Key 2: "+aPIKeyPassword+"\n saved in: " +config.watsonKeysPath)
     saveWatsonAPIKeys(apiKeyUsername,aPIKeyPassword)
     cb({username: apiKeyUsername, password: aPIKeyPassword})
   } else {
@@ -1054,7 +1056,7 @@ function saveWatsonAPIKeys(username, password){
   var watsonKeys={};
   watsonKeys.username = username;
   watsonKeys.password = password;
-  fs.writeFileSync('wttskeys.json', JSON.stringify(watsonKeys) );
+  fs.writeFileSync(config.watsonKeysPath, JSON.stringify(watsonKeys) );
 }
 
 /*
@@ -1062,7 +1064,7 @@ function saveWatsonAPIKeys(username, password){
 * returns json object.
 */
 function readWatsonAPIKeys(cb){
-  var k =  JSON.parse(fs.readFileSync('wttskeys.json').toString());
+  var k =  JSON.parse(fs.readFileSync(config.watsonKeysPath).toString());
   cb(k)
 }
 /**************************************************************/

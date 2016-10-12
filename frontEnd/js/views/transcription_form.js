@@ -27,8 +27,8 @@ app.TranscriptionFormView = Backbone.View.extend({
     var newSTTLanguage = $('#IBMoption')[0].checked
 
   	this.model.save({title: newTitle, description: newDescription,videoUrl:newFilePath, languageModel: newLanguage, sttEngine: sttEngine},{
-      success: function(mode, response, option){
-            
+      
+      success: function(mode, response, option){      
            Backbone.history.navigate("transcriptions", {trigger:true}); 
       },
       error: function(model, xhr,options){
