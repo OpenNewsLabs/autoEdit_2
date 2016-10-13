@@ -24,7 +24,7 @@
         "test": "jasmine",
         "start": "nw",
         "build": "node deploy.js",
-        "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2.dmg",
+        "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
         "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch",
         "document_docco": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
         "document_jsdoc": "./node_modules/.bin/jsdoc *.js  --destination ./docs/jsdoc_docs  ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js"
