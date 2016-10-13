@@ -619,7 +619,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
             <div class="btn-group" role="group" aria-label="...">
               <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>
         <!--       <button type="button" class="btn btn-default">Read</button> -->
-              <button type="button"  id="editWords" class="btn btn-default" >Edit</button>
+              <button type="button"  id="editWords" class="btn btn-default" >Edit </button>
+            
             </div>
 
 <a type="button" id="clearHighlights" class="btn btn-default" >
@@ -663,13 +664,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
               <% _.each(paragraph.paragraph, function(lines) { %>
               <% _.each(lines, function(line) { %>
             <dd >
-              <!-- <p> -->
+              <!--  <p class="lines" contenteditable="false"> -->
                 <% _.each(line, function(word) { %>
-                  <span  contenteditable="false" class="words text-muted" data-transcription-id="<%= id %>"  data-paragaph-id="<%= paragraph.id %>"  data-word-id="<%= word.id %>" data-line-id="<%= line.id %>" data-reel-name="<%= metadata.reelName %>" data-clip-name="<%= metadata.fileName %>"
-            data-video-id="<%= 'videoId_'+ id %>"
-            data-speaker="<%= paragraph.speaker %>" data-src="<%= videoOgg %>" data-audio-file="<%= audioFile %>" data-start-time="<%= word.startTime %>" data-text="<%= word.text %>" data-end-time="<%= word.endTime %>"><%= word.text %> </span>
+                  <span contenteditable="false" class="words text-muted" data-transcription-id="<%= id %>"  data-paragaph-id="<%= paragraph.id %>"  data-word-id="<%= word.id %>" data-line-id="<%= line.id %>" data-reel-name="<%= metadata.reelName %>" data-clip-name="<%= metadata.fileName %>" data-video-id="<%= 'videoId_'+ id %>"  data-speaker="<%= paragraph.speaker %>" data-src="<%= videoOgg %>" data-audio-file="<%= audioFile %>" data-start-time="<%= word.startTime %>" data-text="<%= word.text %>" data-end-time="<%= word.endTime %>"><%= word.text %> </span>
                   <% }) %>
-              <!-- </p> -->
+           <!--    </p> -->
            </dd>
              <% }) %>
             <% }) %>
