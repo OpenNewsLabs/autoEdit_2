@@ -56,25 +56,25 @@ app.TranscriptionView = Backbone.View.extend({
    },
     keyboardEvents: {
         'command+k'           : 'pausePlayVideo',
-        'control+k'           : 'pausePlayVideo',
+        // 'control+k'           : 'pausePlayVideo',
         'command+shift+k'     : 'pausePlayVideo',
-        'control+shift+k'     : 'pausePlayVideo',
+        // 'control+shift+k'     : 'pausePlayVideo',
         'command+j'           : 'slowVideo',
-        'control+j'           : 'slowVideo',
+        // 'control+j'           : 'slowVideo',
         'command+l'           : 'fastVideo',
-        'control+l'           : 'fastVideo',
+        // 'control+l'           : 'fastVideo',
         'command+shift+l'     : 'fastForwardVideo',
-        'control+shift+l'     : 'fastForwardVideo',
+        // 'control+shift+l'     : 'fastForwardVideo',
         'command+shift+right' : 'fastForwardVideo',
-        'control+shift+right' : 'fastForwardVideo',
+        // 'control+shift+right' : 'fastForwardVideo',
         'command+shift+j'     : 'rewindVideo',
-        'control+shift+j'     : 'rewindVideo',
+        // 'control+shift+j'     : 'rewindVideo',
         'command+shift+left'  : 'rewindVideo',
-        'control+shift+left'  : 'rewindVideo',
+        // 'control+shift+left'  : 'rewindVideo',
         'command+shift+up'    : 'volumeUp',
-        'control+shift+up'    : 'volumeUp',
+        // 'control+shift+up'    : 'volumeUp',
         'command+shift+down'  : 'volumeDown',
-        'control+shift+down'  : 'volumeDown',
+        // 'control+shift+down'  : 'volumeDown',
         'shift+/'             : 'showHideShortcuts'
     },
 
@@ -409,9 +409,6 @@ var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print'
 
  //add edit notice 
  modeNotice.innerHTML = editNotice;
-
-
-
 
  // listener on word changed 
 
