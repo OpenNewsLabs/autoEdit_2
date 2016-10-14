@@ -56,25 +56,25 @@ app.TranscriptionView = Backbone.View.extend({
    },
     keyboardEvents: {
         'command+k'           : 'pausePlayVideo',
-        'ctrl+k'           : 'pausePlayVideo',
+        'ctrl+k'              : 'pausePlayVideo',
         'command+shift+k'     : 'pausePlayVideo',
-        'ctrl+shift+k'     : 'pausePlayVideo',
+        'ctrl+shift+k'        : 'pausePlayVideo',
         'command+j'           : 'slowVideo',
-        'ctrl+j'           : 'slowVideo',
+        'ctrl+j'              : 'slowVideo',
         'command+l'           : 'fastVideo',
-        'ctrl+l'           : 'fastVideo',
+        'ctrl+l'              : 'fastVideo',
         'command+shift+l'     : 'fastForwardVideo',
-        'ctrl+shift+l'     : 'fastForwardVideo',
+        'ctrl+shift+l'        : 'fastForwardVideo',
         'command+shift+right' : 'fastForwardVideo',
-        'ctrl+shift+right' : 'fastForwardVideo',
+        'ctrl+shift+right'    : 'fastForwardVideo',
         'command+shift+j'     : 'rewindVideo',
-        'ctrl+shift+j'     : 'rewindVideo',
+        'ctrl+shift+j'        : 'rewindVideo',
         'command+shift+left'  : 'rewindVideo',
-        'ctrl+shift+left'  : 'rewindVideo',
+        'ctrl+shift+left'     : 'rewindVideo',
         'command+shift+up'    : 'volumeUp',
-        'ctrl+shift+up'    : 'volumeUp',
+        'ctrl+shift+up'       : 'volumeUp',
         'command+shift+down'  : 'volumeDown',
-        'ctrl+shift+down'  : 'volumeDown',
+        'ctrl+shift+down'     : 'volumeDown',
         'shift+/'             : 'showHideShortcuts'
     },
 
@@ -358,13 +358,8 @@ var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print'
   var status = false;
   if( $("#editWords").hasClass("btn-primary")){
     status = true;
-   
-
   }else{
-    status = false
-
-   
-
+    status = false   
   }
 
   if(status){
@@ -379,16 +374,8 @@ var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print'
 
    //disable editable on words 
   $('.words').attr('contenteditable','false');
-
-
     //remove edit notice 
    // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
-
-
-
-
-
-
 }else{
   //disable editing
   $("#highlightWords").removeClass("active")
@@ -402,8 +389,6 @@ var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print'
  //enable content editable
  $('.words').attr('contenteditable','true');
 
-
-
   //remove hilight notice 
  // modeNotice.removeChild(document.getElementById("hilightModeNotice")) ;
 
@@ -413,7 +398,6 @@ var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print'
  // listener on word changed 
 
 var contents = $('.words').html();
-
 //TODO: input change to event that detect when focus out or somehting else so that i doesn't auto save as typing coz that is super slow...
 $( ".words" ).on( "focusout", { model: this.model }, function(event) {
   //pause word 
@@ -429,7 +413,7 @@ $( ".words" ).on( "focusout", { model: this.model }, function(event) {
          _.each(lines.line, function(word){
 
             if(word.id == tmpWordId){
-              word.text = tmpWordText
+              word.text = tmpWordText;
               // console.log("found it")
 
               model.save({wait: false})

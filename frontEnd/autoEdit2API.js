@@ -11,7 +11,7 @@
  */
 
 //checking that we are in NWJS enviroment 
-if (window.frontEndEnviromentNWJS) {
+// if (window.frontEndEnviromentNWJS) {
   var fs = require("fs")
   var transcription_generate = require("../interactive_transcription_generator/index.js");
   var path = require('path');
@@ -251,6 +251,12 @@ if (window.frontEndEnviromentNWJS) {
     ///for transcription model
     if(model.constructor.modelType == "transcription"){
       //looks in database using transcription id
+      //worth looking into alternative
+      //https://github.com/Ivshti/linvodb3#removing-from-the-collection 
+      //Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
+      // numRemoved = 1
+      // removed done
+      // });
       Transcription.findOne(model._id, function(err, transcription) {
         //deletes transcription from db
         transcription.remove(function() {
@@ -270,4 +276,7 @@ if (window.frontEndEnviromentNWJS) {
   }
 
   module.exports = autoEdit2API;
-}//if in NWJS enviroment 
+// }//if in NWJS enviroment 
+
+
+

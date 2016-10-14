@@ -17,15 +17,9 @@ app.TranscriptionsListView = Backbone.View.extend({
           app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
        } 
      }, 30000);//in milliseconds 
-
-
-
     // }else
     //   console.log("transcriptions up to date ")
     // }
-
-
-
     // this.collection =  app.transcriptionRouter.transcriptionsList;    // UPDATED
     this.collection.fetch({reset: true});   // NEW
     // this.render();
@@ -91,23 +85,18 @@ app.TranscriptionListElement = Backbone.View.extend({
   },
 
   deleteTranscription: function(){
-
     var r = confirm("You sure you want to delete this transcription?");
     if (r == true) {
       //TODO: find and delete transcription here. also remove from collection.
       // var tmpTranscription = TBVEapp.transcriptionList.get({"cid":this.model.cid});
       // tmpTranscription.destroy();
-
       //TODO: not sure if this the right way to re-render page?
       this.model.destroy({success: function(model, response) {
         app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
       }})
-
       //or use router?navigate?
       // $('#main').html(this.render().el);
       // alert("Transcription has been deleted")
-
-
     } else {
       alert("Transcription was not deleted")
 
