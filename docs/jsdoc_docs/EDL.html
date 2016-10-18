@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: EDL</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: EDL</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>EDL</h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    <h4 class="name" id="EDL"><span class="type-signature"></span>new EDL<span class="signature">(config)</span><span class="type-signature"> &rarr; {stirng}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Represents an EDL Object.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">EDL video sequence as JSON
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>title</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Title of the EDL video sequence</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The camera timecode, eg free run, rec run, time of day, repsent a time offset from the time relative to the beginning of the video file timeline. in format of timecode eg "00:00:28:08" such as "hh:mm:ss:ms" because that's how cameras write it in the metadata of the file.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>events</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;Object></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">array of video segment makind up the EDL sequence
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">"id" of video segment</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>startTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">start time of video segment in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>endTime</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">end time of video segment in seconds</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reelName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">reel name of video segment, generally the name of the card the footage was filmed on or not available</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>clipName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">file name that the video segment belongs to. Only file name. no path.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontEnd_edl_composer_index.js.html">frontEnd/edl_composer/index.js</a>, <a href="frontEnd_edl_composer_index.js.html#line60">line 60</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    EDL - and EDL string that can written to file to import EDL into video editing software.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">stirng</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#splitsanaudiofile,ifitexceeds5minutes,in5minutesintervalls.usingffprobetoreadduration.ffmpegpassedtotrimmermodule.savestrimmedclipsintempfolder">splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
+using ffprobe to read duration. ffmpeg passed to trimmer module.
+saves trimmed clips in temp folder</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribeTakesinthefilepathtoamediaaudioorvideofileandreturnsajsonoftranscription.convertsaudioormediafileintoaudiomeetingIBMSpecsdividesaudiotosendtoSTTAPIinto5minchunkssendsallclipsallatoncereconnectsresultsasreturnedbySTTAPIintoonejsonfilethatmeetstheautoEdit2specsreturnsthatascallback">transcribe
+Takes in the file path to a media audio or video file and returns a json of transcription.
+converts audio or media file into audio meeting IBM Specs
+divides audio to send to STT API into 5 min chunks
+sends all clips all at once 
+reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
+returns that as callback</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 10:41:31 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

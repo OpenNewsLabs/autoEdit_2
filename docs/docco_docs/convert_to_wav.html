@@ -224,9 +224,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
-* Convers video file into wav (or any ffmpeg supported input)
+* @file Convers video file into wav (or any ffmpeg supported input)
 * takes in input file, output destination file, and callback,
 * callback returns audio file name/path
+* @requires fluent-ffmpeg
 */</span></pre></div></div>
             
         </li>
@@ -245,15 +246,14 @@
             <div class="content"><div class='highlight'><pre>
 <span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
 
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">convertToWav</span>(<span class="hljs-params">file,aud_file,exampleFfmpegPath, callback</span>) </span>{
-
-  ffmpeg.setFfmpegPath(exampleFfmpegPath);
-
-  <span class="hljs-keyword">var</span> comand = ffmpeg(file)
-                .noVideo()
-                .audioCodec(<span class="hljs-string">'pcm_s16le'</span>)
-                .audioChannels(<span class="hljs-number">1</span>)
-                .audioFrequency(<span class="hljs-number">16000</span>)</pre></div></div>
+<span class="hljs-comment">/**
+ * @function convertToWav
+ * @param {string} file -  path to audio or viceo file to convert to wav
+ * @param {string} audioFile - path to output wav audio file
+ * @param {string} ffmpegPath - path to ffmpeg binary. If not present it will try to use system one.
+ * @returns {callback} callback - callback to return audio file path as string. 
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">convertToWav</span>(<span class="hljs-params">file,audioFile,ffmpegPath, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -264,13 +264,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>.audioBitrate(audioBitRateFor100mbSize)
-.videoBitrate(audioBitRateFor100mbSize, true)</p>
+              <p>setting ffmpeg binary path</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                .output(aud_file)
-                .on(<span class="hljs-string">'progress'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">progress</span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(ffmpegPath) {
+    ffmpeg.setFfmpegPath(ffmpegPath);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available"</span>);
+  }</pre></div></div>
             
         </li>
         
@@ -281,12 +283,16 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p> progress // {“frames”:null,”currentFps”:null,”currentKbps”:256,”targetSize”:204871,”timemark”:”01:49:15.90”}
-console.log(‘Processing: ‘ + progress.timemark + ‘ done ‘ + progress.targetSize+’ kilobytes’);</p>
+              <p>running ffmpeg comand </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>                })
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> comand = ffmpeg(file)
+                .noVideo()
+                .audioCodec(<span class="hljs-string">'pcm_s16le'</span>)
+                .audioChannels(<span class="hljs-number">1</span>)
+                .audioFrequency(<span class="hljs-number">16000</span>)
+                .output(audioFile)
                 .on(<span class="hljs-string">'end'</span>,</pre></div></div>
             
         </li>
@@ -303,14 +309,15 @@ console.log(‘Processing: ‘ + progress.timemark + ‘ done ‘ + progress.tar
             </div>
             
             <div class="content"><div class='highlight'><pre>                  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-                    callback(aud_file)
+                    callback(audioFile)
                   }
                   || <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
                      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Finished processing'</span>);
                   }
                 ).run();
 }
-  <span class="hljs-built_in">module</span>.exports = convertToWav;</pre></div></div>
+
+<span class="hljs-built_in">module</span>.exports = convertToWav;</pre></div></div>
             
         </li>
         

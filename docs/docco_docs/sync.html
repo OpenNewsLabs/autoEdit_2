@@ -223,10 +223,30 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS) {
-	<span class="hljs-keyword">var</span> autoEdit2API = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./autoEdit2API.js"</span>)
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @file Manages the backend of the app by overwrighting backbone.sync function to the `autoEditAPI.js` module.
+ * @author Pietro Passarelli 
+ */</span>
 
-	Backbone.sync = autoEdit2API
+<span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS) {
+	<span class="hljs-keyword">var</span> autoEdit2API = <span class="hljs-built_in">require</span>(<span class="hljs-string">"./autoEdit2API.js"</span>);
+	Backbone.sync = autoEdit2API;
+}<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>hardcoded demo ?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
 }</pre></div></div>
             
         </li>

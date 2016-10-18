@@ -27,29 +27,34 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * module to read video metadata needed for EDL
- * reel, timecode, fps.
- * TODO: replace "NA" with undefined?
+ * @file Reads video metadata needed for EDL. reel, timecode, fps. If those fields are not present in the metadata associated with the media file the attributes in the resulting json is replaced with "NA".
+ * @author Pietro Passarelli 
+ * @requires fluent-ffmpeg
+ * @requires path
  */
 
 var ffmpeg = require('fluent-ffmpeg');
 var path = require('path');
 
 /*
- * This is to get whole of the metadata available through ffprobe and find otu where the relevant once for the EDL are.
+ * @function readMetadata
+ * Reads all metadata available from video and audio file using ffprobe.
+ * @param {object} config - The parameter containting attribute options.
+ * @param {string} config.file - video or audio file to read metadata from.
+ * @param {string} config.ffprobePath - path to ffprobe binary. If not present it will try to use system one.
+ * @returns {callback} config.callback - Optional callback to return when ffprobe done reading. It returns an json object.
  */
 function readMetadata(config){
   var file = config.file;
-  // ffprobePath = config.ffprobePath;
+  var callback;
 
   if ( config.ffprobePath ) {
-    //setting ffmpeg bin
+    //setting ffprobe bin
     ffmpeg.setFfprobePath(config.ffprobePath);
   } else {
     console.warn("ffprobe binary path not defined, so using system one. if available");
   }
 
-  var callback;
   if(config.callback){
     //optional callback
     callback = config.callback;
@@ -60,103 +65,87 @@ function readMetadata(config){
   });
 }
 
-/**
- * Returns
+/*
+ * @function readVideoMetadataForEDL
+ * Reads metadata available from video and audio file using ffprobe to return the EDL are.
+ * @param {object} config - The parameter containting attribute options.
+ * @param {string} config.file - video or audio file to read metadata from.
+ * @param {string} config.ffprobePath - path to ffprobe binary. If not present it will try to use system one.
+ * @returns {callback} config.callback - Optional callback to return when ffprobe done reading. It returns an object containing metadata info needed for EDL(Edit Decision List): filePathName,fileName,date, reelName, timecode, fps, duration,
  */
-
-
 function readVideoMetadataForEDL(config){
   var file = config.file;
-  // var ffprobePath = config.ffprobePath;
+  var callback;
+  var video ={};
 
   if ( config.ffprobePath ) {
-    //setting ffmpeg bin
+    //setting ffprobe bin
     ffmpeg.setFfprobePath( config.ffprobePath);
   } else {
     console.warn("ffprobe binary path not defined, so using system one. if available");
   }
 
-  var callback;
+  //optional callback
   if(config.callback){
-    //optional callback
     callback = config.callback;
   }
 
-  var video ={};
-
+  //running ffprobe   
   ffmpeg.ffprobe(file, function(err, metadata ) {
-    // uncomment this to see the metadata associated with the video file
-    // console.log(metadata)
+    // metadata is an object that contains all of the metadata available for the media file. Attributes especially nested onece may or may not be present costently across media files. Hence the following multiple boolean checks before reading attributes.
+    //eg if format does not exist ad an attribtue then filename attribute will not be found under format.
 
+    //reading file name 
     if(metadata.format !== undefined &amp;&amp; metadata.format.filename !== undefined ){
       video.filePathName = metadata.format.filename;
       var filePathO = path.parse(video.filePathName);
       video.fileName = filePathO.base;
     } else {
-      video.filePathName = "NA";//"Time.now";
-      video.fileName = "NA";//"Time.now";
+      video.filePathName = "NA";
+      video.fileName = "NA";
     }
 
-    // DATE
-    if( metadata.streams[0] !== undefined &amp;&amp;
-        metadata.streams[0].tags !== undefined &amp;&amp;
-        metadata.streams[0].tags.creation_time !== undefined ) {
-      // document.getElementById('inputVideoDate').value = metadata.streams[0].tags.creation_time;
+    // reading date
+    if( metadata.streams[0] !== undefined &amp;&amp; metadata.streams[0].tags !== undefined &amp;&amp; metadata.streams[0].tags.creation_time !== undefined ) {
       video.date = metadata.streams[0].tags.creation_time;
     } else {
-      // document.getElementById('inputVideoDate').value = "Time.now";
-      video.date = "NA";//"Time.now";
+      video.date = "NA";
     }
 
-    //REEL
-    if(metadata.streams[2]!= undefined &amp;&amp; metadata.streams[2].tags != undefined &amp;&amp;  metadata.streams[2].tags.reel_name != undefined){
-      // document.getElementById('inputVideoReelName').value = metadata.streams[2].tags.reel_name;
+    // reading reel 
+    if(metadata.streams[2] !== undefined &amp;&amp; metadata.streams[2].tags !== undefined &amp;&amp;  metadata.streams[2].tags.reel_name !== undefined){
       video.reelName = metadata.streams[2].tags.reel_name;
     }else {
-      // document.getElementById('inputVideoReelName').value = "not available";
       video.reelName = "NA";
-      //+write it to video
     }
 
-    //TIMECODE
-    // if(metadata.streams[0]!= undefined &amp;&amp; metadata.streams[0].tags != undefined &amp;&amp;  metadata.streams[0].tags.timecode != undefined){
-    // document.getElementById('inputVideoTimecode').value = metadata.streams[0].tags.timecode;
-    //  video.timecode =  metadata.streams[0].tags.timecode;
-    if(metadata.format!= undefined &amp;&amp; metadata.format.tags != undefined &amp;&amp;  metadata.format.tags.timecode != undefined){
+    // reading timecode eg "00:00:00:00"
+    if(metadata.format !== undefined &amp;&amp; metadata.format.tags !== undefined &amp;&amp;  metadata.format.tags.timecode !== undefined){
       video.timecode =  metadata.format.tags.timecode;
     }else{
-      // document.getElementById('inputVideoTimecode').value = "00:00:00:00";
-      video.timecode =  "NA";//"00:00:00:00";
-      //+write it to video
-      //enable field
+      video.timecode =  "NA";
     }
 
-    // fps
-    if(metadata.streams[0]!= undefined &amp;&amp; metadata.streams[0].codec_time_base != undefined ){
-      // document.getElementById('inputVideoTimebase').value = metadata.streams[0].codec_time_base;
+    // reading fps eg "1/25"
+    if(metadata.streams[0] !== undefined &amp;&amp; metadata.streams[0].codec_time_base !== undefined ){
       video.fps =  metadata.streams[0].codec_time_base;
     }else{
-      // document.getElementById('inputVideoTimebase').value ="1/25";
-      video.fps =  "NA";//"1/25";
-      //enable field
+      video.fps =  "NA";
     }
-    //duration
-    if(metadata.streams[0]!= undefined &amp;&amp; metadata.streams[0].duration != undefined ){
-      // document.getElementById('inputVideoDuration').value = metadata.streams[0].duration;
+
+    // reading duration eg in secods
+    if(metadata.streams[0] !== undefined &amp;&amp; metadata.streams[0].duration !== undefined ){
       video.duration = metadata.streams[0].duration;
     }else{
-      // document.getElementById('inputVideoDuration').value = "NA";
       video.duration = "NA";
-      //enable field
     }
-    // console.log(JSON.stringify(video));
-    // console.log(video);
-    if(callback){callback(video)}else{return video};
+
+    //returning metadata EDL info 
+    if(callback){callback(video)}else{ return video };
   });
-  // return video;
 }
 
-// var video = readVideoMetadata('/Users/pietropassarelli/Dropbox/Public/Clip16.mov', function(resp){console.log(resp)});
+
 module.exports = {
   read: readVideoMetadataForEDL,
   readMetadata: readMetadata
@@ -171,13 +160,22 @@ module.exports = {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convert">convert</a></li><li><a href="global.html#ffmpeg">ffmpeg</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#readVideoMetadataForEDL">readVideoMetadataForEDL</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#watson">watson</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#splitsanaudiofile,ifitexceeds5minutes,in5minutesintervalls.usingffprobetoreadduration.ffmpegpassedtotrimmermodule.savestrimmedclipsintempfolder">splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
+using ffprobe to read duration. ffmpeg passed to trimmer module.
+saves trimmed clips in temp folder</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribeTakesinthefilepathtoamediaaudioorvideofileandreturnsajsonoftranscription.convertsaudioormediafileintoaudiomeetingIBMSpecsdividesaudiotosendtoSTTAPIinto5minchunkssendsallclipsallatoncereconnectsresultsasreturnedbySTTAPIintoonejsonfilethatmeetstheautoEdit2specsreturnsthatascallback">transcribe
+Takes in the file path to a media audio or video file and returns a json of transcription.
+converts audio or media file into audio meeting IBM Specs
+divides audio to send to STT API into 5 min chunks
+sends all clips all at once 
+reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
+returns that as callback</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Thu Sep 29 2016 16:19:47 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 10:41:31 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>
