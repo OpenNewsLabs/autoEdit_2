@@ -9,7 +9,7 @@ var ffmpeg = require('fluent-ffmpeg');
 var path = require('path');
 
 /*
- * @function readMetadata
+ * @function readMetadata.
  * Reads all metadata available from video and audio file using ffprobe.
  * @param {object} config - The parameter containting attribute options.
  * @param {string} config.file - video or audio file to read metadata from.
