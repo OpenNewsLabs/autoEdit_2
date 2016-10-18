@@ -229,7 +229,8 @@
 app.TranscriptionFormView = Backbone.View.extend({
   <span class="hljs-attr">template</span>: _.template($(<span class="hljs-string">'#transcriptionFormTemplate'</span>).html()), 
   <span class="hljs-attr">events</span> :{
-  	<span class="hljs-string">'click #submitBtn'</span>: <span class="hljs-string">'save'</span></pre></div></div>
+  	<span class="hljs-string">'click #submitBtn'</span>: <span class="hljs-string">'save'</span>,
+    <span class="hljs-string">'click #gentleSetupLink'</span>: <span class="hljs-string">"gentleSetupLink"</span></pre></div></div>
             
         </li>
         
@@ -263,8 +264,8 @@ app.TranscriptionFormView = Backbone.View.extend({
     <span class="hljs-keyword">var</span> newSTTLanguage = $(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked
 
   	<span class="hljs-keyword">this</span>.model.save({<span class="hljs-attr">title</span>: newTitle, <span class="hljs-attr">description</span>: newDescription,<span class="hljs-attr">videoUrl</span>:newFilePath, <span class="hljs-attr">languageModel</span>: newLanguage, <span class="hljs-attr">sttEngine</span>: sttEngine},{
-      <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mode, response, option</span>)</span>{
-            
+      
+      <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mode, response, option</span>)</span>{      
            Backbone.history.navigate(<span class="hljs-string">"transcriptions"</span>, {<span class="hljs-attr">trigger</span>:<span class="hljs-literal">true</span>}); 
       },
       <span class="hljs-attr">error</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, xhr,options</span>)</span>{
@@ -273,8 +274,12 @@ app.TranscriptionFormView = Backbone.View.extend({
       }
     });
  
- 
+  },
 
+  <span class="hljs-attr">gentleSetupLink</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS ){
+      <span class="hljs-built_in">require</span>(<span class="hljs-string">'nw.gui'</span>).Shell.openExternal(<span class="hljs-string">'https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#gentle-stt-open-source-free-and-offline'</span>);
+    }
   },
   <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
     <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.attributes));

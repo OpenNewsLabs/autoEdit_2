@@ -8,7 +8,7 @@ app.TranscriptionsListView = Backbone.View.extend({
   initialize: function(){
     // this.listenTo(this.model, "change", this.render);
     // this.listenTo(this.collection, "reset", this.render);
-    // this.listenTo(this.collection, "fetch", this.render);
+    this.listenTo(this.collection, "fetch", this.render);
     // this.listenTo(this.collection, "add", this.render);
 
     //Temporary way to auto update on transcription status change 

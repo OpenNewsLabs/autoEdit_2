@@ -1,6 +1,44 @@
 /**
  * @file Module function that takes in the file path to a media audio or video file and returns a json of transcription. 
  * @author Pietro Passarelli 
+ * @example
+  var path    = require('path');
+  var fs      = require('fs');
+  var transcriber = require("./index.js");
+
+  var demoFile = "someFilePath.mov";
+
+  //split audio files are kept in tmp folder and then delted
+  var tmpFolder = ".";
+  var audioFileName = tmpFolder+"/"+path.parse(demoFile).base+".wav";
+
+  //IBM Keys, json with username password attributes.
+  var keys = require("path_to_ibm_watson_keys/wttskeys.json")
+  //path to ffmpeg and ffprobe pin
+  var ffmpegPath = "/path_to_ffmpeg_bin/ffmpeg";
+  var ffprobePath = "/path_to_ffmprobe_bin/ffprobe";
+
+  transcriber({
+    videoFile: demoFile,
+    keys:keys,
+    audioFileOutput: audioFileName,
+    ffmpegBin: ffmpegPath,
+    tmpPath: tmpFolder,
+    ffprobePath: ffprobePath,
+    callback: function(respTranscriptJson){
+
+      console.log(JSON.stringify(respTranscriptJson,null,2));
+
+      fs.writeFileSync("./example_tramscription.json",JSON.stringify(respTranscriptJson ))
+
+      //optionally if you don't need to keep the audio file used to send to IBM Watson, here is a good place/time to delete it.
+      //eg deleting audio file used for transcription
+      // fs.unlinkSync(audioFileName);
+
+      //However if you need, the audio file for instance to do speaker diarization with another system that requries same audio, here's a good place to save the file name/file path for reference.
+
+    }
+  })
  * @requires fs
  * @requires path
  * @requires parseSamJsonToTranscripJson
@@ -25,7 +63,7 @@ var parseSamJsonToTranscripJson = require("./sam_transcriber_json_convert.js");
 
 /**
  * @function transcribe
- * Takes in the file path to a media audio or video file and returns a json of transcription.
+ * @description Takes in the file path to a media audio or video file and returns a json of transcription.
  * converts audio or media file into audio meeting IBM Specs
  * divides audio to send to STT API into 5 min chunks
  * sends all clips all at once 
@@ -70,7 +108,7 @@ var transcribe = function(config) {
         files.forEach(function(f) {
           //send each to watson
           var sendToWatsonUtil = new SendToWatson();
-          
+
           sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
             //add offset to json of each audio clippings transcription
             var parsed = parse(data, f.offset);

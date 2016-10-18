@@ -231,21 +231,12 @@
 <span class="hljs-comment">/**
 * Takes in file with absolute path. can use node module path to get absolute path of a file.
 */</span>
-<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send_to_gentle</span>(<span class="hljs-params">file, callback</span>) </span>{
-  
-<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Sending request to Gentle STT"</span>)
-
-    <span class="hljs-keyword">var</span> options = {
-      <span class="hljs-attr">headers</span>: {
-        <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'multipart'</span>
-      },
-      <span class="hljs-attr">formData</span>: {
-        <span class="hljs-attr">audio</span>: fs.createReadStream(file)
-      }
-    };
-
-    request.post(url, options, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, response, body</span>) </span>{
-      <span class="hljs-keyword">if</span> (error) <span class="hljs-built_in">console</span>.log(error);</pre></div></div>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">send_to_gentle</span>(<span class="hljs-params">config, callback</span>) </span>{
+  <span class="hljs-keyword">var</span> file = config.audio;
+  <span class="hljs-keyword">var</span> text;
+  <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> config.text !== <span class="hljs-string">'undefined'</span>){
+    text  = config.text;
+  }</pre></div></div>
             
         </li>
         
@@ -256,11 +247,23 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>var parsed = parse(JSON.parse(body));</p>
+              <p>TODO: text is optional check if exists</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback !== <span class="hljs-string">'undefined'</span>) {</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> text = config.text;
+  <span class="hljs-built_in">console</span>.log(text)
+
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Sending request to Gentle STT"</span>)
+
+    <span class="hljs-keyword">var</span> options = {
+      <span class="hljs-attr">headers</span>: {
+        <span class="hljs-string">'Content-Type'</span>: <span class="hljs-string">'multipart'</span>
+      },
+      <span class="hljs-attr">formData</span>: {
+        <span class="hljs-attr">audio</span>: fs.createReadStream(file)
+      }
+    };</pre></div></div>
             
         </li>
         
@@ -270,6 +273,41 @@
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>if there is a text attribute adding it to the form data </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(<span class="hljs-keyword">typeof</span> text !== <span class="hljs-string">'undefined'</span>){
+      options.formData.transcript = fs.createReadStream(text);
+    }
+
+    request.post(url, options, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">error, response, body</span>) </span>{
+      <span class="hljs-keyword">if</span> (error) <span class="hljs-built_in">console</span>.log(error);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>var parsed = parse(JSON.parse(body));</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> callback !== <span class="hljs-string">'undefined'</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>fs.writeFileSync(“./tmp/tmp.watson.tramscription.json”,JSON.stringify(JSON.parse(body) ))</p>
 

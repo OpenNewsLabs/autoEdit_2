@@ -39,15 +39,16 @@
  */
 
 //checking that we are in NWJS enviroment 
-if (window.frontEndEnviromentNWJS) {
+// if (window.frontEndEnviromentNWJS) {
   var fs = require("fs")
   var transcription_generate = require("../interactive_transcription_generator/index.js");
   var path = require('path');
   var LinvoDB = require("linvodb3");
-  LinvoDB.defaults.store = { db: require("level-js") };
+  LinvoDB.defaults.store = { db:  require("medeadown") }; //medea level-js
   //TODO:change db with medea
   //+db path, for now in root of app, to be change so that in config where user can set where they want it, but also provide a default. 
-  // LinvoDB.dbPath = process.cwd()+"/db"; 
+  // LinvoDB.dbPath = path.join(process.cwd(), "/db"); 
+  LinvoDB.dbPath = window.config.dataPath;
 
   //setting up transcription model in database.
   var transcriptionModel = "transcription";
@@ -71,6 +72,7 @@ if (window.frontEndEnviromentNWJS) {
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model containing db id
   */
   autoEdit2API.create = function(model, success, error){
     if( model.constructor.modelType == "transcription"){
@@ -85,6 +87,27 @@ if (window.frontEndEnviromentNWJS) {
         //returning saved transcription callback
         success(model);
       });
+
+      //setting up media folders for media and tmp media on local file system, user libary application support folder 
+      var tmpMediaFolder = window.config.dataPath+"/tmp_media";
+      var mediaFolder = window.config.dataPath+"/media"
+      //if media folder does not exists create it
+      if (!fs.existsSync(tmpMediaFolder)){
+        console.log("tmpMediaFolder folder not present, creating tmpMediaFolder folder")
+          fs.mkdirSync(tmpMediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("tmpMediaFolder folder was already present")
+      }
+      //if temp media folder does not exists create it
+      if (!fs.existsSync(mediaFolder)){
+        console.log("mediaFolder folder not present, creating mediaFolder folder")
+          fs.mkdirSync(mediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("mediaFolder folder was already present")
+      }
+
       // using interactive_transcription_generator to generate metadata, 
       // transcription json 
       // webm video preview 
@@ -94,8 +117,10 @@ if (window.frontEndEnviromentNWJS) {
         title: newElement.title,
         description: newElement.description,
         //TODO: this is hardcoded, and this variable is not used, fix me!
-        tmpWorkFolder:"/",
-        destFolder:"/media",
+        // tmpWorkFolder:"/",
+        // destFolder:"/media",
+        tmpWorkFolder: tmpMediaFolder,
+        destFolder: mediaFolder,
         keys: global.keys,
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
@@ -148,6 +173,7 @@ if (window.frontEndEnviromentNWJS) {
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.read = function(model, success, error){
     //If a colleciton
@@ -180,6 +206,7 @@ if (window.frontEndEnviromentNWJS) {
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.update = function(model, success, error){
     //for transcription model
@@ -215,6 +242,7 @@ if (window.frontEndEnviromentNWJS) {
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.patch = function(model, success, error){
     if(model.constructor.modelType == "transcription"){
@@ -245,11 +273,18 @@ if (window.frontEndEnviromentNWJS) {
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
+  * @returns {object} sucess callback with backbone model
   */
   autoEdit2API.delete = function(model, success, error){
     ///for transcription model
     if(model.constructor.modelType == "transcription"){
       //looks in database using transcription id
+      //worth looking into alternative
+      //https://github.com/Ivshti/linvodb3#removing-from-the-collection 
+      //Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
+      // numRemoved = 1
+      // removed done
+      // });
       Transcription.findOne(model._id, function(err, transcription) {
         //deletes transcription from db
         transcription.remove(function() {
@@ -269,7 +304,11 @@ if (window.frontEndEnviromentNWJS) {
   }
 
   module.exports = autoEdit2API;
-}//if in NWJS enviroment </code></pre>
+// }//if in NWJS enviroment 
+
+
+
+</code></pre>
         </article>
     </section>
 
@@ -279,13 +318,14 @@ if (window.frontEndEnviromentNWJS) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convert">convert</a></li><li><a href="global.html#ffmpeg">ffmpeg</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#readVideoMetadataForEDL">readVideoMetadataForEDL</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#watson">watson</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Thu Sep 29 2016 16:19:47 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

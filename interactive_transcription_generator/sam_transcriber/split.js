@@ -5,6 +5,11 @@
  * @todo: figure out how to make sure each file does not exceeen 100mb (othwerwise it be rejected by IBM Watson STT service )
  *
  * takes in file, tmp folder where to put audio files trimmed. and a callback tha returns array with name of files and offest from start, to be able to concact the transcription json from IBM Watson STT Service back togethere as one big file, with word timecodes relative to the original audio/video file times.
+ * @example <caption>Example usage </caption>
+ split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
+    //can do something with array of files
+ })
+ * @example <caption>Example output `files`</caption>
    [
     {
       name: filename,
@@ -13,6 +18,8 @@
      ...
    ]
  *
+ * @todo refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.
+ * 
  * @requires fluent-ffmpeg
  * @requires path
  * @requires fs
@@ -25,9 +32,10 @@ var fs      = require('fs');
 var trimmer = require('./trimmer.js');
 
 /**
-* @function splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
-* using ffprobe to read duration. ffmpeg passed to trimmer module.
-* saves trimmed clips in temp folder   
+* @function split
+* @description splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
+* using `ffprobe` to read duration. `ffmpeg` passed to `trimmer` module.
+* saves trimmed clips in temp folder.  
 * 
 * @todo refactor using config, needs refactroing index.js of sam transcriber if you do
 * @param {string} file -  audio file path
@@ -53,7 +61,8 @@ function split(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, cb) {
   }
 
   /**
-  * @function adds info on trimmed clips to list of files. 
+  * @function finishedSplit
+  * @description adds info on trimmed clips to list of files. 
   * @param {string} - name of the audio clip 
   * @param {number} - clip time offset in seconds, in 5 min intervals
   * @returns {callback} callback - return list of files

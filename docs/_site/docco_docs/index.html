@@ -220,20 +220,35 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p><a href="https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274">https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274</a></p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre>
-<span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
-<span class="hljs-comment">/**
- * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @file Converts audio or video file into a HTML5 video webm.
+ * uses code from this issue/question from fluent-ffmepg https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274
+ * to understand the ffmpeg used to encode webm video see this guide https://trac.ffmpeg.org/wiki/Encode/VP8
+ * @author Pietro Passarelli 
+ * @requires fluent-ffmpeg
+ * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
  */</span>
 
+
+<span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
+
+<span class="hljs-comment">/**
+ * @function convert
+ * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @param {object} config - The parameter containting attribute options.
+ * @param {string} config.src - full path of video or audio to convert.
+ * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.
+ * @param {string} config.ffmpegBin - Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.
+ * @returns {callback} config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as `config.outputName` input.
+ */</span>
 <span class="hljs-keyword">var</span> convert = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">config</span>)</span>{
 
   <span class="hljs-keyword">var</span> videoSrc = config.src;
-  <span class="hljs-keyword">var</span> outputName = config.outputName;</pre></div></div>
+  <span class="hljs-keyword">var</span> outputName = config.outputName;
+  <span class="hljs-keyword">var</span> callback;</pre></div></div>
             
         </li>
         
@@ -244,12 +259,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>declaring it outisde for scope reasons.</p>
+              <p>optional callback</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> callback ;
-  <span class="hljs-keyword">if</span>(config.callback){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(config.callback){
+    callback = config.callback;
+  }</pre></div></div>
             
         </li>
         
@@ -260,14 +276,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>optional callback</p>
+              <p>setting ffmpeg bin, optional. if not specified in input fluent-ffmpeg will try to use system one if present. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    callback = config.callback;
-  }
-
-  <span class="hljs-keyword">if</span>(config.ffmpegBin){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(config.ffmpegBin){
+    ffmpeg.setFfmpegPath(config.ffmpegBin);
+  }<span class="hljs-keyword">else</span>{</pre></div></div>
             
         </li>
         
@@ -278,22 +293,47 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>setting ffmpeg bin</p>
+              <p>case in which ffmpeg bin not provided in input and not present on system not covered.</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    ffmpeg.setFfmpegPath(config.ffmpegBin);
-  }<span class="hljs-keyword">else</span>{
-    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available."</span>);
-  }
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available."</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>executing ffmpeg comand </p>
 
-  ffmpeg(videoSrc)
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ffmpeg(videoSrc)
     .output(outputName)
     .withVideoCodec(<span class="hljs-string">'libvpx'</span>)
     .addOptions([<span class="hljs-string">'-qmin 0'</span>, <span class="hljs-string">'-qmax 50'</span>, <span class="hljs-string">'-crf 5'</span>])
     .withVideoBitrate(<span class="hljs-number">1024</span>)
-    .withAudioCodec(<span class="hljs-string">'libvorbis'</span>)
-    .on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ callback(outputName); })
+    .withAudioCodec(<span class="hljs-string">'libvorbis'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>when done executing returning output file name to callback </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ callback(outputName); })
     .run();
 };
 

@@ -102,6 +102,69 @@
 
 
 <div class="description">
+    sorting concat json, deleting tmp audio files, and returning
+ takes in data array of ibm watson json stt, callback for final json to output
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="interactive_transcription_generator_sam_transcriber_write_out.js.html">interactive_transcription_generator/sam_transcriber/write_out.js</a>, <a href="interactive_transcription_generator_sam_transcriber_write_out.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id="fs"><span class="type-signature"></span>fs<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
     var config = {
   videoUrl: "",
   title: "",
@@ -147,69 +210,6 @@
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
         <a href="interactive_transcription_generator_index.js.html">interactive_transcription_generator/index.js</a>, <a href="interactive_transcription_generator_index.js.html#line10">line 10</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-        
-            
-<h4 class="name" id="fs"><span class="type-signature"></span>fs<span class="type-signature"></span></h4>
-
-
-
-
-<div class="description">
-    sorting concat json, deleting tmp audio files, and returning
- takes in data array of ibm watson json stt, callback for final json to output
-</div>
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_write_out.js.html">interactive_transcription_generator/sam_transcriber/write_out.js</a>, <a href="interactive_transcription_generator_sam_transcriber_write_out.js.html#line5">line 5</a>
     </li></ul></dd>
     
 
@@ -537,7 +537,7 @@ https://www.ibm.com/watson/developercloud/speech-to-text/
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line55">line 55</a>
+        <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line63">line 63</a>
     </li></ul></dd>
     
 
@@ -2153,13 +2153,17 @@ returns callback with file path to text file containing transcriptions.
 
     
 
-    <h4 class="name" id="splitsanaudiofile,ifitexceeds5minutes,in5minutesintervalls.usingffprobetoreadduration.ffmpegpassedtotrimmermodule.savestrimmedclipsintempfolder"><span class="type-signature"></span>splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
-using ffprobe to read duration. ffmpeg passed to trimmer module.
-saves trimmed clips in temp folder<span class="signature">(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, callback)</span><span class="type-signature"> &rarr; {callback}</span></h4>
+    <h4 class="name" id="split"><span class="type-signature"></span>split<span class="signature">(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, callback)</span><span class="type-signature"> &rarr; {callback}</span></h4>
 
     
 
 
+
+<div class="description">
+    splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
+using `ffprobe` to read duration. `ffmpeg` passed to `trimmer` module.
+saves trimmed clips in temp folder.
+</div>
 
 
 
@@ -2343,7 +2347,7 @@ saves trimmed clips in temp folder<span class="signature">(file, tmpFolder, ffmp
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line27">line 27</a>
+        <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -2507,17 +2511,20 @@ saves trimmed clips in temp folder<span class="signature">(file, tmpFolder, ffmp
 
     
 
-    <h4 class="name" id="transcribeTakesinthefilepathtoamediaaudioorvideofileandreturnsajsonoftranscription.convertsaudioormediafileintoaudiomeetingIBMSpecsdividesaudiotosendtoSTTAPIinto5minchunkssendsallclipsallatoncereconnectsresultsasreturnedbySTTAPIintoonejsonfilethatmeetstheautoEdit2specsreturnsthatascallback"><span class="type-signature"></span>transcribe
-Takes in the file path to a media audio or video file and returns a json of transcription.
-converts audio or media file into audio meeting IBM Specs
-divides audio to send to STT API into 5 min chunks
-sends all clips all at once 
-reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
-returns that as callback<span class="signature">(config)</span><span class="type-signature"> &rarr; {callback}</span></h4>
+    <h4 class="name" id="transcribe"><span class="type-signature"></span>transcribe<span class="signature">(config)</span><span class="type-signature"> &rarr; {callback}</span></h4>
 
     
 
 
+
+<div class="description">
+    Takes in the file path to a media audio or video file and returns a json of transcription.
+converts audio or media file into audio meeting IBM Specs
+divides audio to send to STT API into 5 min chunks
+sends all clips all at once 
+reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
+returns that as callback
+</div>
 
 
 
@@ -2750,7 +2757,7 @@ returns that as callback<span class="signature">(config)</span><span class="type
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_index.js.html">interactive_transcription_generator/sam_transcriber/index.js</a>, <a href="interactive_transcription_generator_sam_transcriber_index.js.html#line26">line 26</a>
+        <a href="interactive_transcription_generator_sam_transcriber_index.js.html">interactive_transcription_generator/sam_transcriber/index.js</a>, <a href="interactive_transcription_generator_sam_transcriber_index.js.html#line64">line 64</a>
     </li></ul></dd>
     
 
@@ -2803,18 +2810,189 @@ returns that as callback<span class="signature">(config)</span><span class="type
 
     
 
-    <h4 class="name" id="trim"><span class="type-signature"></span>trim<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="trim"><span class="type-signature"></span>trim<span class="signature">(config)</span><span class="type-signature"> &rarr; {callback}</span></h4>
 
     
 
 
 
+<div class="description">
+    Trims a video or audio file
+</div>
 
 
 
 
 
 
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The parameter containting attribute options.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">video or audio file path,relative to computer root</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">input point for cutting video or audio from</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>duration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">duration to cut video or audio for how long</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>outputName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">desired name of the trimmed clip</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -2850,7 +3028,7 @@ returns that as callback<span class="signature">(config)</span><span class="type
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html">interactive_transcription_generator/sam_transcriber/trimmer.js</a>, <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html#line30">line 30</a>
+        <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html">interactive_transcription_generator/sam_transcriber/trimmer.js</a>, <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -2873,6 +3051,28 @@ returns that as callback<span class="signature">(config)</span><span class="type
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    config.callback - Optional callback to return when transcription has done processing. It returns output name and input.
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">callback</span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -3165,21 +3365,13 @@ returns that as callback<span class="signature">(config)</span><span class="type
 
 <nav>
     <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#splitsanaudiofile,ifitexceeds5minutes,in5minutesintervalls.usingffprobetoreadduration.ffmpegpassedtotrimmermodule.savestrimmedclipsintempfolder">splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
-using ffprobe to read duration. ffmpeg passed to trimmer module.
-saves trimmed clips in temp folder</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribeTakesinthefilepathtoamediaaudioorvideofileandreturnsajsonoftranscription.convertsaudioormediafileintoaudiomeetingIBMSpecsdividesaudiotosendtoSTTAPIinto5minchunkssendsallclipsallatoncereconnectsresultsasreturnedbySTTAPIintoonejsonfilethatmeetstheautoEdit2specsreturnsthatascallback">transcribe
-Takes in the file path to a media audio or video file and returns a json of transcription.
-converts audio or media file into audio meeting IBM Specs
-divides audio to send to STT API into 5 min chunks
-sends all clips all at once 
-reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
-returns that as callback</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 10:41:31 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -29,13 +29,9 @@
             <pre class="prettyprint source linenums"><code>/**
 * @file trims a video or audio file 
 * Used by sam_transcriber/split.js module.
-* use `ffmpeg-fluent` and trims audio or video.
-* example usage
-
-```
-var trimmer = require('./index.js')
-
-trimmer.trim({
+* @example
+ var trimmer = require('./index.js')
+ trimmer.trim({
 	src:"debate_test.wav", 
 	input: 773,
 	duration:20,
@@ -44,7 +40,7 @@ trimmer.trim({
 		console.log("done")
 	}
 })
-```
+* @requires ffmpeg-fluent - to trim the audio or video.
 */ 
 
 var ffmpeg = require('fluent-ffmpeg');
@@ -52,17 +48,26 @@ var command = ffmpeg();
 
 
 /**
-*
-*
+* @function trim
+* @description Trims a video or audio file 
+* @param {object} config -  The parameter containting attribute options.
+* @param {string} config.src -  video or audio file path,relative to computer root 
+* @param {number} config.input -  input point for cutting video or audio from 
+* @param {number} config.duration - duration to cut video or audio for how long
+* @param {string} config.outputName - desired name of the trimmed clip
+* @returns {callback} config.callback - Optional callback to return when transcription has done processing. It returns output name and input.
+* 
 */
 var trim = function(config){
 
 	var callback;
 
+	//set callback as optional
 	if(config.callback){
 		callback = config.callback
 	}
 
+	//set ffmpeg bin path as optional
 	if(config.ffmpegBin){
 		//setting ffmpeg bin
 		ffmpeg.setFfmpegPath(config.ffmpegBin);
@@ -70,37 +75,28 @@ var trim = function(config){
 		console.warn("ffmpeg binary path not defined, so using system one. if available.")
 	}
 
-	//set ffmpeg bin path if optional
-
 	//absolute file path relative to computer root
-	var videoSrc= config.src; 
+	var videoSrc = config.src; 
 	//seconds or hh:mm:ss.mms
 	var input = config.input;
 	//seconds
 	var duration = config.duration; 
 	var outputName = config.outputName;
 
-
+	//running ffmpeg 
 	ffmpeg(videoSrc)
 				.seekInput(input)
 				.setDuration(duration)
 				.output(outputName)
 				.on('end', 
 					function() {
-				    	// console.log("Timmer inside split");
-				    	// console.log(outputName)
+				    	//optional callback 
 				   		if(callback){
-				   			// console.log("went into callback")
+				   			//returning output name and input of cut
 				   			callback(outputName, input)
 				   		}
 				  }).run();
-				 // return output;
 }
-
-/**
-* to test test cutting video in isolation uncomment following code 
-* and make sure you have a file `debate_test.mp4` in the same folder
-*/
 
 
 module.exports = {
@@ -118,21 +114,13 @@ module.exports = {
 
 <nav>
     <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#splitsanaudiofile,ifitexceeds5minutes,in5minutesintervalls.usingffprobetoreadduration.ffmpegpassedtotrimmermodule.savestrimmedclipsintempfolder">splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
-using ffprobe to read duration. ffmpeg passed to trimmer module.
-saves trimmed clips in temp folder</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribeTakesinthefilepathtoamediaaudioorvideofileandreturnsajsonoftranscription.convertsaudioormediafileintoaudiomeetingIBMSpecsdividesaudiotosendtoSTTAPIinto5minchunkssendsallclipsallatoncereconnectsresultsasreturnedbySTTAPIintoonejsonfilethatmeetstheautoEdit2specsreturnsthatascallback">transcribe
-Takes in the file path to a media audio or video file and returns a json of transcription.
-converts audio or media file into audio meeting IBM Specs
-divides audio to send to STT API into 5 min chunks
-sends all clips all at once 
-reconnects results as returned by STT API into one json file that meets the autoEdit2 specs
-returns that as callback</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 10:41:31 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

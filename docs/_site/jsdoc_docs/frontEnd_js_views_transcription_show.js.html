@@ -83,28 +83,89 @@ app.TranscriptionView = Backbone.View.extend({
       //
    },
     keyboardEvents: {
-        'command+j': 'slowVideo',
-        'control+j': 'slowVideo',
-        'command+k': 'pausePlayVideo',
-        'control+k': 'pausePlayVideo',
-        'command+shift+k': 'pausePlayVideo',
-        'control+shift+k': 'pausePlayVideo',
-        'command+l': 'fastVideo',
-        'control+l': 'fastVideo',
-        'command+shift+l': 'fastForwardVideo',
-        'control+shift+l': 'fastForwardVideo',
-        'command+shift+j': 'rewindVideo',
-        'control+shift+j': 'rewindVideo',
-        'command+shift+up': 'volumeUp',
-        'control+shift+up': 'volumeUp',
-        'command+shift+down': 'volumeDown',
-        'control+shift+down': 'volumeDown',
-        'command+shift+right': 'fastForwardVideo',
-        'control+shift+right': 'fastForwardVideo',
-        'command+shift+left': 'rewindVideo',
-        'control+shift+left': 'rewindVideo'
+        'command+k'           : 'pausePlayVideo',
+        'ctrl+k'              : 'pausePlayVideo',
+        'command+shift+k'     : 'pausePlayVideo',
+        'ctrl+shift+k'        : 'pausePlayVideo',
+        'command+j'           : 'slowVideo',
+        'ctrl+j'              : 'slowVideo',
+        'command+l'           : 'fastVideo',
+        'ctrl+l'              : 'fastVideo',
+        'command+shift+l'     : 'fastForwardVideo',
+        'ctrl+shift+l'        : 'fastForwardVideo',
+        'command+shift+right' : 'fastForwardVideo',
+        'ctrl+shift+right'    : 'fastForwardVideo',
+        'command+shift+j'     : 'rewindVideo',
+        'ctrl+shift+j'        : 'rewindVideo',
+        'command+shift+left'  : 'rewindVideo',
+        'ctrl+shift+left'     : 'rewindVideo',
+        'command+shift+up'    : 'volumeUp',
+        'ctrl+shift+up'       : 'volumeUp',
+        'command+shift+down'  : 'volumeDown',
+        'ctrl+shift+down'     : 'volumeDown',
+        'shift+/'             : 'showHideShortcuts'
     },
 
+  events:{
+    "click #rewindVideo"      : "rewindVideo",
+    "click #pausePlayVideo"   : "pausePlayVideo",
+    "click #slowVideo"        : "slowVideo",
+    "click #fastVideo"        : "fastVideo",
+    "click #fastForwardVideo" : "fastForwardVideo",
+    "click #volumeDown"       : "volumeDown",
+    "click #volumeUp"         : "volumeUp",
+    "click #rewindVideo"      : "rewindVideo",
+
+    "click span.words": "playWord",
+    "click .timecodes": "playWord",
+    "keyup #searchCurrentTranscription" :"search",
+    "mouseup .transcription": "selectingWords",
+    "click #clearHighlights": "clearHighlights",
+
+    "click #editWords": "makeEditable",
+    "click #highlightWords": "makeHilightable",
+
+    "click #save": "save",
+
+    "click #playPreviewChrono": "playPreviewChrono",
+
+    "click #playPreviewSelOrd": "playPreviewSelOrd",
+    
+    "click #exportEdlChronological": "exportEdlChronological",
+    "click #exportEdlSelectionOrder": "exportEdlSelectionOrder",
+
+    "click #exportPlainText": "exportPlainText",
+
+    "click #exportTimecodedTranscription": "exportTimecodedTranscription",
+    
+    "click #exportJsonEDL": "exportJsonEDL",
+    "click #exportJsonEDLSelOrder": "exportJsonEDLSelOrder",
+    "click #exportJsonTranscription": "exportJsonTranscription",
+   
+
+    "click #exportPlainTextEDL": "exportPlainTextEDL",
+    "click #exportPlainTextEDLSelOrder": "exportPlainTextEDLSelOrder",
+    "click #exportPlainTimecodedTextEDL": "exportPlainTimecodedTextEDL",
+    "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
+
+    "click #expoertCaptionsSrt": "expoertCaptionsSrt",
+    "click #expoertCaptionsSrtEDL": "expoertCaptionsSrtEDL",
+
+    "click #exporthtml5Video": "exporthtml5Video",
+
+    "click #exportAudio": "exportAudio",
+
+    "click #edlUserManualInfo": "edlUserManualInfo"
+
+  },
+
+  showHideShortcuts: function(){
+    console.log("show shorcuts")
+    document.getElementById("shortcuts").click()
+
+  },
+
+  //Keyboard shortcuts for playback and volume control
     slowVideo: function(ev){
        ev.preventDefault();
       // alert("slow video") 'videoId_'+ id
@@ -205,47 +266,7 @@ app.TranscriptionView = Backbone.View.extend({
 
     },
 
-  events:{
-    "click span.words": "playWord",
-    "click .timecodes": "playWord",
-    "keyup #searchCurrentTranscription" :"search",
-    "mouseup .transcription": "selectingWords",
-    "click #clearHighlights": "clearHighlights",
-
-    "click #editWords": "makeEditable",
-    "click #highlightWords": "makeHilightable",
-
-    "click #save": "save",
-
-    "click #playPreviewChrono": "playPreviewChrono",
-
-    "click #playPreviewSelOrd": "playPreviewSelOrd",
-    
-    "click #exportEdlChronological": "exportEdlChronological",
-    "click #exportEdlSelectionOrder": "exportEdlSelectionOrder",
-
-    "click #exportPlainText": "exportPlainText",
-
-    "click #exportTimecodedTranscription": "exportTimecodedTranscription",
-    
-    "click #exportJsonEDL": "exportJsonEDL",
-    "click #exportJsonEDLSelOrder": "exportJsonEDLSelOrder",
-    "click #exportJsonTranscription": "exportJsonTranscription",
-   
-
-    "click #exportPlainTextEDL": "exportPlainTextEDL",
-    "click #exportPlainTextEDLSelOrder": "exportPlainTextEDLSelOrder",
-    "click #exportPlainTimecodedTextEDL": "exportPlainTimecodedTextEDL",
-    "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
-
-    "click #expoertCaptionsSrt": "expoertCaptionsSrt",
-    "click #expoertCaptionsSrtEDL": "expoertCaptionsSrtEDL",
-
-    "click #exporthtml5Video": "exporthtml5Video",
-
-    "click #exportAudio": "exportAudio"
-
-  },
+    //end of playback volume control
 
 
 save: function(){
@@ -294,6 +315,16 @@ save: function(){
 
 makeHilightable: function(){
 
+  var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+
+  var hilightNotice = "&lt;div class='alert alert-info alert-dismissible hidden-print' role='alert' id='hilightModeNotice'>";
+  hilightNotice +="&lt;button type='button' class='close' data-dismiss='alert' aria-label='Close'>&lt;span aria-hidden='true'>&amp;times;&lt;/span>&lt;/button>";
+  hilightNotice += "&lt;strong>You are in hilight mode.&lt;/strong>";
+  hilightNotice +="&lt;p>Select words to include in your Edit Decision List (EDL) video sequence.&lt;/p>";
+  hilightNotice +="&lt;/div>";
+
+
+
  var status = false;
   if( $("#highlightWords").hasClass("btn-primary")){
     status = true;
@@ -326,8 +357,14 @@ makeHilightable: function(){
   $("#highlightWords").addClass("btn-primary")
   $("#highlightWords").addClass("active")
 
+
+
   //disable editable on words 
   $('.words').attr('contenteditable','false');
+
+
+     //add hilight notice 
+   modeNotice.innerHTML = hilightNotice;
 }
 
 
@@ -336,11 +373,21 @@ makeHilightable: function(){
 
 makeEditable: function(){
 
+var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+ //remove hilight mode notice 
+
+// add text editing notice 
+var editNotice= "&lt;div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> "
+  editNotice +="&lt;button type='button' class='close' data-dismiss='alert' aria-label='Close'>&lt;span aria-hidden='true'>&amp;times;&lt;/span>&lt;/button>"
+  editNotice +="&lt;strong>You are in text edit mode.&lt;/strong>" 
+  editNotice +="&lt;p>Click on a word to edit. Use &lt;code>cmd&lt;/code> + &lt;code>a&lt;/code> to select a word. Tab or click to move to the next word.&lt;/p>"
+  editNotice +="&lt;/div>"
+
   var status = false;
   if( $("#editWords").hasClass("btn-primary")){
     status = true;
   }else{
-    status = false
+    status = false   
   }
 
   if(status){
@@ -349,16 +396,14 @@ makeEditable: function(){
    $("#editWords").removeClass("btn-primary")
    $("#editWords").addClass("btn-default")
 
+   $("#highlightWords").removeClass("btn-default")
+   $("#highlightWords").addClass("btn-primary")
+   $("#highlightWords").addClass("active")
 
- $("#highlightWords").removeClass("btn-default")
- $("#highlightWords").addClass("btn-primary")
- $("#highlightWords").addClass("active")
-
- //disable editable on words 
-$('.words').attr('contenteditable','false');
-
-
-
+   //disable editable on words 
+  $('.words').attr('contenteditable','false');
+    //remove edit notice 
+   // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
 }else{
   //disable editing
   $("#highlightWords").removeClass("active")
@@ -372,25 +417,19 @@ $('.words').attr('contenteditable','false');
  //enable content editable
  $('.words').attr('contenteditable','true');
 
+  //remove hilight notice 
+ // modeNotice.removeChild(document.getElementById("hilightModeNotice")) ;
+
+ //add edit notice 
+ modeNotice.innerHTML = editNotice;
+
  // listener on word changed 
 
 var contents = $('.words').html();
-
 //TODO: input change to event that detect when focus out or somehting else so that i doesn't auto save as typing coz that is super slow...
 $( ".words" ).on( "focusout", { model: this.model }, function(event) {
   //pause word 
  var model = event.data.model;
- // console.log("model")
- // console.log(model)
- //   $("#videoId_10")[0].pause();
- //  // $("#videoId_"+ model.attributes.id)[0];
-
- //  console.log("video")
- //  // console.log(video)
-  
-
-// console.log("CALLED")
-
 
   var tmpWordId  =  $( this )[0].dataset.wordId;
   var tmpWordText = $( this ).text();
@@ -402,7 +441,7 @@ $( ".words" ).on( "focusout", { model: this.model }, function(event) {
          _.each(lines.line, function(word){
 
             if(word.id == tmpWordId){
-              word.text = tmpWordText
+              word.text = tmpWordText;
               // console.log("found it")
 
               model.save({wait: false})
@@ -541,6 +580,11 @@ if(config.fileContent == ""){
        var fs = require("fs");
       fs.writeFileSync(process.env.HOME+"/Desktop/"+fileName, fileContent );
        alert(fileName+" Saved on the desktop");
+
+       //opening folder item has been saved in, desktop, and opening file. might be confusing for EDL.
+       // require('nw.gui').Shell.showItemInFolder(process.env.HOME+"/Desktop/"+fileName);
+       // require('nw.gui').Shell.openItem(process.env.HOME+"/Desktop/"+fileName);
+
     }else{
       //if client side not running inside NWJS then 
       //creates a blob on the client size 
@@ -639,10 +683,9 @@ if(config.fileContent == ""){
     var fileName = this.nameFileHelper(this.model.get("title"),"srt"); 
     //this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
 
- var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
+    var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
 
-this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
-
+    this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
     
 
   },
@@ -902,6 +945,13 @@ exportAudio: function(){
   }else{
     alert("Feature not availeble in this context ")
   }
+},
+
+
+edlUserManualInfo: function(){
+   if( window.frontEndEnviromentNWJS ){
+      require('nw.gui').Shell.openExternal('https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice');
+    }
 },
 
 //export/copy file helper
@@ -1254,13 +1304,14 @@ exportAudio: function(){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convert">convert</a></li><li><a href="global.html#ffmpeg">ffmpeg</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#readVideoMetadataForEDL">readVideoMetadataForEDL</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#watson">watson</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.1</a> on Thu Sep 29 2016 16:19:47 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

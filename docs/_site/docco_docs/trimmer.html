@@ -223,7 +223,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* @file trims a video or audio file 
+* Used by sam_transcriber/split.js module.
 * use `ffmpeg-fluent` and trims audio or video.
 * example usage
 
@@ -243,22 +245,13 @@ trimmer.trim({
 */</span> 
 
 <span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
-<span class="hljs-keyword">var</span> command = ffmpeg();</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>TODO: needs to take in bin of ffmpeg with fluent set ffmpeg </p>
+<span class="hljs-keyword">var</span> command = ffmpeg();
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
+
+<span class="hljs-comment">/**
+*
+*
+*/</span>
 <span class="hljs-keyword">var</span> trim = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">config</span>)</span>{
 
 	<span class="hljs-keyword">var</span> callback;
@@ -272,11 +265,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-3">
+        <li id="section-2">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
+                <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
               <p>setting ffmpeg bin</p>
 
@@ -290,11 +283,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-4">
+        <li id="section-3">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>set ffmpeg bin path if optional</p>
 
@@ -303,11 +296,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-5">
+        <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>absolute file path relative to computer root</p>
 
@@ -318,11 +311,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-6">
+        <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
+                <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
               <p>seconds or hh:mm:ss.mms</p>
 
@@ -333,11 +326,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-7">
+        <li id="section-6">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
+                <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
               <p>seconds</p>
 
@@ -357,11 +350,11 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-8">
+        <li id="section-7">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
+                <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
               <p>console.log(“Timmer inside split”);
 console.log(outputName)</p>
@@ -373,11 +366,11 @@ console.log(outputName)</p>
         </li>
         
         
-        <li id="section-9">
+        <li id="section-8">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
+                <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
               <p>console.log(“went into callback”)</p>
 
@@ -390,11 +383,11 @@ console.log(outputName)</p>
         </li>
         
         
-        <li id="section-10">
+        <li id="section-9">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
+                <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
               <p>return output;</p>
 
@@ -406,7 +399,6 @@ console.log(outputName)</p>
 * to test test cutting video in isolation uncomment following code 
 * and make sure you have a file `debate_test.mp4` in the same folder
 */</span>
-
 
 
 <span class="hljs-built_in">module</span>.exports = {

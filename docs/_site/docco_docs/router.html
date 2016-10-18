@@ -273,7 +273,7 @@ _.extend(app, Backbone.Events);</pre></div></div>
       $(<span class="hljs-string">'#main'</span>).html(<span class="hljs-string">"&lt;div class='container-fluid'&gt;&lt;h1&gt;Welcome! - &lt;/h1&gt;&lt;p&gt;Go to &lt;code&gt;new&lt;/code&gt; to transcribe a new media&lt;/p&gt;&lt;p&gt;&lt;code&gt;Transcriptions&lt;/code&gt; to view transcriptions in the system&lt;/p&gt;&lt;/div&gt;"</span>);
   },
 
-  <span class="hljs-attr">transcriptionsList</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-attr">transcriptionsList</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"transcriptions list"</span>)
 
     <span class="hljs-keyword">this</span>.transcriptionsListView = <span class="hljs-keyword">new</span> app.TranscriptionsListView(
@@ -286,7 +286,7 @@ _.extend(app, Backbone.Events);</pre></div></div>
     }});
   },
 
-  <span class="hljs-attr">newTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+  <span class="hljs-attr">newTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
     <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"new transcription"</span>)
     <span class="hljs-keyword">var</span>  newTranscription = <span class="hljs-keyword">new</span> app.Transcription({<span class="hljs-attr">title</span>: <span class="hljs-string">""</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">""</span>});<span class="hljs-comment">//{title: "Video Interview "+getTimeNow(), description: getTimeNow()}</span>
 
@@ -309,7 +309,7 @@ _.extend(app, Backbone.Events);</pre></div></div>
   },
 
 
-  <span class="hljs-attr">showTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cid</span>)</span>{
+  <span class="hljs-attr">showTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cid</span>) </span>{
     <span class="hljs-built_in">console</span>.info(cid)</pre></div></div>
             
         </li>

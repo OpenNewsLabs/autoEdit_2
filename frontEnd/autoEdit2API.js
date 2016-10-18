@@ -30,7 +30,8 @@
   var Transcription = new LinvoDB(transcriptionModel, schema, options);
 
   /**
-  * API Object to override Backnone.sync
+  * @constructs autoEdit2API
+  * @description API Object to override Backnone.sync
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -40,7 +41,8 @@
   }
 
   /**
-  * Create functionality, mapped to REST POST
+  * @function 
+  * @description Create functionality, mapped to REST POST
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -141,7 +143,8 @@
   }
 
   /**
-  * Read functionality,Find all  and fine One, mapped to REST GET
+  * @function 
+  * @description Read functionality,Find all  and fine One, mapped to REST GET
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -174,7 +177,8 @@
   }
 
   /**
-  * Update functionality, mapped to REST PUT
+  * @function 
+  * @description Update functionality, mapped to REST PUT
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -210,7 +214,8 @@
   }
 
   /**
-  * Patch functionality, mapped to REST PUT
+  * @function 
+  * @description Patch functionality, mapped to REST PUT
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -241,7 +246,8 @@
   }
 
   /**
-  * Delete functionality, mapped to REST Delete
+  * @function 
+  * @description Delete functionality, mapped to REST Delete
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -253,27 +259,51 @@
       //looks in database using transcription id
       //worth looking into alternative
       //https://github.com/Ivshti/linvodb3#removing-from-the-collection 
-      //Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
+      Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
       // numRemoved = 1
       // removed done
       // });
-      Transcription.findOne(model._id, function(err, transcription) {
+      // Transcription.findOne(model._id, function(err, transcription) {
         //deletes transcription from db
-        transcription.remove(function() {
+        // transcription.remove(function() {
           //removing media associated with transcription.
           //TODO: this only deletes the video if the video has done processing.
           // this means incomplete vidoes are left in the folder if the transcription is deleted
           if(model.attributes.processedVideo){
-            fs.unlinkSync( model.attributes.videoOgg);     
+            //TODO: review if this is the right way to check if the file exists before deleting it. 
+            if(fileExists( model.attributes.videoOgg)){
+              fs.unlinkSync( model.attributes.videoOgg);  
+            }
           }
           //if the trascription has been shown the audio will always be present because is needed to generate the text transcription
-            fs.unlinkSync( model.attributes.audioFile); 
+          if(model.attributes.audioFile){
+            if(fileExists( model.attributes.audioFile)){
+              fs.unlinkSync( model.attributes.audioFile);
+            } 
+          }
           //returns sucess callback
           success(model);
-        });//remove 
-      });//find
-    }//if transcription
+        // }); 
+      });
+    }
   }
+
+
+
+  /**
+  * @function fileExists
+  * @description helper function to check if a file exists
+  * @param {string} filename - the file path to check.
+  * returns {boolean} - True if it exists, False if it doesn't
+  */
+  function fileExists(filename){
+  try{
+    require('fs').accessSync(filename)
+    return true;
+  }catch(e){
+    return false;
+  }
+}
 
   module.exports = autoEdit2API;
 // }//if in NWJS enviroment 
