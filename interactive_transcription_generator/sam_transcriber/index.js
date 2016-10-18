@@ -70,6 +70,7 @@ var transcribe = function(config) {
         files.forEach(function(f) {
           //send each to watson
           var sendToWatsonUtil = new SendToWatson();
+          
           sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
             //add offset to json of each audio clippings transcription
             var parsed = parse(data, f.offset);

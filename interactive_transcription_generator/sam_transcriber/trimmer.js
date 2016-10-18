@@ -1,13 +1,10 @@
 /**
 * @file trims a video or audio file 
 * Used by sam_transcriber/split.js module.
-* use `ffmpeg-fluent` and trims audio or video.
-* example usage
-
-```
-var trimmer = require('./index.js')
-
-trimmer.trim({
+* @requires ffmpeg-fluent - to trim the audio or video.
+* @example
+ var trimmer = require('./index.js')
+ trimmer.trim({
 	src:"debate_test.wav", 
 	input: 773,
 	duration:20,
@@ -16,7 +13,7 @@ trimmer.trim({
 		console.log("done")
 	}
 })
-```
+
 */ 
 
 var ffmpeg = require('fluent-ffmpeg');
