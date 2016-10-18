@@ -1,35 +1,51 @@
-//https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274
-
-var ffmpeg = require('fluent-ffmpeg');
 /**
- * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @file Converts audio or video file into a HTML5 video webm.
+ * uses code from this issue/question from fluent-ffmepg https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274
+ * to understand the ffmpeg used to encode webm video see this guide https://trac.ffmpeg.org/wiki/Encode/VP8
+ * @author Pietro Passarelli 
+ * @requires fluent-ffmpeg
+ * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
  */
 
+
+var ffmpeg = require('fluent-ffmpeg');
+
+/**
+ * @function convert
+ * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @param {object} config - The parameter containting attribute options.
+ * @param {string} config.src - full path of video or audio to convert.
+ * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.
+ * @param {string} config.ffmpegBin - Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.
+ * @returns {callback} config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as `config.outputName` input.
+ */
 var convert = function(config){
 
   var videoSrc = config.src;
   var outputName = config.outputName;
+  var callback;
 
-  //declaring it outisde for scope reasons.
-  var callback ;
+  //optional callback
   if(config.callback){
-    //optional callback
     callback = config.callback;
   }
 
+  //setting ffmpeg bin, optional. if not specified in input fluent-ffmpeg will try to use system one if present. 
   if(config.ffmpegBin){
-    //setting ffmpeg bin
     ffmpeg.setFfmpegPath(config.ffmpegBin);
   }else{
+    //case in which ffmpeg bin not provided in input and not present on system not covered.
     console.warn("ffmpeg binary path not defined, so using system one. if available.");
   }
 
+  //executing ffmpeg comand 
   ffmpeg(videoSrc)
     .output(outputName)
     .withVideoCodec('libvpx')
     .addOptions(['-qmin 0', '-qmax 50', '-crf 5'])
     .withVideoBitrate(1024)
     .withAudioCodec('libvorbis')
+    //when done executing returning output file name to callback 
     .on('end', function(){ callback(outputName); })
     .run();
 };

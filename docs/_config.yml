@@ -30,7 +30,8 @@ sections: [
 
 # Keep as an empty string if served up at the root. If served up at a specific
 # path (e.g. on GitHub pages) leave off the trailing slash, e.g. /my-project
-baseurl: '/autoEdit_2'
+# baseurl: '/autoEdit_2'
+baseurl: ''
 
 github: "https://github.com/OpenNewsLabs/autoEdit_2"
 demo: "https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html"

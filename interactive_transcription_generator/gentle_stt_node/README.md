@@ -73,13 +73,19 @@ var  transcribe =  require("./index.js")
 
 //takes in fiel as absolute path, use node module `path` if you need to figure out out.
 var demo_audio  ="#yourFile.wav";
+var demo_text = "./demo.txt"
 
-transcribe(demo_audio, function(resp){
+
+transcribe({audio: demo_audio, text: demo_text}, function(resp){
   console.log(JSON.stringify(resp, null, '\t'))
   // console.log(resp)
 })
 
 ```
+
+Where the text attribute is optional. If you pass it through it will re-allign the text to the video. 
+If you don't pass it then it will transcribe the video automatically.
+
 
 ## TODO
 

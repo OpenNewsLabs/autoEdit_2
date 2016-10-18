@@ -1,6 +1,40 @@
 # Edl Composer
 
+## Usage
+
+The EDL sequence should have the following attributes
+
+```javascript
+var edlSq = {
+    "title": "Demo Title of project",
+    "events":  [
+      { "id":0,
+        "startTime": 30,
+        "endTime": 60,
+        "reelName":"SomeReelName",
+        "clipName":"Something.mov"
+      },
+      { "id":2,
+        "startTime": 40,
+        "endTime": 70,
+        "reelName":"SomeOtherReelName",
+        "clipName":"SomethingElse.mov"
+      }
+    ]
+}
+```
+
+And it can be parsed and composed into an EDL as following. This returns a string that you can write to file or else.
+
+```javascript
+
+var edl = new EDL(edlSq)
+console.log(edl.compose())
+```
+
+
 ## understandign the EDL specs
+
 Example EDL. For more on how to read an edl and understand the specs [check this out](https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%26section=1%26tasks=true).
 
 ```
@@ -84,36 +118,3 @@ image) and then create an EDL by hand for delivery to a computer-controlled edit
 What this means is that you have timecodes relative to the clip of the edl event line, in and out point, and then you have timecodes relative to the timeline of the sequence the edl is describing(that back in the day used to be referred to as tape).
 
 ![](https://documentation.apple.com/en/finalcutpro/usermanual/Art/S03/S0323_ImportEDL3.png)
-
-
-## Usage
-
-The EDL sequence should have the following attributes
-
-```javascript
-var edlSq = {
-    "title": "Demo Title of project",
-    "events":  [
-      { "id":0,
-        "startTime": 30,
-        "endTime": 60,
-        "reelName":"SomeReelName",
-        "clipName":"Something.mov"
-      },
-      { "id":2,
-        "startTime": 40,
-        "endTime": 70,
-        "reelName":"SomeOtherReelName",
-        "clipName":"SomethingElse.mov"
-      }
-    ]
-}
-```
-
-And it can be parsed and composed into an EDL as following. This returns a string that you can write to file or else.
-
-```javascript
-
-var edl = new EDL(edlSq)
-console.log(edl.compose())
-```
