@@ -90,36 +90,6 @@
                 </a>
               
                 
-                <a class="source" href="gentle_stt.html">
-                  gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="gentle_stt_example.html">
-                  gentle_stt_example.js
-                </a>
-              
-                
-                <a class="source" href="index.html">
-                  index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt.html">
-                  parse_gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt_example.html">
-                  parse_gentle_stt_example.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
                 </a>
@@ -135,38 +105,8 @@
                 </a>
               
                 
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse.html">
-                  parse.js
-                </a>
-              
-                
-                <a class="source" href="sam_transcriber_json_convert.html">
-                  sam_transcriber_json_convert.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson.html">
-                  send_to_watson.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson_test.html">
-                  send_to_watson_test.js
-                </a>
-              
-                
                 <a class="source" href="split.html">
                   split.js
-                </a>
-              
-                
-                <a class="source" href="split_example.html">
-                  split_example.js
                 </a>
               
                 
@@ -175,23 +115,8 @@
                 </a>
               
                 
-                <a class="source" href="trimmer_example.html">
-                  trimmer_example.js
-                </a>
-              
-                
-                <a class="source" href="write_out.html">
-                  write_out.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
                 </a>
               
                 
@@ -224,7 +149,8 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
- * @file Manages the backend of the app by overwrighting backbone.sync function
+ * @module autoEdit2API
+ * @description Manages the backend of the app by overwrighting backbone.sync function
  * @author Pietro Passarelli 
  * @requires fs
  * @requires path
@@ -305,7 +231,8 @@ LinvoDB.dbPath = path.join(process.cwd(), “/db”); </p>
   <span class="hljs-keyword">var</span> Transcription = <span class="hljs-keyword">new</span> LinvoDB(transcriptionModel, schema, options);
 
   <span class="hljs-comment">/**
-  * API Object to override Backnone.sync
+  * @constructs autoEdit2API
+  * @description API Object to override Backnone.sync
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -315,7 +242,8 @@ LinvoDB.dbPath = path.join(process.cwd(), “/db”); </p>
   }
 
   <span class="hljs-comment">/**
-  * Create functionality, mapped to REST POST
+  * @function 
+  * @description Create functionality, mapped to REST POST
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -700,7 +628,8 @@ destFolder:”/media”,</p>
   }
 
   <span class="hljs-comment">/**
-  * Read functionality,Find all  and fine One, mapped to REST GET
+  * @function 
+  * @description Read functionality,Find all  and fine One, mapped to REST GET
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -837,7 +766,8 @@ destFolder:”/media”,</p>
   }
 
   <span class="hljs-comment">/**
-  * Update functionality, mapped to REST PUT
+  * @function 
+  * @description Update functionality, mapped to REST PUT
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -938,7 +868,8 @@ uses <code>findOne</code>, replaces attributes with new once.</p>
   }
 
   <span class="hljs-comment">/**
-  * Patch functionality, mapped to REST PUT
+  * @function 
+  * @description Patch functionality, mapped to REST PUT
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -982,7 +913,8 @@ uses <code>findOne</code>, replaces attributes with new once.</p>
   }
 
   <span class="hljs-comment">/**
-  * Delete functionality, mapped to REST Delete
+  * @function 
+  * @description Delete functionality, mapped to REST Delete
   * @param {object} method - Backbone RESTfull method request.
   * @param {object} model - Backbone model being handled.
   * @param {object} options - Sucess or failure callback.
@@ -1016,15 +948,11 @@ uses <code>findOne</code>, replaces attributes with new once.</p>
               </div>
               <p>looks in database using transcription id
 worth looking into alternative
-<a href="https://github.com/Ivshti/linvodb3#removing-from-the-collection">https://github.com/Ivshti/linvodb3#removing-from-the-collection</a> 
-Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
-numRemoved = 1
-removed done
-});</p>
+<a href="https://github.com/Ivshti/linvodb3#removing-from-the-collection">https://github.com/Ivshti/linvodb3#removing-from-the-collection</a> </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>      Transcription.findOne(model._id, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err, transcription</span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      Transcription.remove({ <span class="hljs-attr">_id</span>: model._id }, {<span class="hljs-attr">multi</span>: <span class="hljs-literal">false</span> }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, numRemoved</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -1035,11 +963,12 @@ removed done
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
-              <p>deletes transcription from db</p>
+              <p>removing media associated with transcription.
+TODO: this only deletes the video if the video has done processing. think about refactoring so that attribute can be present before processing starts. As it is now this means incomplete vidoes are left in the folder if the transcription is deleted</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>        transcription.remove(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(model.attributes.processedVideo){</pre></div></div>
             
         </li>
         
@@ -1050,14 +979,13 @@ removed done
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <p>removing media associated with transcription.
-TODO: this only deletes the video if the video has done processing.
-this means incomplete vidoes are left in the folder if the transcription is deleted</p>
+              <p>TODO: review if this is the right way to check if the file exists before deleting it. </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(model.attributes.processedVideo){
-            fs.unlinkSync( model.attributes.videoOgg);     
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-keyword">if</span>(fileExists( model.attributes.videoOgg)){
+              fs.unlinkSync( model.attributes.videoOgg);  
+            }
           }</pre></div></div>
             
         </li>
@@ -1069,11 +997,15 @@ this means incomplete vidoes are left in the folder if the transcription is dele
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
-              <p>if the trascription has been shown the audio will always be present because is needed to generate the text transcription</p>
+              <p>if the trascription has been shown the audio will always be present because is needed to generate the text transcription. But having test here just in case</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            fs.unlinkSync( model.attributes.audioFile);</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">if</span>(model.attributes.audioFile){
+            <span class="hljs-keyword">if</span>(fileExists( model.attributes.audioFile)){
+              fs.unlinkSync( model.attributes.audioFile);
+            } 
+          }</pre></div></div>
             
         </li>
         
@@ -1088,13 +1020,7 @@ this means incomplete vidoes are left in the folder if the transcription is dele
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          success(model);
-        });<span class="hljs-comment">//remove </span>
-      });<span class="hljs-comment">//find</span>
-    }<span class="hljs-comment">//if transcription</span>
-  }
-
-  <span class="hljs-built_in">module</span>.exports = autoEdit2API;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>          success(model);</pre></div></div>
             
         </li>
         
@@ -1104,6 +1030,42 @@ this means incomplete vidoes are left in the folder if the transcription is dele
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>}); </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      });
+    }
+  }
+
+
+
+  <span class="hljs-comment">/**
+  * @function fileExists
+  * @description helper function to check if a file exists
+  * @param {string} filename - the file path to check.
+  * returns {boolean} - True if it exists, False if it doesn't
+  */</span>
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">fileExists</span>(<span class="hljs-params">filename</span>)</span>{
+  <span class="hljs-keyword">try</span>{
+    <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>).accessSync(filename)
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+  }<span class="hljs-keyword">catch</span>(e){
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  }
+}
+
+  <span class="hljs-built_in">module</span>.exports = autoEdit2API;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
               <p>}//if in NWJS enviroment </p>
 

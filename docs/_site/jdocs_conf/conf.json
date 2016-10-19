@@ -4,10 +4,12 @@
         "dictionaries": ["jsdoc","closure"]
     },
     "source": {
+        "include": [ "frontEnd/","interactive_transcription_generator/","deploy.js","frontEnd/index.html"],
+        "exclude": ["docs/", "cache/","build/","node_modules/","Notes/","spec/","appdmg.json","package.json","README.md", "wttskeys.json","wttskeys_dev.json"],
         "includePattern": ".+\\.js(doc|x)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
-    "plugins": ["plugins/markdown","plugins/summarize"],
+    "plugins": ["plugins/markdown"],
     "markdown": {
         "excludeTags": ["author"],
         "tags": ["foo", "bar"],
@@ -16,5 +18,18 @@
     "templates": {
         "cleverLinks": false,
         "monospaceLinks": false
+    },
+    "opts": {
+        "encoding": "utf8",            
+        "destination": "./docs/jsdoc_docs/",        
+        "recurse": true,                  
+        "tutorials": "./docs/_posts/tutorials",
+        "readme": "./docs/_posts/tutorials/intro.md"
     }
 }
+
+
+
+
+
+

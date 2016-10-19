@@ -90,36 +90,6 @@
                 </a>
               
                 
-                <a class="source" href="gentle_stt.html">
-                  gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="gentle_stt_example.html">
-                  gentle_stt_example.js
-                </a>
-              
-                
-                <a class="source" href="index.html">
-                  index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt.html">
-                  parse_gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt_example.html">
-                  parse_gentle_stt_example.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
                 </a>
@@ -135,38 +105,8 @@
                 </a>
               
                 
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse.html">
-                  parse.js
-                </a>
-              
-                
-                <a class="source" href="sam_transcriber_json_convert.html">
-                  sam_transcriber_json_convert.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson.html">
-                  send_to_watson.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson_test.html">
-                  send_to_watson_test.js
-                </a>
-              
-                
                 <a class="source" href="split.html">
                   split.js
-                </a>
-              
-                
-                <a class="source" href="split_example.html">
-                  split_example.js
                 </a>
               
                 
@@ -175,23 +115,8 @@
                 </a>
               
                 
-                <a class="source" href="trimmer_example.html">
-                  trimmer_example.js
-                </a>
-              
-                
-                <a class="source" href="write_out.html">
-                  write_out.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
                 </a>
               
                 
@@ -224,9 +149,10 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
- * @file Converts audio or video file into a HTML5 video webm.
- * uses code from this issue/question from fluent-ffmepg https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274
- * to understand the ffmpeg used to encode webm video see this guide https://trac.ffmpeg.org/wiki/Encode/VP8
+ * @module video_to_html5_webm
+ * @description Converts audio or video file into a HTML5 video webm.
+ * uses code from [this issue/question from fluent-ffmepg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274)
+ * to understand the ffmpeg used to encode webm video see [this guide](https://trac.ffmpeg.org/wiki/Encode/VP8)
  * @author Pietro Passarelli 
  * @requires fluent-ffmpeg
  * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
@@ -237,7 +163,7 @@
 
 <span class="hljs-comment">/**
  * @function convert
- * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @description Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
  * @param {object} config - The parameter containting attribute options.
  * @param {string} config.src - full path of video or audio to convert.
  * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.

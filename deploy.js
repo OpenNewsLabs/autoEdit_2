@@ -1,5 +1,5 @@
 /*
-* Simple script to automate the deployment of the app.
+* @file Simple script to automate the deployment of the app.
 */
 var fs = require("fs");
 var spawn = require('child_process').spawn;

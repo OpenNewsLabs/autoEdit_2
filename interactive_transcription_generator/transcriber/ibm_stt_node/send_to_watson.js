@@ -73,7 +73,7 @@ SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
   //params to send to IBM STT API request
   var params = {
     audio: fs.createReadStream(audioFile),
-    content_type: 'audio/wav',
+    content_type: 'audio/ogg',
     //indicates whether time alignment is returned for each word. The default is false.
     timestamps: true,
     //Indicates whether multiple final results that represent consecutive phrases separated by long pauses are returned. If true, such phrases are returned; if false (the default), recognition ends after the first "end of speech" incident is detected.

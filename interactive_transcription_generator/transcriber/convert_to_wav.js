@@ -2,6 +2,7 @@
 * @module convert_to_wav
 * @description Convers video file into wav (or any ffmpeg supported input)
 * takes in input file, output destination file, and callback,
+* IBM sudgested audio compression {@link http://www.ibm.com/watson/developercloud/doc/speech-to-text/input.shtml#limits}
 * callback returns audio file name/path
 * @requires fluent-ffmpeg
 */
@@ -13,7 +14,7 @@ var ffmpeg = require('fluent-ffmpeg');
 /**
  * @function convertToWav
  * @param {string} file -  path to audio or viceo file to convert to wav
- * @param {string} audioFile - path to output wav audio file
+ * @param {string} audioFile - path to output ogg audio file
  * @param {string} ffmpegPath - path to ffmpeg binary. If not present it will try to use system one.
  * @returns {callback} callback - callback to return audio file path as string. 
 */
@@ -29,7 +30,7 @@ function convertToWav(file,audioFile,ffmpegPath, callback) {
   //running ffmpeg comand 
   var comand = ffmpeg(file)
                 .noVideo()
-                .audioCodec('pcm_s16le')
+                .audioCodec('libopus')
                 .audioChannels(1)
                 .audioFrequency(16000)
                 .output(audioFile)

@@ -107,7 +107,7 @@ function split(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, cb) {
         //file name of original audio file
         var fileName = path.parse(file).base;
         //file name for clips 
-        var filePart = tmpFolder+"/"+ fileName + '.' + i + '.wav';
+        var filePart = tmpFolder+"/"+ fileName + '.' + i + '.ogg';
         //trim audio files 
         trimmer.trim({
           src: file,

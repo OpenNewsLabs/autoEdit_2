@@ -90,36 +90,6 @@
                 </a>
               
                 
-                <a class="source" href="gentle_stt.html">
-                  gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="gentle_stt_example.html">
-                  gentle_stt_example.js
-                </a>
-              
-                
-                <a class="source" href="index.html">
-                  index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt.html">
-                  parse_gentle_stt.js
-                </a>
-              
-                
-                <a class="source" href="parse_gentle_stt_example.html">
-                  parse_gentle_stt_example.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
                 </a>
@@ -135,38 +105,8 @@
                 </a>
               
                 
-                <a class="source" href="index_example.html">
-                  index_example.js
-                </a>
-              
-                
-                <a class="source" href="parse.html">
-                  parse.js
-                </a>
-              
-                
-                <a class="source" href="sam_transcriber_json_convert.html">
-                  sam_transcriber_json_convert.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson.html">
-                  send_to_watson.js
-                </a>
-              
-                
-                <a class="source" href="send_to_watson_test.html">
-                  send_to_watson_test.js
-                </a>
-              
-                
                 <a class="source" href="split.html">
                   split.js
-                </a>
-              
-                
-                <a class="source" href="split_example.html">
-                  split_example.js
                 </a>
               
                 
@@ -175,23 +115,8 @@
                 </a>
               
                 
-                <a class="source" href="trimmer_example.html">
-                  trimmer_example.js
-                </a>
-              
-                
-                <a class="source" href="write_out.html">
-                  write_out.js
-                </a>
-              
-                
                 <a class="source" href="index.html">
                   index.js
-                </a>
-              
-                
-                <a class="source" href="index_example.html">
-                  index_example.js
                 </a>
               
                 
@@ -224,43 +149,40 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
-* @file trims a video or audio file 
+* @module trimmer
+* @description trims a video or audio file 
 * Used by sam_transcriber/split.js module.
-* use `ffmpeg-fluent` and trims audio or video.
-* example usage
-
-```
-var trimmer = require('./index.js')
-
-trimmer.trim({
+* @author Pietro Passarelli 
+* @example
+ var trimmer = require('./index.js')
+ trimmer.trim({
 	src:"debate_test.wav", 
 	input: 773,
 	duration:20,
 	outputName:"debate_test_trimmed.wav",
-	callback: function(){
-		console.log("done")
+	callback: function(outputName, input){
+		console.log("done! new file "+outputName+" starts at this point in original "+ input)
 	}
 })
-```
+* @requires ffmpeg-fluent - to trim the audio or video.
 */</span> 
 
 <span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
-<span class="hljs-keyword">var</span> command = ffmpeg();
-
 
 <span class="hljs-comment">/**
-*
-*
+* @function trim
+* @description Trims a video or audio file 
+* @param {object} config -  The parameter containting attribute options.
+* @param {string} config.src -  video or audio file path,relative to computer root 
+* @param {number} config.input -  input point for cutting video or audio from 
+* @param {number} config.duration - duration to cut video or audio for how long
+* @param {string} config.outputName - desired name of the trimmed clip
+* @returns {callback} config.callback - Optional callback to return when transcription has done processing. It returns output name and input.
+* 
 */</span>
 <span class="hljs-keyword">var</span> trim = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">config</span>)</span>{
 
-	<span class="hljs-keyword">var</span> callback;
-
-	<span class="hljs-keyword">if</span>(config.callback){
-		callback = config.callback
-	}
-
-	<span class="hljs-keyword">if</span>(config.ffmpegBin){</pre></div></div>
+	<span class="hljs-keyword">var</span> callback;</pre></div></div>
             
         </li>
         
@@ -270,6 +192,38 @@ trimmer.trim({
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>set callback as optional</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span>(config.callback){
+		callback = config.callback
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>set ffmpeg bin path as optional</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">if</span>(config.ffmpegBin){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
               <p>setting ffmpeg bin</p>
 
@@ -283,45 +237,17 @@ trimmer.trim({
         </li>
         
         
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>set ffmpeg bin path if optional</p>
-
-            </div>
-            
-        </li>
-        
-        
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>absolute file path relative to computer root</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> videoSrc= config.src;</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-5">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>seconds or hh:mm:ss.mms</p>
+              <p>absolute file path relative to computer root</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> input = config.input;</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> videoSrc = config.src;</pre></div></div>
             
         </li>
         
@@ -332,20 +258,11 @@ trimmer.trim({
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>seconds</p>
+              <p>seconds or hh:mm:ss.mms</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> duration = config.duration; 
-	<span class="hljs-keyword">var</span> outputName = config.outputName;
-
-
-	ffmpeg(videoSrc)
-				.seekInput(input)
-				.setDuration(duration)
-				.output(outputName)
-				.on(<span class="hljs-string">'end'</span>, 
-					<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> input = config.input;</pre></div></div>
             
         </li>
         
@@ -356,12 +273,12 @@ trimmer.trim({
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>console.log(“Timmer inside split”);
-console.log(outputName)</p>
+              <p>seconds</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				   		<span class="hljs-keyword">if</span>(callback){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> duration = config.duration; 
+	<span class="hljs-keyword">var</span> outputName = config.outputName;</pre></div></div>
             
         </li>
         
@@ -372,13 +289,16 @@ console.log(outputName)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>console.log(“went into callback”)</p>
+              <p>running ffmpeg </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>				   			callback(outputName, input)
-				   		}
-				  }).run();</pre></div></div>
+            <div class="content"><div class='highlight'><pre>	ffmpeg(videoSrc)
+		.seekInput(input)
+		.setDuration(duration)
+		.output(outputName)
+		.on(<span class="hljs-string">'end'</span>, 
+			<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -389,16 +309,29 @@ console.log(outputName)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>return output;</p>
+              <p>optional callback </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>}
+            <div class="content"><div class='highlight'><pre>		   		<span class="hljs-keyword">if</span>(callback){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>returning output name and input of cut</p>
 
-<span class="hljs-comment">/**
-* to test test cutting video in isolation uncomment following code 
-* and make sure you have a file `debate_test.mp4` in the same folder
-*/</span>
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		   			callback(outputName, input)
+		   		}
+		  }).run();
+}
 
 
 <span class="hljs-built_in">module</span>.exports = {

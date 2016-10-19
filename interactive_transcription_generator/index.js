@@ -39,7 +39,7 @@ var generate = function(config) {
   // var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
   // var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
 
-  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
+  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".ogg";
   var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
 
   // TODO: use system application data folder
