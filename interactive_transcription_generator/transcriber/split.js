@@ -7,6 +7,7 @@
  *
  * takes in file, tmp folder where to put audio files trimmed. and a callback tha returns array with name of files and offest from start, to be able to concact the transcription json from IBM Watson STT Service back togethere as one big file, with word timecodes relative to the original audio/video file times.
  * @example <caption>Example usage </caption>
+
  split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
     //can do something with array of files
  })

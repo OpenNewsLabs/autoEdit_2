@@ -1,1 +1,3 @@
-IBM_watson_stt_specs.md
+## IBM watson stt specs
+
+[API reference](https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/)

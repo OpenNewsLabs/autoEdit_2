@@ -1,6 +1,8 @@
 /**
 * @file adds time offest onto each word IBM Watson STT Service json.
+* @author Pietro Passarelli 
 * @description this is so that each chunk of audio that has been transcribed separately can be joined back togethere.
+* @tutorial IBM_watson_stt_specs
 */
 
 
@@ -42,7 +44,7 @@ function parse(data, offset) {
     // add item back to the list of results
     return item;
   });
-  
+
   //returning results 
   return out;
 }

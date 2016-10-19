@@ -1,9 +1,15 @@
+//probably not testable this 
+
 var send_to_gentle = require("./gentle_stt.js");
+var demo_audio  ="demo_audio.wav";
+send_to_gentle({audio: demo_audio},function(watsonSttJson){
+  console.log(JSON.stringify(watsonSttJson, null, '\t'))
+})
+/////// allign 
 
-var demo_audio  ="/Users/pietropassarelli/Dropbox/CODE/Vox/TBVE/Lotus_v5/backEnd/norman_door.mp4.wav";
-
-
-send_to_gentle(demo_audio,function(watsonSttJson){
-  // console.log("finished!!!!")
+var send_to_gentle = require("./gentle_stt.js");
+var demo_audio  ="demo_audio.wav";
+var demo_text = "./demo.txt"
+send_to_gentle({audio: demo_audio, text: demo_text},function(watsonSttJson){
   console.log(JSON.stringify(watsonSttJson, null, '\t'))
 })

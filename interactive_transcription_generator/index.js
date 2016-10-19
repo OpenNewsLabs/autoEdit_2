@@ -12,7 +12,7 @@ var path = require("path");
 
 var generate = function(config) {
   //TODO: adda tmp word folder, and dest folder in var?
-  var transcribe = require("./sam_transcriber/index.js");
+  var transcribe = require("./transcriber/index.js");
   var convert_video = require("./video_to_html5_webm/index.js");
   var MetadataReader = require("./video_metadata_reader/index.js");
   // console.log(process.cwd())

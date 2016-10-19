@@ -48,6 +48,7 @@
  * @requires SendToWatson
  * @requires parse
  * @requires writeOut
+ * @tutorial IBM_watson_stt_specs
  */ 
 
 var fs                          = require('fs');

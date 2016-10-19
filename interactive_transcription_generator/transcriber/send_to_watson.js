@@ -13,6 +13,7 @@
   })
 * @requires fs
 * @requires watson-developer-cloud
+* @tutorial IBM_watson_stt_specs
 */
 
 var watson = require('watson-developer-cloud');
