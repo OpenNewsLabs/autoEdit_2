@@ -3,14 +3,11 @@
 //https://addyosmani.com/backbone-fundamentals/#views-1
 var app = app || {};
 
-
 var TranscriptionsList = Backbone.Collection.extend({
   model: app.Transcription,
   url: config.serverUrl+"/transcription",
   // url: "http://localhost:1337/transcription"
   // localStorage: new Backbone.LocalStorage('transcriptionsListCollection')
-
-
 
   // Filter down the list of all todo items that are finished.
     completed: function() {

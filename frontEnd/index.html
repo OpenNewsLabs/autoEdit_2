@@ -12,10 +12,6 @@
   <!-- Jquery, bootstrap, underscore, and backnone -->
 <!-- <script src="vendor/jquery.min2.js"></script> -->
 <script> 
-//Add jquery globally so that boostrap and other vendor can use it inside NWJS packed app.
-// global.$ = $;
-// $("#main").html("upppp")
-// window.$ = $;
 
 
 function loadExtScript(src, callback) {
@@ -28,7 +24,6 @@ function loadExtScript(src, callback) {
     if(callback){callback(s)}
   }
 }
-
 
 function loadJQueryExtScript(src, callback) {
   var s = document.createElement('script');
@@ -101,19 +96,12 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
   })
 })
 </script>
-  <!-- <script src="vendor/bootstrap-3.3.6-dist/js/bootstrap.js" charset="utf-8"></script> -->
-<!--   <script type="text/javascript"  src="vendor/underscore-min.js"></script>
-  <script type="text/javascript"  src="vendor/backbone-min.js"></script> -->
   <!-- client side utilities  -->
   <script src="date_now/index.js"></script>
   <script src="edl_composer/index.js"></script>
   <script src="srt/index.js"></script>
-
   <!-- Config file, app name, backend erver url-->
   <script src="../config.js"></script>
-  <!-- App.js backbone files -->
-
-
 <!-- NAVBAR  -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
@@ -126,7 +114,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
      <span class="icon-bar"></span>
    </button>
    <a class="navbar-brand" id="brandAppName" href="index.html#transcriptions">
-     <!-- <img alt="Brand" class="img-responsive" src="lotusLogo.png"> -->
      <!--App name programatically added here  -->
      </a>
  </div>
@@ -141,18 +128,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
        New</a>
      </li>
      <li><a href="https://opennewslabs.github.io/autoEdit_2"  target="_blank">Help</a></li>
-      <!-- <li><a href="https://db.tt/BNedAjt2"  target="_blank">Demo</a></li> -->
    </ul>
-
  </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
 <!-- NAVBAR END -->
 
-
   <div id="main">
   </div>
-
 
 <!-- /////////////////////////////////////////////////////////////////////////// -->
 <!-- /////////////////////////////////////////////////////////////////////////// -->
@@ -187,11 +170,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <!--  end Breadcrumb -->
       </div><!-- ./col -->
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">
-     
-
 
 <!-- Export modal + button -->
-
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">
   Export <span class="glyphicon glyphicon-save"></span>
@@ -871,7 +851,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       // For mobile version safari doesn't play webm
       window.userAgentSafari = false; 
 
-      //
       try{
         console.info("USING NWJS")
         //requiring env variables  https://github.com/motdotla/dotenv
@@ -922,7 +901,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
           })
         }
 
-
         /**
         * adding NWJS console keyboard shortcut to be able to trigger that in production 
         */
@@ -962,7 +940,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
       //Detecting if browser is safari 
       //usecase, safari not supporting webm, so switching to audio in transcript preview
-
       var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
       var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
       var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
@@ -970,7 +947,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
       if ((is_chrome)&&(is_safari)) { is_safari = false; }
       if ((is_chrome)&&(is_opera)) { is_chrome = false; }
-
 
       //Chrome as both safari and chrome in the user agent 
       if (navigator.userAgent.indexOf('Safari') != -1 && 
@@ -997,32 +973,6 @@ document.getElementById("brandAppName").innerHTML =name;//or innerText = ?
     // Name in page document title
     document.title =name;
   }
-
-/**
-* Helper functions to initialise demo transcriptions for client only version
-*/
-
-//   function loadScript(url, callback){
-//     // Adding the script tag to the head as suggested before
-//     var body = document.getElementsByTagName('body')[0];
-//     var script = document.createElement('script');
-//     script.type = 'text/javascript';
-//     script.src = url;
-
-//     // Then bind the event to the callback function.
-//     // There are several events for cross browser compatibility.
-//     script.onreadystatechange = callback;
-//     script.onload = callback;
-
-//     // Fire the loading
-//     body.appendChild(script);
-// }
-
-// var initialiseDemo = function() {
-//   console.log("demo")
-//   demoTranscription()
-//    // Here, do what ever you want
-// };
 
 /**************************************************************
 * Watson IBM Keys helpef functions 
