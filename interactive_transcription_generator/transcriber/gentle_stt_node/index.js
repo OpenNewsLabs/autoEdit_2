@@ -1,7 +1,8 @@
 /*
-* @file SDK to connect to gentle STT API
+* @module gentle_stt_node
+* @description SDK to connect to gentle STT API
 * @description can be either used to allign existing plain text or to transcribe from scratch
-* @example <captions> Example transcribing audio</captions>
+* @example <caption> Example transcribing audio</caption>
 var  transcribe =  require("./index.js")
 var demo_audio ="audio_example.wav";
 
@@ -9,7 +10,7 @@ transcribe({audio: demo_audio}, function(resp){
 	console.log(JSON.stringify(resp, null, '\t'))
 })
 * 
-* @example <captions> Example aligning text to audio</captions>
+* @example <caption> Example aligning text to audio</caption>
 var  transcribe =  require("./index.js")
 var demo_audio ="audio_example.wav";
 var demo_text = "./demo.txt"
@@ -25,7 +26,7 @@ var gentleParser = require("./parse_gentle_stt.js")
 
 /**
 * @function transcribe
-* @description 
+* @description transcribes 
 * @param {object} config - The parameter containting attribute options.
 * @param {object} config.audio - file path to audio 
 * @param {object} config.text - optional can pass in text file used to allign text rather then generating automated transcription  

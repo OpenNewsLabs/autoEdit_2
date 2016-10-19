@@ -1,5 +1,6 @@
 /**
-* @file Convers video file into wav (or any ffmpeg supported input)
+* @module convert_to_wav
+* @description Convers video file into wav (or any ffmpeg supported input)
 * takes in input file, output destination file, and callback,
 * callback returns audio file name/path
 * @requires fluent-ffmpeg

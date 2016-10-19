@@ -1,5 +1,6 @@
 /**
- * @file reorganise IBM Watson STT Json in the right timecode order
+ * @module writeOut
+ * @description reorganise IBM Watson STT Json in the right timecode order
  * @author Pietro Passarelli
  * @description sorting concat json, deleting tmp audio files, and returning
  * takes in data array of ibm watson json stt, callback for final json to output

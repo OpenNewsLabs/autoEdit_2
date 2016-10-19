@@ -1,7 +1,8 @@
 /**
- * @file Converts a transcription of json witb IBM STT API specs to a transcription json that meets autoEdit2 specs 
+ * @module parseSamJsonToTranscripJson
+ * @description Converts a transcription of json witb IBM STT API specs to a transcription json that meets autoEdit2 specs 
  * @author Pietro Passarelli 
- * @example <captions>Example usage parsing IBM STT transcription Json specs</captions>
+ * @example <caption>Example usage parsing IBM STT transcription Json specs</caption>
   var fs = require("fs")
   var demo= "tramscription.json"
   var demoContent = JSON.parse(fs.readFileSync(demo).toString());

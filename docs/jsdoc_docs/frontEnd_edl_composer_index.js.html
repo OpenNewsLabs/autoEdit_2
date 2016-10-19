@@ -27,17 +27,20 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
-* @file ELD composer to create Edit Decision List.
+* @module edl_composer
+*
 * @author Pietro Passarelli 
-* @description  EDL, Edit Decision List, is a plain text format that describes a video sequence. It can be opened in a video editing software to reconnect media to assemble a video sequence.
+* @description  file ELD composer to create Edit Decision List. EDL, Edit Decision List, is a plain text format that describes a video sequence. It can be opened in a video editing software to reconnect media to assemble a video sequence.
 * [Apple EDL spec]{@link https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%26section=1%26tasks=true  {@link https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%26section=1%26tasks=true  }
 *
 * >"In an EDL, each clip in your sequence is represented by a line of text called an event, which has a unique event number. A clip in an EDL is defined by a source reel name and two pairs of timecode In and Out points. The first pair of timecode numbers describes the source tape (or clip) In and Out points. The second pair describes the timecode location where that clip should be placed onto a master tape (or Timeline)."
 *
 * The EDL class here represents the EDL as an Object. That can take in a json sequence to generate a string conforming to the specs described above.
 * Example usage, takes in a sequence. and `.compose()` is ued to generate the EDL.
+@example &lt;caption>Example Usage&lt;/caption>
+var fs = require("fs");
 
-@example
+//given a EDL sequence as json 
 var edlSqDemo = {
     "title": "Demo Title of project",
     //offset is optional default is "00:00:00:00"
@@ -63,9 +66,33 @@ var edlSqDemo = {
       }
     ]
 }
-
+//instantiate edl object
 var edl = new EDL(edlSqDemo)
+
+// create content of EDL file
 console.log(edl.compose())
+// or write conte of edl to edl file
+fs.writeFileSync("edl_example.edl", edl.compose(), 'utf8');
+
+* @example &lt;caption>Example EDL&lt;/caption>
+TITLE: TEST PAPEREDIT
+FCM: NON-DROP FRAME
+
+001  SomeRee AA/V  C        00:02:26:21 00:02:30:12 00:00:00:00 00:00:03:16
+* FROM CLIP NAME:  Something.mov
+* COMMENT:
+FINAL CUT PRO REEL: SomeReelName REPLACED BY: SomeRee
+
+002  SomeOthe AA/V  C        00:02:30:12 00:02:34:13 00:00:03:16 00:00:07:17
+* FROM CLIP NAME:  SomethingElse.mov
+* COMMENT:
+FINAL CUT PRO REEL: SomeOtherReelName REPLACED BY: SomeOthe
+
+003  AX AA/V  C        00:02:30:12 00:02:34:13 00:00:03:16 00:00:07:17
+* FROM CLIP NAME:  SomethingElse.mov
+* COMMENT:
+
+* @tutorial EDL_format
 * @todo Write documentation.
 * @todo add error handling and error callbacks
 */
@@ -299,14 +326,13 @@ function toSeconds(timecode, fr){
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_wav.html">convert_to_wav</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator.html">interactive_transcriptionn_generator</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 17:47:22 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Oct 19 2016 00:23:53 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

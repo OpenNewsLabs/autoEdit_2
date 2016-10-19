@@ -1,5 +1,6 @@
 /**
-* @file trims a video or audio file 
+* @module trimmer
+* @description trims a video or audio file 
 * Used by sam_transcriber/split.js module.
 * @author Pietro Passarelli 
 * @example

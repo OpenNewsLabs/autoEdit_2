@@ -1,14 +1,14 @@
 /**
-* @file 
-* @description 
-* @example <captions>Example usage - transcribe audio</captions>
+* @module send_to_gentle
+* @description gentle stt SDK
+* @example <caption>Example usage - transcribe audio</caption>
 
 var send_to_gentle = require("./gentle_stt.js");
 var demo_audio  ="demo_audio.wav";
 send_to_gentle({audio: demo_audio},function(watsonSttJson){
   console.log(JSON.stringify(watsonSttJson, null, '\t'))
 })
-* @example <captions>Example usage - aligning text to audio</captions>
+* @example <caption>Example usage - aligning text to audio</caption>
 
 var send_to_gentle = require("./gentle_stt.js");
 var demo_audio  ="demo_audio.wav";

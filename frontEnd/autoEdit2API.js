@@ -1,5 +1,6 @@
 /**
- * @file Manages the backend of the app by overwrighting backbone.sync function
+ * @module autoEdit2API
+ * @description Manages the backend of the app by overwrighting backbone.sync function
  * @author Pietro Passarelli 
  * @requires fs
  * @requires path

@@ -8,5 +8,4 @@ if (window.frontEndEnviromentNWJS) {
 	Backbone.sync = autoEdit2API;
 }else{
 	//hardcoded demo ?
-
 }

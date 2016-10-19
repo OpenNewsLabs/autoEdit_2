@@ -1,5 +1,6 @@
 /**
- * @file Module function that takes in the file path to a media audio or video file and returns a json of transcription. 
+ * @module transcriber
+ * @description Module function that takes in the file path to a media audio or video file and returns a json of transcription. 
  * @author Pietro Passarelli 
  * @example
   var path    = require('path');

@@ -1,4 +1,6 @@
 /**
+* @module interactive_transcriptionn_generator
+* @example
   var config = {
   videoUrl: "",
   title: "",

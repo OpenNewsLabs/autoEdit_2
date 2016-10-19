@@ -1,5 +1,5 @@
 /**
-* @module EDL
+* @module edl_composer
 *
 * @author Pietro Passarelli 
 * @description  file ELD composer to create Edit Decision List. EDL, Edit Decision List, is a plain text format that describes a video sequence. It can be opened in a video editing software to reconnect media to assemble a video sequence.

@@ -1,12 +1,13 @@
 /**
-* @file node SDK to connect to IMB Watson API STT Service
+* @module SendToWatson
+* @description node SDK to connect to IMB Watson API STT Service
 * @description Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
 * Transcription is then saved as a file. and path of that file is returned.
 * [Node SDK speech-to-text]{@link https://github.com/watson-developer-cloud/node-sdk#speech-to-text}
 * [IBM speech-to-text]{@link https://www.ibm.com/watson/developercloud/speech-to-text}
 * [IBM STT API reference]{@link https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models}
 *
-* @example <captions>Example usage </captions>
+* @example <caption>Example usage </caption>
 
   var audioFile = "audio_sample.wav";
   var keys = { username: "youtwatson stt keys", password:"you watson stt service pswd"};

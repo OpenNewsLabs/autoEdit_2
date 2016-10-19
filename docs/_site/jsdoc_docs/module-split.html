@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: split</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: split</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls.<br>Used by sam_transcriber/index.js module.</p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Pietro Passarelli</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="interactive_transcription_generator_transcriber_split.js.html">interactive_transcription_generator/transcriber/split.js</a>, <a href="interactive_transcription_generator_transcriber_split.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption">Example usage </p>
+    
+    <pre class="prettyprint"><code> split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
+    //can do something with array of files
+ })</code></pre>
+
+        <p class="code-caption">Example output `files`</p>
+    
+    <pre class="prettyprint"><code>   [
+    {
+      name: filename,
+      offset: 0
+     },
+     ...
+   ]</code></pre>
+
+        <p class="code-caption">Example usage</p>
+    
+    <pre class="prettyprint"><code>  var split = require('./split.js');
+  var demoAudio = "audio_example.wav"
+  var ffprobePath = "/bin/ffprobe";
+  var ffmpegPath = "/bin/ffmpeg";
+  var tmpFolder ="./tmp"
+
+   split(demoAudio,tmpFolder,ffmpegPath,ffprobePath, function(files) {
+    console.log("done splitting")
+    console.log(files)
+   })</code></pre>
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:fluent-ffmpeg</li>
+        
+            <li>module:path</li>
+        
+            <li>module:fs</li>
+        
+            <li>module:trimmer.js</li>
+        </ul>
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~finishedSplit"><span class="type-signature">(inner) </span>finishedSplit<span class="signature">()</span><span class="type-signature"> &rarr; {callback}</span></h4>
+
+    
+    <p class="summary">helper function used as callback to add info on trimmed clips to list of files.</p>
+    
+
+
+
+<div class="description">
+    <p>helper function used as callback to add info on trimmed clips to list of files.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>name of the audio clip</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>clip time offset in seconds, in 5 min intervals</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="interactive_transcription_generator_transcriber_split.js.html">interactive_transcription_generator/transcriber/split.js</a>, <a href="interactive_transcription_generator_transcriber_split.js.html#line78">line 78</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>callback - return list of files</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">callback</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="~split"><span class="type-signature">(inner) </span>split<span class="signature">(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, callback)</span><span class="type-signature"> &rarr; {callback}</span></h4>
+
+    
+    <p class="summary">splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.</p>
+    
+
+
+
+<div class="description">
+    <p>splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.<br>using <code>ffprobe</code> to read duration. <code>ffmpeg</code> passed to <code>trimmer</code> module.<br>saves trimmed clips in temp folder.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>file</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>audio file path</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tmpFolder</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>path to a temporary folder to put temporary audio files created when dividing audio file into chunks to send to STT API.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ffmpegBinPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>path to ffmpeg binary. to pass to trimmer module</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ffprobeBinPath</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>path to ffprobe binary. If not present it will try to use system one.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>callback</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">callback</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>-</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="interactive_transcription_generator_transcriber_split.js.html">interactive_transcription_generator/transcriber/split.js</a>, <a href="interactive_transcription_generator_transcriber_split.js.html#line49">line 49</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+    <dt class="tag-todo">To Do:</dt>
+    <dd class="tag-todo">
+        <ul>
+            <li>refactor using config, needs refactroing index.js of sam transcriber if you do</li>
+        </ul>
+    </dd>
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>callback - returns array of audio clips names with offsts eg [{ name: filename, offset: 0 }]</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">callback</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_wav.html">convert_to_wav</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator.html">interactive_transcriptionn_generator</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Oct 19 2016 00:23:53 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 /**
- * @file Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls. 
- * Used by sam_transcriber/index.js module.
+ * @module split
+ * @description Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls. 
+ * Used by transcriber/index.js module.
  * @author Pietro Passarelli 
  * @todo: technically this does not guarantee that each file will be less then 100mb, altho seems to work with no problems is not 100% sure. 
  * @todo: figure out how to make sure each file does not exceeen 100mb (othwerwise it be rejected by IBM Watson STT service )
@@ -20,7 +21,7 @@
      ...
    ]
  *
- * @example  <captions>Example usage</captions>
+ * @example  <caption>Example usage</caption>
   var split = require('./split.js');
   var demoAudio = "audio_example.wav"
   var ffprobePath = "/bin/ffprobe";

@@ -1,5 +1,6 @@
 /**
-* @file provides a function to convert srt line object json to srt file content as string
+* @module srt
+* @description provides a function to convert srt line object json to srt file content as string
 * originally from [srtParserComposer](https://github.com/pietrop/srtParserComposer) and  [on npm](https://www.npmjs.com/package/srt_parser_composer)
 * Expecting srtJsonContent to be like so
 

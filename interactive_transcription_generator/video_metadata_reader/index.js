@@ -1,5 +1,28 @@
 /**
- * @file Reads video metadata needed for EDL. reel, timecode, fps. If those fields are not present in the metadata associated with the media file the attributes in the resulting json is replaced with "NA".
+ * @module video_metadata_reader
+ * @description Reads video metadata needed for EDL. reel, timecode, fps. If those fields are not present in the metadata associated with the media file the attributes in the resulting json is replaced with "NA".
+ * @example <caption>Example usage</caption>
+ var metadataReader = require('./index.js');
+ var sampleVideo = "sampleVideo.mov";
+
+  metadataReader.read({
+    file: sampleVideo,
+    ffprobePath: exampleFfprobePath,
+    callback: function(resp){
+      console.log(JSON.stringify(resp));
+    }
+  });
+
+  * @example <caption>Example output from `readVideoMetadataForEDL`</caption>
+{ 
+   filePathName: '/some_file_path/Bowman.mov',
+  date: '2016-02-18 16:38:20',
+  reelName: 'time',
+  timecode: '00:01:18:56',
+  fps: '1/60000',
+  duration: 2287.285 
+}
+
  * @author Pietro Passarelli 
  * @requires fluent-ffmpeg
  * @requires path

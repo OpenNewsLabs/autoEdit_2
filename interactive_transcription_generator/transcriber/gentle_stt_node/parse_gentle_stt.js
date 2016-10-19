@@ -1,5 +1,6 @@
-	/**
-* @file parse the gentleJson json into interactive transcription json for autoEdit2
+/**
+* @module parse
+* @description parse the gentleJson json into interactive transcription json for autoEdit2
 * @example 
 var gentleParser = require("./parse_gentle_stt.js")
 var demoJson = require("./example/allign.json")
