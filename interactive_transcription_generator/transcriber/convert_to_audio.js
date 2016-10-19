@@ -1,5 +1,5 @@
 /**
-* @module convert_to_wav
+* @module convert_to_audio
 * @description Convers video file into wav (or any ffmpeg supported input)
 * takes in input file, output destination file, and callback,
 * IBM sudgested audio compression {@link http://www.ibm.com/watson/developercloud/doc/speech-to-text/input.shtml#limits}

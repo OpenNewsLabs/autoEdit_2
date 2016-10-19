@@ -55,7 +55,7 @@
 var fs                          = require('fs');
 var path                        = require('path');
 
-var convertToWav                = require('./convert_to_wav.js');
+var convertToWav                = require('./convert_to_audio.js');
 var split                       = require('./split.js');
 
 var gentle_transcribe           = require("./gentle_stt_node/index.js");
