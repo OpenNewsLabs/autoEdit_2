@@ -56,11 +56,13 @@ var path                        = require('path');
 
 var convertToWav                = require('./convert_to_wav.js');
 var split                       = require('./split.js');
-var SendToWatson                = require('./send_to_watson.js');
-var gentle_transcribe           = require("../gentle_stt_node/index.js");
-var parse                       = require('./parse.js');
-var writeOut                    = require('./write_out.js');
-var parseSamJsonToTranscripJson = require("./sam_transcriber_json_convert.js");
+
+var gentle_transcribe           = require("./gentle_stt_node/index.js");
+
+var SendToWatson                = require('./ibm_stt_node/send_to_watson.js');
+var parse                       = require('./ibm_stt_node/parse.js');
+var writeOut                    = require('./ibm_stt_node/write_out.js');
+var parseSamJsonToTranscripJson = require("./ibm_stt_node/sam_transcriber_json_convert.js");
 
 /**
  * @function transcribe
@@ -112,7 +114,8 @@ var transcribe = function(config) {
 
           sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
             //add offset to json of each audio clippings transcription
-            var parsed = parse(data, f.offset);
+            var parsed = parse
+            (data, f.offset);
             //add  json of each audio clippings transcription to out list.
             out.push({ f: f, data: parsed });
             total--;

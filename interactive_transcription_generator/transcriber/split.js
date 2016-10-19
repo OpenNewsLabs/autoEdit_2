@@ -20,6 +20,18 @@
      ...
    ]
  *
+ * @example  <captions>Example usage</captions>
+  var split = require('./split.js');
+  var demoAudio = "audio_example.wav"
+  var ffprobePath = "/bin/ffprobe";
+  var ffmpegPath = "/bin/ffmpeg";
+  var tmpFolder ="./tmp"
+
+   split(demoAudio,tmpFolder,ffmpegPath,ffprobePath, function(files) {
+    console.log("done splitting")
+    console.log(files)
+   })
+   
  * @todo refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.
  * 
  * @requires fluent-ffmpeg

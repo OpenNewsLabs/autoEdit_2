@@ -6,9 +6,14 @@
 * [IBM speech-to-text]{@link https://www.ibm.com/watson/developercloud/speech-to-text}
 * [IBM STT API reference]{@link https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models}
 *
-* @example
+* @example <captions>Example usage </captions>
+
+  var audioFile = "audio_sample.wav";
+  var keys = { username: "youtwatson stt keys", password:"you watson stt service pswd"};
+  languageModel = "en-US_BroadbandModel";
+
   var sendToWatsonUtil = new SendToWatson();
-  sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
+  sendToWatsonUtil.send(audioFile, keys, languageModel, function(data) {
     //data is a IBM JSON transcription  
   })
 * @requires fs
