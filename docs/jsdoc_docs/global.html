@@ -54,8 +54,7 @@
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
+					<li><a href="global.html#convert">convert</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
 				</ul>
 			</li>
 			
@@ -420,13 +419,18 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
             
 <hr>
 <dt>
-    <h4 class="name" id="convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback."><span class="type-signature"></span>convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.(config)</h4>
+    <h4 class="name" id="convert"><span class="type-signature"></span>convert(config)</h4>
     
+    
+    <p class="summary">Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</p>
     
 </dt>
 <dd>
 
+    
+    <div class="description">
+        <p>Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</p>
+    </div>
     
 
     
@@ -1726,17 +1730,17 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
             
 <hr>
 <dt>
-    <h4 class="name" id="SendToWatson"><span class="type-signature"></span>SendToWatson()</h4>
+    <h4 class="name" id="SendToWatson"><span class="type-signature"></span>SendToWatson(audioFile, keys)</h4>
     
     
-    <p class="summary"><p>takes in autio file path</p>.</p>
+    <p class="summary"><p>send audio file to IBM STT API and get json transcription  back</p>.</p>
     
 </dt>
 <dd>
 
     
     <div class="description">
-        <p>takes in autio file path</p>
+        <p>send audio file to IBM STT API and get json transcription  back</p>
     </div>
     
 
@@ -1752,6 +1756,8 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
 <table class="params table table-striped">
     <thead>
     <tr>
+        
+        <th>Name</th>
         
 
         <th>Type</th>
@@ -1769,11 +1775,13 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
 
         <tr>
             
+                <td class="name"><code>audioFile</code></td>
+            
 
             <td class="type">
             
                 
-<span class="param-type">audioFile</span>
+<span class="param-type">string</span>
 
 
 
@@ -1784,18 +1792,20 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>file path to audio file to transcribe</p></td>
         </tr>
 
     
 
         <tr>
             
+                <td class="name"><code>keys</code></td>
+            
 
             <td class="type">
             
                 
-<span class="param-type">keys</span>
+<span class="param-type">string</span>
 
 
 
@@ -1806,7 +1816,81 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
 
             
 
-            <td class="description last"></td>
+            <td class="description last"><p>json object with <code>username</code> and <code>password</code> for IBM STT Service as set by Bluemix</p>
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>username</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>username for IBM STT service</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pasword</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>password for IBM STT service</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
         </tr>
 
     
@@ -1896,7 +1980,9 @@ Takes in a config object with propreties: src, outputName, ffmpegBin and optiona
     
         <h5>Example</h5>
         
-    <pre class="sunlight-highlight-javascript">languageModel for IBM can only be one of these, as string
+        <p class="code-caption">IBM supported languages </p>
+    
+    <pre class="sunlight-highlight-javascript">// dictionary that matches language with IBM language  models
 ar-AR_BroadbandModel
 en-UK_BroadbandModel
 en-UK_NarrowbandModel
@@ -2799,7 +2885,7 @@ zh-CN_NarrowbandModel</pre>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a>
 	
-		on 2016-10-18T19:51:43-04:00
+		on 2016-10-18T21:03:10-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

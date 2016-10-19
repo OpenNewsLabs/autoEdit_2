@@ -1,9 +1,10 @@
-//SESSION + JSON
 /**
-* @file Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
-* @description Transcription is then saved as a file. and path of that file is returned.
+* @file node SDK to connect to IMB Watson API STT Service
+* @description Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
+* Transcription is then saved as a file. and path of that file is returned.
 * [Node SDK speech-to-text]{@link https://github.com/watson-developer-cloud/node-sdk#speech-to-text}
 * [IBM speech-to-text]{@link https://www.ibm.com/watson/developercloud/speech-to-text}
+* [IBM STT API reference]{@link https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models}
 *
 * @example
   var sendToWatsonUtil = new SendToWatson();
@@ -14,36 +15,30 @@
 * @requires watson-developer-cloud
 */
 
-
-
-
 var watson = require('watson-developer-cloud');
 var fs = require("fs");
 
 //  Initialise var so that scope allows to set api keys
-// and use it inside `watsonTranscibe()` function
+//TODO: not sure if this i needed
 var speech_to_text;
 
 /**
-* takes in json of api keys
-* `var keys = {username: "",password: ""}``
+* @constructs SendToWatson
+* @description API Object to work with Watson STT APIk
 */
-// function setAPIkeys(keys){
-//   speech_to_text = watson.speech_to_text({
-//     username: keys.username,
-//     password: keys.password,
-//     version: 'v1'
-//   });
-// }
+var SendToWatson = function(){}
 
 /**
-* @function SendToWatson
-* @description takes in autio file path
-* @param {audioFile}
-* @param {keys}
-* @params {languageModel} - one of the supported languages by IBM STT Services
-@example 
-languageModel for IBM can only be one of these, as string
+* @function SendToWatson.send
+* @description send audio file to IBM STT API and get json transcription  back 
+* @param {string} audioFile - file path to audio file to transcribe 
+* @param {string} keys - json object with `username` and `password` for IBM STT Service as set by Bluemix
+* @param {string} keys.username - username for IBM STT service
+* @param {string} keys.pasword - password for IBM STT service
+* @params {string} languageModel - one of the supported languages by IBM STT Services
+* @returns {callback} - returns callback with file path to text file containing transcriptions.
+@example <caption>IBM supported languages </caption>
+// dictionary that matches language with IBM language  models
 ar-AR_BroadbandModel
 en-UK_BroadbandModel
 en-UK_NarrowbandModel
@@ -58,27 +53,21 @@ pt-BR_BroadbandModel
 pt-BR_NarrowbandModel
 zh-CN_BroadbandModel
 zh-CN_NarrowbandModel
-* @returns {callback} - returns callback with file path to text file containing transcriptions.
 */
-var SendToWatson = function(){}
-
 SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
-console.log("################# .send_to_watson")
-//dictionary that matches language with IBM language  models
-// https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
 
-
-
+  //credentials for STT API 
   speech_to_text = watson.speech_to_text({
     username: keys.username,
     password: keys.password,
     version: 'v1'
   });
 
+  //params to send to IBM STT API request
   var params = {
     audio: fs.createReadStream(audioFile),
     content_type: 'audio/wav',
-    //ndicates whether time alignment is returned for each word. The default is false.
+    //indicates whether time alignment is returned for each word. The default is false.
     timestamps: true,
     //Indicates whether multiple final results that represent consecutive phrases separated by long pauses are returned. If true, such phrases are returned; if false (the default), recognition ends after the first "end of speech" incident is detected.
     continuous: true,
@@ -91,17 +80,19 @@ console.log("################# .send_to_watson")
     model: languageModel
   };
 
+  //makes request to STT API 
   speech_to_text.recognize(params, function(err, transcript) {
-    if (err)
+    if (err){
     console.log(err);
-    else
-    // console.log(JSON.stringify(transcript, null, 2));
-    if(cb){cb(transcript)}else{ return transcript}
+    }else{
+      if(cb){cb(transcript)}else{ return transcript}
+    }
   });
-}//transcribe
+}
 
 /**
-* Helper function to extracts file name from file path string
+* @function getFileName
+* @description Helper function to extracts file name from file path string
 */
 function getFileName(fileNameWithPath){
   return fileNameWithPath.split("/").pop()
