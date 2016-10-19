@@ -1,9 +1,9 @@
 /**
 * @file provides a function to convert srt line object json to srt file content as string
-* originally from https://github.com/pietrop/srtParserComposer and https://www.npmjs.com/package/srt_parser_composer 
-*  Expecting srtJsonContent to be like so
+* originally from [srtParserComposer](https://github.com/pietrop/srtParserComposer) and  [on npm](https://www.npmjs.com/package/srt_parser_composer)
+* Expecting srtJsonContent to be like so
 
-```json
+@example
 [
   {
     "id": "1",
@@ -29,10 +29,9 @@
     "endTime": "00:00:16,869",
     "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
   },
-```
+
 *
-* it returns a string like so
-```
+*  @example <caption> it returns a string like so</caption> 
 1
 00:00:00,160 --> 00:00:04,890
 There’s this door on the 10th floor I just
@@ -52,7 +51,7 @@ How often? “like 30% of the time.”
 00:00:14,290 --> 00:00:16,869
 Have you seen people misuse it?
 All the time. Every day. Constantly.
-```
+
 * @author Pietro Passarelli 
 */
 

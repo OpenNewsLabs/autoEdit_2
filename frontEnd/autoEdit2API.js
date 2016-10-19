@@ -260,22 +260,15 @@
       //worth looking into alternative
       //https://github.com/Ivshti/linvodb3#removing-from-the-collection 
       Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
-      // numRemoved = 1
-      // removed done
-      // });
-      // Transcription.findOne(model._id, function(err, transcription) {
-        //deletes transcription from db
-        // transcription.remove(function() {
           //removing media associated with transcription.
-          //TODO: this only deletes the video if the video has done processing.
-          // this means incomplete vidoes are left in the folder if the transcription is deleted
+          //TODO: this only deletes the video if the video has done processing. think about refactoring so that attribute can be present before processing starts. As it is now this means incomplete vidoes are left in the folder if the transcription is deleted
           if(model.attributes.processedVideo){
             //TODO: review if this is the right way to check if the file exists before deleting it. 
             if(fileExists( model.attributes.videoOgg)){
               fs.unlinkSync( model.attributes.videoOgg);  
             }
           }
-          //if the trascription has been shown the audio will always be present because is needed to generate the text transcription
+          //if the trascription has been shown the audio will always be present because is needed to generate the text transcription. But having test here just in case
           if(model.attributes.audioFile){
             if(fileExists( model.attributes.audioFile)){
               fs.unlinkSync( model.attributes.audioFile);

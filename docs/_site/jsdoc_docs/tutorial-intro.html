@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Tutorial: intro</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-EDL.html">EDL</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-EDL-EDL.html">EDL~EDL</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			<section class="tutorial-section">
+
+<header>
+    
+
+    <h2>intro</h2>
+</header>
+
+<article>
+    <h2>Documentation Intro</h2><p>Can also explore the documentation as <a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a></p>
+<pre class="prettyprint source lang-bash"><code>.
+├── LICENCE.MD
+├── README.md
+├── appdmg.json
+├── background.png
+├── config.js
+├── deploy.js
+├── docs
+│   └── ... jekyll sit for project page and documentation  
+├── favicon.ico
+├── frontEnd
+│   ├── autoEdit2API.js
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor
+├── interactive_transcription_generator
+│   ├── README.md
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── index.js
+│   ├── sam_transcriber
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+├── node_modules
+├── nw.icns
+├── nw_l.icns
+├── package.json
+├── red-button.png
+├── spec
+│   ├── autoEdit2API_spec.js
+│   ├── gentle
+│   ├── interactive_transcription_generator_spec.js
+│   ├── sam_transcriber
+│   ├── support
+│   ├── test_interactive_transcription_generator.js
+│   ├── test_video_to_html5_webm.js
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+└── wttskeys_dev.json</code></pre><h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
+│   ├── autoEdit2API.js
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor</code></pre><p><code>autoEdit2API</code> overwrighting backbone.sync method and using node modules for backend for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
+<p>backbone front end . <code>demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
+<p><code>js</code> contains the backbone project.</p>
+<h3><code>interactive_transcription_generator</code></h3><pre class="prettyprint source"><code>├── interactive_transcription_generator
+│   ├── README.md
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── index.js
+│   ├── sam_transcriber
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm</code></pre><h3><code>docs</code></h3><p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.<br>Jekyll website,  using </p>
+<ul>
+<li>For landing page <a href="http://blacktie.co/2013/10/pratt-app-landing-page/">pratt-app-landing-page</a> <a href="http://blacktie.co/demo/pratt">demo</a></li>
+<li><p>Other user manual and documentation pages <a href="https://github.com/bruth/jekyll-docs-template">jekyll-docs-template</a> <a href="http://bruth.github.io/jekyll-docs-template">demo</a></p>
+</li>
+<li><p><code>/docs/_posts</code> for user manual page and <code>/docs/_posts/tutorial</code> for  developer documentation.</p>
+</li>
+<li>using jdoc and docco for automatic documentation generated </li>
+</ul>
+<h3><code>deploy.js</code></h3><p>Deployment script. <a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
+<h3><code>cache</code></h3><p>is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time</p>
+<h3><code>tmd_media</code></h3><p>is where the wav files are kept, and the deleted, when sending split chunks to watson.</p>
+<h3><code>media</code></h3><p> is where video webm previews and audio wav files for transcriptions are kept. </p>
+<h3><code>wttskeys.json</code></h3><p>At root level is where watson API keys are ketp, this file is in <code>.gitignore</code> to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there. </p>
+<p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual to see how user ir prompted to add IBM keys on startup</a></p>
+<h3><code>spec</code></h3><p>Test suite </p>
+</article>
+
+</section>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a>
+	
+		on 2016-10-18T19:51:44-04:00
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

@@ -12,7 +12,7 @@ var ffmpeg = require('fluent-ffmpeg');
 
 /**
  * @function convert
- * Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @description Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
  * @param {object} config - The parameter containting attribute options.
  * @param {string} config.src - full path of video or audio to convert.
  * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.

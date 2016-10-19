@@ -28,12 +28,23 @@
         <article>
             <pre class="prettyprint source linenums"><code>//SESSION + JSON
 /**
-* Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
-* Transcription is then saved as a file. and path of that file is returned.
-https://www.ibm.com/watson/developercloud/speech-to-text/
+* @file Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
+* @description Transcription is then saved as a file. and path of that file is returned.
+* [Node SDK speech-to-text]{@link https://github.com/watson-developer-cloud/node-sdk#speech-to-text}
+* [IBM speech-to-text]{@link https://www.ibm.com/watson/developercloud/speech-to-text}
+*
+* @example
+  var sendToWatsonUtil = new SendToWatson();
+  sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
+    //data is a IBM JSON transcription  
+  })
+* @requires fs
+* @requires watson-developer-cloud
 */
 
-//https://github.com/watson-developer-cloud/node-sdk#speech-to-text
+
+
+
 var watson = require('watson-developer-cloud');
 var fs = require("fs");
 
@@ -54,19 +65,13 @@ var speech_to_text;
 // }
 
 /**
-* takes in autio file path
-* returns callback with file path to text file containing transcriptions.
-*/
-//TODO: pass param of language 
-var SendToWatson = function(){}
-
-SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
-console.log("################# .send_to_watson")
-//dictionary that matches language with IBM language  models
-// https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
-
-/*
-languageModel for ib can only be one of these, as string
+* @function SendToWatson
+* @description takes in autio file path
+* @param {audioFile}
+* @param {keys}
+* @params {languageModel} - one of the supported languages by IBM STT Services
+@example 
+languageModel for IBM can only be one of these, as string
 ar-AR_BroadbandModel
 en-UK_BroadbandModel
 en-UK_NarrowbandModel
@@ -81,7 +86,16 @@ pt-BR_BroadbandModel
 pt-BR_NarrowbandModel
 zh-CN_BroadbandModel
 zh-CN_NarrowbandModel
+* @returns {callback} - returns callback with file path to text file containing transcriptions.
 */
+var SendToWatson = function(){}
+
+SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
+console.log("################# .send_to_watson")
+//dictionary that matches language with IBM language  models
+// https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
+
+
 
   speech_to_text = watson.speech_to_text({
     username: keys.username,
@@ -135,14 +149,14 @@ module.exports = SendToWatson;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 17:47:22 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

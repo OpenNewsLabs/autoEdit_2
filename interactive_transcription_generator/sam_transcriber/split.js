@@ -1,6 +1,7 @@
 /**
  * @file Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls. 
  * Used by sam_transcriber/index.js module.
+ * @author Pietro Passarelli 
  * @todo: technically this does not guarantee that each file will be less then 100mb, altho seems to work with no problems is not 100% sure. 
  * @todo: figure out how to make sure each file does not exceeen 100mb (othwerwise it be rejected by IBM Watson STT service )
  *
@@ -62,7 +63,7 @@ function split(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, cb) {
 
   /**
   * @function finishedSplit
-  * @description adds info on trimmed clips to list of files. 
+  * @description helper function used as callback to add info on trimmed clips to list of files. 
   * @param {string} - name of the audio clip 
   * @param {number} - clip time offset in seconds, in 5 min intervals
   * @returns {callback} callback - return list of files

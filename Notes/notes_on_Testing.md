@@ -1,7 +1,10 @@
 Testing 
 
-- How to test code that connects to an API 
+## General questions
 
+- How to test code that connects to an API?
+- How to test code that uses ffmpeg/ffprobe? 
+- in jsdoc, all files following convention `name_of_module/index.js` appear as named `index`. workaround?
 
 ## video_to_html5_webm
 Does this even need to be tested?

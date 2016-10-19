@@ -1,11 +1,22 @@
 //SESSION + JSON
 /**
-* Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
-* Transcription is then saved as a file. and path of that file is returned.
-https://www.ibm.com/watson/developercloud/speech-to-text/
+* @file Takes audio file less then 100mb and sends it to IBM watson to be transcribed.
+* @description Transcription is then saved as a file. and path of that file is returned.
+* [Node SDK speech-to-text]{@link https://github.com/watson-developer-cloud/node-sdk#speech-to-text}
+* [IBM speech-to-text]{@link https://www.ibm.com/watson/developercloud/speech-to-text}
+*
+* @example
+  var sendToWatsonUtil = new SendToWatson();
+  sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
+    //data is a IBM JSON transcription  
+  })
+* @requires fs
+* @requires watson-developer-cloud
 */
 
-//https://github.com/watson-developer-cloud/node-sdk#speech-to-text
+
+
+
 var watson = require('watson-developer-cloud');
 var fs = require("fs");
 
@@ -26,19 +37,13 @@ var speech_to_text;
 // }
 
 /**
-* takes in autio file path
-* returns callback with file path to text file containing transcriptions.
-*/
-//TODO: pass param of language 
-var SendToWatson = function(){}
-
-SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
-console.log("################# .send_to_watson")
-//dictionary that matches language with IBM language  models
-// https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
-
-/*
-languageModel for ib can only be one of these, as string
+* @function SendToWatson
+* @description takes in autio file path
+* @param {audioFile}
+* @param {keys}
+* @params {languageModel} - one of the supported languages by IBM STT Services
+@example 
+languageModel for IBM can only be one of these, as string
 ar-AR_BroadbandModel
 en-UK_BroadbandModel
 en-UK_NarrowbandModel
@@ -53,7 +58,16 @@ pt-BR_BroadbandModel
 pt-BR_NarrowbandModel
 zh-CN_BroadbandModel
 zh-CN_NarrowbandModel
+* @returns {callback} - returns callback with file path to text file containing transcriptions.
 */
+var SendToWatson = function(){}
+
+SendToWatson.prototype.send = function(audioFile,keys, languageModel, cb){
+console.log("################# .send_to_watson")
+//dictionary that matches language with IBM language  models
+// https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models
+
+
 
   speech_to_text = watson.speech_to_text({
     username: keys.username,

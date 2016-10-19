@@ -1,75 +1,192 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Home</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Documentation Index</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
 </head>
 
 <body>
 
-<div id="main">
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Documentation</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="module-EDL.html">EDL</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-EDL-EDL.html">EDL~EDL</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
 
-    <h1 class="page-title">Home</h1>
-
-    
-
+</div>
+</div>
 
 
-    
+<div class="container" id="toc-content">
+<div class="row">
 
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
 
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
+	
+	
 
 
 
 
-    <section>
-        <article><h1>autoEdit V2</h1><p>Fast text based video editing deesktop app for Mac OSX. Built in node NWJS and backbone.
-Making video production faster, easier and more accessible.</p>
-<p><img src="/docs/img/gif/3_transcription.gif" alt="Transcription "></p>
-<p>Uses <a href="https://github.com/pietrop/nwjs_boilerplate">NWJS boilerplate</a>  as a starting point.</p>
-<p>Is designed so that the front end in backbone can be used as standalone static site. Which is how 
-<a href="https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html#transcriptions">the demo</a> is run, with an hard coded backbone model.</p>
-<h2>Overview of how the app works</h2><p>The app uses IBM watson or Gentle open source Speech To Text systems to generate transcription.
-The user can then select text and export a video sequence to the video editing software of choice.</p>
-<p><img src="/docs/img/tutorial/0_diagram.png" alt="Overview diagram "></p>
-<h2>Ready to use release</h2><p>see <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases">releases section</a> to downlaod latest packaged version ready to use. 
-All you need to get started is IBM Watson API Blumix keys. <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html">Check out the guide section on this</a></p>
-<p>And the <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html">user manual</a></p>
-<h2>Launching the app</h2><p>For developers</p>
-<pre class="prettyprint source lang-bash"><code>npm install</code></pre><p>and then </p>
-<pre class="prettyprint source lang-bash"><code>npm start</code></pre><p>You'd also need to get IBM watson STT keys or have the Gentle Open source app running locally <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html">see the guide for instructions on setting this up </a></p>
-<hr>
-<h2>repackaging the the app</h2><p>the deploy script is in <code>deploy.js</code> and you can run it with <code>node deploy.js</code> from terminal from root of app, creates a folder called <code>build</code> where you can find your packaged app.  or <code>npm run build</code></p>
-<p><a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
-<p>The <code>/cache</code> folder is used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time.</p>
-<p><code>tmd_media</code>  is where the wav files are kept, and the deleted, when sending split chunks to watson.
-<code>media</code> is where video webm previews and audio wav files for transcriptions are kept. </p>
-<p><code>wttskeys.json</code> at root level is where watson API keys are ketp, this file is in gitignore to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there. And you want to make sure is not there in the packaged app if you don't want to share your API keys.</p>
-<hr>
-<h2>Contributing</h2><p>Feel free to get in touch with any questions. Fork the project and send me a pull request.</p>
-<h2>Contributors</h2><ul>
-<li><a href="http://github.com/pietrop">Pietro Passarelli</a></li>
-</ul></article>
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h2>Documentation Intro</h2><p>Can also explore the documentation as <a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a></p>
+<pre class="prettyprint source lang-bash"><code>.
+├── LICENCE.MD
+├── README.md
+├── appdmg.json
+├── background.png
+├── config.js
+├── deploy.js
+├── docs
+│   └── ... jekyll sit for project page and documentation  
+├── favicon.ico
+├── frontEnd
+│   ├── autoEdit2API.js
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor
+├── interactive_transcription_generator
+│   ├── README.md
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── index.js
+│   ├── sam_transcriber
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+├── node_modules
+├── nw.icns
+├── nw_l.icns
+├── package.json
+├── red-button.png
+├── spec
+│   ├── autoEdit2API_spec.js
+│   ├── gentle
+│   ├── interactive_transcription_generator_spec.js
+│   ├── sam_transcriber
+│   ├── support
+│   ├── test_interactive_transcription_generator.js
+│   ├── test_video_to_html5_webm.js
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm
+└── wttskeys_dev.json</code></pre><h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
+│   ├── autoEdit2API.js
+│   ├── date_now
+│   ├── demo_jr.js
+│   ├── edl_composer
+│   ├── index.html
+│   ├── js
+│   ├── public
+│   ├── srt
+│   └── vendor</code></pre><p><code>autoEdit2API</code> overwrighting backbone.sync method and using node modules for backend for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
+<p>backbone front end . <code>demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
+<p><code>js</code> contains the backbone project.</p>
+<h3><code>interactive_transcription_generator</code></h3><pre class="prettyprint source"><code>├── interactive_transcription_generator
+│   ├── README.md
+│   ├── bin
+│   ├── gentle_stt_node
+│   ├── index.js
+│   ├── sam_transcriber
+│   ├── video_metadata_reader
+│   └── video_to_html5_webm</code></pre><h3><code>docs</code></h3><p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.<br>Jekyll website,  using </p>
+<ul>
+<li>For landing page <a href="http://blacktie.co/2013/10/pratt-app-landing-page/">pratt-app-landing-page</a> <a href="http://blacktie.co/demo/pratt">demo</a></li>
+<li><p>Other user manual and documentation pages <a href="https://github.com/bruth/jekyll-docs-template">jekyll-docs-template</a> <a href="http://bruth.github.io/jekyll-docs-template">demo</a></p>
+</li>
+<li><p><code>/docs/_posts</code> for user manual page and <code>/docs/_posts/tutorial</code> for  developer documentation.</p>
+</li>
+<li>using jdoc and docco for automatic documentation generated </li>
+</ul>
+<h3><code>deploy.js</code></h3><p>Deployment script. <a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
+<h3><code>cache</code></h3><p>is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time</p>
+<h3><code>tmd_media</code></h3><p>is where the wav files are kept, and the deleted, when sending split chunks to watson.</p>
+<h3><code>media</code></h3><p> is where video webm previews and audio wav files for transcriptions are kept. </p>
+<h3><code>wttskeys.json</code></h3><p>At root level is where watson API keys are ketp, this file is in <code>.gitignore</code> to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there. </p>
+<p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual to see how user ir prompted to add IBM keys on startup</a></p>
+<h3><code>spec</code></h3><p>Test suite </p></article>
     </section>
 
 
@@ -78,28 +195,35 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
 
 
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>frontEnd/autoEdit2API.js</h2>
+        <h2>
+        frontEnd/autoEdit2API.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Manages the backend of the app by overwrighting backbone.sync function</div>
+            <div class="description"><p>Manages the backend of the app by overwrighting backbone.sync function</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -109,50 +233,41 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontEnd_autoEdit2API.js.html">frontEnd/autoEdit2API.js</a>, <a href="frontEnd_autoEdit2API.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Write documentation.</li>
-        
-            <li>add error handling and error callbacks</li>
-        </ul>
-    </dd>
-    
+	
+	<dt class="tag-todo method-doc-label method-doc-details-label">To Do:</dt>
+	<dd class="tag-todo">
+		<ul>
+			<li>Write documentation.</li>
+			
+			<li>add error handling and error callbacks</li>
+			</ul>
+	</dd>
+	
 </dl>
 
 
@@ -180,7 +295,7 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
     
 
-     
+    
 
     
 
@@ -198,29 +313,35 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>frontEnd/demo_jr.js</h2>
+        <h2>
+        frontEnd/demo_jr.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">provides backbone models for client side browser based demo. Loaded into memory in `index.html`</div>
+            <div class="description"><p>provides backbone models for client side browser based demo. Loaded into memory in <code>index.html</code></p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -230,41 +351,32 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontEnd_demo_jr.js.html">frontEnd/demo_jr.js</a>, <a href="frontEnd_demo_jr.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
@@ -278,7 +390,7 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
     
 
-     
+    
 
     
 
@@ -296,29 +408,35 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>frontEnd/edl_composer/index.js</h2>
+        <h2>
+        frontEnd/js/sync.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">ELD composer to create Edit Decision List.</div>
+            <div class="description"><p>Manages the backend of the app by overwrighting backbone.sync function to the <code>autoEditAPI.js</code> module.</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -328,86 +446,32 @@ All you need to get started is IBM Watson API Blumix keys. <a href="https://open
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontEnd_edl_composer_index.js.html">frontEnd/edl_composer/index.js</a>, <a href="frontEnd_edl_composer_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>Write documentation.</li>
-        
-            <li>add error handling and error callbacks
-EDL, Edit Decision List, is a plain text format that describes a video sequence. It can be opened in a video editing software to reconnect media to assemble a video sequence.
-<a href="https://documentation.apple.com/en/finalcutpro/usermanual/index.html#chapter=96%2526section=1%2526tasks=true">Apple EDL spec</a>
->"In an EDL, each clip in your sequence is represented by a line of text called an event, which has a unique event number. A clip in an EDL is defined by a source reel name and two pairs of timecode In and Out points. The first pair of timecode numbers describes the source tape (or clip) In and Out points. The second pair describes the timecode location where that clip should be placed onto a master tape (or Timeline)."
-The EDL class here represents the EDL as an Object. That can take in a json sequence to generate a string conforming to the specs described above.
-Example usage, takes in a sequence. and `.compose()` is ued to generate the EDL.
-
-```js
-var edlSqDemo = {
-    "title": "Demo Title of project",
-    //offset is option default is "00:00:00:00"
-    "offset": "00:00:28:08",
-    "events":  [
-      { "id":1,
-        "startTime": 10,
-        "endTime": 20,
-        "reelName":"SomeReelName",
-        "clipName":"Something.mov"
-      },
-      { "id":2,
-        "startTime": 45,
-        "endTime": 55,
-        "reelName":"SomeOtherReelName",
-        "clipName":"SomethingElse.mov"
-      },
-        { "id":2,
-        "startTime": 45,
-        "endTime": 55,
-        "reelName":"NA",
-        "clipName":"SomethingElse.mov"
-      }
-    ]
-}
-
-var edl = new EDL(edlSqDemo)
-console.log(edl.compose())
-```</li>
-        </ul>
-    </dd>
-    
+	
 </dl>
 
 
@@ -421,7 +485,7 @@ console.log(edl.compose())
 
     
 
-     
+    
 
     
 
@@ -439,29 +503,35 @@ console.log(edl.compose())
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>frontEnd/js/sync.js</h2>
+        <h2>
+        frontEnd/srt/index.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Manages the backend of the app by overwrighting backbone.sync function to the `autoEditAPI.js` module.</div>
+            <div class="description"><p>provides a function to convert srt line object json to srt file content as string<br>originally from <a href="https://github.com/pietrop/srtParserComposer">srtParserComposer</a> and  <a href="https://www.npmjs.com/package/srt_parser_composer">on npm</a><br>Expecting srtJsonContent to be like so</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -471,193 +541,87 @@ console.log(edl.compose())
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontEnd_js_sync.js.html">frontEnd/js/sync.js</a>, <a href="frontEnd_js_sync.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
         
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>frontEnd/srt/index.js</h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description">provides a function to convert srt line object json to srt file content as string
-originally from https://github.com/pietrop/srtParserComposer and https://www.npmjs.com/package/srt_parser_composer 
- Expecting srtJsonContent to be like so
-
-```json
-[
+            <h3>Examples</h3>
+            
+    <pre class="sunlight-highlight-javascript">[
   {
-    "id": "1",
-    "startTime": "00:00:00,160",
-    "endTime": "00:00:04,890",
-    "text": "There’s this door on the 10th floor I just\nhate so much.\n"
+    &quot;id&quot;: &quot;1&quot;,
+    &quot;startTime&quot;: &quot;00:00:00,160&quot;,
+    &quot;endTime&quot;: &quot;00:00:04,890&quot;,
+    &quot;text&quot;: &quot;There’s this door on the 10th floor I just\nhate so much.\n&quot;
   },
   {
-    "id": "3",
-    "startTime": "00:00:05,799",
-    "endTime": "00:00:11,629",
-    "text": "Goddammit!\nDo you ever get this door wrong? “pretty\n"
+    &quot;id&quot;: &quot;3&quot;,
+    &quot;startTime&quot;: &quot;00:00:05,799&quot;,
+    &quot;endTime&quot;: &quot;00:00:11,629&quot;,
+    &quot;text&quot;: &quot;Goddammit!\nDo you ever get this door wrong? “pretty\n&quot;
   },
   {
-    "text": "regularly.”\nHow often? “like 30% of the time.”\n",
-    "id": "4",
-    "startTime": "00:00:11,629",
-    "endTime": "00:00:12,000"
+    &quot;text&quot;: &quot;regularly.”\nHow often? “like 30% of the time.”\n&quot;,
+    &quot;id&quot;: &quot;4&quot;,
+    &quot;startTime&quot;: &quot;00:00:11,629&quot;,
+    &quot;endTime&quot;: &quot;00:00:12,000&quot;
   },
   {
-    "id": "6",
-    "startTime": "00:00:14,290",
-    "endTime": "00:00:16,869",
-    "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
+    &quot;id&quot;: &quot;6&quot;,
+    &quot;startTime&quot;: &quot;00:00:14,290&quot;,
+    &quot;endTime&quot;: &quot;00:00:16,869&quot;,
+    &quot;text&quot;: &quot;Have you seen people misuse it?\nAll the time. Every day. Constantly.\n&quot;
   },
-```
 
-it returns a string like so
-```
-1
-00:00:00,160 --> 00:00:04,890
+ </pre>
+
+        <p class="code-caption"> it returns a string like so</p>
+    
+    <pre class="sunlight-highlight-javascript">1
+00:00:00,160 --&gt; 00:00:04,890
 There’s this door on the 10th floor I just
 hate so much.
 
 3
-00:00:05,799 --> 00:00:11,629
+00:00:05,799 --&gt; 00:00:11,629
 Goddammit!
 Do you ever get this door wrong? “pretty
 
 4
-00:00:11,629 --> 00:00:12,000
+00:00:11,629 --&gt; 00:00:12,000
 regularly.”
 How often? “like 30% of the time.”
 
 6
-00:00:14,290 --> 00:00:16,869
+00:00:14,290 --&gt; 00:00:16,869
 Have you seen people misuse it?
-All the time. Every day. Constantly.
-```</div>
-        
-
-        
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="frontEnd_srt_index.js.html">frontEnd/srt/index.js</a>, <a href="frontEnd_srt_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
+All the time. Every day. Constantly.</pre>
 
 
         
@@ -670,7 +634,7 @@ All the time. Every day. Constantly.
 
     
 
-     
+    
 
     
 
@@ -688,31 +652,35 @@ All the time. Every day. Constantly.
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/sam_transcriber/convert_to_wav.js</h2>
+        <h2>
+        interactive_transcription_generator/sam_transcriber/convert_to_wav.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Convers video file into wav (or any ffmpeg supported input)
-takes in input file, output destination file, and callback,
-callback returns audio file name/path</div>
+            <div class="description"><p>Convers video file into wav (or any ffmpeg supported input)<br>takes in input file, output destination file, and callback,<br>callback returns audio file name/path</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -722,34 +690,25 @@ callback returns audio file name/path</div>
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_convert_to_wav.js.html">interactive_transcription_generator/sam_transcriber/convert_to_wav.js</a>, <a href="interactive_transcription_generator_sam_transcriber_convert_to_wav.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
@@ -769,7 +728,7 @@ callback returns audio file name/path</div>
 
     
 
-     
+    
 
     
 
@@ -787,29 +746,35 @@ callback returns audio file name/path</div>
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/sam_transcriber/index.js</h2>
+        <h2>
+        interactive_transcription_generator/sam_transcriber/index.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Module function that takes in the file path to a media audio or video file and returns a json of transcription.</div>
+            <div class="description"><p>Module function that takes in the file path to a media audio or video file and returns a json of transcription.</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -819,62 +784,53 @@ callback returns audio file name/path</div>
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_index.js.html">interactive_transcription_generator/sam_transcriber/index.js</a>, <a href="interactive_transcription_generator_sam_transcriber_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>var path    = require('path');
-  var fs      = require('fs');
-  var transcriber = require("./index.js");
+    <pre class="sunlight-highlight-javascript">var path    = require(&#x27;path&#x27;);
+  var fs      = require(&#x27;fs&#x27;);
+  var transcriber = require(&quot;./index.js&quot;);
 
-  var demoFile = "someFilePath.mov";
+  var demoFile = &quot;someFilePath.mov&quot;;
 
   //split audio files are kept in tmp folder and then delted
-  var tmpFolder = ".";
-  var audioFileName = tmpFolder+"/"+path.parse(demoFile).base+".wav";
+  var tmpFolder = &quot;.&quot;;
+  var audioFileName = tmpFolder+&quot;/&quot;+path.parse(demoFile).base+&quot;.wav&quot;;
 
   //IBM Keys, json with username password attributes.
-  var keys = require("path_to_ibm_watson_keys/wttskeys.json")
+  var keys = require(&quot;path_to_ibm_watson_keys/wttskeys.json&quot;)
   //path to ffmpeg and ffprobe pin
-  var ffmpegPath = "/path_to_ffmpeg_bin/ffmpeg";
-  var ffprobePath = "/path_to_ffmprobe_bin/ffprobe";
+  var ffmpegPath = &quot;/path_to_ffmpeg_bin/ffmpeg&quot;;
+  var ffprobePath = &quot;/path_to_ffmprobe_bin/ffprobe&quot;;
 
   transcriber({
     videoFile: demoFile,
@@ -887,16 +843,17 @@ callback returns audio file name/path</div>
 
       console.log(JSON.stringify(respTranscriptJson,null,2));
 
-      fs.writeFileSync("./example_tramscription.json",JSON.stringify(respTranscriptJson ))
+      fs.writeFileSync(&quot;./example_tramscription.json&quot;,JSON.stringify(respTranscriptJson ))
 
-      //optionally if you don't need to keep the audio file used to send to IBM Watson, here is a good place/time to delete it.
+      //optionally if you don&#x27;t need to keep the audio file used to send to IBM Watson, here is a good place/time to delete it.
       //eg deleting audio file used for transcription
       // fs.unlinkSync(audioFileName);
 
-      //However if you need, the audio file for instance to do speaker diarization with another system that requries same audio, here's a good place to save the file name/file path for reference.
+      //However if you need, the audio file for instance to do speaker diarization with another system that requries same audio, here&#x27;s a good place to save the file name/file path for reference.
 
     }
-  })</code></pre>
+  })</pre>
+
 
         
     
@@ -930,7 +887,7 @@ callback returns audio file name/path</div>
 
     
 
-     
+    
 
     
 
@@ -948,30 +905,35 @@ callback returns audio file name/path</div>
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/sam_transcriber/split.js</h2>
+        <h2>
+        interactive_transcription_generator/sam_transcriber/send_to_watson.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls. 
-Used by sam_transcriber/index.js module.</div>
+            <div class="description"><p>Transcription is then saved as a file. and path of that file is returned.<br><a href="https://github.com/watson-developer-cloud/node-sdk#speech-to-text">Node SDK speech-to-text</a><br><a href="https://www.ibm.com/watson/developercloud/speech-to-text">IBM speech-to-text</a></p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -981,41 +943,144 @@ Used by sam_transcriber/index.js module.</div>
 
     
 
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+            <h3>Example</h3>
+            
+    <pre class="sunlight-highlight-javascript">var sendToWatsonUtil = new SendToWatson();
+  sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
+    //data is a IBM JSON transcription  
+  })</pre>
+
+
+        
     
+    </div>
 
     
 
     
+        <h3 class="subsection-title">Requires</h3>
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_split.js.html">interactive_transcription_generator/sam_transcriber/split.js</a>, <a href="interactive_transcription_generator_sam_transcriber_split.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
         <ul>
-            <li>refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.</li>
+            <li>module:fs</li>
+        
+            <li>module:watson-developer-cloud</li>
         </ul>
-    </dd>
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+	<h1 class="page-title">Index</h1>
+<section>
+
+<header>
+    
+        <h2>
+        interactive_transcription_generator/sam_transcriber/split.js
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls.<br>Used by sam_transcriber/index.js module.</p></div>
+        
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+	<dt class="tag-todo method-doc-label method-doc-details-label">To Do:</dt>
+	<dd class="tag-todo">
+		<ul>
+			<li>refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.</li>
+			</ul>
+	</dd>
+	
 </dl>
 
 
@@ -1024,19 +1089,20 @@ Used by sam_transcriber/index.js module.</div>
             
         <p class="code-caption">Example usage </p>
     
-    <pre class="prettyprint"><code> split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
+    <pre class="sunlight-highlight-javascript">split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
     //can do something with array of files
- })</code></pre>
+ })</pre>
 
         <p class="code-caption">Example output `files`</p>
     
-    <pre class="prettyprint"><code>   [
+    <pre class="sunlight-highlight-javascript">[
     {
       name: filename,
       offset: 0
      },
      ...
-   ]</code></pre>
+   ]</pre>
+
 
         
     
@@ -1060,7 +1126,7 @@ Used by sam_transcriber/index.js module.</div>
 
     
 
-     
+    
 
     
 
@@ -1078,30 +1144,35 @@ Used by sam_transcriber/index.js module.</div>
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/sam_transcriber/trimmer.js</h2>
+        <h2>
+        interactive_transcription_generator/sam_transcriber/trimmer.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">trims a video or audio file 
-Used by sam_transcriber/split.js module.</div>
+            <div class="description"><p>trims a video or audio file<br>Used by sam_transcriber/split.js module.</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1111,50 +1182,49 @@ Used by sam_transcriber/split.js module.</div>
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html">interactive_transcription_generator/sam_transcriber/trimmer.js</a>, <a href="interactive_transcription_generator_sam_transcriber_trimmer.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
         
             <h3>Example</h3>
             
-    <pre class="prettyprint"><code>var trimmer = require('./index.js')
+    <pre class="sunlight-highlight-javascript">var trimmer = require(&#x27;./index.js&#x27;)
  trimmer.trim({
-	src:"debate_test.wav", 
+	src:&quot;debate_test.wav&quot;, 
 	input: 773,
 	duration:20,
-	outputName:"debate_test_trimmed.wav",
-	callback: function(){
-		console.log("done")
+	outputName:&quot;debate_test_trimmed.wav&quot;,
+	callback: function(outputName, input){
+		console.log(&quot;done! new file &quot;+outputName+&quot; starts at this point in original &quot;+ input)
 	}
-})</code></pre>
+})</pre>
+
 
         
     
@@ -1172,7 +1242,7 @@ Used by sam_transcriber/split.js module.</div>
 
     
 
-     
+    
 
     
 
@@ -1190,29 +1260,35 @@ Used by sam_transcriber/split.js module.</div>
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/video_metadata_reader/index.js</h2>
+        <h2>
+        interactive_transcription_generator/video_metadata_reader/index.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Reads video metadata needed for EDL. reel, timecode, fps. If those fields are not present in the metadata associated with the media file the attributes in the resulting json is replaced with "NA".</div>
+            <div class="description"><p>Reads video metadata needed for EDL. reel, timecode, fps. If those fields are not present in the metadata associated with the media file the attributes in the resulting json is replaced with &quot;NA&quot;.</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1222,41 +1298,32 @@ Used by sam_transcriber/split.js module.</div>
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_video_metadata_reader_index.js.html">interactive_transcription_generator/video_metadata_reader/index.js</a>, <a href="interactive_transcription_generator_video_metadata_reader_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
@@ -1278,7 +1345,7 @@ Used by sam_transcriber/split.js module.</div>
 
     
 
-     
+    
 
     
 
@@ -1296,31 +1363,35 @@ Used by sam_transcriber/split.js module.</div>
 
 
 
-
-
-
+	<h1 class="page-title">Index</h1>
 <section>
 
 <header>
     
-        <h2>interactive_transcription_generator/video_to_html5_webm/index.js</h2>
+        <h2>
+        interactive_transcription_generator/video_to_html5_webm/index.js
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
-            <div class="description">Converts audio or video file into a HTML5 video webm.
-uses code from this issue/question from fluent-ffmepg https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274
-to understand the ffmpeg used to encode webm video see this guide https://trac.ffmpeg.org/wiki/Encode/VP8</div>
+            <div class="description"><p>uses code from this issue/question from fluent-ffmepg https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274<br>to understand the ffmpeg used to encode webm video see this guide https://trac.ffmpeg.org/wiki/Encode/VP8</p></div>
         
 
         
-
-
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1330,41 +1401,32 @@ to understand the ffmpeg used to encode webm video see this guide https://trac.f
 
     
 
-    
+	
 
-    
+	
+	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
+	<dd class="tag-author">
+		<ul>
+			<li>Pietro Passarelli</li>
+			</ul>
+	</dd>
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
+	
 
-    
 
-    
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="interactive_transcription_generator_video_to_html5_webm_index.js.html">interactive_transcription_generator/video_to_html5_webm/index.js</a>, <a href="interactive_transcription_generator_video_to_html5_webm_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
@@ -1386,7 +1448,7 @@ to understand the ffmpeg used to encode webm video see this guide https://trac.f
 
     
 
-     
+    
 
     
 
@@ -1404,20 +1466,132 @@ to understand the ffmpeg used to encode webm video see this guide https://trac.f
 
 
 
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="EDL.html">EDL</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addsinfoontrimmedclipstolistoffiles.">adds info on trimmed clips to list of files.</a></li><li><a href="global.html#autoEdit2API">autoEdit2API</a></li><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
-Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#watson">watson</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
-</nav>
 
-<br class="clear">
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 13:13:02 GMT-0400 (EDT)
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a>
+	
+		on 2016-10-18T19:51:44-04:00
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
 </body>
 </html>

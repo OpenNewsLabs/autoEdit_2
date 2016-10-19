@@ -1,6 +1,5 @@
 # mouse_trap_in_backbone
 
-
 after loading backone 
 
 first laod mousetrap.js file 

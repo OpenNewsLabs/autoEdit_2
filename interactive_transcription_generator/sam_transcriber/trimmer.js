@@ -1,6 +1,7 @@
 /**
 * @file trims a video or audio file 
 * Used by sam_transcriber/split.js module.
+* @author Pietro Passarelli 
 * @example
  var trimmer = require('./index.js')
  trimmer.trim({
@@ -8,8 +9,8 @@
 	input: 773,
 	duration:20,
 	outputName:"debate_test_trimmed.wav",
-	callback: function(){
-		console.log("done")
+	callback: function(outputName, input){
+		console.log("done! new file "+outputName+" starts at this point in original "+ input)
 	}
 })
 * @requires ffmpeg-fluent - to trim the audio or video.
@@ -57,17 +58,17 @@ var trim = function(config){
 
 	//running ffmpeg 
 	ffmpeg(videoSrc)
-				.seekInput(input)
-				.setDuration(duration)
-				.output(outputName)
-				.on('end', 
-					function() {
-				    	//optional callback 
-				   		if(callback){
-				   			//returning output name and input of cut
-				   			callback(outputName, input)
-				   		}
-				  }).run();
+		.seekInput(input)
+		.setDuration(duration)
+		.output(outputName)
+		.on('end', 
+			function() {
+		    	//optional callback 
+		   		if(callback){
+		   			//returning output name and input of cut
+		   			callback(outputName, input)
+		   		}
+		  }).run();
 }
 
 
