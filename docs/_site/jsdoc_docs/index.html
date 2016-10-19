@@ -47,14 +47,14 @@
 			<li class="dropdown">
 				<a href="tutorials.list.html" class="dropdown-toggle" data-toggle="dropdown">Tutorials<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li>
+					<li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="global.html#convert">convert</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
+					<li><a href="global.html#convert">convert</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li>
 				</ul>
 			</li>
 			
@@ -657,7 +657,7 @@ All the time. Every day. Constantly.</pre>
 <header>
     
         <h2>
-        interactive_transcription_generator/sam_transcriber/convert_to_wav.js
+        interactive_transcription_generator/transcriber/convert_to_wav.js
         </h2>
         
     
@@ -751,7 +751,7 @@ All the time. Every day. Constantly.</pre>
 <header>
     
         <h2>
-        interactive_transcription_generator/sam_transcriber/index.js
+        interactive_transcription_generator/transcriber/index.js
         </h2>
         
     
@@ -804,6 +804,13 @@ All the time. Every day. Constantly.</pre>
 
 	
 
+	
+	<dt class="tag-tutorial method-doc-label method-doc-details-label">Tutorials:</dt>
+	<dd class="tag-tutorial">
+		<ul>
+			<li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li>
+			</ul>
+	</dd>
 	
 
 	
@@ -910,112 +917,7 @@ All the time. Every day. Constantly.</pre>
 <header>
     
         <h2>
-        interactive_transcription_generator/sam_transcriber/send_to_watson.js
-        </h2>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>Takes audio file less then 100mb and sends it to IBM watson to be transcribed.<br>Transcription is then saved as a file. and path of that file is returned.<br><a href="https://github.com/watson-developer-cloud/node-sdk#speech-to-text">Node SDK speech-to-text</a><br><a href="https://www.ibm.com/watson/developercloud/speech-to-text">IBM speech-to-text</a><br><a href="https://www.ibm.com/watson/developercloud/speech-to-text/api/v1/#get_models">IBM STT API reference</a></p></div>
-        
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-            <h3>Example</h3>
-            
-    <pre class="sunlight-highlight-javascript">var sendToWatsonUtil = new SendToWatson();
-  sendToWatsonUtil.send(f.name, config.keys, config.languageModel, function(data) {
-    //data is a IBM JSON transcription  
-  })</pre>
-
-
-        
-    
-    </div>
-
-    
-
-    
-        <h3 class="subsection-title">Requires</h3>
-
-        <ul>
-            <li>module:fs</li>
-        
-            <li>module:watson-developer-cloud</li>
-        </ul>
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-	<h1 class="page-title">Index</h1>
-<section>
-
-<header>
-    
-        <h2>
-        interactive_transcription_generator/sam_transcriber/split.js
+        interactive_transcription_generator/transcriber/split.js
         </h2>
         
     
@@ -1102,6 +1004,18 @@ All the time. Every day. Constantly.</pre>
      ...
    ]</pre>
 
+    <pre class="sunlight-highlight-javascript">&lt;captions&gt;Example usage&lt;/captions&gt;
+  var split = require(&#x27;./split.js&#x27;);
+  var demoAudio = &quot;audio_example.wav&quot;
+  var ffprobePath = &quot;/bin/ffprobe&quot;;
+  var ffmpegPath = &quot;/bin/ffmpeg&quot;;
+  var tmpFolder =&quot;./tmp&quot;
+
+   split(demoAudio,tmpFolder,ffmpegPath,ffprobePath, function(files) {
+    console.log(&quot;done splitting&quot;)
+    console.log(files)
+   })</pre>
+
 
         
     
@@ -1149,7 +1063,7 @@ All the time. Every day. Constantly.</pre>
 <header>
     
         <h2>
-        interactive_transcription_generator/sam_transcriber/trimmer.js
+        interactive_transcription_generator/transcriber/trimmer.js
         </h2>
         
     
@@ -1502,7 +1416,7 @@ All the time. Every day. Constantly.</pre>
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a>
 	
-		on 2016-10-18T21:03:10-04:00
+		on 2016-10-18T23:39:58-04:00
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
