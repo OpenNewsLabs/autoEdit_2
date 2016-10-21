@@ -24,3 +24,10 @@ A list of things to test pre roll out to check everything is working, initally t
 ## Main user journey -  Export options
 
 - export all other options, give valid files, eg captions, plain text etc...
+
+
+- audio `.ogg` not working on safari. only `.wav` file works. reason for converting to .ogg is that it is smaller file size, so faster to send to IBM, requires less bandwith. 
+For working on mobile would need to work on phone.  
+
+
+- Transcription delete in transcription index not working properly. it is not deleting the right transcription. it delete right media but wrong model.

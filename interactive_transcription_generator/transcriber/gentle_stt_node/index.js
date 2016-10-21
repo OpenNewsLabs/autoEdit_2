@@ -21,8 +21,10 @@ transcribe({audio: demo_audio,text: demo_text}, function(resp){
 * @require gentle_stt
 * @require parse_gentle_stt
 */
+"use strict";
+
 var send_to_gentle = require("./gentle_stt.js");
-var gentleParser = require("./parse_gentle_stt.js")
+var gentleParser = require("./parse_gentle_stt.js");
 
 /**
 * @function transcribe
@@ -37,14 +39,14 @@ function transcribe(config, cb){
 	send_to_gentle(config, function(gentleJson){
 		// finished transcribing 
 		//parse lines to meet autoEdit2 specs 
-		var lines = gentleParser(gentleJson)
+		var lines = gentleParser(gentleJson);
 		//return callback if presetn
 		if(cb){
 			cb(lines);
 		}else{
 			return lines;
 		}
-	})
+	});
 }
 
 module.exports = transcribe;

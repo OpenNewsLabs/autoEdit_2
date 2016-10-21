@@ -194,3 +194,6 @@ audio {
 
 
 
+#transcriptionCard {
+   cursor: pointer;
+}

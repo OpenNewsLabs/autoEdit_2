@@ -4,10 +4,18 @@
 * takes in input file, output destination file, and callback,
 * IBM sudgested audio compression {@link http://www.ibm.com/watson/developercloud/doc/speech-to-text/input.shtml#limits}
 * callback returns audio file name/path
+* @example <caption>usage</caption>
+var convertToWav = require('./convert_to_audio.js');
+  
+convertToWav(file, audioFile, ffmpegPath, function(newFile) {
+  //do something with the converted file, returned as a string file path 
+}
 * @requires fluent-ffmpeg
 */
 
 //TODO: refactor with fluent ffmpeg so that can add ffmpeg bin to config json and input
+
+"use strict";
 
 var ffmpeg = require('fluent-ffmpeg');
 

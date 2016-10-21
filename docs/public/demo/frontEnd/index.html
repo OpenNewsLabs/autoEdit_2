@@ -9,14 +9,7 @@
   <link rel="stylesheet" href="public/css/custom.css">
 </head>
 <body>
-  <!-- Jquery, bootstrap, underscore, and backnone -->
-<!-- <script src="vendor/jquery.min2.js"></script> -->
-<script> 
-//Add jquery globally so that boostrap and other vendor can use it inside NWJS packed app.
-// global.$ = $;
-// $("#main").html("upppp")
-// window.$ = $;
-
+<script>
 
 function loadExtScript(src, callback) {
   var s = document.createElement('script');
@@ -29,7 +22,6 @@ function loadExtScript(src, callback) {
   }
 }
 
-
 function loadJQueryExtScript(src, callback) {
   var s = document.createElement('script');
   s.src = src;
@@ -37,7 +29,6 @@ function loadJQueryExtScript(src, callback) {
 
   s.onload = function () {
     // if loaded...call the callback
-
     /// open links in real browser 
     //https://github.com/nwjs/nw.js/issues/1162
     if (typeof require === "function") {
@@ -47,7 +38,6 @@ function loadJQueryExtScript(src, callback) {
       });
     }
     ///
-
     if(callback){callback(s)}
   }
 }
@@ -56,62 +46,54 @@ function loadJQueryExtScript(src, callback) {
 * To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
 */
 loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
-     loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
-       loadExtScript("vendor/underscore-min.js",function(){
-          loadExtScript("vendor/backbone-min.js",function(){
-         loadExtScript("js/sync.js",function(){
-              //app.js backbone files 
-           loadExtScript("js/models/transcription.js",function(){
-               loadExtScript("js/collections/transcriptions.js",function(){
-                 loadExtScript("js/views/transcription_index.js",function(){
-                     loadExtScript("js/views/transcription_show.js",function(){
-                        loadExtScript("js/views/transcription_form.js",function(){
-                          loadExtScript("js/router.js",function(){
-                               console.log("loaded stuff")
-
-                               //DEMO for client side only 
-                                 loadExtScript("demo_jr.js", function(){
-                                  console.log("demo initialised")
-                                  // demoTranscription()
-                                  //by adding and not saving this only works 
-                                   app.TranscriptionsList.add([
-                                    jesselynRadackTranscription, 
-                                    jesselynRadackManualTranscription,
-                                    jesselynRadacGentleTranscription,
-                                    laurenRabaino
-                                  ]);   
-                                 });
-
-                                 // jesselynRadackTranscription.save();
-                              //end Demo
-                              }) 
-                          }) 
+  loadExtScript("vendor/bootstrap-3.3.6-dist/js/bootstrap.js",function(){
+    loadExtScript("vendor/underscore-min.js",function(){
+      loadExtScript("vendor/backbone-min.js",function(){  
+        // backbone.mousetrap.js
+        loadExtScript("js/sync.js",function(){
+          //app.js backbone files 
+          loadExtScript("vendor/mousetrap.js",function(){
+            loadExtScript("vendor/backbone.mousetrap.js",function(){
+              loadExtScript("js/models/transcription.js",function(){
+                loadExtScript("js/collections/transcriptions.js",function(){
+                  loadExtScript("js/views/transcription_index.js",function(){
+                    loadExtScript("js/views/transcription_show.js",function(){
+                      loadExtScript("js/views/transcription_form.js",function(){
+                        loadExtScript("js/router.js",function(){
+                    //       console.log("loaded stuff")
+                          
+                    //       //DEMO for client side only 
+                          loadExtScript("demo_jr.js", function(){
+                            console.log("demo initialised")
+                            // demoTranscription()
+                            //by adding and not saving this only works 
+                            app.TranscriptionsList.add([
+                              jesselynRadackTranscription, 
+                              jesselynRadackManualTranscription,
+                              jesselynRadacGentleTranscription,
+                              laurenRabaino
+                            ]);   
+                          });
                         }) 
+                      }) 
                     }) 
                   }) 
                 }) 
-               // }) 
-            })
-         })
+              }) 
+            }) 
+          }) 
+        })
       })
+    })
   })
 })
-
-
 </script>
-  <!-- <script src="vendor/bootstrap-3.3.6-dist/js/bootstrap.js" charset="utf-8"></script> -->
-<!--   <script type="text/javascript"  src="vendor/underscore-min.js"></script>
-  <script type="text/javascript"  src="vendor/backbone-min.js"></script> -->
   <!-- client side utilities  -->
   <script src="date_now/index.js"></script>
   <script src="edl_composer/index.js"></script>
   <script src="srt/index.js"></script>
-
   <!-- Config file, app name, backend erver url-->
   <script src="../config.js"></script>
-  <!-- App.js backbone files -->
-
-
 <!-- NAVBAR  -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
@@ -124,7 +106,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
      <span class="icon-bar"></span>
    </button>
    <a class="navbar-brand" id="brandAppName" href="index.html#transcriptions">
-     <!-- <img alt="Brand" class="img-responsive" src="lotusLogo.png"> -->
      <!--App name programatically added here  -->
      </a>
  </div>
@@ -139,18 +120,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
        New</a>
      </li>
      <li><a href="https://opennewslabs.github.io/autoEdit_2"  target="_blank">Help</a></li>
-      <!-- <li><a href="https://db.tt/BNedAjt2"  target="_blank">Demo</a></li> -->
    </ul>
-
  </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->
 </nav>
 <!-- NAVBAR END -->
 
-
   <div id="main">
   </div>
-
 
 <!-- /////////////////////////////////////////////////////////////////////////// -->
 <!-- /////////////////////////////////////////////////////////////////////////// -->
@@ -158,7 +135,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
 <!-- Home page template -->
 <script id="homePage" type="text/template">
-  <br><br>
+  <br><br><br><br>
   <div class='container'>
     <p class='lead text-center text-muted' style='font-size:2.5em;'>
       <span class='glyphicon glyphicon-film' aria-hidden='true'></span>
@@ -166,9 +143,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
     </p>
     <p class='lead text-center text-muted'>You dont have any transcriptions</p>
     <p class='text-center'>
-      <a href='#transcriptions/new'>Add an audio or video file</a> to get it
+      <a href='#transcriptions/new'>Add an audio or video file</a> to get it <br>automatically transcribed
     </p>
-    <p class='text-center'>automatically transcribed</p>
   </div>
 </script>
 <!--  End home page template-->
@@ -186,10 +162,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <!--  end Breadcrumb -->
       </div><!-- ./col -->
       <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">
-     
 
 <!-- Export modal + button -->
-
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">
   Export <span class="glyphicon glyphicon-save"></span>
@@ -202,18 +176,13 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="exportModalLabel">Export Options</h4>
-
-
       </div>
       <div class="modal-body">
        <!-- Export options -->
         <h2><small>Video sequence </small></h2>
-        <p>You can export an EDL(edit decision list) to open a video sequence of your text selections inthe video editing software of choice. See user manual for more on this.
-
-        <!-- <a href='https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice' target='_blank'><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.</p>-->
-
-        <p>You can export your selections for a video sequence chronologically as they appear in the video or in the selection order you made them </p> 
-
+        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this 
+         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.
+        <p>You can export your selections for a video sequence in chronological order or in the order in which you selected them.</p> 
         <!-- Btn Edl - chronological order | -->
         <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">
           <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
@@ -259,7 +228,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
         <h2><small>Plain text - Selections </small> </h2>
 
-       <p> You can get your text selections as plain text in chronological or selection order without timecodes</p>
+       <p>You can receive your text selections as plain text in chronological or selection order without timecodes.</p>
 
         <!-- Btn Palin Text Chronological -->
         <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">
@@ -289,7 +258,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <hr>
 
         <h2><small>Developer’s options </small> </h2>
-        <p>These are some advanced export options for developers.</p>
+        <p>These are additional advanced export options for developers.</p>
 
         <h3><small>Json </small></h3>
         <p>JSON of full transcription </p>
@@ -300,7 +269,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
           Json of transcription
         </a></p>
 
-        <p>JSON of selections in chronological order as they appear in the video. Equivalent to EDL Chronological order.</p>
+        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL Chronological order.</p>
 
         <!-- Btn Json  EDL Chronological -->
         <p><a id="exportJsonEDL" class="btn btn-primary btn-sm">
@@ -308,7 +277,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
             Json  EDL Chronological
         </a></p>
 
-        <p>JSON of selections in order they where selected. Equivalent to EDL selection order.</p>
+        <p>You can export a JSON of selections in order they where selected. This is equivalent to EDL selection order.</p>
 
         <!-- Btn Json  EDL Chronological -->
         <p><a id="exportJsonEDLSelOrder" class="btn btn-primary btn-sm">
@@ -318,7 +287,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
         <h3><small>HTML5 Media  </small></h3>
 
-        <p>You can also export HTML5 audio and Video previews generated by the app. </p>
+        <p>You can export HTML5 audio and video previews generated by the app. </p>
 
         <!-- Btn HTML5 Webm video -->
         <p><a id="exporthtml5Video" class="btn btn-primary btn-sm">
@@ -351,13 +320,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <div id="clientSideEDLhelp" ></div>
     <!-- end of remove this div  -->
 
-
-<!-- <div class="alert alert-info alert-dismissible hidden-print" role="alert">
+<div id="hilightModeNoticeContainer">
+<div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> 
   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-  <strong>You are in hilight mode.</strong> <p>Click on a word to start a selection to include in your Edit Decision List (EDL) video sequence.</p>
+  <strong>You are in hilight mode.</strong> 
+  <p>Click on a word to play from the corresponding part in the video.</p>
+  <p>Select words to include in your final output (EDL video sequence, plain text, etc.)</p>
 </div>
- -->
-
+</div>
   <div class="row">
     <!-- Video -->
     <div class="col-sm-3 col-md-3 col-lg-3 ">
@@ -391,7 +361,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         <source src="<%= audioFile %>" type="audio/wav">
           Your browser does not support the audio element.
       </audio>
-
       <!-- end repeating audio code -->
 
      <% }else{ %> <!-- else if using safari  -->
@@ -409,32 +378,158 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 
      <% }%> <!-- if using safari  -->
 <!-- ///////////////////////// -->
-
-
   <% }else { %>
     <p>Media preview not ready </p>
   <% } %>
 
-<!-- Single button -->
-<!-- <div class="btn-group">
-  <button type="button" class="btn btn-success btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Preview <span class="caret"></span>
-  </button>
-  <ul class="dropdown-menu">
-    <li><a id="playPreviewChrono" >ChronologicalOrder</a></li>
-    <li><a  id="playPreviewSelOrd">Selection Order</a></li>
-  </ul>
-</div> -->
+<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+  <div class="modal-dialog " role="document">
+    <div class="modal-content">
+    <div class="modal-header">
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4>Keyboard Shortcuts</h4>
+  </div>
+     <div class="modal-body">
 
+         <div class="table-responsive">
+       <table class="table table-striped  table-hover">   
+        <tbody> 
+          <tr> 
+            <th scope="row">Pause/Play</th> 
+              <td> <kbd>cmd</kbd>+<kbd>k</kbd></td> 
+              <td>Play pause video</td>
+            </tr> 
+            <tr> 
+              <th scope="row"></th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> </td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Faster</th> 
+                <td> <kbd>command</kbd>+<kbd>l</kbd> </td> 
+                <td>Increase video playback rate</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Slower</th> 
+                <td> <kbd>command</kbd>+<kbd>j</kbd> </td> 
+                <td>Decrease video playback rate</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Fast forward</th> 
+                <td>  <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> </td> 
+                <td>Fast forward <code>5</code> seconds</td>
+              </tr> 
+              <tr> 
+                <th scope="row"></th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd></td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Rewind</th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd></td> 
+                <td>Rewind <code>5</code>  seconds</td>
+              </tr> 
+              <tr> 
+                <th scope="row"></th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd></td> 
+                <td></td>
+              </tr> 
+              <tr> 
+                <th scope="row">Increase volume</th> 
+                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> </td> 
+                <td>Raises the audio volume</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Decrease volume</th> 
+                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> </td> 
+                <td>Lowers the audio volume</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Show keyboard shortcuts</th> 
+                <td> <kbd>shift</kbd>+<kbd>/</kbd> </td> 
+                <td>Shows this cheat sheet witht keyboard shortcuts</td>
+              </tr> 
+              <tr> 
+                <th scope="row">Show inspector console</th> 
+                <td> <kbd>Alt</kbd>+<kbd>cmd</kbd>+<kbd>j</kbd> </td> 
+                <td>Shows nwsj V8 inspector console, for developers, debugging</td>
+              </tr> 
+        </tbody>
+      </table>
+    </div>
+
+    </div>
+     <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+
+</div>
+</div>
+</div>
+<!-- end Keyboard shortcuts -->
+
+
+  <!-- rewind  -->
+  <div class="btn-group" role="group" aria-label="...">
+  <button type="button" id="rewindVideo"  data-toggle="tooltip" data-placement="bottom" title="rewind 5 seconds cmd + shift + j" class="btn btn-default btn-xs">  
+    <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+  
+  <!-- decrease speed -->
+  <button type="button"  id="slowVideo"  data-toggle="tooltip" data-placement="bottom" title="speed decrease command+j"   class="btn btn-default btn-xs"> 
+    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+  </button>
+
+  <!-- play/pause  -->
+  <button type="button" id="pausePlayVideo"   data-toggle="tooltip" data-placement="bottom" title="cmd + k"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  /
+    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+  </button>
+
+  <!-- increase speed  -->
+  <button type="button" id="fastVideo"  data-toggle="tooltip" data-placement="bottom" title="speed increase command+l"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+  </button>
+  
+  <!-- Fast forward -->
+  <button type="button"  id="fastForwardVideo" data-toggle="tooltip" data-placement="bottom" title="Fast forward 5 seconds command+shift+l"  class="btn btn-default btn-xs">  
+    <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>
+</div>
+
+
+<h4><small>Playback Speed</small></h4>
+
+<!--Speed input -->
+<div class="form-group">
+   <!--<label for="speedControll">Playback Speed</label>-->
+    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>
+</div>
+<!--end of Speed input -->
+<div class="btn-group" role="group" aria-label="...">
+  <button type="button" id="volumeDown"  class="btn btn-default btn-xs">
+   <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>
+  </button>
+  <button type="button"  id="volumeUp"  class="btn btn-default btn-xs">
+    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>
+  </button>
+</div>
+</div> <!-- media -->
+<hr>
   <!-- Metadata info button -->
     <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">
     <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info
     </a>
   <!-- End metadata info button  -->
+  <!--Keyboard shortcuts -->
+<!-- Small modal -->
 
-</div> <!-- media -->
+<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">
+  shortcuts
+</a>
+
+
 
 <div class="collapse" id="collapseMetadata">
+ <div class="well">
     <dl>
       <dt class="text-muted">Speech To Text System</dt>
       <dd><kbd><%= sttEngine %></kbd></dd>
@@ -460,9 +555,14 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       <dd><kbd><%= fromSeconds(metadata.duration) %></kbd> <span  class="text-muted"></span></dd>
       <!-- <br> -->
       <dt class="text-muted">Description </dt>
-      <dd  class="text-muted description"> <%= description %></dd>
+      <dd  class="text-muted description"><%= description %></dd>
     </dl>
+</div> <!--end metadada info well-->
 </div>
+<!--end metadada info -->
+
+
+
 </div><!-- ./col -->
   
     <!-- Transcription -->
@@ -474,25 +574,15 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
             <div class="btn-group" role="group" aria-label="...">
               <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>
         <!--       <button type="button" class="btn btn-default">Read</button> -->
-              <button type="button"  id="editWords" class="btn btn-default" >Edit</button>
+              <button type="button"  id="editWords" class="btn btn-default" >Edit </button>
+            
             </div>
 
 <a type="button" id="clearHighlights" class="btn btn-default" >
- <!-- <span class="glyphicon glyphicon-ban-circle" aria-hidden="true"></span>  -->
-<!-- <img src="./public/img/hilighter.png"> -->
 <!-- hilighter icon -->
-
 <!-- end hilighter icon -->
  Clear highlights
  </a>
-
-<!-- Save -->
-<!-- <a type="button" id="save" class="btn btn-default" >
- <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> 
- </a>
- -->
-
-
           </div>
           <!-- search box -->
           <div class="col-xs-12 col-sm-5 col-lg-5 col-xl-5">
@@ -518,13 +608,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
               <% _.each(paragraph.paragraph, function(lines) { %>
               <% _.each(lines, function(line) { %>
             <dd >
-              <!-- <p> -->
+              <!--  <p class="lines" contenteditable="false"> -->
                 <% _.each(line, function(word) { %>
-                  <span  contenteditable="false" class="words text-muted" data-transcription-id="<%= id %>"  data-paragaph-id="<%= paragraph.id %>"  data-word-id="<%= word.id %>" data-line-id="<%= line.id %>" data-reel-name="<%= metadata.reelName %>" data-clip-name="<%= metadata.fileName %>"
-            data-video-id="<%= 'videoId_'+ id %>"
-            data-speaker="<%= paragraph.speaker %>" data-src="<%= videoOgg %>" data-audio-file="<%= audioFile %>" data-start-time="<%= word.startTime %>" data-text="<%= word.text %>" data-end-time="<%= word.endTime %>"><%= word.text %> </span>
+                  <span contenteditable="false" class="words text-muted" data-transcription-id="<%= id %>"  data-paragaph-id="<%= paragraph.id %>"  data-word-id="<%= word.id %>" data-line-id="<%= line.id %>" data-reel-name="<%= metadata.reelName %>" data-clip-name="<%= metadata.fileName %>" data-video-id="<%= 'videoId_'+ id %>"  data-speaker="<%= paragraph.speaker %>" data-src="<%= videoOgg %>" data-audio-file="<%= audioFile %>" data-start-time="<%= word.startTime %>" data-text="<%= word.text %>" data-end-time="<%= word.endTime %>"><%= word.text %> </span>
                   <% }) %>
-              <!-- </p> -->
+           <!--    </p> -->
            </dd>
              <% }) %>
             <% }) %>
@@ -551,7 +639,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
             <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>
             &nbsp;
             &nbsp;
-          
           </button>
           
           <p><%= description %></p>
@@ -568,7 +655,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
               </button>
             </div>
         <% }else{ %>
-          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">
+          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">
           <button type="button" class="btn btn-lg btn-link showBtn controls" ><%= title %></button>
           <p><%= description %></p>
           </div>
@@ -601,19 +688,19 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
     <form id="form">
     <!-- File "upload" -->
     <div class="row">
-      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">
         <div class="form-group">
-          <label for="fileUpload">File input</label>
+          <label for="fileUpload">Choose an audio or video file to transcribe</label>
           <input  name="file" type="file" id="inputMediaFile">
-          <p class="help-block">Chose an audio or video file to transcribe</p>
         </div>
-
         <!-- Online/offline -->
       <div class="form-group">
-        <label for="radioSTT">Speech To Text System</label><br>
+        <label for="radioSTT">Speech To Text Transcription System</label><br>
         <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label>
         <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline)</label>
-        <p class="help-block">Chose what speech to text system you d like to use. IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. See manual for more.</p>
+        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Follow the link for more info on setting it up
+     <a id="gentleSetupLink" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.
+        </p>
       </div>
         <!-- languages -->
       <div class="form-group">
@@ -625,7 +712,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
           <option value="en-UK_BroadbandModel">UK English - Broadband </option>
           <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>
           <!-- <option disabled>_________</option> -->
-        
           <option value="es-ES_BroadbandModel">Spanish - Broadband </option>
           <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>
           <!-- <option disabled>_________</option> -->
@@ -644,30 +730,19 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         </select>
          <p class="help-block">Chose the language of your media file. The default is English US.</p>
          <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>
-   <!--       <p class="help-block"> <b>Broadband</b> is for audio that is sampled at a minimum rate of 16 KHz.</p>
-         <p class="help-block"> <b>Narrowband</b> is for audio that is sampled at a minimum rate of 8 KHz.</p>
-         -->
       </div>
-
-
 <p> </p>
-
-<!--
-<p class="help-block">For more info on how to decide between the two and extra setup needed to use gentile to work offline see user manual.  <a href='https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice' target='_blank'><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>. -->
         </p>
-
       </div><!-- ./col -->
-
       <!-- Title and description -->
-      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">
         <div class="form-group">
           <label for="title">Title of Transcription</label>
           <input type="text" name="title" value="<%= title %>" class="form-control" id="title" placeholder="e.g. Interview with Mark Zuckerberg">
         </div>
         <div class="form-group">
           <label for="description">Description (optional)</label>
-          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Facebook CEO about Facebook Live"><%= description %>
-          </textarea>
+          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Facebook CEO about Facebook Live"><%= description %></textarea>
         </div>
     </div><!-- ./col -->
 
@@ -685,21 +760,9 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
   </script>
 <!-- End Transcription form -->
 
-
 <!-- //////////////////////   END TEMPLATES  ////////////////////////////////// -->
 <!-- /////////////////////////////////////////////////////////////////////////// -->
 <!-- /////////////////////////////////////////////////////////////////////////// -->
-
-
-<!-- Backbone client side app  -->
-<!-- <script src="js/models/transcription.js"></script>
-<script src="js/collections/transcriptions.js"></script>
-<script src="js/views/transcription_index.js"></script>
-<script src="js/views/transcription_show.js"></script>
-<script src="js/views/transcription_form.js"></script>
-<script src="js/router.js"></script> -->
-<!-- End Backbone client side app -->
-
 <script>
   /**
   *To allow code reuse it detects if we are running this front end in NWJS and if so it sets up the mac os x menues. 
@@ -715,22 +778,20 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       // global.frontEndEnviromentNWJS = true;
       window.frontEndEnviromentNWJS = true;
       window.ibmWatsonKeysSet = false;
-      // process.env.UV_THREADPOOL_SIZE = 50;
-
-      // console.info(" console.log(process.env.UV_THREADPOOL_SIZE)")
-      // console.log(process.env.UV_THREADPOOL_SIZE)
-
+      //adding App.dataPath to config global variable. so that can required outside of index.html context. eg "/Users/pietropassarelli/Library/Application Support/autoEdit2". cannot put it inside try block coz scope restrictions. can then ref as `window.config.dataPath`
+      config.dataPath = require('nw.gui').App.dataPath;
+   
       // For mobile version safari doesn't play webm
-        window.userAgentSafari = false; 
-      //
+      window.userAgentSafari = false; 
+
       try{
         console.info("USING NWJS")
         //requiring env variables  https://github.com/motdotla/dotenv
-
         var gui = require('nw.gui');
-   
+
         //adding asbolute relative path to root of app
         //https://github.com/pietrop/nwjs_boilerplate#local-modules-path
+        //TODO: check if this is necessay, or whether it should be .. or if it make a difference at all.
         require('app-module-path').addPath(".");
 
         // Create menu
@@ -745,6 +806,8 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         console.info(process.versions['node-webkit'])
         console.info("process.versions['node']")
         console.info(process.versions['node'])
+        console.info("process.versions")
+        console.info(process.versions)
 
         // global.$= require("./vendor/jquery.min.js")
 
@@ -752,13 +815,13 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         * set watson API keys
         */
         //then read it, parse to json and assign keys to Watson module.
-        
         fs = require("fs")
-        if (fs.existsSync('./wttskeys.json')) {
-            console.info("WATSON KEYS EXISTS")
+        config.watsonKeysPath = config.dataPath+'/wttskeys.json';
+        if (fs.existsSync(config.watsonKeysPath)) {
+          console.info("WATSON KEYS EXISTS")
           readWatsonAPIKeys(function(ke){
             global.keys = ke;
-             window.ibmWatsonKeysSet = true;
+            window.ibmWatsonKeysSet = true;
           })
         }else{
           //if it doesn't exists then prompt uset to add keys
@@ -769,26 +832,36 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
           })
         }
 
+        /**
+        * adding NWJS console keyboard shortcut to be able to trigger that in production 
+        */
+        var option = {
+        key : "Ctrl+Alt+J",
+        active : function() {
+          console.log("Global desktop keyboard shortcut: " + this.key + " active."); 
+          require('nw.gui').Window.get().showDevTools();
+        },
+        failed : function(msg) {
+          // :(, fail to register the |key| or couldn't parse the |key|.
+          console.log(msg);
+        }
+      };
+      // Create a shortcut with |option|.
+      var shortcut = new gui.Shortcut(option);
+      // Register global desktop shortcut, which can work without focus.
+      gui.App.registerGlobalHotKey(shortcut);
+      //end of console keyboard shortcut
+
 
       } catch (error) {
-          console.info("NOT USING NWJS "+error)
+        console.info("NOT USING NWJS "+error)
       }
     }else{
       // global.frontEndEnviromentNWJS = false;
       console.info("NOT USING NWJS ")
-      //TODO : move this logic before loading of the other scripts
-      //and add demo jr script inside last loaded script if in nwjs client side mode.
-
-      // loadScript("demo_jr.js", initialiseDemo);
-
-      //TODO: require demo but how to require file from js src?
-      // <script src="./demo_jr.js"><\/script>
       window.frontEndEnviromentNWJS = false;
-
-
       //Detecting if browser is safari 
       //usecase, safari not supporting webm, so switching to audio in transcript preview
-
       var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
       var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
       var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
@@ -796,7 +869,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       var is_opera = navigator.userAgent.toLowerCase().indexOf("op") > -1;
       if ((is_chrome)&&(is_safari)) { is_safari = false; }
       if ((is_chrome)&&(is_opera)) { is_chrome = false; }
-
 
       //Chrome as both safari and chrome in the user agent 
       if (navigator.userAgent.indexOf('Safari') != -1 && 
@@ -808,8 +880,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
          window.userAgentSafari = false; 
        //end Detecting if browser is safari 
       }
-
-
     }
 });
 
@@ -818,44 +888,19 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
 */
   function setAppName(name){
     //name in navbar brand element
-document.getElementById("brandAppName").innerHTML =name;//or innerText = ?
+    document.getElementById("brandAppName").innerHTML =name;//or innerText = ?
     //$("#brandAppName").text(name);
     // Name in page document title
     document.title =name;
   }
-
-/**
-* Helper functions to initialise demo transcriptions for client only version
-*/
-
-//   function loadScript(url, callback){
-//     // Adding the script tag to the head as suggested before
-//     var body = document.getElementsByTagName('body')[0];
-//     var script = document.createElement('script');
-//     script.type = 'text/javascript';
-//     script.src = url;
-
-//     // Then bind the event to the callback function.
-//     // There are several events for cross browser compatibility.
-//     script.onreadystatechange = callback;
-//     script.onload = callback;
-
-//     // Fire the loading
-//     body.appendChild(script);
-// }
-
-// var initialiseDemo = function() {
-//   console.log("demo")
-//   demoTranscription()
-//    // Here, do what ever you want
-// };
 
 /**************************************************************
 * Watson IBM Keys helpef functions 
 */
 
 /**
-* Function to set watson API Keys from user input
+* @function 
+* @description Function to set watson API Keys from user input
 */
 function getWatsonAPIKeysFromUser(cb){
   var apiKeyUsername = prompt("Please enter IBM API Key Username", "");
@@ -863,7 +908,7 @@ function getWatsonAPIKeysFromUser(cb){
   // validation
   // TODO: check if this means both conditions have to be true
   if ((apiKeyUsername != null)&&(aPIKeyPassword!= null)) {
-    alert("IBM Watson Speech to text API Keys \n " +"API key 1: "+ apiKeyUsername + "\n API Key 2: "+aPIKeyPassword)
+    alert("IBM Watson Speech to text API Keys \n " +"API key 1: "+ apiKeyUsername + "\n API Key 2: "+aPIKeyPassword+"\n saved in: " +config.watsonKeysPath)
     saveWatsonAPIKeys(apiKeyUsername,aPIKeyPassword)
     cb({username: apiKeyUsername, password: aPIKeyPassword})
   } else {
@@ -874,22 +919,22 @@ function getWatsonAPIKeysFromUser(cb){
 }
 
 /*
-* takes in username and password IBM keys
-* saves file containing json api keys with username and password attribtues
+* @function takes in username and password IBM keys
+* @description saves file containing json api keys with username and password attribtues
 */
 function saveWatsonAPIKeys(username, password){
   var watsonKeys={};
   watsonKeys.username = username;
   watsonKeys.password = password;
-  fs.writeFileSync('wttskeys.json', JSON.stringify(watsonKeys) );
+  fs.writeFileSync(config.watsonKeysPath, JSON.stringify(watsonKeys) );
 }
 
 /*
-* reads file containing json api keys with username and password attribtues
-* returns json object.
+* @function reads file containing json api keys with username and password attribtues
+* @returns json object.
 */
 function readWatsonAPIKeys(cb){
-  var k =  JSON.parse(fs.readFileSync('wttskeys.json').toString());
+  var k =  JSON.parse(fs.readFileSync(config.watsonKeysPath).toString());
   cb(k)
 }
 /**************************************************************/

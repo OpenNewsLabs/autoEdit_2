@@ -41,9 +41,10 @@
  * @requires trimmer.js uses costum trimer module to actually cut the clips.
  */
 
-var ffmpeg  = require('fluent-ffmpeg');
+"use strict";
+
 var path    =  require('path');
-var fs      = require('fs');
+var ffmpeg  = require('fluent-ffmpeg');
 var trimmer = require('./trimmer.js');
 
 /**

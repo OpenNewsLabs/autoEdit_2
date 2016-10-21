@@ -54,3 +54,41 @@ Enough to test it's components serpately?
 
 ## split.js, metadata reader
 Jdocco how to document callback param/return?
+
+
+
+--- 
+Other things to think about 
+
+- IBM API keys not stored it library user system folder. This makes it harder to send to Vox Users with API key burnt in. 
+	- Solution 1: share API key with users and have them add to system?
+	- Solution 2: save API key inside app(as was done previously) so that users can download a ready to use version.
+
+- videoOgg attribute change to more sensible name eg videoWebm. 
+
+
+- Right way to configure jlint for Node?  
+I changed the jslint pref 
+
+```
+{
+  // The plugin looks for a .jshintrc file in the same directory as the source
+  // file you're prettifying (or any directory above if it doesn't exist, or in
+  // your home folder if everything else fails) and uses those options along
+  // the default ones.
+
+  // Details: https://github.com/victorporof/Sublime-JSHint#using-your-own-jshintrc-options
+  // Example: https://github.com/jshint/jshint/blob/master/examples/.jshintrc
+  // Documentation: http://www.jshint.com/docs/options/
+  "browser": true,
+  "esnext": true,
+  "globals": {
+      "require": false,
+      "module":false,
+      "console": false
+  },
+  "strict": "global",
+  "undef": true,
+  "unused": true
+}
+```

@@ -15,6 +15,9 @@
 * @param {number} offset - number offset of the chunked clip relative to original source audio
 * @returns {Object} - same json IBM STT transcription specs(but with offset).
 */
+
+"use strict";
+
 function parse(data, offset) {
   
   //sentences output 
@@ -23,7 +26,9 @@ function parse(data, offset) {
   };
 
   //TODO: not sure if this is necessary. eg when is the case in which offset would be undefined.
-  if (typeof offset === 'undefined') {offset = 0};
+  if (typeof offset === 'undefined') {
+    offset = 0;
+  }
 
   // modifying sentences results 
   out.sentences = data.results.map(function(r) {

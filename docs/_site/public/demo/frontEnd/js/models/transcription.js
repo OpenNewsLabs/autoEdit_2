@@ -53,25 +53,12 @@ app.Transcription = Backbone.Model.extend({
         // console.info('- Values for this model have changed.');
     });
 
-    this.on('change:title', function(){
-        // console.log('Title value for this model has changed.');
+    this.on('change:text', function(){
+        console.log('text value for this model has changed.');
     });
 
      this.on('destroy', function(){
      
-      // if(window.frontEndEnviromentNWJS){
-        // console.log("deleting associated media")
-        // var fs = require("fs")
-        // TODO: use path library to make absolute path.
-        // var path = require("path")
-          // console.log(path.resolve(this.attributes.videoOgg))
-          // console.log( path.resolve(this.attributes.audioFile))
-
-            // fs.unlinkSync( path.resolve(this.attributes.videoOgg));    
-            // fs.unlinkSync(  path.resolve(this.attributes.audioFile));    
-      // }
-    
-        // console.log('Title value for this model has changed.');
     });
 
   }
@@ -80,65 +67,95 @@ app.Transcription = Backbone.Model.extend({
 //https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name
 },{
 
+   modelType: "transcription",
+
   //TODO: change this to returnSrt coz that's what it is doing
   //and make rturns srtJson in helper function in model 
 
-  returnSrtContent: function(text){
+ returnSrtContent: function(text){
+  //helper function to split array in equal parts
+  //from http://stackoverflow.com/questions/8188548/splitting-a-js-array-into-n-arrays
+  function split(arr, n) {
+    var res = [];
+    while (arr.length) {
+      res.push(arr.splice(0, n));
+    }
+    return res;
+  }
 
-      function loopThroughStuff(text, cb){
-        // var text = app.TranscriptionsList.get(8).get("text");
 
-        var newLinesAr = []
-        var newLine ={}
-        var counter = 1
-        
-        _.each(text, function(paragraphs){
-           _.each(paragraphs.paragraph, function(paragraph){
-            newLine.id = counter;
-            counter+=1
+  function loopThroughStuff(text, cb){
+    // var text = app.TranscriptionsList.get(8).get("text");
+    var newLinesAr = []
+    var newLine ={}
+    var counter = 1
+    _.each(text, function(paragraphs){
+      _.each(paragraphs.paragraph, function(paragraph){ 
+        if(paragraph.line.length > 8){
+          // console.log(JSON.stringify(paragraph))
+          // console.log(JSON.stringify(paragraph.line.length))
+          // console.log("---")
+          var regroupLines = split(paragraph.line, 8)
+          // console.log(regroupLines)
+          //make srt lines 
+          _.each(regroupLines, function(l){
+            console.log(JSON.stringify(l))
+            console.log("---")
+             newLine.id = counter;
+             counter+=1;
+             newLine.startTime = fromSecondsForSrt(l[0].startTime);
+             newLine.endTime = fromSecondsForSrt(l[l.length-1].endTime);
+             newLine.text = "";
+            _.each(l, function(w){
+              // console.log("---");
+              // console.log(JSON.stringify(w));
+              newLine.text += w.text +" ";
+            })//words
+              newLinesAr.push(newLine)
+              newLine={}
+          })//lines in regrouped lines
+        }else{
+          newLine.id = counter;
+          counter+=1
+          newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
+          newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length -1].endTime)
+          newLine.text = ""
+          _.each(paragraph.line, function(word){
+            // console.log(word)
+            newLine.text += word.text +" "
+          })//line
+          newLinesAr.push(newLine)
+          newLine={}
+        }           
+      })//paragraph
+    })//paragraphs
+    cb(newLinesAr)
+  }
 
-            newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
-            newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length -1].endTime)
-            newLine.text = ""
-            _.each(paragraph.line, function(word){
-              // console.log(word)
-              newLine.text += word.text +" "
-            })//line
-            newLinesAr.push(newLine)
-            newLine={}
-          })//paragraph
-        })//paragraphs
+  //in order to sue this 
+  //TODO: this needs to be moved/used from the srt lib
+  function createSrtContent(srtJsonContent, cb){
+    var lines = "";
+    for(var i=0; i< srtJsonContent.length; i++){
+      srtLineO = srtJsonContent[i];
+      lines+=srtLineO.id+"\n";
+      lines+=srtLineO.startTime+" --> "+srtLineO.endTime+"\n";
+      lines+=srtLineO.text+"\n\n";
+    }
+    if(cb){cb(lines)}else{return lines};
+  }
 
-        cb(newLinesAr)
-      }
+  loopThroughStuff(text, function(res){
+    result = createSrtContent(res)
+  })  
 
-      //in order to sue this 
-      //TODO: this needs to be moved/used from the srt lib
-      function createSrtContent(srtJsonContent, cb){
-        var lines = "";
-        for(var i=0; i< srtJsonContent.length; i++){
-          srtLineO = srtJsonContent[i];
-          lines+=srtLineO.id+"\n";
-          lines+=srtLineO.startTime+" --> "+srtLineO.endTime+"\n";
-          lines+=srtLineO.text+"\n\n";
-        }
-
-        if(cb){cb(lines)}else{return lines};
-      }
-
-      loopThroughStuff(text, function(res){
-         result = createSrtContent(res)
-      })
-          
-
-    return result;
-  },
+  return result;
+ },
 
 
 returnPlainTextTimecoded: function(attr){
   console.log(attr)
       function loopThroughStuff(text, cb){
-        // var text = app.TranscriptionsList.get(8).get("text");
 
         var newLinesAr = []
         var newLine ={}
@@ -169,14 +186,14 @@ returnPlainTextTimecoded: function(attr){
       function createPlainTextTimecoded(srtJsonContent, cb){
         var lines = "";
 
-        var head="Transcription: "+attr.title+"\n\n"
-        head += "Description: "+attr.description+"\n\n"
-        head += "File name: " +attr.metadata.fileName +"\n\n"
-        head += "File path: "+attr.metadata.filePathName +"\n\n"
-        head += "Reel: "+attr.metadata.reelName +"\n"
-        head += "Camera Timecode: "+attr.metadata.timecode +"\n"
-        head += "fps: "+attr.metadata.fps +"\n"
-        head += "Duration: "+fromSeconds(attr.metadata.duration)+"\n"
+        var head= "Transcription: "   + attr.title+"\n\n"
+        head +=   "Description: "     + attr.description+"\n\n"
+        head +=   "File name: "       + attr.metadata.fileName +"\n\n"
+        head +=   "File path: "       + attr.metadata.filePathName +"\n\n"
+        head +=   "Reel: "            + attr.metadata.reelName +"\n"
+        head +=   "Camera Timecode: " + attr.metadata.timecode +"\n"
+        head +=   "fps: "             + attr.metadata.fps +"\n"
+        head +=   "Duration: "        + fromSeconds(attr.metadata.duration)+"\n"
         // 
         for(var i=0; i< srtJsonContent.length; i++){
 

@@ -40,6 +40,24 @@
 
     }
   })
+ * @example <caption>Transcriber example output, an array of lines, containing array of word objects </caption>
+   [
+     {
+      "id": 0,
+      "starTime": 0.14,
+      "endTime": 4.62,
+      "line": 
+        [
+          {
+            "id": 0,
+            "text": "there",
+            "startTime": 0.14,
+            "endTime": 0.38
+          },
+          ....
+        ]
+    }
+  ]
  * @requires fs
  * @requires path
  * @requires parseSamJsonToTranscripJson
@@ -52,14 +70,11 @@
  * @tutorial IBM_watson_stt_specs
  */ 
 
-var fs                          = require('fs');
-var path                        = require('path');
+"use strict";
 
 var convertToWav                = require('./convert_to_audio.js');
 var split                       = require('./split.js');
-
 var gentle_transcribe           = require("./gentle_stt_node/index.js");
-
 var SendToWatson                = require('./ibm_stt_node/send_to_watson.js');
 var parse                       = require('./ibm_stt_node/parse.js');
 var writeOut                    = require('./ibm_stt_node/write_out.js');

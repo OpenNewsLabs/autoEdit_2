@@ -23,6 +23,7 @@ A desktop app for OS X that given a video or audio file, returns a transcription
  -->
 <!-- use diagram from blog post -->
 
+
 ---
 
 ### User Manual  

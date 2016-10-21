@@ -1,184 +1,181 @@
 /**
-* @module interactive_transcriptionn_generator
-* @example
-  var config = {
-  videoUrl: "",
-  title: "",
-  description: "",
-  tmpWorkFolder: "",
-  destFolder:""
+* @module interactive_transcriptionn_generator.
+* @description combines transcriber, metadata reader and video webm all into one function. 
+* @author Pietro Passarelli 
+* @example <caption>Example of usage interactive_transcription_generator </caption> 
+
+var transcription_generate = require("../interactive_transcription_generator/index.js");
+transcription_generate({
+  //some id, this is more for ease of integrating with yout system
+  id: 123,
+  //path to audio or video file
+  videoUrl: "Some/path/to/a/video/file.mov",
+  //where you'd like to hold the temporary clippings needed to do the transcription
+  tmpWorkFolder: tmpMediaFolder,
+  // where you'd like to output the results
+  destFolder: pathToDestFolder,
+  //IBM keys for STT service
+  keys: {username:"RtycLGgu7istHKoQu6of87nG", pasword: "RtycLGgu7istHKoQu6of87nG"},
+  //only for IBM, 
+  languageModel: "en-US_BroadbandModel",
+  // other option is "gentle"
+  sttEngine: "ibm",
+  cbMetadata:function(metadata){
+      //do someting with the metadata     
+  },
+  cbTranscription: function(resp){
+    //do something with with text of transcription json.
+  },
+  cbVideo: function(resp){
+    //do something with webm html5 video preview.  
   }
-  */
-var fs = require("fs");
+}
+
+* @example <caption>Example of retunred metadata </caption>
+  { 
+    filePathName: '/some_file_path/Bowman.mov',
+    date: '2016-02-18 16:38:20',
+    reelName: 'time',
+    timecode: '00:01:18:56',
+    fps: '1/60000',
+    duration: 2287.285 
+  }
+
+* @example <caption>Example of retunred transcription </caption>
+  {
+    id: id,
+    status: true,
+    audioFile: "path/to/audio_file.ogg",
+    processedAudio: true, 
+    videoFile: "path/to/video_dfle.mov",
+    text": [
+    {
+      "id": 0,
+      "speaker": "Unnamed Speaker",
+      "paragraph": [
+        {
+          "line": [
+            {
+              "id": 0,
+              "text": "there",
+              "startTime": 0.14,
+              "endTime": 0.38
+            },
+            ...
+  }
+
+* @example <caption>Example of retunred video webm html5 </caption>
+{
+  videoOgg: "path/to/video/webmFile.webm",
+  processedVideo: true 
+}
+* @requires fs 
+* @requires path
+* @requires transcriber
+* @requires video_to_html5_webm
+* @requires video_metadata_reader
+*/
+"use strict";
+
 var path = require("path");
-
+var transcribe = require("./transcriber/index.js");
+var convert_video = require("./video_to_html5_webm/index.js");
+var MetadataReader = require("./video_metadata_reader/index.js");
+ 
+/**
+* @function generate
+* @description  generates interactive transcription components
+* @param {object} config - 
+* @param {string} config.videoUrl - 
+* @param {string} config.destFolder - 
+* @param {string} config.tmpWorkFolder - 
+* @param {object} config.keys - 
+* @param {string} config.keys.username - 
+* @param {string} config.keys.pasword - 
+* @param {string} config.languageModel - 
+* @param {string} config.sttEngine - 
+* @returns {callback} callback - returns object containing transcription and some other attributes, see example output
+*/
 var generate = function(config) {
-  //TODO: adda tmp word folder, and dest folder in var?
-  var transcribe = require("./transcriber/index.js");
-  var convert_video = require("./video_to_html5_webm/index.js");
-  var MetadataReader = require("./video_metadata_reader/index.js");
-  // console.log(process.cwd())
-
-  //NOTE_if running index_example, need to change the path of bin
-  var ffmpegPath =  process.cwd() + "/interactive_transcription_generator/bin/ffmpeg";
-  // var ffmpegPath =  "./interactive_transcription_generator/bin/ffmpeg";
-  //TODO: move to local bin
-  var ffprobePath = process.cwd() + "/interactive_transcription_generator/bin/ffprobe";
-
-  // var ffprobePath = "./interactive_transcription_generator/bin/ffprobe";
-
-  var videoFile = config.videoUrl;
-  //TODO: do .tmp/audio  folder for audio files in root of sails
-  // var audioFileName = "./"+path.parse(videoFile).base+".wav";
-  var videoFileName = path.parse(videoFile).base;
-  videoFileName = videoFileName.replace(/\s+/g,"_");
-  // var currentDir = process.cwd().split(path.sep)[process.cwd().split(path.sep).length -1];
-
+  //TODO: this doesn't seem the right way to do it, but changing it breaks the code 
+  var ffmpegPath        = process.cwd() + "/interactive_transcription_generator/bin/ffmpeg";
+  var ffprobePath       = process.cwd() + "/interactive_transcription_generator/bin/ffprobe";
+  var videoFile         = config.videoUrl;
+  //get video file name without the file path
+  var videoFileName     = path.parse(videoFile).base;
+  //replace spaces with underscore 
+  //TODO: should also sanitse other input that breaks code eg if there is a # in the name of the file. Edge case but can happen as some camera use it in default name of files.eg Sony RX100MKIII
+  videoFileName         = videoFileName.replace(/\s+/g,"_");
   //Make audio and webm file unique. Eg so that if upload same video twice it gets different audio and video preview.
-  //by using `timeNowFileName()`  in `frontEnd/date_now/index.js`
-  // var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
-  // var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
-
-  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".ogg";
-  var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
-
-  // TODO: use system application data folder
-  var appRootFolderForMedia = config.tmpWorkFolder;
-  // ""+ process.cwd()+"/.tmp/"+path.parse(videoFile).base+".ogg"
-  // var audioFileAbsolutePath = path.resolve(audioFileName)
-  var audioFileAbsolutePath = audioFileName;
-
-  // TODO: use system temp folder
-  // var tmpFolderCwd = process.cwd() + "/tmp_media";
-  // var tmpFolder = path.resolve(tmpFolderCwd);
-  var tmpFolder = config.tmpWorkFolder;
-
-
-
-  // var newTranscription= {
-  //  title: config.title,
-  //  description: config.description,
-  //  videoUrl: config.videoUrl,
-  //  // status: false,
-  //  // text:
-  //  //videoOgg:
-  //  //metadata:
-  // }
-
-
-  //  // cb to save // return transcription to save 
-
-  // /////////////////////////////////////////
-  // console.log(config.keys)
-  //spawn new process 
-
-  //TODO: add language / model var, argument
+  //Date.now() returns current time in milliseconds and therefore can be assumed to be unique
+  //using timestamp var so that audio and video tile have same time stamp if need to find matching once for same transcription.
+  var timeStamp         = Date.now();
+  var audioFileName     = config.destFolder + "/" + videoFileName +"."+timeStamp+ ".ogg";
+  var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+timeStamp+ ".webm";
+ 
+  //transcribing file 
   transcribe({
     videoFile: config.videoUrl,
-    // keys: global.keys,
+    //Watson IBM API Keys
     keys: config.keys,
-    audioFileOutput: audioFileAbsolutePath,
+    audioFileOutput: audioFileName,
     ffmpegBin: ffmpegPath,
     ffprobePath: ffprobePath,
-    tmpPath: tmpFolder,
+    // using user file system temp folder as set in index.html
+    tmpPath: config.tmpWorkFolder,
     languageModel: config.languageModel,
     sttEngine: config.sttEngine,
 
     callback: function(respTranscriptJson){
-      console.log("###############-ITG Done transcribing"+videoFile);
-      console.log("config.videoUrl "+ config.videoUrl);
-      // console.log(JSON.stringify(respTranscriptJson));
-
-      var created = {};
-      var paragraphs = [{"id":0,  "speaker": "Unamed Speaker ","paragraph":{}}];
-      //update paragraphs of transcription
-      paragraphs[0].paragraph = respTranscriptJson;
-
-      created.status = true;
-      created.text = paragraphs;
-
-      var tmpAudioDirPath = path.parse(audioFileAbsolutePath).dir;
-      var tmpAudioDir = appRootFolderForMedia;
-      var tmpAudioName = path.parse(audioFileAbsolutePath).base;
-      //".." because root is index which is inside `frontEnd` and 
-      created.audioFile =  audioFileName;
-      // created.audioFile =  ".."+config.destFolder+"/"+tmpAudioName;
-      // console.log("created.audioFile")
-      // console.log(created.audioFile)
-
-      created.processedAudio= true;
-      created.id = config.id;
-      created.videoFile = videoFile;
-
-      console.log("###############-ITG updates transcription"+videoFile);
-
+      console.info("---> Done transcribing: "+videoFile);
+      console.info("config.videoUrl: "+ config.videoUrl);
+      // console.info(JSON.stringify(respTranscriptJson, null, 4));
+      //output object
+      var transcriptionText                 = {};
+          transcriptionText.text            = respTranscriptJson;
+          transcriptionText.status          = true;
+          transcriptionText.audioFile       =  audioFileName;
+          transcriptionText.processedAudio  = true;
+          transcriptionText.id              = config.id;
+          transcriptionText.videoFile       = videoFile;
+      //callback for transcription result
       if(config.cbTranscription){
-        console.info("inside interactive_transcription_generator index created.videoFile: "+ created.videoFile);
-        // fs.writeFileSync("/"+created.videoFile+".json",JSON.stringify(created, null,"\t"));
-
-        config.cbTranscription(created);
+        config.cbTranscription(transcriptionText);
       }
-      //Callback to save
+    } 
+  }); 
 
-    } //callback transcriber
-  }); //transcriber
-
-  /////////////////////////////////////////
-
-  //spawn new process
+  //reading metadata 
   MetadataReader.read({
     file: videoFile,
     ffprobePath: ffprobePath,
-    callback: function(resp){
-      console.log("###############-ITG metadata "+videoFile);
-      // console.log(JSON.stringify(resp));
-      //add metadata to transcription
-      // created.metadata = resp;
-
-      //CALLBACL HERE 
-
+    callback: function(respMetadata){
+      console.info("---> read metadata: "+videoFile);
+      //callback for metadata result
       if(config.cbMetadata){
-        config.cbMetadata(resp);
+        config.cbMetadata(respMetadata);
       }
-      //callback to save
+    }
+  });
 
-    }//end callback
-  });//end read metadata
-
-
-  /////////////////////////////////////////
-
-  ////spawn new process 
+  //convert video html5 webm 
   convert_video({
     src: videoFile,
     outputName: oggOutputNamePath,
     ffmpegBin: ffmpegPath,
     callback: function(outputName){
-      console.log("#########-ITG Saving webm video file "+JSON.stringify(outputName));
-      var tmpVideoDirPath = path.parse(outputName).dir;
-
-      var created = {};
-
-      var tmpVideoDir = appRootFolderForMedia;
-      var tmpFileName = path.parse(outputName).base;
-
-      // created.videoOgg =  tmpVideoDir+ "/"+tmpFileName;
-      created.videoOgg = oggOutputNamePath;
-      created.processedVideo= true;
-      //CALLBACK HERE 
-
+      console.info("--> converted webm video file: "+JSON.stringify(outputName, null, 4));
+      //output object 
+      var output_video_details                 = {};
+          output_video_details.videoOgg        = outputName;
+          output_video_details.processedVideo  = true;
+      //callback for video result 
       if(config.cbVideo){
-        config.cbVideo(created);
+        config.cbVideo(output_video_details);
       }
     }
   });
 };
-//InteractiveTranscriptionGenerator({videoUrl: "",title: "",description: "", tmpWorkFolder: "",destFolder:"" })
 
 module.exports = generate;
 
-// example use
-// var iTg = new InteractiveTranscriptionGenerator();
-// iTg.generate({
-//  /// config with callbacks
-// })

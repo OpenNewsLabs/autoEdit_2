@@ -11,11 +11,27 @@
     console.log(JSON.stringify(res, nul, 4))
     fs.writeFileSync("./transcription.json",JSON.stringify(res, nul, 4) )
   })
+ * @example <caption>Exampleoutput</caption>
+[
+    {
+      "id": 0,
+      "speaker": "Unnamed Speaker",
+      "paragraph": [
+        {
+          "line": [
+            {
+              "id": 0,
+              "text": "there",
+              "startTime": 0.14,
+              "endTime": 0.38
+            },
+            ...
  * @require fs 
  * @tutorial IBM_watson_stt_specs
  * @tutorial autoEdit2_transcrition_json_spec
  */
-var fs = require("fs");
+
+"use strict";
 
 /**
 * @function parseSamJsonToTranscripJson
@@ -24,8 +40,10 @@ var fs = require("fs");
 */
 function parseSamJsonToTranscripJson(transcriptionJson){
   var wordCounter = 0;
-  var result = [];
+  var lines = [];
   var line ={"line":[]};
+  //for now IBM does not do speaker diarization so adding everything into one paragraph for now. But modeled transcription with paragraph containing lines with speaker associated to it. 
+  var paragraphs = [{"id":0,  "speaker": "Unnamed Speaker","paragraph":{}}];
   //iterating over the IBM STT json lines 
   for(var i =0; i< transcriptionJson.length; i++){
     var oldLine = transcriptionJson[i];
@@ -50,13 +68,14 @@ function parseSamJsonToTranscripJson(transcriptionJson){
 
       wordCounter+=1;//
     }
-    //add to results 
-    result.push(line);
+    //add to lines 
+    lines.push(line);
     //reset words in line for next iteration 
     line ={"line":[]};
   }
   //return results
-  return result;
+  paragraphs[0].paragraph  = lines;
+  return paragraphs;
 }
 
 

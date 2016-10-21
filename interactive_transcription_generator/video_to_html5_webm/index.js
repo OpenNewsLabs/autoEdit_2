@@ -4,10 +4,25 @@
  * uses code from [this issue/question from fluent-ffmepg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274)
  * to understand the ffmpeg used to encode webm video see [this guide](https://trac.ffmpeg.org/wiki/Encode/VP8)
  * @author Pietro Passarelli 
+ * @example <caption>Example usage</caption>
+
+  convert_video({
+    src: "path/to/vide_file.mov",
+    outputName: "path/to/webm_file.webm",
+    ffmpegBin: "path/to/bin/ffmpge",
+    callback: function(resp){
+      // do something with output, path to webm video
+    }
+  });
+* @example <caption>Example of object retunred video webm html5 </caption>
+  {
+    videoOgg: "path/to/video/webmFile.webm",
+    processedVideo: true 
+  }
  * @requires fluent-ffmpeg
  * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
  */
-
+"use strict";
 
 var ffmpeg = require('fluent-ffmpeg');
 

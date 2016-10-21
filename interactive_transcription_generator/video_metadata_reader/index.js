@@ -27,9 +27,10 @@
  * @requires fluent-ffmpeg
  * @requires path
  */
+"use strict";
 
-var ffmpeg = require('fluent-ffmpeg');
 var path = require('path');
+var ffmpeg = require('fluent-ffmpeg');
 
 /*
  * @function readMetadata.

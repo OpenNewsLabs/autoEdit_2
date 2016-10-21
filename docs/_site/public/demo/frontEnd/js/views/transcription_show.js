@@ -1,6 +1,6 @@
-// $(document).ready(function(){
-
-
+/**
+* Transcription view for individual transcriptions 
+*/
 
 var app = app || {};
 
@@ -51,22 +51,57 @@ app.TranscriptionView = Backbone.View.extend({
       } 
       // this.render();
 
+      //set speed input
+     // var speedDisplay =  document.getElementById("speedInput").value = 0;
+
       //
    },
+    keyboardEvents: {
+        'command+k'           : 'pausePlayVideo',
+        'ctrl+k'              : 'pausePlayVideo',
+        'command+shift+k'     : 'pausePlayVideo',
+        'ctrl+shift+k'        : 'pausePlayVideo',
+        'command+j'           : 'slowVideo',
+        'ctrl+j'              : 'slowVideo',
+        'command+l'           : 'fastVideo',
+        'ctrl+l'              : 'fastVideo',
+        'command+shift+l'     : 'fastForwardVideo',
+        'ctrl+shift+l'        : 'fastForwardVideo',
+        'command+shift+right' : 'fastForwardVideo',
+        'ctrl+shift+right'    : 'fastForwardVideo',
+        'command+shift+j'     : 'rewindVideo',
+        'ctrl+shift+j'        : 'rewindVideo',
+        'command+shift+left'  : 'rewindVideo',
+        'ctrl+shift+left'     : 'rewindVideo',
+        'command+shift+up'    : 'volumeUp',
+        'ctrl+shift+up'       : 'volumeUp',
+        'command+shift+down'  : 'volumeDown',
+        'ctrl+shift+down'     : 'volumeDown',
+        'shift+/'             : 'showHideShortcuts'
+    },
 
   events:{
+    "click #rewindVideo"      : "rewindVideo",
+    "click #pausePlayVideo"   : "pausePlayVideo",
+    "click #slowVideo"        : "slowVideo",
+    "click #fastVideo"        : "fastVideo",
+    "click #fastForwardVideo" : "fastForwardVideo",
+    "click #volumeDown"       : "volumeDown",
+    "click #volumeUp"         : "volumeUp",
+    "click #rewindVideo"      : "rewindVideo",
+
     "click span.words": "playWord",
     "click .timecodes": "playWord",
     "keyup #searchCurrentTranscription" :"search",
     "mouseup .transcription": "selectingWords",
     "click #clearHighlights": "clearHighlights",
 
-     "click #editWords": "makeEditable",
-     "click #highlightWords": "makeHilightable",
+    "click #editWords": "makeEditable",
+    "click #highlightWords": "makeHilightable",
 
-     "click #save": "save",
+    "click #save": "save",
 
-     "click #playPreviewChrono": "playPreviewChrono",
+    "click #playPreviewChrono": "playPreviewChrono",
 
     "click #playPreviewSelOrd": "playPreviewSelOrd",
     
@@ -92,9 +127,120 @@ app.TranscriptionView = Backbone.View.extend({
 
     "click #exporthtml5Video": "exporthtml5Video",
 
-    "click #exportAudio": "exportAudio"
+    "click #exportAudio": "exportAudio",
+
+    "click #edlUserManualInfo": "edlUserManualInfo"
 
   },
+
+  showHideShortcuts: function(){
+    console.log("show shorcuts")
+    document.getElementById("shortcuts").click()
+
+  },
+
+  //Keyboard shortcuts for playback and volume control
+    slowVideo: function(ev){
+       ev.preventDefault();
+      // alert("slow video") 'videoId_'+ id
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.currentTime = wordStartTime;
+      // videoElem.play();
+       if(videoElem.playbackRate <= 0.5){
+        videoElem.playbackRate =  0.5 ;
+       }else{
+         videoElem.playbackRate = videoElem.playbackRate - 0.5 ;
+       }
+
+       if (videoElem.paused) {
+            videoElem.play();
+        } 
+        // else {
+        //     videoElem.pause();
+        // }
+
+        this.updateSpeedDisplay(videoElem.playbackRate)
+    },
+
+    fastVideo: function(ev){
+      // alert("Fast video")
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.currentTime = wordStartTime;
+      // videoElem.play();
+       if(videoElem.playbackRate >= 4){
+        videoElem.playbackRate = 4 ;
+       }else{
+         videoElem.playbackRate = videoElem.playbackRate + 0.5 ;
+       }
+
+       if (videoElem.paused) {
+            videoElem.play();
+        } 
+        // else {
+        //     videoElem.pause();
+        // }
+
+        this.updateSpeedDisplay(videoElem.playbackRate)
+    },
+
+    pausePlayVideo: function(ev){
+      // alert("pause video")
+       var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.pause();
+       if (videoElem.paused) {
+            videoElem.play();
+        } else {
+            videoElem.pause();
+        }
+    },
+
+     volumeDown: function(ev){
+      // alert("pause video")
+       var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      // videoElem.pause();
+       
+       if(videoElem.volume <=0){
+        videoElem.volume =0
+       }else{
+        videoElem.volume -= 0.2;
+       }
+    },
+
+     volumeUp: function(ev){
+      // alert("pause video")
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.volume += 0.2;
+    },
+
+    fastForwardVideo: function(ev){
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.currentTime += 5;
+      // if (videoElem.paused) {
+      //       videoElem.play();
+      //   } else {
+      //       videoElem.pause();
+      //   }
+    },
+
+    rewindVideo: function(ev){
+      var videoIdElem="#videoId_"+this.model.get("id");
+      var videoElem = $(videoIdElem)[0];
+      videoElem.currentTime -= 5;
+    },
+
+    updateSpeedDisplay: function(speed){
+      //subtracting 1 because playback rate default / nromal is 1. but for display to user makes more sense to have zero as default
+       document.getElementById("speedInput").value = speed-1;
+
+    },
+
+    //end of playback volume control
 
 
 save: function(){
@@ -143,6 +289,16 @@ save: function(){
 
 makeHilightable: function(){
 
+  var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+
+  var hilightNotice = "<div class='alert alert-info alert-dismissible hidden-print' role='alert' id='hilightModeNotice'>";
+  hilightNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+  hilightNotice += "<strong>You are in hilight mode.</strong>";
+  hilightNotice +="<p>Select words to include in your Edit Decision List (EDL) video sequence.</p>";
+  hilightNotice +="</div>";
+
+
+
  var status = false;
   if( $("#highlightWords").hasClass("btn-primary")){
     status = true;
@@ -175,8 +331,14 @@ makeHilightable: function(){
   $("#highlightWords").addClass("btn-primary")
   $("#highlightWords").addClass("active")
 
+
+
   //disable editable on words 
   $('.words').attr('contenteditable','false');
+
+
+     //add hilight notice 
+   modeNotice.innerHTML = hilightNotice;
 }
 
 
@@ -185,11 +347,21 @@ makeHilightable: function(){
 
 makeEditable: function(){
 
+var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+ //remove hilight mode notice 
+
+// add text editing notice 
+var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> "
+  editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"
+  editNotice +="<strong>You are in text edit mode.</strong>" 
+  editNotice +="<p>Click on a word to edit. Use <code>cmd</code> + <code>a</code> to select a word. Tab or click to move to the next word.</p>"
+  editNotice +="</div>"
+
   var status = false;
   if( $("#editWords").hasClass("btn-primary")){
     status = true;
   }else{
-    status = false
+    status = false   
   }
 
   if(status){
@@ -198,16 +370,14 @@ makeEditable: function(){
    $("#editWords").removeClass("btn-primary")
    $("#editWords").addClass("btn-default")
 
+   $("#highlightWords").removeClass("btn-default")
+   $("#highlightWords").addClass("btn-primary")
+   $("#highlightWords").addClass("active")
 
- $("#highlightWords").removeClass("btn-default")
- $("#highlightWords").addClass("btn-primary")
- $("#highlightWords").addClass("active")
-
- //disable editable on words 
-$('.words').attr('contenteditable','false');
-
-
-
+   //disable editable on words 
+  $('.words').attr('contenteditable','false');
+    //remove edit notice 
+   // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
 }else{
   //disable editing
   $("#highlightWords").removeClass("active")
@@ -221,25 +391,19 @@ $('.words').attr('contenteditable','false');
  //enable content editable
  $('.words').attr('contenteditable','true');
 
+  //remove hilight notice 
+ // modeNotice.removeChild(document.getElementById("hilightModeNotice")) ;
+
+ //add edit notice 
+ modeNotice.innerHTML = editNotice;
+
  // listener on word changed 
 
 var contents = $('.words').html();
-
 //TODO: input change to event that detect when focus out or somehting else so that i doesn't auto save as typing coz that is super slow...
 $( ".words" ).on( "focusout", { model: this.model }, function(event) {
   //pause word 
  var model = event.data.model;
- // console.log("model")
- // console.log(model)
- //   $("#videoId_10")[0].pause();
- //  // $("#videoId_"+ model.attributes.id)[0];
-
- //  console.log("video")
- //  // console.log(video)
-  
-
-// console.log("CALLED")
-
 
   var tmpWordId  =  $( this )[0].dataset.wordId;
   var tmpWordText = $( this ).text();
@@ -251,7 +415,7 @@ $( ".words" ).on( "focusout", { model: this.model }, function(event) {
          _.each(lines.line, function(word){
 
             if(word.id == tmpWordId){
-              word.text = tmpWordText
+              word.text = tmpWordText;
               // console.log("found it")
 
               model.save({wait: false})
@@ -390,6 +554,11 @@ if(config.fileContent == ""){
        var fs = require("fs");
       fs.writeFileSync(process.env.HOME+"/Desktop/"+fileName, fileContent );
        alert(fileName+" Saved on the desktop");
+
+       //opening folder item has been saved in, desktop, and opening file. might be confusing for EDL.
+       // require('nw.gui').Shell.showItemInFolder(process.env.HOME+"/Desktop/"+fileName);
+       // require('nw.gui').Shell.openItem(process.env.HOME+"/Desktop/"+fileName);
+
     }else{
       //if client side not running inside NWJS then 
       //creates a blob on the client size 
@@ -488,10 +657,9 @@ if(config.fileContent == ""){
     var fileName = this.nameFileHelper(this.model.get("title"),"srt"); 
     //this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
 
- var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
+    var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
 
-this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
-
+    this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
     
 
   },
@@ -664,10 +832,9 @@ this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#exp
   exportJsonTranscription: function(){
 
     var transcription = this.model.attributes;
-    var tmpTranscription = JSON.stringify(transcription);
+    var tmpTranscription = JSON.stringify(transcription,null,"\t");
 
     var jsonFileName = this.nameFileHelper(this.model.get("title"),"json");  
-// JSON.stringify(tmpTranscription, null, 4) 
     this.exportHelper({fileName: jsonFileName,fileContent: tmpTranscription, urlId: "#exportJsonTranscription"})
       
   },
@@ -678,7 +845,7 @@ this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#exp
    exportJsonEDL: function(){
 
     var paperCuts = this.model.get("highlights");
-    var tmpPaperCuts = JSON.stringify(paperCuts);
+    var tmpPaperCuts = JSON.stringify(paperCuts,null,"\t");
 
     var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
 
@@ -692,7 +859,7 @@ this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#exp
 
       var paperCuts = this.model.get("highlights");
       var   selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; })
-    var tmpPaperCuts = JSON.stringify(selectionsSorted);
+    var tmpPaperCuts = JSON.stringify(selectionsSorted,null,"\t");
 
     var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
 
@@ -751,6 +918,13 @@ exportAudio: function(){
   }else{
     alert("Feature not availeble in this context ")
   }
+},
+
+
+edlUserManualInfo: function(){
+   if( window.frontEndEnviromentNWJS ){
+      require('nw.gui').Shell.openExternal('https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice');
+    }
 },
 
 //export/copy file helper

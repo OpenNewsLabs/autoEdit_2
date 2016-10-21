@@ -27,80 +27,128 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
-* @module interactive_transcriptionn_generator
-* @example
-  var config = {
-  videoUrl: "",
-  title: "",
-  description: "",
-  tmpWorkFolder: "",
-  destFolder:""
+* @module interactive_transcriptionn_generator.
+* @description combines transcriber, metadata reader and video webm all into one function. 
+* @author Pietro Passarelli 
+* @example &lt;caption>Example of usage interactive_transcription_generator &lt;/caption> 
+
+var transcription_generate = require("../interactive_transcription_generator/index.js");
+transcription_generate({
+  //some id, this is more for ease of integrating with yout system
+  id: 123,
+  //path to audio or video file
+  videoUrl: "Some/path/to/a/video/file.mov",
+  //where you'd like to hold the temporary clippings needed to do the transcription
+  tmpWorkFolder: tmpMediaFolder,
+  // where you'd like to output the results
+  destFolder: pathToDestFolder,
+  //IBM keys for STT service
+  keys: {username:"RtycLGgu7istHKoQu6of87nG", pasword: "RtycLGgu7istHKoQu6of87nG"},
+  //only for IBM, 
+  languageModel: "en-US_BroadbandModel",
+  // other option is "gentle"
+  sttEngine: "ibm",
+  cbMetadata:function(metadata){
+      //do someting with the metadata     
+  },
+  cbTranscription: function(resp){
+    //do something with with text of transcription json.
+  },
+  cbVideo: function(resp){
+    //do something with webm html5 video preview.  
   }
-  */
+}
+
+* @example &lt;caption>Example of retunred metadata &lt;/caption>
+  { 
+    filePathName: '/some_file_path/Bowman.mov',
+    date: '2016-02-18 16:38:20',
+    reelName: 'time',
+    timecode: '00:01:18:56',
+    fps: '1/60000',
+    duration: 2287.285 
+  }
+
+* @example &lt;caption>Example of retunred transcription &lt;/caption>
+  {
+    id: id,
+    status: true,
+    audioFile: "path/to/audio_file.ogg",
+    processedAudio: true, 
+    videoFile: "path/to/video_dfle.mov",
+    text": [
+    {
+      "id": 0,
+      "speaker": "Unnamed Speaker ",
+      "paragraph": [
+        {
+          "line": [
+            {
+              "id": 0,
+              "text": "there",
+              "startTime": 0.14,
+              "endTime": 0.38
+            },]
+            ...
+  }
+
+* @example &lt;caption>Example of retunred video webm html5 &lt;/caption>
+{
+  videoOgg: "path/to/video/webmFile.webm",
+  processedVideo: true 
+}
+* @requires fs 
+* @requires path
+* @requires transcriber
+* @requires video_to_html5_webm
+* @requires video_metadata_reader
+*/
+
 var fs = require("fs");
 var path = require("path");
+var transcribe = require("./transcriber/index.js");
+var convert_video = require("./video_to_html5_webm/index.js");
+var MetadataReader = require("./video_metadata_reader/index.js");
+ 
 
+ /**
+ * @function generate
+ * @description  generates interactive transcription components
+ * @param {object} config - 
+ * @param {string} config.videoUrl - 
+ * @param {string} config.destFolder - 
+ * @param {string} config.tmpWorkFolder - 
+ * @param {object} config.keys - 
+ * @param {string} config.keys.username - 
+ * @param {string} config.keys.pasword - 
+ * @param {string} config.languageModel - 
+ * @param {string} config.sttEngine - 
+ * @returns {callback} callback - returns object containing transcription and some other attributes, see example output
+ */
 var generate = function(config) {
-  //TODO: adda tmp word folder, and dest folder in var?
-  var transcribe = require("./transcriber/index.js");
-  var convert_video = require("./video_to_html5_webm/index.js");
-  var MetadataReader = require("./video_metadata_reader/index.js");
-  // console.log(process.cwd())
 
-  //NOTE_if running index_example, need to change the path of bin
+  //TODO: this doesn't seem the right way to do it, but changing it breaks the code 
   var ffmpegPath =  process.cwd() + "/interactive_transcription_generator/bin/ffmpeg";
-  // var ffmpegPath =  "./interactive_transcription_generator/bin/ffmpeg";
-  //TODO: move to local bin
   var ffprobePath = process.cwd() + "/interactive_transcription_generator/bin/ffprobe";
 
-  // var ffprobePath = "./interactive_transcription_generator/bin/ffprobe";
-
   var videoFile = config.videoUrl;
-  //TODO: do .tmp/audio  folder for audio files in root of sails
-  // var audioFileName = "./"+path.parse(videoFile).base+".wav";
+  //get video file name without the file path
   var videoFileName = path.parse(videoFile).base;
+  //replace spaces with underscore 
+  //TODO: should also sanitse other input that breaks code eg if there is a # in the name of the file. Edge case but can happen as some camera use it in default name of files.eg Sony RX100MKIII
   videoFileName = videoFileName.replace(/\s+/g,"_");
-  // var currentDir = process.cwd().split(path.sep)[process.cwd().split(path.sep).length -1];
 
   //Make audio and webm file unique. Eg so that if upload same video twice it gets different audio and video preview.
-  //by using `timeNowFileName()`  in `frontEnd/date_now/index.js`
-  // var audioFileName     = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
-  // var oggOutputNamePath = process.cwd() + config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
-
-  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".wav";
+  //Date.now() returns current time in milliseconds and therefore can be assumed to be unique
+  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".ogg";
   var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
 
-  // TODO: use system application data folder
+  // using file system application data folder as set in index.html
   var appRootFolderForMedia = config.tmpWorkFolder;
-  // ""+ process.cwd()+"/.tmp/"+path.parse(videoFile).base+".ogg"
-  // var audioFileAbsolutePath = path.resolve(audioFileName)
   var audioFileAbsolutePath = audioFileName;
-
-  // TODO: use system temp folder
-  // var tmpFolderCwd = process.cwd() + "/tmp_media";
-  // var tmpFolder = path.resolve(tmpFolderCwd);
+  // using user file system temp folder as set in index.html
   var tmpFolder = config.tmpWorkFolder;
 
-
-
-  // var newTranscription= {
-  //  title: config.title,
-  //  description: config.description,
-  //  videoUrl: config.videoUrl,
-  //  // status: false,
-  //  // text:
-  //  //videoOgg:
-  //  //metadata:
-  // }
-
-
-  //  // cb to save // return transcription to save 
-
-  // /////////////////////////////////////////
-  // console.log(config.keys)
-  //spawn new process 
-
-  //TODO: add language / model var, argument
   transcribe({
     videoFile: config.videoUrl,
     // keys: global.keys,
@@ -113,87 +161,57 @@ var generate = function(config) {
     sttEngine: config.sttEngine,
 
     callback: function(respTranscriptJson){
-      console.log("###############-ITG Done transcribing"+videoFile);
-      console.log("config.videoUrl "+ config.videoUrl);
-      // console.log(JSON.stringify(respTranscriptJson));
+      console.info("---> Done transcribing"+videoFile);
+      console.info("config.videoUrl "+ config.videoUrl);
+      // console.info(JSON.stringify(respTranscriptJson, null, 4));
 
       var created = {};
-      var paragraphs = [{"id":0,  "speaker": "Unamed Speaker ","paragraph":{}}];
+      var paragraphs = [{"id":0,  "speaker": "Unnamed Speaker","paragraph":{}}];
       //update paragraphs of transcription
       paragraphs[0].paragraph = respTranscriptJson;
-
       created.status = true;
       created.text = paragraphs;
-
       var tmpAudioDirPath = path.parse(audioFileAbsolutePath).dir;
       var tmpAudioDir = appRootFolderForMedia;
       var tmpAudioName = path.parse(audioFileAbsolutePath).base;
-      //".." because root is index which is inside `frontEnd` and 
       created.audioFile =  audioFileName;
-      // created.audioFile =  ".."+config.destFolder+"/"+tmpAudioName;
-      // console.log("created.audioFile")
-      // console.log(created.audioFile)
-
       created.processedAudio= true;
       created.id = config.id;
       created.videoFile = videoFile;
 
-      console.log("###############-ITG updates transcription"+videoFile);
-
       if(config.cbTranscription){
-        console.info("inside interactive_transcription_generator index created.videoFile: "+ created.videoFile);
-        // fs.writeFileSync("/"+created.videoFile+".json",JSON.stringify(created, null,"\t"));
-
         config.cbTranscription(created);
       }
-      //Callback to save
 
-    } //callback transcriber
-  }); //transcriber
+    } 
+  }); 
 
-  /////////////////////////////////////////
-
-  //spawn new process
+  
   MetadataReader.read({
     file: videoFile,
     ffprobePath: ffprobePath,
     callback: function(resp){
-      console.log("###############-ITG metadata "+videoFile);
-      // console.log(JSON.stringify(resp));
-      //add metadata to transcription
-      // created.metadata = resp;
-
-      //CALLBACL HERE 
+      console.info("---> read metadata "+videoFile);
 
       if(config.cbMetadata){
         config.cbMetadata(resp);
       }
-      //callback to save
+    }
+  });
 
-    }//end callback
-  });//end read metadata
-
-
-  /////////////////////////////////////////
-
-  ////spawn new process 
   convert_video({
     src: videoFile,
     outputName: oggOutputNamePath,
     ffmpegBin: ffmpegPath,
     callback: function(outputName){
-      console.log("#########-ITG Saving webm video file "+JSON.stringify(outputName));
+      console.info("--> converted webm video file "+JSON.stringify(outputName, null, 4));
+
       var tmpVideoDirPath = path.parse(outputName).dir;
-
       var created = {};
-
       var tmpVideoDir = appRootFolderForMedia;
       var tmpFileName = path.parse(outputName).base;
-
-      // created.videoOgg =  tmpVideoDir+ "/"+tmpFileName;
       created.videoOgg = oggOutputNamePath;
       created.processedVideo= true;
-      //CALLBACK HERE 
 
       if(config.cbVideo){
         config.cbVideo(created);
@@ -201,15 +219,9 @@ var generate = function(config) {
     }
   });
 };
-//InteractiveTranscriptionGenerator({videoUrl: "",title: "",description: "", tmpWorkFolder: "",destFolder:"" })
 
 module.exports = generate;
 
-// example use
-// var iTg = new InteractiveTranscriptionGenerator();
-// iTg.generate({
-//  /// config with callbacks
-// })
 </code></pre>
         </article>
     </section>
@@ -220,13 +232,13 @@ module.exports = generate;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_wav.html">convert_to_wav</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator.html">interactive_transcriptionn_generator</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Wed Oct 19 2016 12:31:30 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Oct 20 2016 11:46:38 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -4,8 +4,8 @@
 * originally from [srtParserComposer](https://github.com/pietrop/srtParserComposer) and  [on npm](https://www.npmjs.com/package/srt_parser_composer)
 * Expecting srtJsonContent to be like so
 
-@example
-[
+@example <caption>Example USage</catpion>
+var srtJsonContent = [
   {
     "id": "1",
     "startTime": "00:00:00,160",
@@ -29,10 +29,14 @@
     "startTime": "00:00:14,290",
     "endTime": "00:00:16,869",
     "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
-  },
+  }
+]
 
-*
-*  @example <caption> it returns a string like so</caption> 
+createSrtContent(srtJsonContent, function(resp){
+  //do something with the srt file content returned as a string 
+})
+
+*  @example <caption> it returns a string content of the srt file like so</caption> 
 1
 00:00:00,160 --> 00:00:04,890
 There’s this door on the 10th floor I just
@@ -62,6 +66,8 @@ All the time. Every day. Constantly.
  * @param {cb} callback
  * @todo add error handling and error.
  */
+"use strict";
+
 function createSrtContent(srtJsonContent, cb){
   var lines = "";
   for(var i=0; i< srtJsonContent.length; i++){

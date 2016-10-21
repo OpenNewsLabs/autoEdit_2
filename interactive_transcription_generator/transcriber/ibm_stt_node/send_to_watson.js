@@ -22,8 +22,10 @@
 * @tutorial IBM_watson_stt_specs
 */
 
-var watson = require('watson-developer-cloud');
+"use strict";
+
 var fs = require("fs");
+var watson = require('watson-developer-cloud');
 
 //  Initialise var so that scope allows to set api keys
 //TODO: not sure if this i needed

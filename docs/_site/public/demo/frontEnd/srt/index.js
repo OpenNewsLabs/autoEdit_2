@@ -1,12 +1,11 @@
-/*
-* 
+/**
+* @module srt
+* @description provides a function to convert srt line object json to srt file content as string
+* originally from [srtParserComposer](https://github.com/pietrop/srtParserComposer) and  [on npm](https://www.npmjs.com/package/srt_parser_composer)
+* Expecting srtJsonContent to be like so
 
-from https://github.com/pietrop/srtParserComposer
-https://www.npmjs.com/package/srt_parser_composer 
-
-Expecting srtJsonContent to be like so
-
-[
+@example <caption>Example USage</catpion>
+var srtJsonContent = [
   {
     "id": "1",
     "startTime": "00:00:00,160",
@@ -30,11 +29,14 @@ Expecting srtJsonContent to be like so
     "startTime": "00:00:14,290",
     "endTime": "00:00:16,869",
     "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
-  },
+  }
+]
 
+createSrtContent(srtJsonContent, function(resp){
+  //do something with the srt file content returned as a string 
+})
 
-returns string 
-
+*  @example <caption> it returns a string content of the srt file like so</caption> 
 1
 00:00:00,160 --> 00:00:04,890
 There’s this door on the 10th floor I just
@@ -55,12 +57,15 @@ How often? “like 30% of the time.”
 Have you seen people misuse it?
 All the time. Every day. Constantly.
 
-
+* @author Pietro Passarelli 
 */
 
-
-
-
+/**
+ * Srt composer from json of lines objets
+ * @param {json} srtContent
+ * @param {cb} callback
+ * @todo add error handling and error.
+ */
 function createSrtContent(srtJsonContent, cb){
   var lines = "";
   for(var i=0; i< srtJsonContent.length; i++){
@@ -69,6 +74,6 @@ function createSrtContent(srtJsonContent, cb){
     lines+=srtLineO.startTime+" --> "+srtLineO.endTime+"\n";
     lines+=srtLineO.text+"\n";
   }
-
+  //TODO figure out if callback here is redundant and could just return
   if(cb){cb(lines)}else{return lines};
 }

@@ -17,9 +17,11 @@ send_to_gentle({audio: demo_audio, text: demo_text},function(watsonSttJson){
   console.log(JSON.stringify(watsonSttJson, null, '\t'))
 })
 */
-var request = require('request');
-var fs = require('fs');
 
+"use strict";
+
+var fs = require('fs');
+var request = require('request');
 
 /**
 * @function send_to_gentle

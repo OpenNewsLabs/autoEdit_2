@@ -7,6 +7,9 @@
  * @requires fs
  * @tutorial IBM_watson_stt_specs
  */
+
+"use strict";
+
 var fs = require('fs');
 
 /** 

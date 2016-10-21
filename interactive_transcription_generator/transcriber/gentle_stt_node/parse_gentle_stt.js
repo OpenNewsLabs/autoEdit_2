@@ -16,6 +16,8 @@ console.log(lines);
 * @param {object} gentleJson - gentle Json specs 
 * @returns {object} autoEdit2 `transcription.lines` json specs
 */
+"use strict";
+
 function parse(gentleJson){
 //autoEdit2 transcription json assumes that there are multiple lines. But  Gentle doesn't group words into lines. so using this line array with one line object to add all words to it as one one line. 
 var lines = [
@@ -37,7 +39,7 @@ var lines = [
 		lines[0].line.push(word);
 	}
 
-	return lines
+	return lines;
 }
 
 module.exports = parse;
