@@ -10,7 +10,9 @@
 * @todo Write documentation.
 * @todo add error handling and error callbacks
 */
-"use strict";
+
+//TODO: not working if use strict uncommented
+// "use strict";
 
 var fs = require("fs");
 var transcription_generate = require("../interactive_transcription_generator/index.js");
