@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: interactive_transcription_generator/transcriber/ibm_stt_node/write_out.js</title>
+    <title>JSDoc: Source: frontEnd/js/views/transcription_form.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: interactive_transcription_generator/transcriber/ibm_stt_node/write_out.js</h1>
+    <h1 class="page-title">Source: frontEnd/js/views/transcription_form.js</h1>
 
     
 
@@ -27,47 +27,67 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * @module writeOut
- * @description reorganise IBM Watson STT Json in the right timecode order
- * @author Pietro Passarelli
- * @description sorting concat json, deleting tmp audio files, and returning
- * takes in data array of ibm watson json stt, callback for final json to output
- * @requires fs
- * @tutorial IBM_watson_stt_specs
- */
-
-"use strict";
-
-var fs = require('fs');
-
-/** 
-* @function writeOut
-* @description reorganise IBM Watson STT Json in the right timecode order
-* @param {object} data - IBM STT transcription Json specs 
+* Backbone view for transcription form for creating a new transcription
+* @class app.TranscriptionFormView
+* @constructor
+* @extends Backbone.View
 */
-function writeOut(data) {
-  //results list 
-  var out = [];
-  //order by timecode number in seconds 
-  data = data.sort(function(a, b) {
-    return a.f.offset - b.f.offset;
-  });
-  //concat json transcription for individual audio clips into one json
-  data.forEach(function(d) {
-    out = out.concat(d.data.sentences);
-  });
+var app = app || {};
 
-  //removing temp audio files
-  if (data.length > 1) {
-    data.forEach(function(d) {
-      fs.unlink(d.f.name);
+app.TranscriptionFormView = Backbone.View.extend({
+  template: _.template($('#transcriptionFormTemplate').html()), 
+  events :{
+  	'click #submitBtn': 'save',
+    'click #gentleSetupLink': "gentleSetupLink"
+  },
+
+  save: function(e){
+  	e.preventDefault();
+
+    var sttEngine; 
+
+    //reading values from form 
+    var newTitle        = this.$('input[name=title]').val();
+    var newDescription  = this.$('textarea[name=description]').val();;
+    var newFilePath     = this.$('input[name=file]').val();
+    var newLanguage     = $('#languageModel').find(":selected")[0].value;
+
+    if($('#IBMoption')[0].checked){
+      sttEngine         = "ibm";
+    }else if($('#genelteOption')[0].checked){
+       sttEngine        = "gentle";
+    };
+    
+    var newSTTLanguage  = $('#IBMoption')[0].checked;
+
+  	this.model.save({title: newTitle, description: newDescription,videoUrl:newFilePath, languageModel: newLanguage, sttEngine: sttEngine},{
+      success: function(mode, response, option){      
+           Backbone.history.navigate("transcriptions", {trigger:true}); 
+      },
+      error: function(model, xhr,options){
+        var errors = JSON.parse(xhr.responseText).errors;
+        alert("ops, something when wrong with saving the transcription:" + errors)
+      }
     });
-  }
-  //return resuls list, output json of transcription IBM Specs
-  return out;
-}
+  },
 
-module.exports = writeOut;
+  gentleSetupLink: function(){
+    var url = "https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#gentle-stt-open-source-free-and-offline";
+    //in nwjs mode 
+    if( window.frontEndEnviromentNWJS ){
+      require('nw.gui').Shell.openExternal(url);
+    //in browser mode, eg demo 
+    }else{
+      var strWindowFeatures = "location=yes,height=570,width=520,scrollbars=yes,status=yes";
+      var win = window.open(url, "_blank", strWindowFeatures);
+    }
+  },
+
+  render: function(){
+    this.$el.html(this.template(this.model.attributes));
+    return this;
+  }
+});
 </code></pre>
         </article>
     </section>

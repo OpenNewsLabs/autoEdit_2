@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: interactive_transcription_generator/transcriber/ibm_stt_node/write_out.js</title>
+    <title>JSDoc: Class: TranscriptionsListView</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,60 +17,145 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: interactive_transcription_generator/transcriber/ibm_stt_node/write_out.js</h1>
+    <h1 class="page-title">Class: TranscriptionsListView</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module writeOut
- * @description reorganise IBM Watson STT Json in the right timecode order
- * @author Pietro Passarelli
- * @description sorting concat json, deleting tmp audio files, and returning
- * takes in data array of ibm watson json stt, callback for final json to output
- * @requires fs
- * @tutorial IBM_watson_stt_specs
- */
+        <h2>
+            <span class="ancestors"><a href="global.html#app">app</a>.</span>TranscriptionsListView</h2>
+        
+            <div class="class-description"><p>app.TranscriptionsListView</p></div>
+        
+    
+</header>
 
-"use strict";
+<article>
+    <div class="container-overview">
+    
+        
 
-var fs = require('fs');
+    
+    <h2>Constructor</h2>
+    
 
-/** 
-* @function writeOut
-* @description reorganise IBM Watson STT Json in the right timecode order
-* @param {object} data - IBM STT transcription Json specs 
-*/
-function writeOut(data) {
-  //results list 
-  var out = [];
-  //order by timecode number in seconds 
-  data = data.sort(function(a, b) {
-    return a.f.offset - b.f.offset;
-  });
-  //concat json transcription for individual audio clips into one json
-  data.forEach(function(d) {
-    out = out.concat(d.data.sentences);
-  });
+    <h4 class="name" id="TranscriptionsListView"><span class="type-signature"></span>new TranscriptionsListView<span class="signature">()</span><span class="type-signature"></span></h4>
 
-  //removing temp audio files
-  if (data.length > 1) {
-    data.forEach(function(d) {
-      fs.unlink(d.f.name);
-    });
-  }
-  //return resuls list, output json of transcription IBM Specs
-  return out;
-}
+    
 
-module.exports = writeOut;
-</code></pre>
-        </article>
-    </section>
+
+
+<div class="description">
+    <p>Backbone view for transcriptions list</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="frontEnd_js_views_transcription_index.js.html">frontEnd/js/views/transcription_index.js</a>, <a href="frontEnd_js_views_transcription_index.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li>Backbone.View</li>
+    </ul>
+
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

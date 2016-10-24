@@ -95,8 +95,8 @@
                 </a>
               
                 
-                <a class="source" href="convert_to_wav.html">
-                  convert_to_wav.js
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
                 </a>
               
                 
@@ -145,12 +145,14 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>app</p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> app = app || {};
-_.extend(app, Backbone.Events);</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* Transcriptions application router 
+*/</span>
+<span class="hljs-meta">"use strict"</span>;
+<span class="hljs-keyword">var</span> app = app || {};</pre></div></div>
             
         </li>
         
@@ -160,6 +162,21 @@ _.extend(app, Backbone.Events);</pre></div></div>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO: not sure if backbone events still needed?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>_.extend(app, Backbone.Events);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
               <p>router</p>
 
@@ -179,63 +196,18 @@ _.extend(app, Backbone.Events);</pre></div></div>
         </li>
         
         
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>TODO: figure out what routes initialise is for</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"INITIALIZED ROUTER"</span>)
-    <span class="hljs-keyword">this</span>.transcriptionsList = app.TranscriptionsList;
-    <span class="hljs-keyword">this</span>.transcriptionsList.fetch();
-  },
-
-  <span class="hljs-attr">index</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-      $(<span class="hljs-string">'#main'</span>).html(<span class="hljs-string">"&lt;div class='container-fluid'&gt;&lt;h1&gt;Welcome! - &lt;/h1&gt;&lt;p&gt;Go to &lt;code&gt;new&lt;/code&gt; to transcribe a new media&lt;/p&gt;&lt;p&gt;&lt;code&gt;Transcriptions&lt;/code&gt; to view transcriptions in the system&lt;/p&gt;&lt;/div&gt;"</span>);
-  },
-
-  <span class="hljs-attr">transcriptionsList</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"transcriptions list"</span>)
-
-    <span class="hljs-keyword">this</span>.transcriptionsListView = <span class="hljs-keyword">new</span> app.TranscriptionsListView(
-      {<span class="hljs-attr">collection</span>: <span class="hljs-keyword">this</span>.transcriptionsList});
-
-    <span class="hljs-keyword">var</span> transcriptionsListView = <span class="hljs-keyword">this</span>.transcriptionsListView;
-
-    <span class="hljs-keyword">this</span>.transcriptionsList.fetch({<span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-      $(<span class="hljs-string">'#main'</span>).html(transcriptionsListView.render().el);
-    }});
-  },
-
-  <span class="hljs-attr">newTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"new transcription"</span>)
-    <span class="hljs-keyword">var</span>  newTranscription = <span class="hljs-keyword">new</span> app.Transcription({<span class="hljs-attr">title</span>: <span class="hljs-string">""</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">""</span>});<span class="hljs-comment">//{title: "Video Interview "+getTimeNow(), description: getTimeNow()}</span>
-
-    <span class="hljs-keyword">var</span> newTranscriptionFormView = <span class="hljs-keyword">new</span> app.TranscriptionFormView({<span class="hljs-attr">model</span>: newTranscription});</pre></div></div>
-            
-        </li>
-        
-        
         <li id="section-4">
             <div class="annotation">
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>var transcriptionFormView = new TranscriptionFormView();</p>
+              <p>TODO: figure out what routes initialise is for</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    $(<span class="hljs-string">"#main"</span>).html(newTranscriptionFormView.render().el);
-  },
-
-
-  <span class="hljs-attr">showTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cid</span>) </span>{
-    <span class="hljs-built_in">console</span>.info(cid)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: INITIALIZED ROUTER"</span>);
+    <span class="hljs-keyword">this</span>.transcriptionsList = app.TranscriptionsList;</pre></div></div>
             
         </li>
         
@@ -246,20 +218,14 @@ _.extend(app, Backbone.Events);</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>TODO: is this the right way to do this???</p>
+              <p>if running as demo, front end only the fetch breaks the app as there is no backend. so this is workaround</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"wtf"</span>)
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>)
-    <span class="hljs-keyword">var</span> tmpTranscription = app.TranscriptionsList.get({<span class="hljs-string">"cid"</span>:cid})
-    <span class="hljs-built_in">console</span>.log(tmpTranscription)
-
-    <span class="hljs-keyword">var</span> tmpTranscriptionView = <span class="hljs-keyword">new</span> app.TranscriptionView({<span class="hljs-attr">model</span>: tmpTranscription});
-    $(<span class="hljs-string">"#main"</span>).html(tmpTranscriptionView.render().$el)
-  },
-
-  <span class="hljs-attr">editTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS){
+      <span class="hljs-keyword">this</span>.transcriptionsList.fetch();
+    }
+  },</pre></div></div>
             
         </li>
         
@@ -270,11 +236,17 @@ _.extend(app, Backbone.Events);</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>TODO: is this the right way to do this???</p>
+              <p>TODO: router not going to default page</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> tmpEditTranscription = <span class="hljs-keyword">this</span>.transcriptionsList.get({<span class="hljs-string">"cid"</span>:id})</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  index: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    $(<span class="hljs-string">'#main'</span>).html(<span class="hljs-string">"&lt;div class='container-fluid'&gt;&lt;h1&gt;Welcome! - &lt;/h1&gt;&lt;p&gt;Go to &lt;code&gt;new&lt;/code&gt; to transcribe a new media&lt;/p&gt;&lt;p&gt;&lt;code&gt;Transcriptions&lt;/code&gt; to view transcriptions in the system&lt;/p&gt;&lt;/div&gt;"</span>);
+  },
+
+  <span class="hljs-attr">transcriptionsList</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: Transcriptions list"</span>);
+    <span class="hljs-keyword">var</span> transcriptionsListView  = <span class="hljs-keyword">new</span> app.TranscriptionsListView({<span class="hljs-attr">collection</span>: <span class="hljs-keyword">this</span>.transcriptionsList});</pre></div></div>
             
         </li>
         
@@ -285,12 +257,21 @@ _.extend(app, Backbone.Events);</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-7">&#182;</a>
               </div>
-              <p>var tmpTranscriptionView = new app.TranscriptionView({model: tmpTranscription});
-$(“#main”).html(tmpTranscriptionView.render().$el)</p>
+              <p>if running as demo, front end only the fetch breaks the app as there is no backend. so this is workaround</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> editTranscriptionFormView = <span class="hljs-keyword">new</span> app.TranscriptionFormView({<span class="hljs-attr">model</span>: tmpEditTranscription});</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS){
+      <span class="hljs-keyword">this</span>.transcriptionsList.fetch({<span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+         $(<span class="hljs-string">'#main'</span>).html(transcriptionsListView.render().el);
+      }});
+    }<span class="hljs-keyword">else</span>{
+       $(<span class="hljs-string">'#main'</span>).html(transcriptionsListView.render().el);
+    }
+  },
+
+  <span class="hljs-attr">newTranscription</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: new transcription"</span>);</pre></div></div>
             
         </li>
         
@@ -301,17 +282,12 @@ $(“#main”).html(tmpTranscriptionView.render().$el)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>var transcriptionFormView = new TranscriptionFormView();</p>
+              <p>creating a transcription object, here could add default values such as {title: “Video Interview “+getTimeNow(), description: getTimeNow()}</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    $(<span class="hljs-string">"#main"</span>).html(editTranscriptionFormView.render().el);
-  },
-
-   <span class="hljs-attr">notFound</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    alert(<span class="hljs-string">"Not found"</span>)
-  }
-})</pre></div></div>
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> newTranscription          = <span class="hljs-keyword">new</span> app.Transcription({<span class="hljs-attr">title</span>: <span class="hljs-string">""</span>, <span class="hljs-attr">description</span>: <span class="hljs-string">""</span>});
+    <span class="hljs-keyword">var</span> newTranscriptionFormView  = <span class="hljs-keyword">new</span> app.TranscriptionFormView({<span class="hljs-attr">model</span>: newTranscription});</pre></div></div>
             
         </li>
         
@@ -322,14 +298,90 @@ $(“#main”).html(tmpTranscriptionView.render().$el)</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
+              <p>rendering in view </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $(<span class="hljs-string">"#main"</span>).html(newTranscriptionFormView.render().el);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>TODO: is this the right way to do this???</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  showTranscription: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">cid</span>) </span>{
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: showTranscription: "</span>+cid);
+    <span class="hljs-keyword">var</span> tmpTranscription = app.TranscriptionsList.get({<span class="hljs-string">"cid"</span>:cid});
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: showTranscription - title: "</span>+tmpTranscription.attributes.title);
+    <span class="hljs-keyword">var</span> tmpTranscriptionView = <span class="hljs-keyword">new</span> app.TranscriptionView({<span class="hljs-attr">model</span>: tmpTranscription});
+    $(<span class="hljs-string">"#main"</span>).html(tmpTranscriptionView.render().$el);
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Edit function is not currently implemented, placeholder code.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  editTranscription: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">id</span>)</span>{
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Router: editTranscription: "</span>+cid);
+    <span class="hljs-keyword">var</span> tmpEditTranscription = <span class="hljs-keyword">this</span>.transcriptionsList.get({<span class="hljs-string">"cid"</span>:id});
+    <span class="hljs-keyword">var</span> editTranscriptionFormView = <span class="hljs-keyword">new</span> app.TranscriptionFormView({<span class="hljs-attr">model</span>: tmpEditTranscription});
+    $(<span class="hljs-string">"#main"</span>).html(editTranscriptionFormView.render().el);
+  },
+   <span class="hljs-attr">notFound</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-string">"Not found"</span>)
+    alert(<span class="hljs-string">"Not found"</span>)
+  }
+})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
               <p>This starts the application </p>
 
             </div>
             
             <div class="content"><div class='highlight'><pre>$(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
   Backbone.history.start();
-  app.transcriptionRouter = <span class="hljs-keyword">new</span> TranscriptionRouter();
-  <span class="hljs-built_in">window</span>.location = <span class="hljs-string">"index.html#transcriptions"</span>;
+  app.transcriptionRouter = <span class="hljs-keyword">new</span> TranscriptionRouter();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>TODO: not sure if this is the right thing to do </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-built_in">window</span>.location = <span class="hljs-string">"index.html#transcriptions"</span>;
 })</pre></div></div>
             
         </li>

@@ -79,7 +79,7 @@ transcription_generate({
     text": [
     {
       "id": 0,
-      "speaker": "Unnamed Speaker ",
+      "speaker": "Unnamed Speaker",
       "paragraph": [
         {
           "line": [
@@ -88,7 +88,7 @@ transcription_generate({
               "text": "there",
               "startTime": 0.14,
               "endTime": 0.38
-            },]
+            },
             ...
   }
 
@@ -103,118 +103,103 @@ transcription_generate({
 * @requires video_to_html5_webm
 * @requires video_metadata_reader
 */
+"use strict";
 
-var fs = require("fs");
 var path = require("path");
 var transcribe = require("./transcriber/index.js");
 var convert_video = require("./video_to_html5_webm/index.js");
 var MetadataReader = require("./video_metadata_reader/index.js");
  
-
- /**
- * @function generate
- * @description  generates interactive transcription components
- * @param {object} config - 
- * @param {string} config.videoUrl - 
- * @param {string} config.destFolder - 
- * @param {string} config.tmpWorkFolder - 
- * @param {object} config.keys - 
- * @param {string} config.keys.username - 
- * @param {string} config.keys.pasword - 
- * @param {string} config.languageModel - 
- * @param {string} config.sttEngine - 
- * @returns {callback} callback - returns object containing transcription and some other attributes, see example output
- */
+/**
+* @function generate
+* @description  generates interactive transcription components
+* @param {object} config - 
+* @param {string} config.videoUrl - 
+* @param {string} config.destFolder - 
+* @param {string} config.tmpWorkFolder - 
+* @param {object} config.keys - 
+* @param {string} config.keys.username - 
+* @param {string} config.keys.pasword - 
+* @param {string} config.languageModel - 
+* @param {string} config.sttEngine - 
+* @returns {callback} callback - returns object containing transcription and some other attributes, see example output
+*/
 var generate = function(config) {
-
   //TODO: this doesn't seem the right way to do it, but changing it breaks the code 
-  var ffmpegPath =  process.cwd() + "/interactive_transcription_generator/bin/ffmpeg";
-  var ffprobePath = process.cwd() + "/interactive_transcription_generator/bin/ffprobe";
-
-  var videoFile = config.videoUrl;
+  var ffmpegPath        = process.cwd() + "/interactive_transcription_generator/bin/ffmpeg";
+  var ffprobePath       = process.cwd() + "/interactive_transcription_generator/bin/ffprobe";
+  var videoFile         = config.videoUrl;
   //get video file name without the file path
-  var videoFileName = path.parse(videoFile).base;
+  var videoFileName     = path.parse(videoFile).base;
   //replace spaces with underscore 
   //TODO: should also sanitse other input that breaks code eg if there is a # in the name of the file. Edge case but can happen as some camera use it in default name of files.eg Sony RX100MKIII
-  videoFileName = videoFileName.replace(/\s+/g,"_");
-
+  videoFileName         = videoFileName.replace(/\s+/g,"_");
   //Make audio and webm file unique. Eg so that if upload same video twice it gets different audio and video preview.
   //Date.now() returns current time in milliseconds and therefore can be assumed to be unique
-  var audioFileName     = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".ogg";
-  var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+Date.now()+ ".webm";
-
-  // using file system application data folder as set in index.html
-  var appRootFolderForMedia = config.tmpWorkFolder;
-  var audioFileAbsolutePath = audioFileName;
-  // using user file system temp folder as set in index.html
-  var tmpFolder = config.tmpWorkFolder;
-
+  //using timestamp var so that audio and video tile have same time stamp if need to find matching once for same transcription.
+  var timeStamp         = Date.now();
+  var audioFileName     = config.destFolder + "/" + videoFileName +"."+timeStamp+ ".ogg";
+  var oggOutputNamePath = config.destFolder + "/" + videoFileName +"."+timeStamp+ ".webm";
+ 
+  //transcribing file 
   transcribe({
     videoFile: config.videoUrl,
-    // keys: global.keys,
+    //Watson IBM API Keys
     keys: config.keys,
-    audioFileOutput: audioFileAbsolutePath,
+    audioFileOutput: audioFileName,
     ffmpegBin: ffmpegPath,
     ffprobePath: ffprobePath,
-    tmpPath: tmpFolder,
+    // using user file system temp folder as set in index.html
+    tmpPath: config.tmpWorkFolder,
     languageModel: config.languageModel,
     sttEngine: config.sttEngine,
 
     callback: function(respTranscriptJson){
-      console.info("---> Done transcribing"+videoFile);
-      console.info("config.videoUrl "+ config.videoUrl);
+      console.info("---> Done transcribing: "+videoFile);
+      console.info("config.videoUrl: "+ config.videoUrl);
       // console.info(JSON.stringify(respTranscriptJson, null, 4));
-
-      var created = {};
-      var paragraphs = [{"id":0,  "speaker": "Unnamed Speaker","paragraph":{}}];
-      //update paragraphs of transcription
-      paragraphs[0].paragraph = respTranscriptJson;
-      created.status = true;
-      created.text = paragraphs;
-      var tmpAudioDirPath = path.parse(audioFileAbsolutePath).dir;
-      var tmpAudioDir = appRootFolderForMedia;
-      var tmpAudioName = path.parse(audioFileAbsolutePath).base;
-      created.audioFile =  audioFileName;
-      created.processedAudio= true;
-      created.id = config.id;
-      created.videoFile = videoFile;
-
+      //output object
+      var transcriptionText                 = {};
+          transcriptionText.text            = respTranscriptJson;
+          transcriptionText.status          = true;
+          transcriptionText.audioFile       =  audioFileName;
+          transcriptionText.processedAudio  = true;
+          transcriptionText.id              = config.id;
+          transcriptionText.videoFile       = videoFile;
+      //callback for transcription result
       if(config.cbTranscription){
-        config.cbTranscription(created);
+        config.cbTranscription(transcriptionText);
       }
-
     } 
   }); 
 
-  
+  //reading metadata 
   MetadataReader.read({
     file: videoFile,
     ffprobePath: ffprobePath,
-    callback: function(resp){
-      console.info("---> read metadata "+videoFile);
-
+    callback: function(respMetadata){
+      console.info("---> read metadata: "+videoFile);
+      //callback for metadata result
       if(config.cbMetadata){
-        config.cbMetadata(resp);
+        config.cbMetadata(respMetadata);
       }
     }
   });
 
+  //convert video html5 webm 
   convert_video({
     src: videoFile,
     outputName: oggOutputNamePath,
     ffmpegBin: ffmpegPath,
     callback: function(outputName){
-      console.info("--> converted webm video file "+JSON.stringify(outputName, null, 4));
-
-      var tmpVideoDirPath = path.parse(outputName).dir;
-      var created = {};
-      var tmpVideoDir = appRootFolderForMedia;
-      var tmpFileName = path.parse(outputName).base;
-      created.videoOgg = oggOutputNamePath;
-      created.processedVideo= true;
-
+      console.info("--> converted webm video file: "+JSON.stringify(outputName, null, 4));
+      //output object 
+      var output_video_details                 = {};
+          output_video_details.videoOgg        = outputName;
+          output_video_details.processedVideo  = true;
+      //callback for video result 
       if(config.cbVideo){
-        config.cbVideo(created);
+        config.cbVideo(output_video_details);
       }
     }
   });
@@ -232,13 +217,16 @@ module.exports = generate;
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#app">app</a></li><li><a href="app.TranscriptionListElement.html">TranscriptionListElement</a></li><li><a href="app.TranscriptionsListView.html">TranscriptionsListView</a></li><li><a href="app.TranscriptionView.html">TranscriptionView</a></li><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportAudio">exportAudio</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exporthtml5Video">exporthtml5Video</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
+Groups words from selection into array of contiguos words
+uuses modified version of this code to divide contiguos numbers 
+    https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript</a></li><li><a href="global.html#helperfunctiontoupdatediplayspeed">helper function to update diplay speed</a></li><li><a href="global.html#Keyboardshortcutsforplayback-">Keyboard shortcuts for playback -</a></li><li><a href="global.html#Keyboardshortcutsforplayback-fastforward">Keyboard shortcuts for playback - fastforward</a></li><li><a href="global.html#Keyboardshortcutsforplayback-play/pause">Keyboard shortcuts for playback - play/pause</a></li><li><a href="global.html#Keyboardshortcutsforplayback-rewind">Keyboard shortcuts for playback - rewind</a></li><li><a href="global.html#Keyboardshortcutsforvolume-decrease">Keyboard shortcuts for volume - decrease</a></li><li><a href="global.html#Keyboardshortcutsforvolume-increase">Keyboard shortcuts for volume - increase</a></li><li><a href="global.html#makeEditable">makeEditable</a></li><li><a href="global.html#makeHilightable">makeHilightable</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#makeSection">makeSection</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#playWord">playWord</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#selectingWords">selectingWords</a></li><li><a href="global.html#Shortcuts">Shortcuts</a></li><li><a href="global.html#template">template</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Thu Oct 20 2016 11:46:38 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 10:17:54 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -54,9 +54,6 @@ app.TranscriptionView = Backbone.View.extend({
     "click #editWords"      : "makeEditable",
     //hilight text in transcription mode
     "click #highlightWords": "makeHilightable",
-    //TODO: auto save in place, save button not in use. 
-    //TODO: remove save function
-    "click #save" : "save",
     //TODO: sequence preview not in use 
     //TODO: remove associated functions 
     "click #playPreviewChrono"  : "playPreviewChrono",
@@ -88,19 +85,6 @@ app.TranscriptionView = Backbone.View.extend({
   },
 
   /**
-  * @function save
-  * @todo: remove this funciton as not in use 
-  */
-  save: function(){
-  
-    this.model.save({wait: true},{ success: function(model, response, options){ 
-    }},{
-      error: function (model, xhr, options) {
-          console.log("error");
-    }})
-  },
-
-  /**
   * @function makeHilightable
   * @description function to disable words contet ediable to allow to select text of transcription
   */
@@ -117,29 +101,26 @@ app.TranscriptionView = Backbone.View.extend({
     if( $("#highlightWords").hasClass("btn-primary")){
       status = true;
     }else{
-      status = false
+      status = false;
     }
 
     if(status){
       //disable editing
-      $("#highlightWords").removeClass("active")
-      $("#highlightWords").removeClass("btn-primary")
-      $("#highlightWords").addClass("btn-default")
+      //TODO: check if you can remove more thne one class at once with JQuery comand?
+      $("#highlightWords").removeClass("active btn-primary");
+      $("#highlightWords").addClass("btn-default");
       //highlightWords
-      $("#editWords").removeClass("btn-default")
-      $("#editWords").addClass("btn-primary")
-      $("#editWords").addClass("active")
+      $("#editWords").removeClass("btn-default");
+      $("#editWords").addClass("active btn-primary");
       //enable content editable
       $('.words').attr('contenteditable','true');
     }else{
       //Editing active 
-      $("#editWords").removeClass("active")
-      $("#editWords").removeClass("btn-primary")
-      $("#editWords").addClass("btn-default")
+      $("#editWords").removeClass("active btn-primary");
+      $("#editWords").addClass("btn-default");
       //highlightWords
-      $("#highlightWords").removeClass("btn-default")
-      $("#highlightWords").addClass("btn-primary")
-      $("#highlightWords").addClass("active")
+      $("#highlightWords").removeClass("btn-default");
+      $("#highlightWords").addClass("active btn-primary");
       //disable editable on words 
       $('.words').attr('contenteditable','false');
       //add hilight notice 
@@ -152,44 +133,44 @@ app.TranscriptionView = Backbone.View.extend({
   * @description function to make words contet ediable to allow to edit the text of transcription
   */
   makeEditable: function(){
-    var modeNotice =  document.getElementById("hilightModeNoticeContainer")
+    var modeNotice =  document.getElementById("hilightModeNoticeContainer");
     //remove hilight mode notice 
     // add text editing notice 
-    var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> "
-      editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>"
-      editNotice +="<strong>You are in text edit mode.</strong>" 
-      editNotice +="<p>Click on a word to edit. Use <code>cmd</code> + <code>a</code> to select a word. Tab or click to move to the next word.</p>"
-      editNotice +="</div>"
+    var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> ";
+      editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+      editNotice +="<strong>You are in text edit mode.</strong>";
+      editNotice +="<p>Click on a word to edit. Use <code>cmd</code> + <code>a</code> to select a word. Tab or click to move to the next word.</p>";
+      editNotice +="</div>";
 
     var status = false;
     if( $("#editWords").hasClass("btn-primary")){
       status = true;
     }else{
-      status = false   
+      status = false;  
     }
 
     if(status){
     //Editing active 
-     $("#editWords").removeClass("active")
-     $("#editWords").removeClass("btn-primary")
-     $("#editWords").addClass("btn-default")
+     $("#editWords").removeClass("active");
+     $("#editWords").removeClass("btn-primary");
+     $("#editWords").addClass("btn-default");
      //highlightWords
-     $("#highlightWords").removeClass("btn-default")
-     $("#highlightWords").addClass("btn-primary")
-     $("#highlightWords").addClass("active")
+     $("#highlightWords").removeClass("btn-default");
+     $("#highlightWords").addClass("btn-primary");
+     $("#highlightWords").addClass("active");
      //disable editable on words 
      $('.words').attr('contenteditable','false');
       //remove edit notice 
       // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
     }else{
       //disable editing
-      $("#highlightWords").removeClass("active")
-      $("#highlightWords").removeClass("btn-primary")
-      $("#highlightWords").addClass("btn-default")
+      $("#highlightWords").removeClass("active");
+      $("#highlightWords").removeClass("btn-primary");
+      $("#highlightWords").addClass("btn-default");
       //editWords
-      $("#editWords").removeClass("btn-default")
-      $("#editWords").addClass("btn-primary")
-      $("#editWords").addClass("active")
+      $("#editWords").removeClass("btn-default");
+      $("#editWords").addClass("btn-primary");
+      $("#editWords").addClass("active");
       //enable content editable
       $('.words').attr('contenteditable','true');
 
@@ -204,13 +185,13 @@ app.TranscriptionView = Backbone.View.extend({
       //users have requested this feature to make it faster to, delete/replace word with correct one. they currently do cmd+a
       $(".words").on("click", function(event){
         //select all text in content edibale 
-        document.execCommand('selectAll',false,null)
-      })
+        document.execCommand('selectAll',false,null);
+      });
       //same as above but when using tab to move between words
       $('.words').on( 'keyup', function( e ) {
           if( e.which == 9 ) {
             //select all text in content edibale 
-            document.execCommand('selectAll',false,null)
+            document.execCommand('selectAll',false,null);
           }
       } );
 
@@ -227,12 +208,12 @@ app.TranscriptionView = Backbone.View.extend({
               _.each(lines.line, function(word){
                 if(word.id == tmpWordId){
                   word.text = tmpWordText;
-                    model.save({wait: false})
+                    model.save({wait: false});
                 }        
-              })
-            })
-          })
-        })
+              });
+            });
+          });
+        });
       });
     }
   },
@@ -241,8 +222,8 @@ app.TranscriptionView = Backbone.View.extend({
   * @function exportHelper
   */
   exportHelper(config){
-    if(config.fileContent == ""){
-      alert("File "+config.fileName+" seems to be empty")
+    if(config.fileContent === ""){
+      alert("File "+config.fileName+" seems to be empty");
     }
     var fileName    =  config.fileName; //this.title _ + append time of day to name
     var fileContent =  config.fileContent;
@@ -265,7 +246,7 @@ app.TranscriptionView = Backbone.View.extend({
       //make link downloadable and set file name for downloaded file
       $(urlId).attr("download", fileName);
       // someLink.href = window.URL.createObjectURL(formBlob);
-      $(urlId).click()
+      $(urlId).click();
      // document.getElementById('test').click();
      // alert("export EDL client side");
     } 
@@ -284,20 +265,20 @@ app.TranscriptionView = Backbone.View.extend({
   * @description EDL - Chronological
   */
   exportEdlChronological: function(e){
-    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode}
+    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode};
     edlSq.events = [];
     //ad line number to paper-cuts
     //NOTE: here you can decide to sort them chronologically(ie by startTime)
      //TODO: this could probably be moved in the model . eg return chrone order hiligths 
     for(var k = 0; k<  this.model.attributes.highlights.length; k++){
-      var event =  this.model.attributes.highlights[k]
+      var event =  this.model.attributes.highlights[k];
       event.id = k+1;
-      edlSq.events.push(event)
+      edlSq.events.push(event);
     }
     //end move in model
     var edl = new EDL(edlSq)
     var edlFileName = this.nameFileHelper(this.model.get("title")+"_chronological","edl"); 
-    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlChronological"})
+    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlChronological"});
   },
 
   /**
@@ -305,21 +286,21 @@ app.TranscriptionView = Backbone.View.extend({
   * @description EDL - election order
   */
   exportEdlSelectionOrder: function(e){
-    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode}
+    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode};
     edlSq.events = [];
     //TODO: this could probably be moved in the model . eg return selection order hiligths 
     var selections = this.model.get("highlights");
-    var   selectionsSorted =  _.sortBy(selections, function(o) { return o.paperCutOrder; })
+    var   selectionsSorted =  _.sortBy(selections, function(o) { return o.paperCutOrder; });
     for(var k = 0; k<  selectionsSorted.length; k++){
-      var event =  selectionsSorted[k]
+      var event =  selectionsSorted[k];
       event.id = k+1;
-      edlSq.events.push(event)
+      edlSq.events.push(event);
     }
     // end of move in the model 
-    var edl = new EDL(edlSq)
+    var edl = new EDL(edlSq);
     var edlFileName = this.nameFileHelper(this.model.get("title")+"_selection_order","edl"); 
     //if client side running inside NWJS then do this 
-    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlSelectionOrder"})
+    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlSelectionOrder"});
   },
 
   /**
@@ -362,7 +343,7 @@ app.TranscriptionView = Backbone.View.extend({
 
     var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
     var plainTextFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: plainTextFileName, fileContent: tmp, urlId: "#exportPlainText"})
+    this.exportHelper({fileName: plainTextFileName, fileContent: tmp, urlId: "#exportPlainText"});
   },
 
   /**
@@ -374,7 +355,7 @@ app.TranscriptionView = Backbone.View.extend({
     var tmp =  "Timecoded text demo"
     var plainTextTimecoded =  this.model.constructor.returnPlainTextTimecoded(this.model.attributes);
     var textFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: textFileName, fileContent: plainTextTimecoded, urlId: "#exportTimecodedTranscription"})
+    this.exportHelper({fileName: textFileName, fileContent: plainTextTimecoded, urlId: "#exportTimecodedTranscription"});
   },
 
   /**
@@ -386,7 +367,7 @@ app.TranscriptionView = Backbone.View.extend({
      var paperCuts = this.model.get("highlights");
      var tmp =makePlainText(paperCuts);
      var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-     this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTextEDL"})
+     this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTextEDL"});
 
         function makePlainText(paperCuts){
           var result ="";
@@ -404,10 +385,10 @@ app.TranscriptionView = Backbone.View.extend({
   */ 
   exportPlainTextEDLSelOrder: function(){
     var paperCuts = this.model.get("highlights");
-    var   selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; })
+    var   selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
     var selections =makePlainText(selectionsSorted);
     var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: selections, urlId: "#exportPlainTextEDLSelOrder"})
+    this.exportHelper({fileName: textFileName,fileContent: selections, urlId: "#exportPlainTextEDLSelOrder"});
 
       function makePlainText(paperCuts){
         var result ="";
@@ -439,7 +420,7 @@ app.TranscriptionView = Backbone.View.extend({
     var paperCuts = this.model.get("highlights");
     var tmp =makeTimecodedPlainText(paperCuts);
     var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"})
+    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"});
   },
 
 
@@ -461,10 +442,10 @@ app.TranscriptionView = Backbone.View.extend({
         }
 
     var paperCuts        = this.model.get("highlights");
-    var selectionsSorted = _.sortBy(paperCuts, function(o) { return o.paperCutOrder; })
+    var selectionsSorted = _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
     var tmp             = makeTimecodedPlainText(selectionsSorted);
     var textFileName    = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"})
+    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"});
   },
 
 
@@ -476,7 +457,7 @@ app.TranscriptionView = Backbone.View.extend({
     var transcription = this.model.attributes;
     var tmpTranscription = JSON.stringify(transcription,null,"\t");
     var jsonFileName = this.nameFileHelper(this.model.get("title"),"json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpTranscription, urlId: "#exportJsonTranscription"})
+    this.exportHelper({fileName: jsonFileName,fileContent: tmpTranscription, urlId: "#exportJsonTranscription"});
   },
 
   /**
@@ -487,7 +468,7 @@ app.TranscriptionView = Backbone.View.extend({
     var paperCuts = this.model.get("highlights");
     var tmpPaperCuts = JSON.stringify(paperCuts,null,"\t");
     var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDL"})
+    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDL"});
    },
 
   /**
@@ -496,10 +477,10 @@ app.TranscriptionView = Backbone.View.extend({
   */ 
   exportJsonEDLSelOrder: function(){
     var paperCuts = this.model.get("highlights");
-    var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; })
+    var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
     var tmpPaperCuts = JSON.stringify(selectionsSorted,null,"\t");
     var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDLSelOrder"})
+    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDLSelOrder"});
    },
 
   /**
@@ -510,19 +491,19 @@ app.TranscriptionView = Backbone.View.extend({
       if(this.model.attributes.processedVideo){
         var fs = require('fs');
         
-        var path = require("path")
-        var input = path.resolve(this.model.attributes.videoOgg)
+        var path = require("path");
+        var input = path.resolve(this.model.attributes.videoOgg);
 
         var output = process.env.HOME+"/Desktop/"+ 
-        path.parse(this.model.attributes.videoOgg).base
+        path.parse(this.model.attributes.videoOgg).base;
 
         fs.createReadStream(input).pipe(fs.createWriteStream(output));
-        alert("File saved on desktop")
+        alert("File saved on desktop");
        }else{
-          alert("Video is still being converted, try again later")
-       }∆
+          alert("Video is still being converted, try again later");
+       }
      }else{
-      alert("Feature not availeble in this context ")
+      alert("Feature not availeble in this context ");
     }
   },
 
@@ -534,19 +515,19 @@ app.TranscriptionView = Backbone.View.extend({
       if(this.model.attributes.processedAudio){
         var fs = require('fs');
         
-        var path = require("path")
-        var input = path.resolve(this.model.attributes.audioFile)
+        var path = require("path");
+        var input = path.resolve(this.model.attributes.audioFile);
 
         var output = process.env.HOME+"/Desktop/"+ 
-        path.parse(this.model.attributes.audioFile).base
+        path.parse(this.model.attributes.audioFile).base;
 
         fs.createReadStream(input).pipe(fs.createWriteStream(output));
-        alert("File saved on desktop")
+        alert("File saved on desktop");
       }else{
-          alert("Audio is still being converted, try again later")
+          alert("Audio is still being converted, try again later");
       }
     }else{
-      alert("Feature not availeble in this context ")
+      alert("Feature not availeble in this context ");
     }
   },
 
@@ -581,8 +562,8 @@ app.TranscriptionView = Backbone.View.extend({
     //last element
     var lastElIndex =elemCount - 1;
     //last element of selection
-    var lastElement = $(selectedRange).find('span')[lastElIndex]
-    var tmpCounter = this.model.get("counterForPaperCuts")
+    var lastElement = $(selectedRange).find('span')[lastElIndex];
+    var tmpCounter = this.model.get("counterForPaperCuts");
       
     for(var i = 0; i < elemCount; i++){
       var element = $(".words[data-start-time='"+selectedElements[i].dataset.startTime.toString()+"']");
@@ -591,22 +572,23 @@ app.TranscriptionView = Backbone.View.extend({
         element.removeClass("highlight");
         //remove addedCounter from element
         //decrease counter of addedCounter in transcription
-        var tmpCounter = this.model.get("counterForPaperCuts")
+        //TODO: check if var `tmpCounter` needs to be redifined. with var or can remove var.
+        var tmpCounter = this.model.get("counterForPaperCuts");
         // this.model.set({counterForPaperCuts: tmpCounter-1 })
         element.removeData( "counterForPaperCuts" );
       }else {
         element.addClass("highlight");
         //increment added counter in transcription
-        this.model.set({counterForPaperCuts: tmpCounter+1 })
+        this.model.set({counterForPaperCuts: tmpCounter+1 });
         element.data( "paper-cut-order", tmpCounter+1 );
       }
     }
 
    var m =  this.model;
       //overwright/set the highlights
-      this.model.set({highlights:  this.makePaperEdit($(".words").filter(".highlight"), m) })
+      this.model.set({highlights:  this.makePaperEdit($(".words").filter(".highlight"), m) });
       //save the model
-      this.model.save({wait: false})
+      this.model.save({wait: false});
   },
 
   /**
@@ -618,11 +600,11 @@ app.TranscriptionView = Backbone.View.extend({
     searchTextArray = searchedText.split(" ");
     //TODO: need to resest the search
     //make search as a
-    $(".words").removeClass("searched")
+    $(".words").removeClass("searched");
     // $( 'p:contains('+searchedText+')' ).css( "text-decoration", "underline" );
     if(searchTextArray.length > 0){
       for(var i = 0; i < searchTextArray.length; i++){
-        $('.words[data-text='+searchTextArray[i]+']').addClass("searched")
+        $('.words[data-text='+searchTextArray[i]+']').addClass("searched");
       }
     }
   },
@@ -641,11 +623,11 @@ app.TranscriptionView = Backbone.View.extend({
     vid.ontimeupdate = function() {
       $("span.words").filter(function() {
         if($(this).data("start-time") < $(videoIdElem)[0].currentTime){
-          $(this).removeClass( "text-muted" )
+          $(this).removeClass( "text-muted" );
         }else{
-          $(this).addClass("text-muted")
+          $(this).addClass("text-muted");
         }
-      })
+      });
     };
   },
 
@@ -654,7 +636,7 @@ app.TranscriptionView = Backbone.View.extend({
   */ 
   clearHighlights: function(){
     var r = confirm("You are about to clear all of the highlights selections from this transcription. Press Ok to continue or Cancel to abort");
-    if (r == true) {
+    if (r === true) {
       // txt = "You pressed OK!";
       $(".words").filter(".highlight").removeClass("highlight");
       // .removeData( "counterForPaperCuts" );
@@ -663,7 +645,7 @@ app.TranscriptionView = Backbone.View.extend({
       // this.model.save({wait: false});
     } else {
       // txt = "You pressed Cancel!";
-      alert("relax, nothing was cancelled")
+      alert("relax, nothing was cancelled");
     }
   },
 
@@ -681,7 +663,7 @@ app.TranscriptionView = Backbone.View.extend({
     function groupContiguosWordsInPapercuts(selectedWords){
       var result = [], temp = [], difference;
       for (var i = 0; i < selectedWords.length; i += 1) {
-        $($(".words")[1])
+        $($(".words")[1]);
         var wordId = $($(selectedWords[i]) ).data("word-id");   
         if (difference !== ( wordId- i)) {
           if (difference !== undefined) {
@@ -703,7 +685,7 @@ app.TranscriptionView = Backbone.View.extend({
     * by taking start of first word and end of last word.
     */
     function makeSection(arrayOfPapercuts){
-      var result=[]
+      var result=[];
       for(var i = 0; i< arrayOfPapercuts.length; i++){
         var firstWord = arrayOfPapercuts[i][0];
         var lastWord = arrayOfPapercuts[i][arrayOfPapercuts[i].length -1];
@@ -723,20 +705,17 @@ app.TranscriptionView = Backbone.View.extend({
             "endTime": $(arrayOfPapercuts[i][j]).data("end-time")
           };
           //TODO: add the word to the words array 
-          words.push(word)
+          words.push(word);
           selectionText+=wordText+" ";
         }
         model.attributes.counterForPaperCuts +=1;
         var paperCut = {
           id: i,
-          paperCutOrder: model.attributes.counterForPaperCuts ,
-     
-          
-          startTime: $(firstWord).data("start-time") ,
+          paperCutOrder: model.attributes.counterForPaperCuts,
+          startTime: $(firstWord).data("start-time"),
           endTime:  $(lastWord).data("end-time"),
           reelName: $(firstWord).data("reel-name"),
           clipName: $(firstWord).data("clip-name"),
-            
           speaker: $(firstWord).data("speaker"),
           // wordId: $(firstWord).data("word-id"),
           // lineId: $(firstWord).data("line-id"),
@@ -747,9 +726,9 @@ app.TranscriptionView = Backbone.View.extend({
           audioFile: $(firstWord).data("audioFile"),
           text: selectionText,
           words: words
-            //TODO: Add the word array of selection to the papercut
-        } 
-        result.push(paperCut)
+          //TODO: Add the word array of selection to the papercut
+        };
+        result.push(paperCut);
       }
       return result;
     }
@@ -786,8 +765,8 @@ app.TranscriptionView = Backbone.View.extend({
   * @function Shortcuts
   */
   showHideShortcuts: function(){
-    console.log("show shorcuts")
-    document.getElementById("shortcuts").click()
+    console.log("show shorcuts");
+    document.getElementById("shortcuts").click();
   },
 
   /**
@@ -808,7 +787,7 @@ app.TranscriptionView = Backbone.View.extend({
       videoElem.play();
     } 
     
-    this.updateSpeedDisplay(videoElem.playbackRate)
+    this.updateSpeedDisplay(videoElem.playbackRate);
   },
 
   /**
@@ -828,7 +807,7 @@ app.TranscriptionView = Backbone.View.extend({
       videoElem.play();
     } 
 
-    this.updateSpeedDisplay(videoElem.playbackRate)
+    this.updateSpeedDisplay(videoElem.playbackRate);
   },
 
   /**
@@ -852,8 +831,8 @@ app.TranscriptionView = Backbone.View.extend({
     var videoIdElem="#videoId_"+this.model.get("id");
     var videoElem = $(videoIdElem)[0];
    
-    if(videoElem.volume <=0){
-      videoElem.volume =0
+    if (videoElem.volume <= 0){
+      videoElem.volume = 0;
     }else{
       videoElem.volume -= 0.2;
     }
@@ -904,12 +883,11 @@ app.TranscriptionView = Backbone.View.extend({
   * @function render
   */
   render: function(){    
-    this.model.attributes._id;
     this.model.attributes.id = this.model.attributes._id;
     var sectionTemplate = this.template(this.model.attributes);
     this.$el.html(sectionTemplate);
     //modify compiled template to update hilights. 
-    var tmpHighlights =  this.model.get("highlights")
+    var tmpHighlights =  this.model.get("highlights");
       for(var i = 0; i < tmpHighlights.length; i++ ){
         var min =  tmpHighlights[i].startTime ;
         var max = tmpHighlights[i].endTime ;

@@ -95,8 +95,8 @@
                 </a>
               
                 
-                <a class="source" href="convert_to_wav.html">
-                  convert_to_wav.js
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
                 </a>
               
                 
@@ -148,8 +148,9 @@
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>
- <span class="hljs-keyword">var</span> app = app || {};</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">"use strict"</span>;
+
+<span class="hljs-keyword">var</span> app = app || {};</pre></div></div>
             
         </li>
         
@@ -166,7 +167,7 @@
             
             <div class="content"><div class='highlight'><pre>app.Transcription = Backbone.Model.extend({
   <span class="hljs-attr">idAttribute</span>: <span class="hljs-string">'_id'</span>,
-  <span class="hljs-attr">urlRoot</span>: config.serverUrl+<span class="hljs-string">"/transcription"</span>,
+  <span class="hljs-attr">urlRoot</span>: config.serverUrl + <span class="hljs-string">"/transcription"</span>,
   <span class="hljs-attr">defaults</span>: {</pre></div></div>
             
         </li>
@@ -208,8 +209,8 @@ sttEngine: “ibm”,</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    videoOgg:<span class="hljs-literal">undefined</span>,
-    <span class="hljs-attr">metadata</span>:<span class="hljs-literal">undefined</span>,
+            <div class="content"><div class='highlight'><pre>    videoOgg: <span class="hljs-literal">undefined</span>,
+    <span class="hljs-attr">metadata</span>: <span class="hljs-literal">undefined</span>,
     <span class="hljs-attr">text</span>: <span class="hljs-literal">undefined</span></pre></div></div>
             
         </li>
@@ -245,8 +246,8 @@ example <a href="https://jsfiddle.net/thedersen/udXL5/">https://jsfiddle.net/the
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  validate: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attributes</span>)</span>{
-    <span class="hljs-keyword">if</span>(!attributes.title){
+            <div class="content"><div class='highlight'><pre>  validate: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attributes</span>) </span>{
+    <span class="hljs-keyword">if</span> (!attributes.title) {
       <span class="hljs-keyword">return</span> <span class="hljs-string">"Remember to set a title for your section."</span>;</pre></div></div>
             
         </li>
@@ -279,7 +280,7 @@ example <a href="https://jsfiddle.net/thedersen/udXL5/">https://jsfiddle.net/the
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  initialize: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  initialize: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -297,11 +298,11 @@ this.id = this._id;</p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
-    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">"invalid"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, error</span>)</span>{
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">"invalid"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">model, error</span>) </span>{
       <span class="hljs-built_in">console</span>.info(error);
     });
-    
-    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
             
         </li>
         
@@ -318,14 +319,11 @@ this.id = this._id;</p>
             
             <div class="content"><div class='highlight'><pre>    });
 
-    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change:text'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-        <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'text value for this model has changed.'</span>);
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'change:text'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'text value for this model has changed.'</span>);
     });
-
-     <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-     
+    <span class="hljs-keyword">this</span>.on(<span class="hljs-string">'destroy'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
     });
-
   }</pre></div></div>
             
         </li>
@@ -342,9 +340,9 @@ this.id = this._id;</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>},{
+            <div class="content"><div class='highlight'><pre>}, {
 
-   <span class="hljs-attr">modelType</span>: <span class="hljs-string">"transcription"</span>,</pre></div></div>
+  <span class="hljs-attr">modelType</span>: <span class="hljs-string">"transcription"</span>,</pre></div></div>
             
         </li>
         
@@ -361,7 +359,8 @@ and make rturns srtJson in helper function in model </p>
             </div>
             
             <div class="content"><div class='highlight'><pre>
- returnSrtContent: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>)</span>{</pre></div></div>
+  
+  returnSrtContent: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -377,16 +376,16 @@ from <a href="http://stackoverflow.com/questions/8188548/splitting-a-js-array-in
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">split</span>(<span class="hljs-params">arr, n</span>) </span>{
-    <span class="hljs-keyword">var</span> res = [];
-    <span class="hljs-keyword">while</span> (arr.length) {
-      res.push(arr.splice(<span class="hljs-number">0</span>, n));
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">split</span>(<span class="hljs-params">arr, n</span>) </span>{
+      <span class="hljs-keyword">var</span> res = [];
+      <span class="hljs-keyword">while</span> (arr.length) {
+        res.push(arr.splice(<span class="hljs-number">0</span>, n));
+      }
+      <span class="hljs-keyword">return</span> res;
     }
-    <span class="hljs-keyword">return</span> res;
-  }
 
 
-  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>)</span>{</pre></div></div>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -401,12 +400,12 @@ from <a href="http://stackoverflow.com/questions/8188548/splitting-a-js-array-in
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> newLinesAr = []
-    <span class="hljs-keyword">var</span> newLine ={}
-    <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
-    _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>)</span>{
-      _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>)</span>{ 
-        <span class="hljs-keyword">if</span>(paragraph.line.length &gt; <span class="hljs-number">8</span>){</pre></div></div>
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> newLinesAr = []
+      <span class="hljs-keyword">var</span> newLine = {}
+      <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
+      _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>) </span>{
+          _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>) </span>{
+              <span class="hljs-keyword">if</span> (paragraph.line.length &gt; <span class="hljs-number">8</span>) {</pre></div></div>
             
         </li>
         
@@ -423,7 +422,7 @@ console.log(“—“)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> regroupLines = split(paragraph.line, <span class="hljs-number">8</span>)</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                <span class="hljs-keyword">var</span> regroupLines = split(paragraph.line, <span class="hljs-number">8</span>)</pre></div></div>
             
         </li>
         
@@ -439,15 +438,15 @@ make srt lines </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          _.each(regroupLines, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">l</span>)</span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(l))
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"---"</span>)
-             newLine.id = counter;
-             counter+=<span class="hljs-number">1</span>;
-             newLine.startTime = fromSecondsForSrt(l[<span class="hljs-number">0</span>].startTime);
-             newLine.endTime = fromSecondsForSrt(l[l.length<span class="hljs-number">-1</span>].endTime);
-             newLine.text = <span class="hljs-string">""</span>;
-            _.each(l, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">w</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                _.each(regroupLines, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">l</span>) </span>{
+                    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(l))
+                    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"---"</span>)
+                    newLine.id = counter;
+                    counter += <span class="hljs-number">1</span>;
+                    newLine.startTime = fromSecondsForSrt(l[<span class="hljs-number">0</span>].startTime);
+                    newLine.endTime = fromSecondsForSrt(l[l.length - <span class="hljs-number">1</span>].endTime);
+                    newLine.text = <span class="hljs-string">""</span>;
+                    _.each(l, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">w</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -463,18 +462,18 @@ console.log(JSON.stringify(w));</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>              newLine.text += w.text +<span class="hljs-string">" "</span>;
-            })<span class="hljs-comment">//words</span>
-              newLinesAr.push(newLine)
-              newLine={}
-          })<span class="hljs-comment">//lines in regrouped lines</span>
-        }<span class="hljs-keyword">else</span>{
-          newLine.id = counter;
-          counter+=<span class="hljs-number">1</span>
-          newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
-          newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length <span class="hljs-number">-1</span>].endTime)
-          newLine.text = <span class="hljs-string">""</span>
-          _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                        newLine.text += w.text + <span class="hljs-string">" "</span>;
+                      }) <span class="hljs-comment">//words</span>
+                    newLinesAr.push(newLine)
+                    newLine = {}
+                  }) <span class="hljs-comment">//lines in regrouped lines</span>
+              } <span class="hljs-keyword">else</span> {
+                newLine.id = counter;
+                counter += <span class="hljs-number">1</span>
+                newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
+                newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - <span class="hljs-number">1</span>].endTime)
+                newLine.text = <span class="hljs-string">""</span>
+                _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -489,15 +488,15 @@ console.log(JSON.stringify(w));</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>            newLine.text += word.text +<span class="hljs-string">" "</span>
-          })<span class="hljs-comment">//line</span>
-          newLinesAr.push(newLine)
-          newLine={}
-        }           
-      })<span class="hljs-comment">//paragraph</span>
-    })<span class="hljs-comment">//paragraphs</span>
-    cb(newLinesAr)
-  }</pre></div></div>
+            <div class="content"><div class='highlight'><pre>                    newLine.text += word.text + <span class="hljs-string">" "</span>
+                  }) <span class="hljs-comment">//line</span>
+                newLinesAr.push(newLine)
+                newLine = {}
+              }
+            }) <span class="hljs-comment">//paragraph</span>
+        }) <span class="hljs-comment">//paragraphs</span>
+      cb(newLinesAr)
+    }</pre></div></div>
             
         </li>
         
@@ -513,43 +512,48 @@ TODO: this needs to be moved/used from the srt lib</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
-    <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
-    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
-      srtLineO = srtJsonContent[i];
-      lines+=srtLineO.id+<span class="hljs-string">"\n"</span>;
-      lines+=srtLineO.startTime+<span class="hljs-string">" --&gt; "</span>+srtLineO.endTime+<span class="hljs-string">"\n"</span>;
-      lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>) </span>{
+      <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; srtJsonContent.length; i++) {
+        srtLineO = srtJsonContent[i];
+        lines += srtLineO.id + <span class="hljs-string">"\n"</span>;
+        lines += srtLineO.startTime + <span class="hljs-string">" --&gt; "</span> + srtLineO.endTime + <span class="hljs-string">"\n"</span>;
+        lines += srtLineO.text + <span class="hljs-string">"\n\n"</span>;
+      }
+      <span class="hljs-keyword">if</span> (cb) {
+        cb(lines)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> lines
+      };
     }
-    <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> lines};
-  }
 
-  loopThroughStuff(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
-    result = createSrtContent(res)
-  })  
+    loopThroughStuff(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>{
+      result = createSrtContent(res)
+    })
 
-  <span class="hljs-keyword">return</span> result;
- },
+    <span class="hljs-keyword">return</span> result;
+  },
 
 
-<span class="hljs-attr">returnPlainTextTimecoded</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attr</span>)</span>{
-  <span class="hljs-built_in">console</span>.log(attr)
-      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>)</span>{
+  <span class="hljs-attr">returnPlainTextTimecoded</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">attr</span>) </span>{
+    <span class="hljs-built_in">console</span>.log(attr)
 
-        <span class="hljs-keyword">var</span> newLinesAr = []
-        <span class="hljs-keyword">var</span> newLine ={}
-        <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
-        
-        _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>)</span>{
-           _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>)</span>{
-            newLine.id = counter;
-            counter+=<span class="hljs-number">1</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">loopThroughStuff</span>(<span class="hljs-params">text, cb</span>) </span>{
 
-            newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
-            newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length <span class="hljs-number">-1</span>].endTime)
-            newLine.speaker = paragraphs.speaker;
-            newLine.text = <span class="hljs-string">""</span>
-            _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{</pre></div></div>
+      <span class="hljs-keyword">var</span> newLinesAr = []
+      <span class="hljs-keyword">var</span> newLine = {}
+      <span class="hljs-keyword">var</span> counter = <span class="hljs-number">1</span>
+
+      _.each(text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>) </span>{
+          _.each(paragraphs.paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>) </span>{
+              newLine.id = counter;
+              counter += <span class="hljs-number">1</span>
+
+              newLine.startTime = fromSecondsForSrt(paragraph.line[<span class="hljs-number">0</span>].startTime)
+              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - <span class="hljs-number">1</span>].endTime)
+              newLine.speaker = paragraphs.speaker;
+              newLine.text = <span class="hljs-string">""</span>
+              _.each(paragraph.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -564,28 +568,28 @@ TODO: this needs to be moved/used from the srt lib</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>              newLine.text += word.text +<span class="hljs-string">" "</span>
-            })<span class="hljs-comment">//line</span>
-            newLinesAr.push(newLine)
-            newLine={}
-          })<span class="hljs-comment">//paragraph</span>
-        })<span class="hljs-comment">//paragraphs</span>
+            <div class="content"><div class='highlight'><pre>                  newLine.text += word.text + <span class="hljs-string">" "</span>
+                }) <span class="hljs-comment">//line</span>
+              newLinesAr.push(newLine)
+              newLine = {}
+            }) <span class="hljs-comment">//paragraph</span>
+        }) <span class="hljs-comment">//paragraphs</span>
 
-        cb(newLinesAr)
-      }
+      cb(newLinesAr)
+    }
 
 
-      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPlainTextTimecoded</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
-        <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createPlainTextTimecoded</span>(<span class="hljs-params">srtJsonContent, cb</span>) </span>{
+      <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
 
-        <span class="hljs-keyword">var</span> head= <span class="hljs-string">"Transcription: "</span>   + attr.title+<span class="hljs-string">"\n\n"</span>
-        head +=   <span class="hljs-string">"Description: "</span>     + attr.description+<span class="hljs-string">"\n\n"</span>
-        head +=   <span class="hljs-string">"File name: "</span>       + attr.metadata.fileName +<span class="hljs-string">"\n\n"</span>
-        head +=   <span class="hljs-string">"File path: "</span>       + attr.metadata.filePathName +<span class="hljs-string">"\n\n"</span>
-        head +=   <span class="hljs-string">"Reel: "</span>            + attr.metadata.reelName +<span class="hljs-string">"\n"</span>
-        head +=   <span class="hljs-string">"Camera Timecode: "</span> + attr.metadata.timecode +<span class="hljs-string">"\n"</span>
-        head +=   <span class="hljs-string">"fps: "</span>             + attr.metadata.fps +<span class="hljs-string">"\n"</span>
-        head +=   <span class="hljs-string">"Duration: "</span>        + fromSeconds(attr.metadata.duration)+<span class="hljs-string">"\n"</span></pre></div></div>
+      <span class="hljs-keyword">var</span> head = <span class="hljs-string">"Transcription: "</span> + attr.title + <span class="hljs-string">"\n\n"</span>
+      head += <span class="hljs-string">"Description: "</span> + attr.description + <span class="hljs-string">"\n\n"</span>
+      head += <span class="hljs-string">"File name: "</span> + attr.metadata.fileName + <span class="hljs-string">"\n\n"</span>
+      head += <span class="hljs-string">"File path: "</span> + attr.metadata.filePathName + <span class="hljs-string">"\n\n"</span>
+      head += <span class="hljs-string">"Reel: "</span> + attr.metadata.reelName + <span class="hljs-string">"\n"</span>
+      head += <span class="hljs-string">"Camera Timecode: "</span> + attr.metadata.timecode + <span class="hljs-string">"\n"</span>
+      head += <span class="hljs-string">"fps: "</span> + attr.metadata.fps + <span class="hljs-string">"\n"</span>
+      head += <span class="hljs-string">"Duration: "</span> + fromSeconds(attr.metadata.duration) + <span class="hljs-string">"\n"</span></pre></div></div>
             
         </li>
         
@@ -599,9 +603,9 @@ TODO: this needs to be moved/used from the srt lib</p>
               
             </div>
             
-            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; srtJsonContent.length; i++) {
 
-          srtLineO = srtJsonContent[i];</pre></div></div>
+        srtLineO = srtJsonContent[i];</pre></div></div>
             
         </li>
         
@@ -616,25 +620,29 @@ TODO: this needs to be moved/used from the srt lib</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>          lines+=<span class="hljs-string">"["</span>+srtLineO.startTime+<span class="hljs-string">"\t"</span>+srtLineO.endTime+<span class="hljs-string">"\t"</span>+srtLineO.speaker +<span class="hljs-string">"]"</span>+<span class="hljs-string">"\n"</span>;
-          lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
-        
-        }
+            <div class="content"><div class='highlight'><pre>        lines += <span class="hljs-string">"["</span> + srtLineO.startTime + <span class="hljs-string">"\t"</span> + srtLineO.endTime + <span class="hljs-string">"\t"</span> + srtLineO.speaker + <span class="hljs-string">"]"</span> + <span class="hljs-string">"\n"</span>;
+        lines += srtLineO.text + <span class="hljs-string">"\n\n"</span>;
 
-        <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> head+<span class="hljs-string">"\n\n"</span>+lines};
       }
 
-      loopThroughStuff(attr.text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>)</span>{
-         result = createPlainTextTimecoded(res)
-      })
-          
+      <span class="hljs-keyword">if</span> (cb) {
+        cb(lines)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> head + <span class="hljs-string">"\n\n"</span> + lines
+      };
+    }
+
+    loopThroughStuff(attr.text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">res</span>) </span>{
+      result = createPlainTextTimecoded(res)
+    })
+
 
     <span class="hljs-keyword">return</span> result;
 
-},
+  },
 
 
-  <span class="hljs-attr">returnEDLSrtJson</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>)</span>{</pre></div></div>
+  <span class="hljs-attr">returnEDLSrtJson</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">text</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -649,21 +657,25 @@ TODO: this needs to be moved/used from the srt lib</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>)</span>{
-        <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
-        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i&lt; srtJsonContent.length; i++){
-          srtLineO = srtJsonContent[i];
-          lines+=srtLineO.id+<span class="hljs-string">"\n"</span>;
-          lines+=srtLineO.startTime+<span class="hljs-string">" --&gt; "</span>+srtLineO.endTime+<span class="hljs-string">"\n"</span>;
-          lines+=srtLineO.text+<span class="hljs-string">"\n\n"</span>;
-        }
-
-        <span class="hljs-keyword">if</span>(cb){cb(lines)}<span class="hljs-keyword">else</span>{<span class="hljs-keyword">return</span> lines};
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">createSrtContent</span>(<span class="hljs-params">srtJsonContent, cb</span>) </span>{
+      <span class="hljs-keyword">var</span> lines = <span class="hljs-string">""</span>;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; srtJsonContent.length; i++) {
+        srtLineO = srtJsonContent[i];
+        lines += srtLineO.id + <span class="hljs-string">"\n"</span>;
+        lines += srtLineO.startTime + <span class="hljs-string">" --&gt; "</span> + srtLineO.endTime + <span class="hljs-string">"\n"</span>;
+        lines += srtLineO.text + <span class="hljs-string">"\n\n"</span>;
       }
 
-     result =   createSrtContent(text)
+      <span class="hljs-keyword">if</span> (cb) {
+        cb(lines)
+      } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> lines
+      };
+    }
 
-      <span class="hljs-keyword">return</span> result;
+    result = createSrtContent(text)
+
+    <span class="hljs-keyword">return</span> result;
 
   }
 
