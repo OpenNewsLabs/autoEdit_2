@@ -1,4 +1,4 @@
-# current dbsetup
+# current dbsetup - draft 
 
 https://github.com/Ivshti/linvodb3
 
@@ -41,7 +41,7 @@ as well as setting up the `dbPath`
 LinvoDB.dbPath = window.config.dataPath;
 ```
 
-In this case using [App.dataPath](http://docs.nwjs.io/en/latest/References/App/#appdatapath) `require('nw.gui').App.dataPath` eg `"/Users/pietropassarelli/Library/Application Support/autoEdit2"`
+In this case using [App.dataPath](http://docs.nwjs.io/en/latest/References/App/#appdatapath) `require('nw.gui').App.dataPath` eg  `"/Users/pietropassarelli/Library/Application Support/autoEdit2"`
 
 
 and the db would be stored in the folder

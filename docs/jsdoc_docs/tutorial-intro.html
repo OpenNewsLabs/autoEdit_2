@@ -28,16 +28,18 @@
 </header>
 
 <article>
-    <h2>Documentation Intro</h2><p>Can also explore the documentation as <a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a></p>
+    <h2>Documentation Intro</h2><ul>
+<li>Explore the documentation as <a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a></li>
+<li>Github repo <a href="https://github.com/OpenNewsLabs/autoEdit_2">for autoEdit2</a></li>
+</ul>
+<p>If you are not familiar with Node, NWJS, or backbone check out the <a href="/jsdoc_docs/tutorial-prerequisites.html">prerequisite</a> section to see the minimum you need to learn to get up to speed with this proejc.t</p>
 <pre class="prettyprint source lang-bash"><code>.
 ├── LICENCE.MD
 ├── README.md
 ├── appdmg.json
-├── background.png
 ├── config.js
 ├── deploy.js
 ├── docs
-│   └── ... jekyll sit for project page and documentation  
 ├── favicon.ico
 ├── frontEnd
 │   ├── autoEdit2API.js
@@ -52,46 +54,71 @@
 ├── interactive_transcription_generator
 │   ├── README.md
 │   ├── bin
-│   ├── gentle_stt_node
 │   ├── index.js
-│   ├── sam_transcriber
+│   ├── transcriber
 │   ├── video_metadata_reader
 │   └── video_to_html5_webm
-├── node_modules
 ├── nw.icns
-├── nw_l.icns
+├── autoEdit_logo.png
 ├── package.json
-├── red-button.png
-├── spec
-│   ├── autoEdit2API_spec.js
-│   ├── gentle
-│   ├── interactive_transcription_generator_spec.js
-│   ├── sam_transcriber
-│   ├── support
-│   ├── test_interactive_transcription_generator.js
-│   ├── test_video_to_html5_webm.js
-│   ├── video_metadata_reader
-│   └── video_to_html5_webm
-└── wttskeys_dev.json</code></pre><h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
-│   ├── autoEdit2API.js
-│   ├── date_now
-│   ├── demo_jr.js
-│   ├── edl_composer
-│   ├── index.html
-│   ├── js
-│   ├── public
-│   ├── srt
-│   └── vendor</code></pre><p><code>autoEdit2API</code> overwrighting backbone.sync method and using node modules for backend for db using linvodb3, which uses level-js, which uses indexdb in chrome v8.</p>
+└── spec</code></pre><h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
+    ├── autoEdit2API.js
+    ├── date_now
+    │   └── index.js
+    ├── demo_jr.js
+    ├── edl_composer
+    │   ├── README.md
+    │   └── index.js
+    ├── index.html
+    ├── js
+    │   ├── collections
+    │   │   └── transcriptions.js
+    │   ├── models
+    │   │   └── transcription.js
+    │   ├── router.js
+    │   ├── sync.js
+    │   └── views
+    │       ├── transcription_form.js
+    │       ├── transcription_index.js
+    │       └── transcription_show.js
+    ├── public
+    │   └── css
+    │       └── custom.css
+    ├── srt
+    │   └── index.js
+    └── vendor
+        ├── backbone-min.js
+        ├── backbone-min.map
+        ├── backbone.async.js
+        ├── backbone.mousetrap.js
+        ├── bootstrap-3.3.6-dist
+        ├── jquery.min.1.12.4.js
+        ├── mousetrap.js
+        ├── underscore-min.js
+        └── underscore-min.map</code></pre><p><code>autoEdit2API</code> overwrighting <code>backbone.sync</code> method and using node modules for backend for db using linvodb3, which uses <code>medeadown</code>. see <a href="/jsdoc_docs/current_db_setup.html">current db setup tutorial for more info</a></p>
 <p>backbone front end . <code>demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
 <p><code>js</code> contains the backbone project.</p>
 <h3><code>interactive_transcription_generator</code></h3><pre class="prettyprint source"><code>├── interactive_transcription_generator
-│   ├── README.md
-│   ├── bin
-│   ├── gentle_stt_node
-│   ├── index.js
-│   ├── sam_transcriber
-│   ├── video_metadata_reader
-│   └── video_to_html5_webm</code></pre><h3><code>docs</code></h3><p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.<br>Jekyll website,  using </p>
+    ├── README.md
+    ├── bin
+    │   ├── ffmpeg
+    │   └── ffprobe
+    ├── index.js
+    ├── transcriber
+    │   ├── README.md
+    │   ├── convert_to_audio.js
+    │   ├── examples
+    │   ├── gentle_stt_node
+    │   ├── ibm_stt_node
+    │   ├── index.js
+    │   ├── split.js
+    │   └── trimmer.js
+    ├── video_metadata_reader
+    │   ├── README.md
+    │   ├── examples
+    │   └── index.js
+    └── video_to_html5_webm
+        └── index.js</code></pre><h3><code>docs</code></h3><p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.<br>Jekyll website,  using </p>
 <ul>
 <li>For landing page <a href="http://blacktie.co/2013/10/pratt-app-landing-page/">pratt-app-landing-page</a> <a href="http://blacktie.co/demo/pratt">demo</a></li>
 <li><p>Other user manual and documentation pages <a href="https://github.com/bruth/jekyll-docs-template">jekyll-docs-template</a> <a href="http://bruth.github.io/jekyll-docs-template">demo</a></p>
@@ -102,8 +129,6 @@
 </ul>
 <h3><code>deploy.js</code></h3><p>Deployment script. <a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
 <h3><code>cache</code></h3><p>is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time</p>
-<h3><code>tmd_media</code></h3><p>is where the wav files are kept, and the deleted, when sending split chunks to watson.</p>
-<h3><code>media</code></h3><p> is where video webm previews and audio wav files for transcriptions are kept. </p>
 <h3><code>wttskeys.json</code></h3><p>At root level is where watson API keys are ketp, this file is in <code>.gitignore</code> to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there. </p>
 <p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual to see how user ir prompted to add IBM keys on startup</a></p>
 <h3><code>spec</code></h3><p>Test suite </p>
@@ -114,7 +139,7 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#app">app</a></li><li><a href="app.TranscriptionListElement.html">TranscriptionListElement</a></li><li><a href="app.TranscriptionsListView.html">TranscriptionsListView</a></li><li><a href="app.TranscriptionView.html">TranscriptionView</a></li><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportAudio">exportAudio</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exporthtml5Video">exporthtml5Video</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-autoEdit2API.html">autoEdit2API</a></li><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#app">app</a></li><li><a href="app.TranscriptionListElement.html">TranscriptionListElement</a></li><li><a href="app.TranscriptionsListView.html">TranscriptionsListView</a></li><li><a href="app.TranscriptionView.html">TranscriptionView</a></li><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-JQuery_and_NWJS_packaging.html">JQuery_and_NWJS_packaging</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-current_db_setup.html">current_db_setup</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportAudio">exportAudio</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exporthtml5Video">exporthtml5Video</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
 Groups words from selection into array of contiguos words
 uuses modified version of this code to divide contiguos numbers 
     https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript</a></li><li><a href="global.html#helperfunctiontoupdatediplayspeed">helper function to update diplay speed</a></li><li><a href="global.html#Keyboardshortcutsforplayback-">Keyboard shortcuts for playback -</a></li><li><a href="global.html#Keyboardshortcutsforplayback-fastforward">Keyboard shortcuts for playback - fastforward</a></li><li><a href="global.html#Keyboardshortcutsforplayback-play/pause">Keyboard shortcuts for playback - play/pause</a></li><li><a href="global.html#Keyboardshortcutsforplayback-rewind">Keyboard shortcuts for playback - rewind</a></li><li><a href="global.html#Keyboardshortcutsforvolume-decrease">Keyboard shortcuts for volume - decrease</a></li><li><a href="global.html#Keyboardshortcutsforvolume-increase">Keyboard shortcuts for volume - increase</a></li><li><a href="global.html#makeEditable">makeEditable</a></li><li><a href="global.html#makeHilightable">makeHilightable</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#makeSection">makeSection</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#playWord">playWord</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#selectingWords">selectingWords</a></li><li><a href="global.html#Shortcuts">Shortcuts</a></li><li><a href="global.html#template">template</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
@@ -123,7 +148,7 @@ uuses modified version of this code to divide contiguos numbers
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 10:17:54 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:30 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

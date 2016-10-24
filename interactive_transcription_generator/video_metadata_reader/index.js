@@ -27,7 +27,7 @@
  * @requires fluent-ffmpeg
  * @requires path
  */
-"use strict";
+// "use strict";
 
 var path = require('path');
 var ffmpeg = require('fluent-ffmpeg');

@@ -18,7 +18,7 @@ npm install docco -g
 to re-generate documentation run from root of app     
 
 ```bash
-npm run document_docco
+npm run docco
 ```
 
 this puts documentation in `/docs/docco_docs` folder.
@@ -48,7 +48,7 @@ Edit config file as explain in [blog post](http://samwize.com/2014/01/31/the-bes
 to re-generate documentation run from root of app 
 
 ```
-npm run document_jsdoc
+npm run jsdoc
 ```
 
 #### Jsdoc config 

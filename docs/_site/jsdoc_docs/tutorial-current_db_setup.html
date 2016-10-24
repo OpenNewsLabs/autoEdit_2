@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: interactive_transcription_generator/video_to_html5_webm/index.js</title>
+    <title>JSDoc: Tutorial: current_db_setup</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,90 +17,40 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: interactive_transcription_generator/video_to_html5_webm/index.js</h1>
+    <h1 class="page-title">Tutorial: current_db_setup</h1>
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module video_to_html5_webm
- * @description Converts audio or video file into a HTML5 video webm.
- * uses code from [this issue/question from fluent-ffmepg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274)
- * to understand the ffmpeg used to encode webm video see [this guide](https://trac.ffmpeg.org/wiki/Encode/VP8)
- * @author Pietro Passarelli 
- * @example &lt;caption>Example usage&lt;/caption>
 
-  convert_video({
-    src: "path/to/vide_file.mov",
-    outputName: "path/to/webm_file.webm",
-    ffmpegBin: "path/to/bin/ffmpge",
-    callback: function(resp){
-      // do something with output, path to webm video
-    }
-  });
-* @example &lt;caption>Example of object retunred video webm html5 &lt;/caption>
-  {
-    videoOgg: "path/to/video/webmFile.webm",
-    processedVideo: true 
-  }
- * @requires fluent-ffmpeg
- * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
- */
-"use strict";
+<header>
+    
 
-var ffmpeg = require('fluent-ffmpeg');
+    <h2>current_db_setup</h2>
+</header>
 
-/**
- * @function convert
- * @description Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
- * @param {object} config - The parameter containting attribute options.
- * @param {string} config.src - full path of video or audio to convert.
- * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.
- * @param {string} config.ffmpegBin - Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.
- * @returns {callback} config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as `config.outputName` input.
- */
-var convert = function(config){
+<article>
+    <h1>current dbsetup - draft</h1><p>https://github.com/Ivshti/linvodb3</p>
+<p>has option to use </p>
+<blockquote>
+<p>NW.js/Electron friendly - JS-only backend is level-js or Medea</p>
+</blockquote>
+<p>initially tried  <a href="https://github.com/maxogden/level.js">level-js</a></p>
+<blockquote>
+<p>level.js an implementation of the <a href="https://github.com/rvagg/node-leveldown">leveldown</a> API on top of <a href="https://developer.mozilla.org/en-US/docs/IndexedDB">IndexedDB</a> (which is in turn implemented on top of <a href="https://code.google.com/p/leveldb/">LevelDB</a>, which brings this whole shebang full circle)</p>
+<p>LevelDOWN was extracted from <a href="https://github.com/level/levelup">LevelUP</a> and now serves as a stand-alone binding for LevelDB.</p>
+</blockquote>
+<p>However indexDb has a 50mb total file size restriction. This might seem ok at first, but some transcriptions can reach 5mb in size in their json representation. So this would not scale if you add n number of transcription.</p>
+<p>Decided to move to medea instead.</p>
+<p>the way to set up medea is to use <a href="https://github.com/medea/medeadown">medeadown</a>. <a href="https://github.com/Ivshti/linvodb3/issues/36">as described in this issue</a></p>
+<p>medeadown is a <a href="https://github.com/Level/leveldown">leveldown</a>-compatible interface to <a href="https://github.com/medea/medea">medea</a></p>
+<p>this required installing medeadown separatly </p>
+<pre class="prettyprint source"><code>npm install medeadown -save</code></pre><p>and changing the <code>LinvoDB</code> data store to it.</p>
+<pre class="prettyprint source lang-js"><code>LinvoDB.defaults.store = { db: require(&quot;medeadown&quot;) };</code></pre><p>as well as setting up the <code>dbPath</code></p>
+<pre class="prettyprint source lang-js"><code>LinvoDB.dbPath = window.config.dataPath;</code></pre><p>In this case using <a href="http://docs.nwjs.io/en/latest/References/App/#appdatapath">App.dataPath</a> <code>require('nw.gui').App.dataPath</code> eg  <code>&quot;/Users/pietropassarelli/Library/Application Support/autoEdit2&quot;</code></p>
+<p>and the db would be stored in the folder</p>
+<pre class="prettyprint source"><code>/Users/pietropassarelli/Library/Application Support/autoEdit2/transcription.db</code></pre><!-- `window.config.dataPath = require('nw.gui').App.dataPath;` -->
+</article>
 
-  var videoSrc = config.src;
-  var outputName = config.outputName;
-  var callback;
-
-  //optional callback
-  if(config.callback){
-    callback = config.callback;
-  }
-
-  //setting ffmpeg bin, optional. if not specified in input fluent-ffmpeg will try to use system one if present. 
-  if(config.ffmpegBin){
-    ffmpeg.setFfmpegPath(config.ffmpegBin);
-  }else{
-    //case in which ffmpeg bin not provided in input and not present on system not covered.
-    console.warn("ffmpeg binary path not defined, so using system one. if available.");
-  }
-
-  //executing ffmpeg comand 
-  ffmpeg(videoSrc)
-    .output(outputName)
-    .withVideoCodec('libvpx')
-    .addOptions(['-qmin 0', '-qmax 50', '-crf 5'])
-    .withVideoBitrate(1024)
-    .withAudioCodec('libvorbis')
-    //when done executing returning output file name to callback 
-    .on('end', function(){ callback(outputName); })
-    .run();
-};
-
-module.exports = convert;
-</code></pre>
-        </article>
-    </section>
-
-
-
+</section>
 
 </div>
 
@@ -114,7 +64,7 @@ uuses modified version of this code to divide contiguos numbers
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:29 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:30 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

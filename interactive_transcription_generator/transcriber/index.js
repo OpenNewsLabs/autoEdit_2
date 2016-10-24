@@ -70,7 +70,7 @@
  * @tutorial IBM_watson_stt_specs
  */ 
 
-"use strict";
+// "use strict";
 
 var convertToWav                = require('./convert_to_audio.js');
 var split                       = require('./split.js');

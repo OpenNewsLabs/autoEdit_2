@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: interactive_transcription_generator/video_to_html5_webm/index.js</title>
+    <title>JSDoc: Tutorial: JQuery_and_NWJS_packaging</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,90 +17,90 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: interactive_transcription_generator/video_to_html5_webm/index.js</h1>
+    <h1 class="page-title">Tutorial: JQuery_and_NWJS_packaging</h1>
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @module video_to_html5_webm
- * @description Converts audio or video file into a HTML5 video webm.
- * uses code from [this issue/question from fluent-ffmepg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274)
- * to understand the ffmpeg used to encode webm video see [this guide](https://trac.ffmpeg.org/wiki/Encode/VP8)
- * @author Pietro Passarelli 
- * @example &lt;caption>Example usage&lt;/caption>
 
-  convert_video({
-    src: "path/to/vide_file.mov",
-    outputName: "path/to/webm_file.webm",
-    ffmpegBin: "path/to/bin/ffmpge",
-    callback: function(resp){
-      // do something with output, path to webm video
-    }
-  });
-* @example &lt;caption>Example of object retunred video webm html5 &lt;/caption>
-  {
-    videoOgg: "path/to/video/webmFile.webm",
-    processedVideo: true 
+<header>
+    
+
+    <h2>JQuery_and_NWJS_packaging</h2>
+</header>
+
+<article>
+    <h1>JQuery and NWJS packaging  - Draft</h1><p>it seems like that you need to use libraries that require JQuery, such as bootstrap js or backnone. </p>
+<p>if you just use standard html src </p>
+<!-- example  -->
+<p>it might trigger an error saying that js is nto defined. </p>
+<!-- exmaple  -->
+<p>Solution is to include jquery using js and adding it to the dom, and use a callabck to add other library that need it as dependency once done. </p>
+<pre class="prettyprint source"><code>Issue 
+Jquery not loading in nwjs once is packaged for deployment and can’t figure out why.
+
+For reproducing the issue,I boiled it down to a minimal repo 
+
+Download this repo [url coming soon]
+
+`npm start `
+
+you see &quot;Added using jquery&quot;
+
+because in `index.html` there is</code></pre><p>$(&quot;#main&quot;).html(&quot;Added using jquery&quot;)</p>
+<pre class="prettyprint source"><code>
+if you do `node deploy.js`
+you see &quot;Default html text&quot;
+
+which is the html in index, which mean jquery did not substitute the text in main</code></pre><p>  <div id="main" class="container-fluid"><br>   <p>Default html text</p><br>  </div><!-- container-fluid --></p>
+<pre class="prettyprint source"><code>
+if you look at the error in console in the packaged version 
+
+`Uncaught ReferenceError: $ is not defined`
+
+is the main error.</code></pre><p>Solution, a bit of callback hell to make sure the script are loaded in the right order.</p>
+<pre class="prettyprint source"><code>//loads scripts dynamically adding them to the body of the page
+function loadExtScript(src, callback) {
+  var s = document.createElement('script');
+  s.src = src;
+  document.body.appendChild(s);
+
+  s.onload = function () {
+    // if loaded...call the callback
+    if(callback){callback(s)}
   }
- * @requires fluent-ffmpeg
- * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
- */
-"use strict";
-
-var ffmpeg = require('fluent-ffmpeg');
+}
 
 /**
- * @function convert
- * @description Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
- * @param {object} config - The parameter containting attribute options.
- * @param {string} config.src - full path of video or audio to convert.
- * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.
- * @param {string} config.ffmpegBin - Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.
- * @returns {callback} config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as `config.outputName` input.
- */
-var convert = function(config){
+* To make sure scripts are deployed int he right order when NWJS is packaged, a little bit of callbacl hell.
+*/
+loadExtScript(&quot;vendor/jquery.min.js&quot;,function(script){
+    //set jquery for bootstrap 
+     window.jQuery = window.$ ;
 
-  var videoSrc = config.src;
-  var outputName = config.outputName;
-  var callback;
+     loadExtScript(&quot;vendor/bootstrap-3.3.6-dist/js/bootstrap.js&quot;,function(){
 
-  //optional callback
-  if(config.callback){
-    callback = config.callback;
-  }
+       loadExtScript(&quot;vendor/underscore-min.js&quot;,function(){
+          loadExtScript(&quot;vendor/backbone-min.js&quot;,function(){
+            //app.js backbone files 
+           loadExtScript(&quot;js/models/transcription.js&quot;,function(){
+               loadExtScript(&quot;js/collections/transcriptions.js&quot;,function(){
+                 loadExtScript(&quot;js/views/transcription_index.js&quot;,function(){
+                     loadExtScript(&quot;js/views/transcription_show.js&quot;,function(){
+                        loadExtScript(&quot;js/views/transcription_form.js&quot;,function(){
+                          loadExtScript(&quot;js/router.js&quot;,function(){
+                               console.log(&quot;loaded stuff&quot;)
+                          }) 
+                        }) 
+                    }) 
+                  }) 
+                })
+            })
+         })
+      })
+  })
+})</code></pre><h2>JQuery</h2><p><code>jquery.min.1.12.4.js</code> seems to hit the sweet spot between being compatible with NWJS, Bootstrap, and having the <code>.find()</code> that has been used in the client side and is not supported in previous versions.</p>
+</article>
 
-  //setting ffmpeg bin, optional. if not specified in input fluent-ffmpeg will try to use system one if present. 
-  if(config.ffmpegBin){
-    ffmpeg.setFfmpegPath(config.ffmpegBin);
-  }else{
-    //case in which ffmpeg bin not provided in input and not present on system not covered.
-    console.warn("ffmpeg binary path not defined, so using system one. if available.");
-  }
-
-  //executing ffmpeg comand 
-  ffmpeg(videoSrc)
-    .output(outputName)
-    .withVideoCodec('libvpx')
-    .addOptions(['-qmin 0', '-qmax 50', '-crf 5'])
-    .withVideoBitrate(1024)
-    .withAudioCodec('libvorbis')
-    //when done executing returning output file name to callback 
-    .on('end', function(){ callback(outputName); })
-    .run();
-};
-
-module.exports = convert;
-</code></pre>
-        </article>
-    </section>
-
-
-
+</section>
 
 </div>
 
@@ -114,7 +114,7 @@ uuses modified version of this code to divide contiguos numbers
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:29 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:30 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

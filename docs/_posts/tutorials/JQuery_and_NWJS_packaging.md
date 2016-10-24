@@ -1,4 +1,4 @@
-# JQuery and NWJS packaging 
+# JQuery and NWJS packaging  - Draft
 
 it seems like that you need to use libraries that require JQuery, such as bootstrap js or backnone. 
 

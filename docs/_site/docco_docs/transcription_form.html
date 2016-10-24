@@ -95,8 +95,8 @@
                 </a>
               
                 
-                <a class="source" href="convert_to_wav.html">
-                  convert_to_wav.js
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
                 </a>
               
                 
@@ -145,17 +145,28 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-1">&#182;</a>
               </div>
-              <p>or could use <a href="https://github.com/powmedia/backbone-forms">https://github.com/powmedia/backbone-forms</a>  ?</p>
-
+              
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> app = app || {};
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* Backbone view for transcription form for creating a new transcription
+* @class app.TranscriptionFormView
+* @constructor
+* @extends Backbone.View
+*/</span>
+<span class="hljs-keyword">var</span> app = app || {};
 
 app.TranscriptionFormView = Backbone.View.extend({
   <span class="hljs-attr">template</span>: _.template($(<span class="hljs-string">'#transcriptionFormTemplate'</span>).html()), 
   <span class="hljs-attr">events</span> :{
   	<span class="hljs-string">'click #submitBtn'</span>: <span class="hljs-string">'save'</span>,
-    <span class="hljs-string">'click #gentleSetupLink'</span>: <span class="hljs-string">"gentleSetupLink"</span></pre></div></div>
+    <span class="hljs-string">'click #gentleSetupLink'</span>: <span class="hljs-string">"gentleSetupLink"</span>
+  },
+
+  <span class="hljs-attr">save</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+  	e.preventDefault();
+
+    <span class="hljs-keyword">var</span> sttEngine;</pre></div></div>
             
         </li>
         
@@ -166,30 +177,24 @@ app.TranscriptionFormView = Backbone.View.extend({
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p>submit : ‘save’</p>
+              <p>reading values from form </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  },
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> newTitle        = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=title]'</span>).val();
+    <span class="hljs-keyword">var</span> newDescription  = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'textarea[name=description]'</span>).val();;
+    <span class="hljs-keyword">var</span> newFilePath     = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=file]'</span>).val();
+    <span class="hljs-keyword">var</span> newLanguage     = $(<span class="hljs-string">'#languageModel'</span>).find(<span class="hljs-string">":selected"</span>)[<span class="hljs-number">0</span>].value;
 
-  <span class="hljs-attr">save</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
-  	e.preventDefault();
-  	<span class="hljs-keyword">var</span> newTitle = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=title]'</span>).val();
-    <span class="hljs-keyword">var</span> newDescription = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'textarea[name=description]'</span>).val();;
-    <span class="hljs-keyword">var</span> newFilePath = <span class="hljs-keyword">this</span>.$(<span class="hljs-string">'input[name=file]'</span>).val();
-    <span class="hljs-keyword">var</span> newLanguage = $(<span class="hljs-string">'#languageModel'</span>).find(<span class="hljs-string">":selected"</span>)[<span class="hljs-number">0</span>].value;
-
-    <span class="hljs-keyword">var</span> sttEngine; 
     <span class="hljs-keyword">if</span>($(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked){
-      sttEngine= <span class="hljs-string">"ibm"</span>;
+      sttEngine         = <span class="hljs-string">"ibm"</span>;
     }<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>($(<span class="hljs-string">'#genelteOption'</span>)[<span class="hljs-number">0</span>].checked){
-       sttEngine= <span class="hljs-string">"gentle"</span>;
-    }
+       sttEngine        = <span class="hljs-string">"gentle"</span>;
+    };
     
-    <span class="hljs-keyword">var</span> newSTTLanguage = $(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked
+    <span class="hljs-keyword">var</span> newSTTLanguage  = $(<span class="hljs-string">'#IBMoption'</span>)[<span class="hljs-number">0</span>].checked;
 
   	<span class="hljs-keyword">this</span>.model.save({<span class="hljs-attr">title</span>: newTitle, <span class="hljs-attr">description</span>: newDescription,<span class="hljs-attr">videoUrl</span>:newFilePath, <span class="hljs-attr">languageModel</span>: newLanguage, <span class="hljs-attr">sttEngine</span>: sttEngine},{
-      
       <span class="hljs-attr">success</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">mode, response, option</span>)</span>{      
            Backbone.history.navigate(<span class="hljs-string">"transcriptions"</span>, {<span class="hljs-attr">trigger</span>:<span class="hljs-literal">true</span>}); 
       },
@@ -198,19 +203,10 @@ app.TranscriptionFormView = Backbone.View.extend({
         alert(<span class="hljs-string">"ops, something when wrong with saving the transcription:"</span> + errors)
       }
     });
- 
   },
 
   <span class="hljs-attr">gentleSetupLink</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS ){
-      <span class="hljs-built_in">require</span>(<span class="hljs-string">'nw.gui'</span>).Shell.openExternal(<span class="hljs-string">'https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#gentle-stt-open-source-free-and-offline'</span>);
-    }
-  },
-  <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
-    <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.attributes));
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
-  }
-});</pre></div></div>
+    <span class="hljs-keyword">var</span> url = <span class="hljs-string">"https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#gentle-stt-open-source-free-and-offline"</span>;</pre></div></div>
             
         </li>
         
@@ -221,12 +217,37 @@ app.TranscriptionFormView = Backbone.View.extend({
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>TODO try this and see if it stops dupplicate issues 
-<a href="https://github.com/powmedia/backbone-forms#usage">https://github.com/powmedia/backbone-forms#usage</a>
-Once the user is done with the form, call <code>form.commit()</code> to apply the updated values to the model. I
-f there are validation errors they will be returned. See validation for more information.</p>
+              <p>in nwjs mode </p>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS ){
+      <span class="hljs-built_in">require</span>(<span class="hljs-string">'nw.gui'</span>).Shell.openExternal(url);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>in browser mode, eg demo </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }<span class="hljs-keyword">else</span>{
+      <span class="hljs-keyword">var</span> strWindowFeatures = <span class="hljs-string">"location=yes,height=570,width=520,scrollbars=yes,status=yes"</span>;
+      <span class="hljs-keyword">var</span> win = <span class="hljs-built_in">window</span>.open(url, <span class="hljs-string">"_blank"</span>, strWindowFeatures);
+    }
+  },
+
+  <span class="hljs-attr">render</span>: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">this</span>.$el.html(<span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.attributes));
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+});</pre></div></div>
             
         </li>
         

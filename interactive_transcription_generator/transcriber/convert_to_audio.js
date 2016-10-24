@@ -15,7 +15,7 @@ convertToWav(file, audioFile, ffmpegPath, function(newFile) {
 
 //TODO: refactor with fluent ffmpeg so that can add ffmpeg bin to config json and input
 
-"use strict";
+// "use strict";
 
 var ffmpeg = require('fluent-ffmpeg');
 

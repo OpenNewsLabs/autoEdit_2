@@ -99,13 +99,13 @@ autoEdit2API.create = function(model, success, error){
       languageModel: newElement.languageModel,
       sttEngine: newElement.sttEngine,
       cbMetadata:function(respM){
-        meta = respM;
         //update current transcription with metadata data
-        Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-          console.info("got metadata for transcription: "+transcription._id)
+        Transcription.findOne({ _id: respM.id }, function (err, trs) {
+          console.info("got metadata for transcription: "+transcription._id);
           trs.metadata = respM;
           //saving current transcription
           trs.save(function(err) {
+
             // app.trigger('updateTranscription:'+trs._id);
           });
         });
@@ -127,7 +127,7 @@ autoEdit2API.create = function(model, success, error){
       },
       cbVideo: function(resp){
         //updating current transcription with webm html5 video preview.
-        Transcription.findOne({ _id: transcription._id}, function (err, trs) {
+        Transcription.findOne({ _id: resp.id}, function (err, trs) {
           console.info("got video webm back for transcription: "+ trs._id);
           //updating transcription attributes with result
           trs.videoOgg = resp.videoOgg;

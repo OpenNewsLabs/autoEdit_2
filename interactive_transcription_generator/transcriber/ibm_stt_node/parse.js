@@ -16,7 +16,7 @@
 * @returns {Object} - same json IBM STT transcription specs(but with offset).
 */
 
-"use strict";
+// "use strict";
 
 function parse(data, offset) {
   

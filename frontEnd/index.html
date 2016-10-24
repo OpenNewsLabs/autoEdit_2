@@ -93,6 +93,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
   <script src="edl_composer/index.js"></script>
   <script src="srt/index.js"></script>
   <!-- Config file, app name, backend erver url-->
+  <!-- TODO: not sure if this is the right way to do this.  -->
   <script src="../config.js"></script>
 <!-- NAVBAR  -->
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -768,7 +769,11 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
   * if not, does not thing. but sets a window variable to be able to detect this state elsewhere in the app. 
   * it means same front end code could be used standalone on the web or packaged as desktop app without too much tweaking.
   */
- "use strict";
+ 
+ //TODO: Cannot use "use strick", if you do fs not defined error props up, and ibm watson keys are not read from json 
+ //try adding var fs and using strict
+ // "use strict";
+ 
   document.addEventListener("DOMContentLoaded", function(event) { 
 //  $( document ).ready(function() {
    
@@ -815,7 +820,7 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
         * set watson API keys
         */
         //then read it, parse to json and assign keys to Watson module.
-        fs = require("fs")
+        fs = require("fs");
         config.watsonKeysPath = config.dataPath+'/wttskeys.json';
         if (fs.existsSync(config.watsonKeysPath)) {
           console.info("WATSON KEYS EXISTS")
@@ -851,8 +856,6 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
       // Register global desktop shortcut, which can work without focus.
       gui.App.registerGlobalHotKey(shortcut);
       //end of console keyboard shortcut
-
-
       } catch (error) {
         console.info("NOT USING NWJS "+error)
       }

@@ -31,7 +31,7 @@
  * @tutorial autoEdit2_transcrition_json_spec
  */
 
-"use strict";
+// "use strict";
 
 /**
 * @function parseSamJsonToTranscripJson

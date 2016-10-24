@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>transcriptions.js</title>
+  <title>convert_to_audio.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -133,7 +133,7 @@
         
           <li id="title">
               <div class="annotation">
-                  <h1>transcriptions.js</h1>
+                  <h1>convert_to_audio.js</h1>
               </div>
           </li>
         
@@ -149,8 +149,16 @@
             </div>
             
             <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
- * Transcriptions collection 
- */</span></pre></div></div>
+* @module convert_to_audio
+* @description Convers video file into wav (or any ffmpeg supported input)
+* takes in input file, output destination file, and callback,
+* IBM sudgested audio compression {@link http://www.ibm.com/watson/developercloud/doc/speech-to-text/input.shtml#limits}
+* callback returns audio file name/path
+* @example &lt;caption&gt;usage&lt;/caption&gt;
+var convertToWav = require('./convert_to_audio.js');
+  
+convertToWav(file, audioFile, ffmpegPath, function(newFile) {
+</span></pre></div></div>
             
         </li>
         
@@ -161,16 +169,13 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <p><a href="https://addyosmani.com/backbone-fundamentals/#views-1">https://addyosmani.com/backbone-fundamentals/#views-1</a></p>
+              <p>do something with the converted file, returned as a string file path </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre><span class="hljs-meta">"use strict"</span>;
-<span class="hljs-keyword">var</span> app = app || {};
-
-<span class="hljs-keyword">var</span> TranscriptionsList = Backbone.Collection.extend({
-  <span class="hljs-attr">model</span>: app.Transcription,
-  <span class="hljs-attr">url</span>: config.serverUrl + <span class="hljs-string">"/transcription"</span>,</pre></div></div>
+            <div class="content"><div class='highlight'><pre>}
+* @requires fluent-ffmpeg
+*/</pre></div></div>
             
         </li>
         
@@ -181,15 +186,23 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-3">&#182;</a>
               </div>
-              <p>Filter down the list of all transcription models that are completed.</p>
+              <p>TODO: refactor with fluent ffmpeg so that can add ffmpeg bin to config json and input</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  completed: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">transcription</span>) </span>{
-      <span class="hljs-keyword">return</span> transcription.get(<span class="hljs-string">'status'</span>);
-    });
-  },</pre></div></div>
+            <div class="content"><div class='highlight'><pre><span class="hljs-meta">
+"use strict"</span>;
+
+<span class="hljs-keyword">var</span> ffmpeg = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fluent-ffmpeg'</span>);
+
+<span class="hljs-comment">/**
+ * @function convertToWav
+ * @param {string} file -  path to audio or viceo file to convert to wav
+ * @param {string} audioFile - path to output ogg audio file
+ * @param {string} ffmpegPath - path to ffmpeg binary. If not present it will try to use system one.
+ * @returns {callback} callback - callback to return audio file path as string. 
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">convertToWav</span>(<span class="hljs-params">file,audioFile,ffmpegPath, callback</span>) </span>{</pre></div></div>
             
         </li>
         
@@ -200,11 +213,15 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <p>Filter down the list to only todo items that are still not finished.</p>
+              <p>setting ffmpeg binary path</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  remaining: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(ffmpegPath) {
+    ffmpeg.setFfmpegPath(ffmpegPath);
+  } <span class="hljs-keyword">else</span> {
+    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available"</span>);
+  }</pre></div></div>
             
         </li>
         
@@ -215,12 +232,17 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-5">&#182;</a>
               </div>
-              <p>returns transcription models that are complete, eg status == true </p>
+              <p>running ffmpeg comand </p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.without.apply(<span class="hljs-keyword">this</span>, <span class="hljs-keyword">this</span>.completed());
-  },</pre></div></div>
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">var</span> comand = ffmpeg(file)
+                .noVideo()
+                .audioCodec(<span class="hljs-string">'libopus'</span>)
+                .audioChannels(<span class="hljs-number">1</span>)
+                .audioFrequency(<span class="hljs-number">16000</span>)
+                .output(audioFile)
+                .on(<span class="hljs-string">'end'</span>,</pre></div></div>
             
         </li>
         
@@ -231,69 +253,20 @@
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-6">&#182;</a>
               </div>
-              <p>A nextOrder() method implements a sequence generator while a comparator() sorts items by their insertion order.
-We keep the Todos in sequential order, despite being saved by unordered
-GUID in the database. This generates the next order number for new items.</p>
+              <p>listener must be a function, so to return the callback wrapping it inside a function</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>  nextOrder: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.length) {
-      <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.last().get(<span class="hljs-string">'order'</span>) + <span class="hljs-number">1</span>;
-  },</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>Todos are sorted by their original insertion order.</p>
+            <div class="content"><div class='highlight'><pre>                  <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+                    callback(audioFile)
+                  }
+                  || <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+                     <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Finished processing'</span>);
+                  }
+                ).run();
+}
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  comparator: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">todo</span>) </span>{
-    <span class="hljs-keyword">return</span> todo.get(<span class="hljs-string">'order'</span>);
-  }
-}, {</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>sets type for autoEditAPI to know if we are retrieving model or collection </p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>  modelType: <span class="hljs-string">"transcriptions"</span>
-
-
-});</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Create our global collection of <strong>Transcriptions</strong>.</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>app.TranscriptionsList = <span class="hljs-keyword">new</span> TranscriptionsList();</pre></div></div>
+<span class="hljs-built_in">module</span>.exports = convertToWav;</pre></div></div>
             
         </li>
         
