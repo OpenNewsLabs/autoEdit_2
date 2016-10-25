@@ -17,8 +17,8 @@ app.TranscriptionsListView = Backbone.View.extend({
     this.listenTo(this.collection, "fetch",   this.render);
     this.listenTo(this.collection, "destroy", this.render);
     this.listenTo(this.collection, "add",     this.render );
-    //TODO: Used to work, does not seem to work anymore
     //Temporary way to auto update on transcription status change. unit in  milliseconds, checking for transcriptions update every 1/2 minute.
+    //TODO: Used to work, does not seem to work anymore
     setInterval(function(){ 
        if(app.transcriptionRouter.transcriptionsList.remaining().length >0){
           app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 

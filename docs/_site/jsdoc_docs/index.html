@@ -47,8 +47,18 @@
 <li>Explore the documentation as <a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a></li>
 <li>Github repo <a href="https://github.com/OpenNewsLabs/autoEdit_2">for autoEdit2</a></li>
 </ul>
-<p>If you are not familiar with Node, NWJS, or backbone check out the <a href="/jsdoc_docs/tutorial-prerequisites.html">prerequisite</a> section to see the minimum you need to learn to get up to speed with this proejc.t</p>
-<pre class="prettyprint source lang-bash"><code>.
+<p>If you are not familiar with <a href="https://nodejs.org/en/">Node</a>, <a href="http://docs.nwjs.io/en/latest/For%20Users/Getting%20Started/">NWJS</a>, <a href="http://backbonejs.org/">backbone</a> or not sure were to start to get an overview to familiarise yourself with this project, check out the <a href="/jsdoc_docs/tutorial-prerequisites.html">prerequisite section</a> to get an overview of the stack and see the minimum you need to know to get up to speed with this project.</p>
+<h2>User journey overview</h2><h3>1. User manual</h3><p>Explore the <a href="user_manual/usage.html">user manual</a> to get a sense of the main flow / user journey of the application.</p>
+<h3>2. IBM Blumix STT API keys</h3><p>If you want to use it with IBM get the <a href="/user_manual/setup.html#setup">bluemix STT keys</a></p>
+<h3>4. Run the app</h3><pre class="prettyprint source"><code>npm install</code></pre><pre class="prettyprint source"><code>npm start</code></pre><h3>5.Add IBM keys</h3><p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual for how to add them to the app on launch</a>.</p>
+<h3>Follow the main user journey</h3><p><a href="user_manual/usage.html">Follow user manual</a> to  see the main user journey in getting a transcription from an audio/video file and a video sequence of selections.</p>
+<ul>
+<li>Add a file </li>
+<li>Select some text </li>
+<li>Export </li>
+</ul>
+<p>Can also try other export options. plain text, captions.</p>
+<h2>Project folder structure.</h2><pre class="prettyprint source lang-bash"><code>.
 ├── LICENCE.MD
 ├── README.md
 ├── appdmg.json
@@ -76,7 +86,21 @@
 ├── nw.icns
 ├── autoEdit_logo.png
 ├── package.json
-└── spec</code></pre><h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
+└── spec</code></pre><h3><code>deploy.js</code></h3><p>Deployment script. more info on <a href="/jsdoc_docs/tutorial-deployment.html">packaging and building a new release here</a>.</p>
+<h3><code>docs</code></h3><h4>Project page</h4><p>Contains a jeckyll site for the <a href="https://opennewslabs.github.io/autoEdit_2/">project page, hosted on github pages</a>.</p>
+<p>Uses these two templates</p>
+<ul>
+<li>Landing page <a href="http://blacktie.co/2013/10/pratt-app-landing-page/">pratt-app-landing-page</a> <a href="http://blacktie.co/demo/pratt">demo</a></li>
+<li>User manual: <a href="https://github.com/bruth/jekyll-docs-template">jekyll-docs-template</a> <a href="http://bruth.github.io/jekyll-docs-template">demo</a></li>
+</ul>
+<h4>Documentation</h4><ul>
+<li><code>/docs/_posts</code> for user manual page </li>
+<li>using jdoc and docco for automatic documentation generated. (jsdoc is the one you are reading now). </li>
+<li><code>/docs/_posts/tutorial</code> for  developer documentation (jsdoc tutorials).</li>
+</ul>
+<p>See <a href="/jsdoc_docs/tutorial-updating_the_documentation.html">updating documentation</a> section for how to use jsdoc and docco. </p>
+<h3><code>spec</code></h3><p>Test suite <code>npm run test</code>.</p>
+<h3><code>frontEnd</code></h3><pre class="prettyprint source"><code>├── frontEnd
     ├── autoEdit2API.js
     ├── date_now
     │   └── index.js
@@ -110,7 +134,7 @@
         ├── jquery.min.1.12.4.js
         ├── mousetrap.js
         ├── underscore-min.js
-        └── underscore-min.map</code></pre><p><code>autoEdit2API</code> overwrighting <code>backbone.sync</code> method and using node modules for backend for db using linvodb3, which uses <code>medeadown</code>. see <a href="/jsdoc_docs/current_db_setup.html">current db setup tutorial for more info</a></p>
+        └── underscore-min.map</code></pre><p><code>autoEdit2API</code> overrides <code>backbone.sync</code> method to provide a backend for the app and persistent storage using linvodb3, which uses <code>medeadown</code> to storing db on the user file system. see <a href="/jsdoc_docs/current_db_setup.html">current db setup tutorial for more info</a></p>
 <p>backbone front end . <code>demo_jr.js</code> is the code that runs the demo when index is runned in client side mode in the browser.</p>
 <p><code>js</code> contains the backbone project.</p>
 <h3><code>interactive_transcription_generator</code></h3><pre class="prettyprint source"><code>├── interactive_transcription_generator
@@ -133,20 +157,7 @@
     │   ├── examples
     │   └── index.js
     └── video_to_html5_webm
-        └── index.js</code></pre><h3><code>docs</code></h3><p><a href="https://opennewslabs.github.io/autoEdit_2/">Project page, on github pages</a>.<br>Jekyll website,  using </p>
-<ul>
-<li>For landing page <a href="http://blacktie.co/2013/10/pratt-app-landing-page/">pratt-app-landing-page</a> <a href="http://blacktie.co/demo/pratt">demo</a></li>
-<li><p>Other user manual and documentation pages <a href="https://github.com/bruth/jekyll-docs-template">jekyll-docs-template</a> <a href="http://bruth.github.io/jekyll-docs-template">demo</a></p>
-</li>
-<li><p><code>/docs/_posts</code> for user manual page and <code>/docs/_posts/tutorial</code> for  developer documentation.</p>
-</li>
-<li>using jdoc and docco for automatic documentation generated </li>
-</ul>
-<h3><code>deploy.js</code></h3><p>Deployment script. <a href="lhttps://github.com/pietrop/nwjs_boilerplate#deploy">more info on deploy/packaging of app in nwjs boilerplate project</a></p>
-<h3><code>cache</code></h3><p>is a folder used by deploy to keep the latest version needed to build and package the app, to avoid having to re-download it every time</p>
-<h3><code>wttskeys.json</code></h3><p>At root level is where watson API keys are ketp, this file is in <code>.gitignore</code> to avoid accidentally pushing it to github. When you first clone the project, this file shoudl not be there. </p>
-<p>See <a href="https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html#add-the-api-keys-to-the-app-at-startup">user manual to see how user ir prompted to add IBM keys on startup</a></p>
-<h3><code>spec</code></h3><p>Test suite </p></article>
+        └── index.js</code></pre></article>
     </section>
 
 
@@ -362,7 +373,7 @@ uuses modified version of this code to divide contiguos numbers
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 11:55:29 GMT-0400 (EDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Mon Oct 24 2016 17:40:02 GMT-0400 (EDT)
 </footer>
 
 <script> prettyPrint(); </script>

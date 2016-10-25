@@ -1,27 +1,6 @@
 #contributing
 
-## Familiarizing yourself with the project 
 
-1. User manual 
-Explore the user manual to get a sense of the main flow / user journey of the application.
-
-2. Understand the SPeech to text API setup 
-Both of IBM and for gentle from a user point of view.
-
-3. If you want to use it with IBM get the bluemix STT keys 
-
-4.(optional) if you wanna use it with gentle then get that setup too 
-
-3. Run the app 
-Npm install 
-Npm start 
-
-Add IBM keys 
-Follow user manual 
-Add a file 
-Select some text 
-Export 
-Of you don't have an editing software then export something else 
 
 ## understanding the code base - pre requisite 
 

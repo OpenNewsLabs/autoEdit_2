@@ -679,6 +679,22 @@ loadJQueryExtScript("vendor/jquery.min.1.12.4.js",function(script){
  <script id="transcriptionFormTemplate" type="text/template" >
 
    <div class="container">
+
+   <!-- Demo notice  -->
+  <% if(!window.frontEndEnviromentNWJS ){%>
+   <div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong>You are viewing the app in demo mode</strong>.<br>
+    <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>
+    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>
+     To view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>
+     To view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>
+  </div>  
+ <% }%>
+    <!-- end demo notice  -->
+
+
+    
      <!-- Breadcrumb  -->
         <ol class="breadcrumb">
           <li><a href="#transcriptions">Transcriptions</a></li>
