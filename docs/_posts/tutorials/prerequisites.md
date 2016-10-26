@@ -1,5 +1,4 @@
 
-# pre-requisite for understanding the code base 
 
 A list of some things used in this project that is good to have some working knowledge of before or while diving into the code.
 
@@ -68,7 +67,7 @@ Ffmpeg does not have great documentation.
 <!-- I've put togethere a tutorial with some of the basic ffmpeg comands. 
 [][link to ffmpeg tutorial, draft in notes folder] -->
 
-On the other hand fluent ffmpeg allows you to the set ffmpeg bin, which is handy for packaging and using ffmpeg inside nwjs without requiring it as a dependency, is documented with examples and is generally more straightforward. 
+On the other hand fluent ffmpeg allows you to the set ffmpeg bin, which is handy for packaging and using ffmpeg inside nwjs without requiring it as a dependency, is documented with examples and is generally more straightforward. t
 
 
 [node]:https://nodejs.org/en/about/
