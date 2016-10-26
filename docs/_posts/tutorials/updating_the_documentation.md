@@ -1,4 +1,6 @@
 
+Documentation links 
+
 1. [Docco style code documentation](/docco_docs/autoEdit2API.html)
 2. [JSdoc style code documentation](/jsdoc_docs/index.html)
 
@@ -28,13 +30,16 @@ this puts documentation in `/docs/docco_docs` folder.
 The setup for this is done in `package.json` scripts where the folders/files to consider for documentations and destination folder(`-o`) are specified.
 
 ```json
-"document_docco": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
+"docco": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
 ```
 
 ### Updating documentation with JSDoc 
 
 
-install jsdoc locally 
+[see here for jsodc tags to use](https://github.com/voxmedia/411/wiki/Javascript-Style-and-Syntax-Guide#important-comments) when writing code comments.
+
+
+To get up and running with updating the documentation install jsdoc locally 
 
 ```
 npm install jsdoc -save
@@ -57,8 +62,15 @@ This executes the script in `package.json`, and places the documentation inside 
 
 
 ```json
- "document_jsdoc": "./node_modules/.bin/jsdoc *.js  --destination ./docs/jsdoc_docs  ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js"
+   "jsdoc": "./node_modules/.bin/jsdoc *.js  -c ./docs/jdocs_conf/conf.json"
  ```
 
-[see here for jsodc tags to use](https://github.com/voxmedia/411/wiki/Javascript-Style-and-Syntax-Guide#important-comments)
+See `/docs/jdocs_conf/conf.json` for the config options,that specify which files to include, exclude etc..
+
+
+
+### Updating developer's tutorial 
+To add or update a tutorial in the developer documentation tutorials, go to `/docs/_posts/tutorial` where you can find the markdown files.
+
+[Jsdoc allows to link to tutorial](http://usejsdoc.org/about-tutorials.html) in documentation. In this project this is used for topics that might deserve a standalone explanation [such as the one on the EDL format](/jsdoc_docs/tutorial-EDL_format.html).
 
