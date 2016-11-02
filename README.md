@@ -62,6 +62,35 @@ The `/cache` folder is used by deploy to keep the latest version needed to build
 ## Contributing
 Feel free to get in touch with any questions. Fork the project and send me a pull request.
 
+### Workflow 
+If you want to collaborate please keep to the following workflow:
+
+#### New feature
+Create a remote branch first from `develop` by using the naming convention:
+
+- `FEATURE/AEDEV-[progressive number] - [description]`
+
+Than do a checkout on your machine.
+
+_**Please make yourself sure the number chosed for the new branch is always the latest.**_
+
+#### Bugfixing
+Create a remote branch first from `develop` by using the naming convention:
+
+- `BUGFIX/AEDEV-[progressive number] - [description]`
+
+Than do a checkout on your machine.
+
+_**Please make yourself sure the number chosed for the new branch is always the latest.**_
+
+#### Pull Requests
+Once finished please send a _Pull Request_ (**PR**) on `develop`. 
+This will be merged on the `develop` branch at first, then tested and eventually the branch `develop` will be merged in `master` when a new release is due.
+
+Please also notice that the branch `master` is exclusively used for releases: **do not send _Pull Request_ on `master`. They will be rejected**
+
+#### I need to rework on a branch already merged
+First thing first you need to do a checkout on the local branch store on your computer. Afterwards do a pull from `develop` branch (it doesn't matter that it may be recognised as a not tracked branch. Proceed anyway) so that your local branch is always up-to-date before to start writing code. This will avoid too many confilcts when this branch will be merged again.
 
 ## Contributors
 
