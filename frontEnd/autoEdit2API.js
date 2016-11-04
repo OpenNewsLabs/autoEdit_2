@@ -62,84 +62,84 @@ autoEdit2API.create = function(model, success, error){
       model.set(transcription);
       //returning saved transcription callback
       success(model);
-    });
-
-    //setting up media folders for media and tmp media on local file system, user libary application support folder 
-    var tmpMediaFolder = window.config.dataPath+"/tmp_media";
-    var mediaFolder = window.config.dataPath+"/media";
-    //if media folder does not exists create it
-    if (!fs.existsSync(tmpMediaFolder)){
-      console.log("tmpMediaFolder folder not present, creating tmpMediaFolder folder");
-        fs.mkdirSync(tmpMediaFolder);
-    }else{
-      // do nothing, build folder was already there
-      console.log("tmpMediaFolder folder was already present");
-    }
-    //if temp media folder does not exists create it
-    if (!fs.existsSync(mediaFolder)){
-      console.log("mediaFolder folder not present, creating mediaFolder folder");
-        fs.mkdirSync(mediaFolder);
-    }else{
-      // do nothing, build folder was already there
-      console.log("mediaFolder folder was already present");
-    }
-
-    // using interactive_transcription_generator to generate metadata, 
-    // transcription json 
-    // webm video preview 
-    transcription_generate({
-      id: transcription._id,
-      videoUrl: newElement.videoUrl,
-      title: newElement.title,
-      description: newElement.description,
-      //TODO: this is hardcoded, and this variable is not used, fix me!
-      // tmpWorkFolder:"/",
-      // destFolder:"/media",
-      tmpWorkFolder: tmpMediaFolder,
-      destFolder: mediaFolder,
-      keys: global.keys,
-      languageModel: newElement.languageModel,
-      sttEngine: newElement.sttEngine,
-      cbMetadata:function(respM){
-        //update current transcription with metadata data
-        Transcription.findOne({ _id: respM.id }, function (err, trs) {
-          console.info("got metadata for transcription: "+transcription._id);
-          trs.metadata = respM;
-          //saving current transcription
-          trs.save(function(err) {
-
-            // app.trigger('updateTranscription:'+trs._id);
-          });
-        });
-      },
-      cbTranscription: function(resp){
-        //updating current transcription with transcription json.
-        Transcription.findOne({ _id: resp.id }, function (err, trs) {
-          console.info("got transcription json for transcription: "+ trs._id);
-          //updating transcription attributes with result
-          trs.audioFile = resp.audioFile;
-          trs.processedAudio = resp.processedAudio;
-          trs.text = resp.text;
-          trs.status = resp.status;
-          //saving current transcription 
-          trs.save(function(err) {
-            // app.trigger('updateTranscription:'+trs._id);
-          });
-        });
-      },
-      cbVideo: function(resp){
-        //updating current transcription with webm html5 video preview.
-        Transcription.findOne({ _id: resp.id}, function (err, trs) {
-          console.info("got video webm back for transcription: "+ trs._id);
-          //updating transcription attributes with result
-          trs.videoOgg = resp.videoOgg;
-          trs.processedVideo = resp.processedVideo;
-          //saving current transcription 
-          trs.save(function(err) {
-            // app.trigger('updateTranscription:'+trs._id);
-          });
-        });
+  
+      //setting up media folders for media and tmp media on local file system, user libary application support folder 
+      var tmpMediaFolder = window.config.dataPath+"/tmp_media";
+      var mediaFolder = window.config.dataPath+"/media";
+      //if media folder does not exists create it
+      if (!fs.existsSync(tmpMediaFolder)){
+        console.log("tmpMediaFolder folder not present, creating tmpMediaFolder folder");
+          fs.mkdirSync(tmpMediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("tmpMediaFolder folder was already present");
       }
+      //if temp media folder does not exists create it
+      if (!fs.existsSync(mediaFolder)){
+        console.log("mediaFolder folder not present, creating mediaFolder folder");
+          fs.mkdirSync(mediaFolder);
+      }else{
+        // do nothing, build folder was already there
+        console.log("mediaFolder folder was already present");
+      }
+
+      // using interactive_transcription_generator to generate metadata, 
+      // transcription json 
+      // webm video preview 
+      transcription_generate({
+        id: transcription._id,
+        videoUrl: newElement.videoUrl,
+        title: newElement.title,
+        description: newElement.description,
+        //TODO: this is hardcoded, and this variable is not used, fix me!
+        // tmpWorkFolder:"/",
+        // destFolder:"/media",
+        tmpWorkFolder: tmpMediaFolder,
+        destFolder: mediaFolder,
+        keys: global.keys,
+        languageModel: newElement.languageModel,
+        sttEngine: newElement.sttEngine,
+        cbMetadata:function(respM){
+          //update current transcription with metadata data
+          Transcription.findOne({ _id: respM.id }, function (err, trs) {
+            console.info("got metadata for transcription: "+transcription._id);
+            trs.metadata = respM;
+            //saving current transcription
+            trs.save(function(err) {
+
+              // app.trigger('updateTranscription:'+trs._id);
+            });
+          });
+        },
+        cbTranscription: function(resp){
+          //updating current transcription with transcription json.
+          Transcription.findOne({ _id: resp.id }, function (err, trs) {
+            console.info("got transcription json for transcription: "+ trs._id);
+            //updating transcription attributes with result
+            trs.audioFile = resp.audioFile;
+            trs.processedAudio = resp.processedAudio;
+            trs.text = resp.text;
+            trs.status = resp.status;
+            //saving current transcription 
+            trs.save(function(err) {
+              // app.trigger('updateTranscription:'+trs._id);
+            });
+          });
+        },
+        cbVideo: function(resp){
+          //updating current transcription with webm html5 video preview.
+          Transcription.findOne({ _id: resp.id}, function (err, trs) {
+            console.info("got video webm back for transcription: "+ trs._id);
+            //updating transcription attributes with result
+            trs.videoOgg = resp.videoOgg;
+            trs.processedVideo = resp.processedVideo;
+            //saving current transcription 
+            trs.save(function(err) {
+              // app.trigger('updateTranscription:'+trs._id);
+            });
+          });
+        }
+      });
     });
   }
 }

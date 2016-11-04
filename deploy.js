@@ -42,7 +42,7 @@ var nw = new NwBuilder({
   files: ['./frontEnd/**','./interactive_transcription_generator/**','./node_modules/**','./config.js','./package.json' ], 
   // platforms: ['osx32', 'osx64', 'win32', 'win64', 'linux32', 'linux64']
   //for now only osx64 as need to recompile ffmpeg for other versions. 
-  platforms: ['osx64','win64'],
+  platforms: ['osx64'],
   //https://github.com/nwjs/nw-builder#optionsmacicns
   macIcns: "./nw.icns",
   // MAC ONLY: Pass a string containing the path to your own plist file. If a string isn't passed, a plist file will be generated from your package.json. Pass an object to overwrite or add properties to the generated plist file.

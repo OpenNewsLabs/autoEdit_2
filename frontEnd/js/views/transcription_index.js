@@ -76,7 +76,7 @@ app.TranscriptionListElement = Backbone.View.extend({
     if (r == true) {
       this.model.destroy({success: function(model, response) {
         // app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
-        // Backbone.history.navigate("transcriptions", {trigger:true}); 
+        Backbone.history.navigate("transcriptions", {trigger:true}); 
       }})
     } else {
       alert("Transcription was not deleted")

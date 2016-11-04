@@ -137,7 +137,13 @@ function readVideoMetadataForEDL(config){
     }
 
     //returning metadata EDL info 
-    if(callback){callback(video)}else{ return video };
+    if(callback){
+      console.info("inside metada module");
+      console.warn(video);
+      callback(video);
+    }else{ 
+      return video 
+    };
   });
 }
 

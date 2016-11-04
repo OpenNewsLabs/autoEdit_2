@@ -152,6 +152,8 @@ var generate = function(config) {
     callback: function(respMetadata){
       console.info("---> read metadata: "+videoFile);
       //callback for metadata result
+      console.info("inside interactive_transcription_generator");
+      console.warn(respMetadata);
       if(config.cbMetadata){
         config.cbMetadata(respMetadata);
       }

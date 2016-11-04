@@ -10,7 +10,9 @@ As well as some apps that were made either along side or before that influenced 
 - EDL Composer
 - Srt Composer
 - Date now
-- Transcriber (IBM Watson STT)
+- Transcriber 
+	- (IBM Watson STT)
+	- Gentle STT
 - Metadata Reader
 - HTML5 Webm Video converter
 
@@ -19,9 +21,10 @@ As well as some apps that were made either along side or before that influenced 
 
 - [srt_parser_composer](https://github.com/pietrop/srtParserComposer) [on npm](https://www.npmjs.com/package/srt_parser_composer)
 - HTML5 Ogg Video converter 
-- Captions burner 
-- Twitter video api export 
-- Video trimmer 
+- [Captions burner](https://voxmedia.github.io/captions_burner/)
+- [Twitter video api export](https://github.com/pietrop/quickQuoteNode/tree/master/lib/interactive_video_components/export/twitter_video)
+- [Video trimmer](https://github.com/pietrop/quickQuoteNode/blob/master/lib/interactive_video_components/export/twitter_video/trim_video.js)
+- [CMU sphinx `offline_speech_to_text`](https://github.com/OpenNewsLabs/offline_speech_to_text)
 
 
 ### Related proejcts

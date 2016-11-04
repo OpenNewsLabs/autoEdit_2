@@ -80,5 +80,6 @@ $(document).ready(function(){
   Backbone.history.start();
   app.transcriptionRouter = new TranscriptionRouter();
   //TODO: not sure if this is the right thing to do 
+  // app.transcriptionRouter.naviate("home",{trigger: true});
   window.location = "index.html#transcriptions";
 })
