@@ -1,7 +1,7 @@
 /*
  * @file Simple script to automate the deployment of the app.
  */
-var fs = require("fs");
+var fs = require('fs');
 var NwBuilder = require('nw-builder');
 
 var buildDir = './build';
@@ -23,7 +23,7 @@ var nw = new NwBuilder({
   //for now only osx64 as need to recompile ffmpeg for other versions.
   platforms: ['osx64', 'win64'], // ['osx32', 'osx64', 'win32', 'win64', 'linux32', 'linux64']
   // https://github.com/nwjs/nw-builder#optionsmacicns
-  macIcns: "./nw.icns",
+  macIcns: 'assets/nw.icns',
   version: '0.12.3', // of nwjs to use
   buildDir: buildDir
 });
@@ -31,7 +31,7 @@ var nw = new NwBuilder({
 /**
  * Building/deploying the app in build folder.
  */
-console.log("About to package the app");
+console.log('About to package the app');
 
 nw.build().then(function () {
   console.log('Finished packaging the app');

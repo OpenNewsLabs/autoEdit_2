@@ -13,7 +13,7 @@
     "fullscreen": false,
     "show_in_taskbar": true,
     "transparent": false,
-    "icon": "nw.icns",
+    "icon": "assets/nw.icns",
     "width": 800,
     "height": 670,
     "position": "mouse",
