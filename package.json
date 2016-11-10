@@ -22,14 +22,28 @@
     "min_height": 500
   },
   "platformOverrides": {
-    "win": { "window": { "toolbar": false } },
-    "osx": { "window": { "toolbar": false } },
-    "linux": { "window": { "toolbar": false } }
+    "win": {
+      "window": {
+        "toolbar": false
+      }
+    },
+    "osx": {
+      "window": {
+        "toolbar": false
+      }
+    },
+    "linux": {
+      "window": {
+        "toolbar": false
+      }
+    }
   },
   "scripts": {
     "test": "jasmine",
     "start": "nw",
-    "build": "node deploy.js",
+    "watch_js": "watchify lib/app.js --verbose --poll -o frontEnd/app.js",
+    "make_nw": "node build.js",
+    "make_js": "browserify lib/app.js > frontEnd/app.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
     "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch",
     "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
@@ -40,13 +54,17 @@
   "dependencies": {
     "app-module-path": "^1.1.0",
     "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
     "fluent-ffmpeg": "^2.1.0",
     "fs-extra": "^0.30.0",
     "install": "^0.8.1",
-    "jquery": "2.1.0",
+    "jquery": "^2.1.0",
     "linvodb3": "^3.24.0",
     "medea": "^1.0.3",
     "medeadown": "^1.1.8",
+    "moment": "^2.15.2",
+    "mousetrap": "^1.6.0",
+    "node-timecodes": "^2.4.1",
     "nw": "^0.12.3",
     "path": "^0.12.7",
     "request": "^2.75.0",
@@ -54,8 +72,50 @@
     "watson-developer-cloud": "^2.4.1"
   },
   "devDependencies": {
-    "jsdoc": "^3.4.1",
     "appdmg": "^0.4.5",
-    "nw-builder": "^2.2.6"
+    "browserify": "^13.1.1",
+    "browserify-shim": "^3.8.12",
+    "jsdoc": "^3.4.1",
+    "node-underscorify": "0.0.14",
+    "nw-builder": "^2.2.6",
+    "underscorify": "^1.0.0",
+    "watchify": "^3.7.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "node-underscorify",
+        {
+          "extensions": [
+            "ejs"
+          ],
+          "requires": [
+            {
+              "variable": "_",
+              "module": "underscore"
+            }
+          ]
+        }
+      ],
+      "browserify-shim"
+    ]
+  },
+  "browser": {
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
+    "backbone.mousetrap": "./vendor/backbone.mousetrap"
+  },
+  "browserify-shim": {
+    "bootstrap": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "backbone.mousetrap": {
+      "depends": [
+        "jquery:jQuery",
+        "underscore:_",
+        "backbone:Backbone"
+      ]
+    }
   }
 }

@@ -6,9 +6,19 @@
   "extends": "eslint:recommended",
   "rules": {
     "no-console": "off",
+    "no-trailing-spaces": "error",
+    "no-whitespace-before-property": "error",
+    "require-jsdoc": "warn",
+    "space-before-blocks": "error",
+    "space-in-parens": "error",
+    "space-infix-ops": "error",
+    "space-unary-ops": "error",
+    "spaced-comment": "error",
     "indent": [ "error", 2 ],
     "linebreak-style": [ "error", "unix" ],
-    "quotes": [ "error", "single" ],
-    "semi": [ "error", "always" ]
+    "quotes": [ "error", "single", { "avoidEscape": true } ],
+    "semi": [ "error", "always" ],
+    "key-spacing": "error",
+    "keyword-spacing": "error"
   }
 }
