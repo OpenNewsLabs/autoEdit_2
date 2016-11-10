@@ -70,3 +70,5 @@ demo_media
 build
 
 cache
+
+frontEnd/app.js
