@@ -13,7 +13,7 @@
 
 var fs = require('fs');
 var LinvoDB = require('linvodb3');
-var transcription_generate = require('../interactive_transcription_generator/index.js');
+var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
 var medeadown = require('medeadown');
 
 var dataPath = window.nw.App.dataPath;

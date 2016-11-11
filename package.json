@@ -41,12 +41,12 @@
   "scripts": {
     "test": "jasmine",
     "start": "nw",
-    "watch_js": "watchify lib/app.js --verbose --poll -o frontEnd/app.js",
+    "watch_js": "watchify lib/app/app.js --verbose --poll -o frontEnd/app.js",
     "make_nw": "node build.js",
-    "make_js": "browserify lib/app.js > frontEnd/app.js",
+    "make_js": "browserify lib/app/app.js > frontEnd/app.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
     "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch",
-    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
+    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./lib/**/*.js",
     "jsdoc": "jsdoc *.js  -c ./docs/jdocs_conf/conf.json"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
