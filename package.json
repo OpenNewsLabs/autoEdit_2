@@ -69,6 +69,7 @@
     "path": "^0.12.7",
     "request": "^2.75.0",
     "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4",
     "watson-developer-cloud": "^2.4.1"
   },
   "devDependencies": {
@@ -78,6 +79,7 @@
     "jsdoc": "^3.4.1",
     "node-underscorify": "0.0.14",
     "nw-builder": "^2.2.6",
+    "require-globify": "^1.4.1",
     "underscorify": "^1.0.0",
     "watchify": "^3.7.0"
   },
@@ -97,7 +99,7 @@
           ]
         }
       ],
-      "browserify-shim"
+      "browserify-shim", "require-globify"
     ]
   },
   "browser": {
