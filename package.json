@@ -82,7 +82,6 @@
     "node-underscorify": "0.0.14",
     "nw-builder": "^2.2.6",
     "require-globify": "^1.4.1",
-    "underscorify": "^1.0.0",
     "watchify": "^3.7.0"
   },
   "browserify": {
