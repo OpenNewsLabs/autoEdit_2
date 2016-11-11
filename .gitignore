@@ -71,4 +71,4 @@ build
 
 cache
 
-frontEnd/app.js
+nwjs/app.js

@@ -17,8 +17,7 @@ if ( !fs.existsSync(buildDir) ) { fs.mkdirSync(buildDir); }
 var nw = new NwBuilder({
   //chosing files to include, excludes everything else.
   files: [
-    './frontEnd/**', './interactive_transcription_generator/**',
-    './node_modules/**', './config.js', './package.json'
+    './nwjs/**', './lib/**', './node_modules/**', './config.js', './package.json'
   ],
   //for now only osx64 as need to recompile ffmpeg for other versions.
   platforms: ['osx64', 'win64'], // ['osx32', 'osx64', 'win32', 'win64', 'linux32', 'linux64']

@@ -2,7 +2,7 @@
   "name": "autoEdit2",
   "version": "1.0.3",
   "description": "Text based video editing app",
-  "main": "frontEnd/index.html",
+  "main": "nwjs/index.html",
   "chromium-args": "--mixed-context",
   "dom_storage_quota": 5,
   "window": {
@@ -41,12 +41,12 @@
   "scripts": {
     "test": "jasmine",
     "start": "nw",
-    "watch_js": "watchify lib/app/app.js --verbose --poll -o frontEnd/app.js",
+    "watch_js": "watchify lib/app/app.js --verbose --poll -o nwjs/app.js",
     "make_nw": "node build.js",
-    "make_js": "browserify lib/app/app.js > frontEnd/app.js",
+    "make_js": "browserify lib/app/app.js > nwjs/app.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
-    "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch",
-    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./lib/**/*.js",
+    "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
+    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
     "jsdoc": "jsdoc *.js  -c ./docs/jdocs_conf/conf.json"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
