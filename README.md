@@ -3,6 +3,9 @@
 Fast text based video editing deesktop app for Mac OSX. Built in node NWJS and backbone.
 Making video production faster, easier and more accessible.
 
+
+If you are looking for the [latest packaged release ready to use](https://github.com/OpenNewsLabs/autoEdit_2/releases) see the [user manual](http://www.autoedit.io/user_manual/usage.html) and [project page](http://www.autoedit.io/).
+
 ![Transcription ](/docs/img/gif/3_transcription.gif)
 
 Uses [NWJS boilerplate](https://github.com/pietrop/nwjs_boilerplate)  as a starting point.
