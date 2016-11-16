@@ -13,12 +13,10 @@ It is built in node NWJS and backbone.
 ## Ready to use release 
 
 See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
-All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
-
-And the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
+All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) and the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
 
 
-## Overview of how the app works
+## Overview 
 
 The app uses IBM watson or Gentle open source Speech To Text systems to generate transcription.
 The user can then select text and export a video sequence to the video editing software of choice.
@@ -94,7 +92,7 @@ npm run make_dmg
 
 ## Documentation 
 
-For more info check out the [project documentaiton](http://www.autoedit.io/jsdoc_docs/)
+For more info check out the [project documentation](http://www.autoedit.io/jsdoc_docs/)
 
 ---
 
