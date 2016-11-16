@@ -10,10 +10,12 @@ It is built in node NWJS and backbone.
 
 ![Transcription ](/docs/img/gif/3_transcription.gif)
 
-<!-- Uses [NWJS boilerplate](https://github.com/pietrop/nwjs_boilerplate)  as a starting point. -->
+## Ready to use release 
 
-Is designed so that the front end in backbone can be used as standalone static site. Which is how 
-[the demo](https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html#transcriptions) is run, with an hard coded backbone collection.
+See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
+All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
+
+And the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
 
 
 ## Overview of how the app works
@@ -23,12 +25,10 @@ The user can then select text and export a video sequence to the video editing s
 
 ![Overview diagram ](/docs/img/tutorial/0_diagram.png)
 
-## Ready to use release 
+<!-- Uses [NWJS boilerplate](https://github.com/pietrop/nwjs_boilerplate)  as a starting point. -->
 
-See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
-All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
-
-And the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
+Is designed so that the front end in backbone can be used as standalone static site. Which is how 
+[the demo](https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html#transcriptions) is run, with an hard coded backbone collection.
 
 
 ## Development
