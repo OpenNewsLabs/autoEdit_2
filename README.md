@@ -86,6 +86,11 @@ To create a dmg for distributing the app for OS X.
 npm run make_dmg
 ```
 
+
+## Documentation 
+
+For more info check out the [project documentaiton](http://www.autoedit.io/jsdoc_docs/)
+
 ---
 
 ## Contributing
