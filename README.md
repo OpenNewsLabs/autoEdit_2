@@ -1,7 +1,12 @@
 # autoEdit V2
 
 autoEdit 2 is a text based video editing Mac OS X desktop app for making video production faster, easier and more accessible.
-It creates automatic transcription from a video or audio file. The user can make text selections and export those selections as a video sequence in the editing software of choice. It is built in node NWJS and backbone. 
+
+1. It creates automatic transcription from a video or audio file
+2. the user can make text selections 
+3. export those selections as a video sequence in the editing software of choice
+
+It is built in node NWJS and backbone. 
 
 ![Transcription ](/docs/img/gif/3_transcription.gif)
 
