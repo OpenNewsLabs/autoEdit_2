@@ -41,7 +41,7 @@
   "scripts": {
     "test": "jasmine",
     "start": "nw",
-    "watch_js": "watchify lib/app/app.js --verbose --poll -o nwjs/app.js",
+    "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
     "make_nw": "node build.js",
     "make_js": "browserify lib/app/app.js > nwjs/app.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
