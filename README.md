@@ -27,9 +27,9 @@ All you need to get started is IBM Watson API Blumix keys. [Check out the guide 
 And the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
 
 
-## Launching the app 
+## Development
 
-### development 
+### Launching the app
 
 ```bash
 npm install
@@ -49,7 +49,7 @@ npm start
 
 You'd also need to get IBM watson STT keys or have the Gentle Open source app running locally [see the guide for instructions on setting this up ](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html)
 
-### For build packaging 
+### Building/packaging the app
 
 #### 1 install dependencies 
 ```bash
