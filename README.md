@@ -86,6 +86,7 @@ To create a dmg for distributing the app for OS X.
 npm run make_dmg
 ```
 
+---
 
 ## Documentation 
 
