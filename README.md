@@ -53,6 +53,14 @@ You'd also need to get IBM watson STT keys or have the Gentle Open source app ru
 
 ### Building/packaging the app
 
+Do it with one comand
+
+```
+npm run build
+```
+
+or in 3 steps 
+
 #### 1 install dependencies 
 ```bash
 npm install
@@ -87,6 +95,7 @@ To create a dmg for distributing the app for OS X.
 ````
 npm run make_dmg
 ```
+
 
 ---
 

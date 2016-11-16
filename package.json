@@ -40,14 +40,15 @@
   },
   "scripts": {
     "test": "jasmine",
-    "start": "nw",
     "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
-    "make_nw": "node build.js",
+    "start": "nw",
     "make_js": "browserify lib/app/app.js > nwjs/app.js",
+    "make_nw": "node build.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
     "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
     "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
-    "jsdoc": "jsdoc *.js  -c ./docs/jdocs_conf/conf.json"
+    "jsdoc": "jsdoc *.js  -c ./docs/jdocs_conf/conf.json",
+    "build": "npm run make_js && npm run make_nw && npm run make_dmg"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "ISC",
