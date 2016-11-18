@@ -120,35 +120,37 @@ DB.create = function(model, success, error) {
         keys: window.IBMWatsonKeys,
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
-        cbMetadata: function(resp) {
+        cbMetadata: function(respM) {
+          console.log("respM");
+          console.log(respM);
           // update current transcription with metadata data
-          Transcription.findOne({ _id: resp.id }, function (err, trs) {
+          Transcription.findOne({ _id: respM.id }, function (err, trs) {
             console.debug('got metadata for transcription: ' + trs._id);
-            trs.metadata = resp;
+            trs.metadata = respM;
             // saving current transcription
             trs.save(function(err) { if (err) console.error(err); });
           });
         },
-        cbTranscription: function(resp) {
+        cbTranscription: function(respT) {
           // updating current transcription with transcription json.
-          Transcription.findOne({ _id: resp.id }, function (err, trs) {
+          Transcription.findOne({ _id: respT.id }, function (err, trs) {
             console.debug('got transcription json for transcription: ' + trs._id);
             // updating transcription attributes with result
-            trs.audioFile = resp.audioFile;
-            trs.processedAudio = resp.processedAudio;
-            trs.text = resp.text;
-            trs.status = resp.status;
+            trs.audioFile = respT.audioFile;
+            trs.processedAudio = respT.processedAudio;
+            trs.text = respT.text;
+            trs.status = respT.status;
             // saving current transcription
             trs.save(function(err) { if (err) console.error(err); });
           });
         },
-        cbVideo: function(resp) {
+        cbVideo: function(respV) {
           // updating current transcription with webm html5 video preview.
-          Transcription.findOne({ _id: resp.id }, function (err, trs) {
+          Transcription.findOne({ _id: respV.id }, function (err, trs) {
             console.debug('got video webm back for transcription: ' + trs._id);
             // updating transcription attributes with result
-            trs.videoOgg = resp.videoOgg;
-            trs.processedVideo = resp.processedVideo;
+            trs.videoOgg = respV.videoOgg;
+            trs.processedVideo = respV.processedVideo;
             // saving current transcription
             trs.save(function(err) { if (err) console.error(err); });
           });

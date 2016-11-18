@@ -53,6 +53,7 @@
   <!-- Setup database and nwjs stuff -->
   <script>
   if (typeof require !== 'undefined') {
+    console.debug("In Nwjs Enviroment");
     window.frontEndEnviromentNWJS = true;
     window.nw = require('nw.gui');
     window.DB = require('./db.js');
@@ -60,6 +61,7 @@
       window.IBMWatsonKeys = keys;
     })
   } else {
+    console.debug("In Browser Enviroment");
     window.frontEndEnviromentNWJS = false;
   }
   </script>
