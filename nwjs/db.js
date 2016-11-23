@@ -124,29 +124,43 @@ DB.create = function(model, success, error) {
           console.log("respM");
           console.log(respM);
           // update current transcription with metadata data
-          Transcription.findOne({ _id: respM.id }, function (err, trs) {
+          Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             console.debug('got metadata for transcription: ' + trs._id);
+            console.log(trs);
             trs.metadata = respM;
+            console.log("inside transcription find after assigning trs.to meta");
+            console.log(trs.metadata);
             // saving current transcription
-            trs.save(function(err) { if (err) console.error(err); });
+            trs.save(function(err) { 
+              console.log("trs");
+              console.log(trs);
+              if (err) console.error(err); 
+            });
           });
         },
         cbTranscription: function(respT) {
           // updating current transcription with transcription json.
-          Transcription.findOne({ _id: respT.id }, function (err, trs) {
+          Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             console.debug('got transcription json for transcription: ' + trs._id);
+            console.log(trs);
             // updating transcription attributes with result
             trs.audioFile = respT.audioFile;
             trs.processedAudio = respT.processedAudio;
             trs.text = respT.text;
-            trs.status = respT.status;
+            trs.status = true;
             // saving current transcription
-            trs.save(function(err) { if (err) console.error(err); });
+            trs.save(function(err) { 
+              console.warn("does the transcription contain the metadata");
+               console.warn(trs.metadata);
+               console.log(trs);
+               model.set(trs);
+
+              if (err) console.error(err); });
           });
         },
         cbVideo: function(respV) {
           // updating current transcription with webm html5 video preview.
-          Transcription.findOne({ _id: respV.id }, function (err, trs) {
+          Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             console.debug('got video webm back for transcription: ' + trs._id);
             // updating transcription attributes with result
             trs.videoOgg = respV.videoOgg;
@@ -174,14 +188,14 @@ DB.read = function(model, success, error) {
   if (model.models) {
     console.debug('DB.read', 'Collection', model.constructor.modelType);
     // for transcription model
-    if (model.constructor.modelType == 'transcriptions') {
+    if (model.constructor.modelType === 'transcriptions') {
       // look in database
       Transcription.find({}, makeLinvoCallback(success, error));
     }// if transcription collection
   } else {
     console.debug('DB.read', 'Model', model.constructor.modelType, model._id);
     // for transcription model
-    if (model.constructor.modelType == 'transcription') {
+    if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
       Transcription.findOne({ _id: model._id }, makeLinvoCallback(success, error));
     }
