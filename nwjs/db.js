@@ -193,11 +193,11 @@ DB.read = function(model, success, error) {
       Transcription.find({}, makeLinvoCallback(success, error));
     }// if transcription collection
   } else {
-    console.debug('DB.read', 'Model', model.constructor.modelType, model._id);
+    console.debug('DB.read', 'Model', model.constructor.modelType, model.get('_id'));
     // for transcription model
     if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
-      Transcription.findOne({ _id: model._id }, makeLinvoCallback(success, error));
+      Transcription.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }
   }
 };
@@ -283,12 +283,12 @@ DB.delete = function(model, success, error) {
     // looks in database using transcription id
     // worth looking into alternative
     // https://github.com/Ivshti/linvodb3#removing-from-the-collection
-    Transcription.remove({ _id: model._id }, {multi: false }, function (err, numRemoved) {
+    Transcription.remove({ _id: model.get('_id') }, {multi: false }, function (err, numRemoved) {
       if (err) {
         console.error(err);
         error(err);
       } else if (numRemoved < 1) {
-        var msg = "Couldn't delete transcription " + model._id;
+        var msg = "Couldn't delete transcription " + model.get('_id');
         console.error(msg);
         error(msg);
       } else {

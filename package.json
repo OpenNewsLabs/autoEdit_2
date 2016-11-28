@@ -48,7 +48,8 @@
     "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
     "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
     "jsdoc": "jsdoc *.js  -c ./docs/jdocs_conf/conf.json",
-    "build": "npm run make_js && npm run make_nw && npm run make_dmg"
+    "build": "npm run make_js && npm run make_nw && npm run make_dmg",
+    "start_make_js":"npm run make_js && npm start"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "ISC",
