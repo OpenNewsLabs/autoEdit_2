@@ -1,58 +1,123 @@
 {
-    "name": "autoEdit2",
-    "version": "1.0.4",
-    "description": "Text based video editing app",
-    "main": "frontEnd/index.html",
-    "chromium-args": "--mixed-context",
-    "dom_storage_quota": 5,
-    "window": {
-        "show": true,
-        "frame": true,
-        "toolbar": true,
-        "always_on_top": false,
-        "fullscreen": false,
-        "show_in_taskbar": true,
-        "transparent": false,
-        "icon": "nw.icns",
-        "width": 800,
-        "height": 670,
-        "position": "mouse",
-        "min_width": 770,
-        "max_width": 1300,
-        "min_height": 500
+  "name": "autoEdit2",
+  "version": "1.0.5",
+  "description": "Text based video editing app",
+  "main": "nwjs/index.html",
+  "chromium-args": "--mixed-context",
+  "dom_storage_quota": 5,
+  "window": {
+    "show": true,
+    "frame": true,
+    "toolbar": true,
+    "always_on_top": false,
+    "fullscreen": false,
+    "show_in_taskbar": true,
+    "transparent": false,
+    "icon": "assets/nw.icns",
+    "width": 800,
+    "height": 670,
+    "position": "mouse",
+    "min_width": 770,
+    "max_width": 1300,
+    "min_height": 500
+  },
+  "platformOverrides": {
+    "win": {
+      "window": {
+        "toolbar": false
+      }
     },
-    "scripts": {
-        "test": "jasmine",
-        "start": "nw",
-        "build": "node deploy.js",
-        "dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
-        "page": "jekyll serve  --source ./docs --destination ./docs/_site --watch",
-        "docco": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js",
-        "jsdoc": "./node_modules/.bin/jsdoc *.js  -c ./docs/jdocs_conf/conf.json"
+    "osx": {
+      "window": {
+        "toolbar": false
+      }
     },
-    "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
-    "license": "ISC",
-    "dependencies": {
-        "app-module-path": "^1.1.0",
-        "appdmg": "^0.4.5",
-        "backbone": "^1.3.3",
-        "bingspeech-api-client": "^2.0.1",
-        "fluent-ffmpeg": "^2.1.0",
-        "fs-extra": "^0.30.0",
-        "install": "^0.8.1",
-        "jquery": "2.1.0",
-        "jsdoc": "^3.4.1",
-        "linvodb3": "^3.24.0",
-        "lodash": "^4.15.0",
-        "medea": "^1.0.3",
-        "medeadown": "^1.1.8",
-        "npm": "^3.10.6",
-        "nw": "^0.12.3",
-        "nw-builder": "^2.2.6",
-        "path": "^0.12.7",
-        "request": "^2.75.0",
-        "underscore": "^1.8.3",
-        "watson-developer-cloud": "^2.4.1"
+    "linux": {
+      "window": {
+        "toolbar": false
+      }
+    }
+  },
+  "scripts": {
+    "test": "jasmine",
+    "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
+    "start": "nw",
+    "make_js": "browserify lib/app/app.js > nwjs/app.js",
+    "make_nw": "node build.js",
+    "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
+    "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
+    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
+    "jsdoc": "jsdoc *.js  -c ./config/jsdoc_conf.json",
+    "build": "npm run make_js && npm run make_nw && npm run make_dmg",
+    "start_make_js":"npm run make_js && npm start"
+  },
+  "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
+    "browserify-shim": "^3.8.12",
+    "file-saver": "^1.3.3",
+    "fluent-ffmpeg": "^2.1.0",
+    "jquery": "1.12.4",
+    "linvodb3": "^3.24.0",
+    "medeadown": "^1.1.8",
+    "moment": "^2.15.2",
+    "mousetrap": "^1.6.0",
+    "node-timecodes": "^2.4.1",
+    "node-underscorify": "0.0.14",
+    "nw": "^0.12.3",
+    "path": "^0.12.7",
+    "require-globify": "^1.4.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4",
+    "watson-developer-cloud": "^2.4.1"
+  },
+  "devDependencies": {
+    "appdmg": "^0.4.5",
+    "browserify": "^13.1.1",
+    "docco": "^0.7.0",
+    "jasmine": "^2.5.2",
+    "jsdoc": "^3.4.1",
+    "nw-builder": "^2.2.6",
+    "watchify": "^3.7.0"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "node-underscorify",
+        {
+          "extensions": [
+            "ejs"
+          ],
+          "requires": [
+            {
+              "variable": "_",
+              "module": "underscore"
+            }
+          ]
+        }
+      ],
+      "browserify-shim",
+      "require-globify"
+    ]
+  },
+  "browser": {
+    "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
+    "backbone.mousetrap": "./vendor/backbone.mousetrap.js"
+  },
+  "browserify-shim": {
+    "bootstrap": {
+      "depends": [
+        "jquery:jQuery"
+      ]
     },
-    "devDependencies": {}
+    "backbone.mousetrap": {
+      "depends": [
+        "underscore:_",
+        "backbone:Backbone",
+        "mousetrap:Mousetrap"
+      ]
+    }
+  }
 }

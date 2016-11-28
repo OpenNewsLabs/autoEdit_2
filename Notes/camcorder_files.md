@@ -1,1 +1,0 @@
-Working with files from camcorders 

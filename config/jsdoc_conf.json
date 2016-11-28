@@ -1,0 +1,35 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc","closure"]
+    },
+    "source": {
+        "include": [ "lib/","nwjs/","build.js","nwjs/index.html"],
+        "exclude": ["docs/", "cache/","build/","node_modules/","Notes/","spec/","appdmg.json","package.json","README.md", "wttskeys.json","wttskeys_dev.json", "nwjs/app.js"],
+        "includePattern": ".+\\.js(doc|x)?$",
+        "excludePattern": "(^|\\/|\\\\)_"
+    },
+    "plugins": ["plugins/markdown"],
+    "markdown": {
+        "excludeTags": ["author"],
+        "tags": ["foo", "bar"],
+        "hardwrap": true
+    },
+    "templates": {
+        "cleverLinks": false,
+        "monospaceLinks": false
+    },
+    "opts": {
+        "encoding": "utf8",            
+        "destination": "./docs/jsdoc_docs/",        
+        "recurse": true,                  
+        "tutorials": "./docs/_posts/tutorials",
+        "readme": "./docs/_posts/tutorials/intro.md"
+    }
+}
+
+
+
+
+
+

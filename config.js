@@ -1,4 +1,4 @@
-var config ={
-  serverUrl: "",
-  appName : "autoEdit 2"
-}
+module.exports = {
+  serverUrl: '',
+  appName: 'autoEdit 2'
+};
