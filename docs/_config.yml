@@ -34,7 +34,7 @@ sections: [
 baseurl: ''
 
 github: "https://github.com/OpenNewsLabs/autoEdit_2"
-demo: "https://autoEdit.io/public/demo/index.html"
+demo: "https://opennewslabs.github.io/autoEdit_2/public/demo/index.html"
 download: "https://github.com/OpenNewsLabs/autoEdit_2/releases"
 guide: "https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html"
 
