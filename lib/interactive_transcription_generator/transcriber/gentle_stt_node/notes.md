@@ -40,7 +40,7 @@ curl -F "audio=@audio.mp3" -F "transcript=@words.txt" "http://localhost:8765/tra
 
 Example post request for watson
 
-```
+```javascript 
 var request = require('request');
 var fs = require('fs');
 
