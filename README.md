@@ -8,8 +8,10 @@ autoEdit 2 is a text based video editing Mac OS X desktop app for making video p
 
 It is built in node NWJS and backbone. 
 
-<!-- ![Transcription ](/docs/img/gif/3_transcription.gif) -->
+![Transcription ](/docs/img/gif/3_transcription.gif)
 
+
+Watch video overview on youtube 
 
 [![autoEdit2 Overview](http://img.youtube.com/vi/4z143-nJlzs/0.jpg)](http://www.youtube.com/watch?v=4z143-nJlzs" autoEdit2 Overview")
 
