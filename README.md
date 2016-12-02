@@ -12,7 +12,7 @@ It is built in node NWJS and backbone.
 
 ## Ready to use release 
 
-See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to downlaod latest packaged version ready to use. 
+See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to download latest packaged version ready to use. 
 All you need to get started is IBM Watson API Blumix keys. [Check out the guide section on this](https://opennewslabs.github.io/autoEdit_2/user_manual/setup.html) and the [user manual](https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html)
 
 
