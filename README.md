@@ -10,7 +10,8 @@ It is built in node NWJS and backbone.
 
 <!-- ![Transcription ](/docs/img/gif/3_transcription.gif) -->
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/4z143-nJlzs" frameborder="0" allowfullscreen></iframe>
+
+[![autoEdit2 Overview](http://img.youtube.com/vi/4z143-nJlzs/0.jpg)](http://www.youtube.com/watch?v=4z143-nJlzs" autoEdit2 Overview")
 
 ## Ready to use release 
 
