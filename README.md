@@ -10,7 +10,7 @@ It is built in node NWJS and backbone.
 
 ![Transcription ](/docs/img/gif/3_transcription.gif)
 
-Watch [video overview on youtube]((http://www.youtube.com/watch?v=4z143-nJlzs).
+Watch [video overview on youtube](http://www.youtube.com/watch?v=4z143-nJlzs).
 
 ## Ready to use release 
 
