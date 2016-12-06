@@ -9,7 +9,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <!-- Togethere JS  -->
+  <script src="https://togetherjs.com/togetherjs-min.js"></script>
   <script>
   if (typeof require !== 'undefined') {
     document.write('<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">');
@@ -40,6 +41,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
+          <li>   <button onclick="TogetherJS(this); return false;">Start TogetherJS</button> </li>
           <li ><a href="#transcriptions">Transcriptions</a></li>
           <li > <a href="#transcriptions/new">New</a> </li>
           <li><a href="https://opennewslabs.github.io/autoEdit_2"
@@ -48,6 +50,8 @@
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav><!-- NAVBAR END -->
+
+
 
   <div id="main"></div>
 
