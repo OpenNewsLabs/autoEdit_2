@@ -416,7 +416,80 @@ module.exports = Backbone.Model.extend({
         var srtLineO = srtJsonContent[i];
         // lines+=srtLineO.id+'\n';
         lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
-        lines += srtLineO.text + '\n\n';
+        //removing IBM hesitation marks if present
+        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
+
+      }
+
+      if (cb) {
+        cb(lines)
+      } else {
+        return head + '\n\n' + lines
+      };
+    }
+
+    loopThroughStuff(attr.text, function(res) {
+       result = createPlainTextTimecoded(res)
+    })
+
+
+    return result;
+
+  },
+ 
+    //TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
+    returnPlainText: function(attr) {
+    var result;
+    console.log(attr)
+
+    function loopThroughStuff(text, cb) {
+
+      var newLinesAr = []
+      var newLine = {}
+      var counter = 1
+
+      _.each(text, function(paragraphs) {
+          _.each(paragraphs.paragraph, function(paragraph) {
+              newLine.id = counter;
+              counter += 1
+
+              newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
+              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime)
+              newLine.speaker = paragraphs.speaker;
+              newLine.text = ''
+              _.each(paragraph.line, function(word) {
+                  // console.log(word)
+                  newLine.text += word.text + ' '
+                }) //line
+              newLinesAr.push(newLine)
+              newLine = {}
+            }) //paragraph
+        }) //paragraphs
+
+      cb(newLinesAr)
+    }
+
+
+    function createPlainTextTimecoded(srtJsonContent, cb) {
+      var lines = '';
+
+
+      var head = 'Transcription: ' + attr.title + '\n\n'
+      head += 'Description: ' + attr.description + '\n\n'
+      head += 'File name: ' + attr.metadata.fileName + '\n\n'
+      head += 'File path: ' + attr.metadata.filePathName + '\n\n'
+      head += 'Reel: ' + attr.metadata.reelName + '\n'
+      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n'
+      head += 'fps: ' + attr.metadata.fps + '\n'
+      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n'
+        // 
+      for (var i = 0; i < srtJsonContent.length; i++) {
+
+        var srtLineO = srtJsonContent[i];
+        // lines+=srtLineO.id+'\n';
+        // lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
+        //  //removing IBM hesitation marks if present
+        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
 
       }
 
@@ -458,7 +531,7 @@ var render = require('./views/utils').render;
 
 /**
  * Render a string or view to the main container on the page
- * @param {Object,String} string_or_view A string or backbone view
+ * @param {(Object|String)} string_or_view A string or backbone view
  **/
 function displayMain(string_or_view) {
   var content;
@@ -1245,9 +1318,11 @@ module.exports = Backbone.View.extend({
 
     //TODO: if want to add speaker names, before paragraph, get this from backend.
 
-    var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
+    // var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
+    var plainText =  this.model.constructor.returnPlainText(this.model.attributes);
+
     var plainTextFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: plainTextFileName, fileContent: tmp, urlId: "#exportPlainText"});
+    this.exportHelper({fileName: plainTextFileName, fileContent: plainText, urlId: "#exportPlainText"});
   },
 
   /**
