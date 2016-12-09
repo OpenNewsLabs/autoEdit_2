@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/OpenNewsLabs/autoEdit_2.png?label=ready&title=Ready)](https://waffle.io/OpenNewsLabs/autoEdit_2)
 # autoEdit V2
 
 autoEdit 2 is a text based video editing Mac OS X desktop app for making video production faster, easier and more accessible.
