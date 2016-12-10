@@ -54,7 +54,9 @@ Building and packaging the app, can be done with you can do it with one comand.
 npm run build
 ```
 
-This install dependencies, runs browserify on the client side js code, builds the nwjs application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. Or alternativly you can do it in 4 steps if you need to troubleshoot the process.
+This install dependencies, runs browserify on the client side js code, builds the nwjs application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. 
+
+<!-- Or alternativly you can do it in 4 steps if you need to troubleshoot the process.
 
 #### 1 install dependencies 
 
@@ -91,7 +93,8 @@ To create a dmg for distributing the app for OS X.
 ````
 npm run make_dmg
 ```
-
+ -->
+ 
 ---
 
 ## Documentation 
