@@ -103,7 +103,7 @@ For more info check out the [project documentation](http://www.autoedit.io/jsdoc
 
 
 ## Contributing
-Feel free to get in touch with any questions. [via email](pietro@autoedit.io) or [twitter @pietropassarell](https://twitter.com/pietropassarell).Fork the project and send me a pull request.
+Feel free to get in touch with any questions. Via email <pietro@autoedit.io> or [twitter @pietropassarell](https://twitter.com/pietropassarell).Fork the project and send me a pull request.
 
 Check out the [issues section](https://github.com/OpenNewsLabs/autoEdit_2/issues) and [waffle.io Dashboard](https://waffle.io/OpenNewsLabs/autoEdit_2)
 
