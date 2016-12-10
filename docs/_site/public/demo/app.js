@@ -1,10 +1,18 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (process){
+var path               = require("path");
+// var ffmpegPath        = require('ffmpeg-static').path;
+// var ffprobePath       = require('ffprobe-static').path;
+
 module.exports = {
   serverUrl: '',
-  appName: 'autoEdit 2'
+  appName: 'autoEdit 2',
+  ffmpegPath: path.join(process.cwd(),"bin","ffmpeg"),
+  ffprobePath: path.join(process.cwd(),"bin","ffprobe"),
 };
 
-},{}],2:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"_process":32,"path":31}],2:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -104,7 +112,7 @@ $(document).ready(function() {
   window.location = 'index.html#transcriptions';
 });
 
-},{"../../config":1,"./demo_db":4,"./router":7,"backbone":21,"backbone.mousetrap":104,"bootstrap":22,"jquery":24}],3:[function(require,module,exports){
+},{"../../config":1,"./demo_db":4,"./router":7,"backbone":21,"backbone.mousetrap":106,"bootstrap":22,"jquery":24}],3:[function(require,module,exports){
 'use strict';
 var Backbone = require('backbone');
 var config = require('../../../config');
@@ -212,7 +220,7 @@ module.exports = function(method, model, options) {
   DB[method](model, options.success, options.error);
 };
 
-},{"jquery":24,"underscore":102}],5:[function(require,module,exports){
+},{"jquery":24,"underscore":104}],5:[function(require,module,exports){
 /**
  * Here we define or require functions that will be made availabe to templates
  */
@@ -222,6 +230,7 @@ module.exports = {
 
 },{"node-timecodes":29}],6:[function(require,module,exports){
 'use strict';
+var path = require("path");
 var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
 var fromSeconds =  require('node-timecodes').fromSeconds;
 var createSrtContent = require('../../srt').createSrtContent;
@@ -231,7 +240,7 @@ var config = require('../../../config');
 // http://backbonejs.org/#Model
 module.exports = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: config.serverUrl + '/transcription',
+  urlRoot: path.join(config.serverUrl, 'transcription'),
   defaults: {
     // title: 'Default Title ',
     // description: 'Default Description',
@@ -416,7 +425,80 @@ module.exports = Backbone.Model.extend({
         var srtLineO = srtJsonContent[i];
         // lines+=srtLineO.id+'\n';
         lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
-        lines += srtLineO.text + '\n\n';
+        //removing IBM hesitation marks if present
+        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
+
+      }
+
+      if (cb) {
+        cb(lines)
+      } else {
+        return head + '\n\n' + lines
+      };
+    }
+
+    loopThroughStuff(attr.text, function(res) {
+       result = createPlainTextTimecoded(res)
+    })
+
+
+    return result;
+
+  },
+ 
+    //TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
+    returnPlainText: function(attr) {
+    var result;
+    console.log(attr)
+
+    function loopThroughStuff(text, cb) {
+
+      var newLinesAr = []
+      var newLine = {}
+      var counter = 1
+
+      _.each(text, function(paragraphs) {
+          _.each(paragraphs.paragraph, function(paragraph) {
+              newLine.id = counter;
+              counter += 1
+
+              newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
+              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime)
+              newLine.speaker = paragraphs.speaker;
+              newLine.text = ''
+              _.each(paragraph.line, function(word) {
+                  // console.log(word)
+                  newLine.text += word.text + ' '
+                }) //line
+              newLinesAr.push(newLine)
+              newLine = {}
+            }) //paragraph
+        }) //paragraphs
+
+      cb(newLinesAr)
+    }
+
+
+    function createPlainTextTimecoded(srtJsonContent, cb) {
+      var lines = '';
+
+
+      var head = 'Transcription: ' + attr.title + '\n\n'
+      head += 'Description: ' + attr.description + '\n\n'
+      head += 'File name: ' + attr.metadata.fileName + '\n\n'
+      head += 'File path: ' + attr.metadata.filePathName + '\n\n'
+      head += 'Reel: ' + attr.metadata.reelName + '\n'
+      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n'
+      head += 'fps: ' + attr.metadata.fps + '\n'
+      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n'
+        // 
+      for (var i = 0; i < srtJsonContent.length; i++) {
+
+        var srtLineO = srtJsonContent[i];
+        // lines+=srtLineO.id+'\n';
+        // lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
+        //  //removing IBM hesitation marks if present
+        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
 
       }
 
@@ -445,7 +527,7 @@ module.exports = Backbone.Model.extend({
 
 });
 
-},{"../../../config":1,"../../srt":20,"backbone":21,"node-timecodes":29}],7:[function(require,module,exports){
+},{"../../../config":1,"../../srt":20,"backbone":21,"node-timecodes":29,"path":31}],7:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -458,7 +540,7 @@ var render = require('./views/utils').render;
 
 /**
  * Render a string or view to the main container on the page
- * @param {Object,String} string_or_view A string or backbone view
+ * @param {(Object|String)} string_or_view A string or backbone view
  **/
 function displayMain(string_or_view) {
   var content;
@@ -547,7 +629,7 @@ __p+='<div class="container-fluid">Not found</div>\n';
 return __p;
 };
 
-},{"underscore":102}],9:[function(require,module,exports){
+},{"underscore":104}],9:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -557,7 +639,7 @@ __p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center te
 return __p;
 };
 
-},{"underscore":102}],10:[function(require,module,exports){
+},{"underscore":104}],10:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -575,7 +657,7 @@ __p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol 
 return __p;
 };
 
-},{"underscore":102}],11:[function(require,module,exports){
+},{"underscore":104}],11:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -599,7 +681,7 @@ __p+='\n    </div>\n    <hr>\n';
 return __p;
 };
 
-},{"underscore":102}],12:[function(require,module,exports){
+},{"underscore":104}],12:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -735,7 +817,7 @@ __p+='\n          <!-- ./paragraph module -->\n      </div>\n    </div>\n    </d
 return __p;
 };
 
-},{"underscore":102}],13:[function(require,module,exports){
+},{"underscore":104}],13:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -745,7 +827,7 @@ __p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center te
 return __p;
 };
 
-},{"underscore":102}],14:[function(require,module,exports){
+},{"underscore":104}],14:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -1245,9 +1327,11 @@ module.exports = Backbone.View.extend({
 
     //TODO: if want to add speaker names, before paragraph, get this from backend.
 
-    var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
+    // var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
+    var plainText =  this.model.constructor.returnPlainText(this.model.attributes);
+
     var plainTextFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: plainTextFileName, fileContent: tmp, urlId: "#exportPlainText"});
+    this.exportHelper({fileName: plainTextFileName, fileContent: plainText, urlId: "#exportPlainText"});
   },
 
   /**
@@ -1756,7 +1840,7 @@ module.exports = Backbone.View.extend({
   
 });
 
-},{"../../edl_composer/index":19,"./utils":18,"backbone":21,"file-saver":23,"jquery":24,"moment":25,"node-timecodes":29,"underscore":102}],18:[function(require,module,exports){
+},{"../../edl_composer/index":19,"./utils":18,"backbone":21,"file-saver":23,"jquery":24,"moment":25,"node-timecodes":29,"underscore":104}],18:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var helpers = require('../helpers');
@@ -1798,7 +1882,7 @@ function render(templateName, templateData) {
 module.exports.getTemplate = getTemplate;
 module.exports.render = render;
 
-},{"../helpers":5,"../templates/404.html.ejs":8,"../templates/home_page.html.ejs":9,"../templates/transcription_form_template.html.ejs":10,"../templates/transcription_index.html.ejs":11,"../templates/transcription_show.html.ejs":12,"../templates/welcome.html.ejs":13,"jquery":24,"underscore":102,"underscore.string":56}],19:[function(require,module,exports){
+},{"../helpers":5,"../templates/404.html.ejs":8,"../templates/home_page.html.ejs":9,"../templates/transcription_form_template.html.ejs":10,"../templates/transcription_index.html.ejs":11,"../templates/transcription_show.html.ejs":12,"../templates/welcome.html.ejs":13,"jquery":24,"underscore":104,"underscore.string":58}],19:[function(require,module,exports){
 'use strict';
 /**
 * @module edl_composer
@@ -4055,7 +4139,7 @@ module.exports.fromSecondsForSrt = fromSecondsForSrt;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":24,"underscore":102}],22:[function(require,module,exports){
+},{"jquery":24,"underscore":104}],22:[function(require,module,exports){
 (function (global){
 
 ; jQuery = global.jQuery = require("jquery");
@@ -23088,6 +23172,416 @@ function toSeconds(timecode) {
 exports['default'] = toSeconds;
 module.exports = exports['default'];
 },{"./constants":27}],31:[function(require,module,exports){
+(function (process){
+// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// resolves . and .. elements in a path array with directory names there
+// must be no slashes, empty elements, or device names (c:\) in the array
+// (so also no leading and trailing slashes - it does not distinguish
+// relative and absolute paths)
+function normalizeArray(parts, allowAboveRoot) {
+  // if the path tries to go above the root, `up` ends up > 0
+  var up = 0;
+  for (var i = parts.length - 1; i >= 0; i--) {
+    var last = parts[i];
+    if (last === '.') {
+      parts.splice(i, 1);
+    } else if (last === '..') {
+      parts.splice(i, 1);
+      up++;
+    } else if (up) {
+      parts.splice(i, 1);
+      up--;
+    }
+  }
+
+  // if the path is allowed to go above the root, restore leading ..s
+  if (allowAboveRoot) {
+    for (; up--; up) {
+      parts.unshift('..');
+    }
+  }
+
+  return parts;
+}
+
+// Split a filename into [root, dir, basename, ext], unix version
+// 'root' is just a slash, or nothing.
+var splitPathRe =
+    /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+var splitPath = function(filename) {
+  return splitPathRe.exec(filename).slice(1);
+};
+
+// path.resolve([from ...], to)
+// posix version
+exports.resolve = function() {
+  var resolvedPath = '',
+      resolvedAbsolute = false;
+
+  for (var i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
+    var path = (i >= 0) ? arguments[i] : process.cwd();
+
+    // Skip empty and invalid entries
+    if (typeof path !== 'string') {
+      throw new TypeError('Arguments to path.resolve must be strings');
+    } else if (!path) {
+      continue;
+    }
+
+    resolvedPath = path + '/' + resolvedPath;
+    resolvedAbsolute = path.charAt(0) === '/';
+  }
+
+  // At this point the path should be resolved to a full absolute path, but
+  // handle relative paths to be safe (might happen when process.cwd() fails)
+
+  // Normalize the path
+  resolvedPath = normalizeArray(filter(resolvedPath.split('/'), function(p) {
+    return !!p;
+  }), !resolvedAbsolute).join('/');
+
+  return ((resolvedAbsolute ? '/' : '') + resolvedPath) || '.';
+};
+
+// path.normalize(path)
+// posix version
+exports.normalize = function(path) {
+  var isAbsolute = exports.isAbsolute(path),
+      trailingSlash = substr(path, -1) === '/';
+
+  // Normalize the path
+  path = normalizeArray(filter(path.split('/'), function(p) {
+    return !!p;
+  }), !isAbsolute).join('/');
+
+  if (!path && !isAbsolute) {
+    path = '.';
+  }
+  if (path && trailingSlash) {
+    path += '/';
+  }
+
+  return (isAbsolute ? '/' : '') + path;
+};
+
+// posix version
+exports.isAbsolute = function(path) {
+  return path.charAt(0) === '/';
+};
+
+// posix version
+exports.join = function() {
+  var paths = Array.prototype.slice.call(arguments, 0);
+  return exports.normalize(filter(paths, function(p, index) {
+    if (typeof p !== 'string') {
+      throw new TypeError('Arguments to path.join must be strings');
+    }
+    return p;
+  }).join('/'));
+};
+
+
+// path.relative(from, to)
+// posix version
+exports.relative = function(from, to) {
+  from = exports.resolve(from).substr(1);
+  to = exports.resolve(to).substr(1);
+
+  function trim(arr) {
+    var start = 0;
+    for (; start < arr.length; start++) {
+      if (arr[start] !== '') break;
+    }
+
+    var end = arr.length - 1;
+    for (; end >= 0; end--) {
+      if (arr[end] !== '') break;
+    }
+
+    if (start > end) return [];
+    return arr.slice(start, end - start + 1);
+  }
+
+  var fromParts = trim(from.split('/'));
+  var toParts = trim(to.split('/'));
+
+  var length = Math.min(fromParts.length, toParts.length);
+  var samePartsLength = length;
+  for (var i = 0; i < length; i++) {
+    if (fromParts[i] !== toParts[i]) {
+      samePartsLength = i;
+      break;
+    }
+  }
+
+  var outputParts = [];
+  for (var i = samePartsLength; i < fromParts.length; i++) {
+    outputParts.push('..');
+  }
+
+  outputParts = outputParts.concat(toParts.slice(samePartsLength));
+
+  return outputParts.join('/');
+};
+
+exports.sep = '/';
+exports.delimiter = ':';
+
+exports.dirname = function(path) {
+  var result = splitPath(path),
+      root = result[0],
+      dir = result[1];
+
+  if (!root && !dir) {
+    // No dirname whatsoever
+    return '.';
+  }
+
+  if (dir) {
+    // It has a dirname, strip trailing slash
+    dir = dir.substr(0, dir.length - 1);
+  }
+
+  return root + dir;
+};
+
+
+exports.basename = function(path, ext) {
+  var f = splitPath(path)[2];
+  // TODO: make this comparison case-insensitive on windows?
+  if (ext && f.substr(-1 * ext.length) === ext) {
+    f = f.substr(0, f.length - ext.length);
+  }
+  return f;
+};
+
+
+exports.extname = function(path) {
+  return splitPath(path)[3];
+};
+
+function filter (xs, f) {
+    if (xs.filter) return xs.filter(f);
+    var res = [];
+    for (var i = 0; i < xs.length; i++) {
+        if (f(xs[i], i, xs)) res.push(xs[i]);
+    }
+    return res;
+}
+
+// String.prototype.substr - negative index don't work in IE8
+var substr = 'ab'.substr(-1) === 'b'
+    ? function (str, start, len) { return str.substr(start, len) }
+    : function (str, start, len) {
+        if (start < 0) start = str.length + start;
+        return str.substr(start, len);
+    }
+;
+
+}).call(this,require('_process'))
+},{"_process":32}],32:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],33:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -23297,7 +23791,7 @@ module.exports = exports['default'];
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 var trim = require('./trim');
 var decap = require('./decapitalize');
 
@@ -23313,7 +23807,7 @@ module.exports = function camelize(str, decapitalize) {
   }
 };
 
-},{"./decapitalize":41,"./trim":94}],33:[function(require,module,exports){
+},{"./decapitalize":43,"./trim":96}],35:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function capitalize(str, lowercaseRest) {
@@ -23323,14 +23817,14 @@ module.exports = function capitalize(str, lowercaseRest) {
   return str.charAt(0).toUpperCase() + remainingChars;
 };
 
-},{"./helper/makeString":51}],34:[function(require,module,exports){
+},{"./helper/makeString":53}],36:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function chars(str) {
   return makeString(str).split('');
 };
 
-},{"./helper/makeString":51}],35:[function(require,module,exports){
+},{"./helper/makeString":53}],37:[function(require,module,exports){
 module.exports = function chop(str, step) {
   if (str == null) return [];
   str = String(str);
@@ -23338,7 +23832,7 @@ module.exports = function chop(str, step) {
   return step > 0 ? str.match(new RegExp('.{1,' + step + '}', 'g')) : [str];
 };
 
-},{}],36:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var camelize = require('./camelize');
 var makeString = require('./helper/makeString');
@@ -23348,14 +23842,14 @@ module.exports = function classify(str) {
   return capitalize(camelize(str.replace(/[\W_]/g, ' ')).replace(/\s/g, ''));
 };
 
-},{"./camelize":32,"./capitalize":33,"./helper/makeString":51}],37:[function(require,module,exports){
+},{"./camelize":34,"./capitalize":35,"./helper/makeString":53}],39:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function clean(str) {
   return trim(str).replace(/\s\s+/g, ' ');
 };
 
-},{"./trim":94}],38:[function(require,module,exports){
+},{"./trim":96}],40:[function(require,module,exports){
 
 var makeString = require('./helper/makeString');
 
@@ -23379,7 +23873,7 @@ module.exports = function cleanDiacritics(str) {
   });
 };
 
-},{"./helper/makeString":51}],39:[function(require,module,exports){
+},{"./helper/makeString":53}],41:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, substr) {
@@ -23391,14 +23885,14 @@ module.exports = function(str, substr) {
   return str.split(substr).length - 1;
 };
 
-},{"./helper/makeString":51}],40:[function(require,module,exports){
+},{"./helper/makeString":53}],42:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function dasherize(str) {
   return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 };
 
-},{"./trim":94}],41:[function(require,module,exports){
+},{"./trim":96}],43:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function decapitalize(str) {
@@ -23406,7 +23900,7 @@ module.exports = function decapitalize(str) {
   return str.charAt(0).toLowerCase() + str.slice(1);
 };
 
-},{"./helper/makeString":51}],42:[function(require,module,exports){
+},{"./helper/makeString":53}],44:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 function getIndent(str) {
@@ -23436,7 +23930,7 @@ module.exports = function dedent(str, pattern) {
   return str.replace(reg, '');
 };
 
-},{"./helper/makeString":51}],43:[function(require,module,exports){
+},{"./helper/makeString":53}],45:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -23451,7 +23945,7 @@ module.exports = function endsWith(str, ends, position) {
   return position >= 0 && str.indexOf(ends, position) === position;
 };
 
-},{"./helper/makeString":51,"./helper/toPositive":53}],44:[function(require,module,exports){
+},{"./helper/makeString":53,"./helper/toPositive":55}],46:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var escapeChars = require('./helper/escapeChars');
 
@@ -23470,7 +23964,7 @@ module.exports = function escapeHTML(str) {
   });
 };
 
-},{"./helper/escapeChars":48,"./helper/makeString":51}],45:[function(require,module,exports){
+},{"./helper/escapeChars":50,"./helper/makeString":53}],47:[function(require,module,exports){
 module.exports = function() {
   var result = {};
 
@@ -23482,7 +23976,7 @@ module.exports = function() {
   return result;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function adjacent(str, direction) {
@@ -23493,7 +23987,7 @@ module.exports = function adjacent(str, direction) {
   return str.slice(0, -1) + String.fromCharCode(str.charCodeAt(str.length - 1) + direction);
 };
 
-},{"./makeString":51}],47:[function(require,module,exports){
+},{"./makeString":53}],49:[function(require,module,exports){
 var escapeRegExp = require('./escapeRegExp');
 
 module.exports = function defaultToWhiteSpace(characters) {
@@ -23505,7 +23999,7 @@ module.exports = function defaultToWhiteSpace(characters) {
     return '[' + escapeRegExp(characters) + ']';
 };
 
-},{"./escapeRegExp":49}],48:[function(require,module,exports){
+},{"./escapeRegExp":51}],50:[function(require,module,exports){
 /* We're explicitly defining the list of entities we want to escape.
 nbsp is an HTML entity, but we don't want to escape all space characters in a string, hence its omission in this map.
 
@@ -23526,14 +24020,14 @@ var escapeChars = {
 
 module.exports = escapeChars;
 
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function escapeRegExp(str) {
   return makeString(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 };
 
-},{"./makeString":51}],50:[function(require,module,exports){
+},{"./makeString":53}],52:[function(require,module,exports){
 /*
 We're explicitly defining the list of entities that might see in escape HTML strings
 */
@@ -23554,7 +24048,7 @@ var htmlEntities = {
 
 module.exports = htmlEntities;
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 /**
  * Ensure some object is a coerced to a string
  **/
@@ -23563,7 +24057,7 @@ module.exports = function makeString(object) {
   return '' + object;
 };
 
-},{}],52:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = function strRepeat(str, qty){
   if (qty < 1) return '';
   var result = '';
@@ -23574,12 +24068,12 @@ module.exports = function strRepeat(str, qty){
   return result;
 };
 
-},{}],53:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = function toPositive(number) {
   return number < 0 ? 0 : (+number || 0);
 };
 
-},{}],54:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var underscored = require('./underscored');
 var trim = require('./trim');
@@ -23588,7 +24082,7 @@ module.exports = function humanize(str) {
   return capitalize(trim(underscored(str).replace(/_id$/, '').replace(/_/g, ' ')));
 };
 
-},{"./capitalize":33,"./trim":94,"./underscored":96}],55:[function(require,module,exports){
+},{"./capitalize":35,"./trim":96,"./underscored":98}],57:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function include(str, needle) {
@@ -23596,7 +24090,7 @@ module.exports = function include(str, needle) {
   return makeString(str).indexOf(needle) !== -1;
 };
 
-},{"./helper/makeString":51}],56:[function(require,module,exports){
+},{"./helper/makeString":53}],58:[function(require,module,exports){
 /*
 * Underscore.string
 * (c) 2010 Esa-Matti Suuronen <esa-matti aet suuronen dot org>
@@ -23741,21 +24235,21 @@ for (var method in prototypeMethods) prototype2method(prototypeMethods[method]);
 
 module.exports = s;
 
-},{"./camelize":32,"./capitalize":33,"./chars":34,"./chop":35,"./classify":36,"./clean":37,"./cleanDiacritics":38,"./count":39,"./dasherize":40,"./decapitalize":41,"./dedent":42,"./endsWith":43,"./escapeHTML":44,"./exports":45,"./helper/escapeRegExp":49,"./humanize":54,"./include":55,"./insert":57,"./isBlank":58,"./join":59,"./levenshtein":60,"./lines":61,"./lpad":62,"./lrpad":63,"./ltrim":64,"./map":65,"./naturalCmp":66,"./numberFormat":67,"./pad":68,"./pred":69,"./prune":70,"./quote":71,"./repeat":72,"./replaceAll":73,"./reverse":74,"./rpad":75,"./rtrim":76,"./slugify":77,"./splice":78,"./sprintf":79,"./startsWith":80,"./strLeft":81,"./strLeftBack":82,"./strRight":83,"./strRightBack":84,"./stripTags":85,"./succ":86,"./surround":87,"./swapCase":88,"./titleize":89,"./toBoolean":90,"./toNumber":91,"./toSentence":92,"./toSentenceSerial":93,"./trim":94,"./truncate":95,"./underscored":96,"./unescapeHTML":97,"./unquote":98,"./vsprintf":99,"./words":100,"./wrap":101}],57:[function(require,module,exports){
+},{"./camelize":34,"./capitalize":35,"./chars":36,"./chop":37,"./classify":38,"./clean":39,"./cleanDiacritics":40,"./count":41,"./dasherize":42,"./decapitalize":43,"./dedent":44,"./endsWith":45,"./escapeHTML":46,"./exports":47,"./helper/escapeRegExp":51,"./humanize":56,"./include":57,"./insert":59,"./isBlank":60,"./join":61,"./levenshtein":62,"./lines":63,"./lpad":64,"./lrpad":65,"./ltrim":66,"./map":67,"./naturalCmp":68,"./numberFormat":69,"./pad":70,"./pred":71,"./prune":72,"./quote":73,"./repeat":74,"./replaceAll":75,"./reverse":76,"./rpad":77,"./rtrim":78,"./slugify":79,"./splice":80,"./sprintf":81,"./startsWith":82,"./strLeft":83,"./strLeftBack":84,"./strRight":85,"./strRightBack":86,"./stripTags":87,"./succ":88,"./surround":89,"./swapCase":90,"./titleize":91,"./toBoolean":92,"./toNumber":93,"./toSentence":94,"./toSentenceSerial":95,"./trim":96,"./truncate":97,"./underscored":98,"./unescapeHTML":99,"./unquote":100,"./vsprintf":101,"./words":102,"./wrap":103}],59:[function(require,module,exports){
 var splice = require('./splice');
 
 module.exports = function insert(str, i, substr) {
   return splice(str, i, 0, substr);
 };
 
-},{"./splice":78}],58:[function(require,module,exports){
+},{"./splice":80}],60:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function isBlank(str) {
   return (/^\s*$/).test(makeString(str));
 };
 
-},{"./helper/makeString":51}],59:[function(require,module,exports){
+},{"./helper/makeString":53}],61:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var slice = [].slice;
 
@@ -23766,7 +24260,7 @@ module.exports = function join() {
   return args.join(makeString(separator));
 };
 
-},{"./helper/makeString":51}],60:[function(require,module,exports){
+},{"./helper/makeString":53}],62:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 /**
@@ -23820,27 +24314,27 @@ module.exports = function levenshtein(str1, str2) {
   return nextCol;
 };
 
-},{"./helper/makeString":51}],61:[function(require,module,exports){
+},{"./helper/makeString":53}],63:[function(require,module,exports){
 module.exports = function lines(str) {
   if (str == null) return [];
   return String(str).split(/\r\n?|\n/);
 };
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lpad(str, length, padStr) {
   return pad(str, length, padStr);
 };
 
-},{"./pad":68}],63:[function(require,module,exports){
+},{"./pad":70}],65:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lrpad(str, length, padStr) {
   return pad(str, length, padStr, 'both');
 };
 
-},{"./pad":68}],64:[function(require,module,exports){
+},{"./pad":70}],66:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimLeft = String.prototype.trimLeft;
@@ -23852,7 +24346,7 @@ module.exports = function ltrim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":47,"./helper/makeString":51}],65:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],67:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, callback) {
@@ -23863,7 +24357,7 @@ module.exports = function(str, callback) {
   return str.replace(/./g, callback);
 };
 
-},{"./helper/makeString":51}],66:[function(require,module,exports){
+},{"./helper/makeString":53}],68:[function(require,module,exports){
 module.exports = function naturalCmp(str1, str2) {
   if (str1 == str2) return 0;
   if (!str1) return -1;
@@ -23894,7 +24388,7 @@ module.exports = function naturalCmp(str1, str2) {
   return str1 < str2 ? -1 : 1;
 };
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = function numberFormat(number, dec, dsep, tsep) {
   if (isNaN(number) || number == null) return '';
 
@@ -23908,7 +24402,7 @@ module.exports = function numberFormat(number, dec, dsep, tsep) {
   return fnums.replace(/(\d)(?=(?:\d{3})+$)/g, '$1' + tsep) + decimals;
 };
 
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -23936,14 +24430,14 @@ module.exports = function pad(str, length, padStr, type) {
   }
 };
 
-},{"./helper/makeString":51,"./helper/strRepeat":52}],69:[function(require,module,exports){
+},{"./helper/makeString":53,"./helper/strRepeat":54}],71:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, -1);
 };
 
-},{"./helper/adjacent":46}],70:[function(require,module,exports){
+},{"./helper/adjacent":48}],72:[function(require,module,exports){
 /**
  * _s.prune: a more elegant version of truncate
  * prune extra chars, never leaving a half-chopped word.
@@ -23972,14 +24466,14 @@ module.exports = function prune(str, length, pruneStr) {
   return (template + pruneStr).length > str.length ? str : str.slice(0, template.length) + pruneStr;
 };
 
-},{"./helper/makeString":51,"./rtrim":76}],71:[function(require,module,exports){
+},{"./helper/makeString":53,"./rtrim":78}],73:[function(require,module,exports){
 var surround = require('./surround');
 
 module.exports = function quote(str, quoteChar) {
   return surround(str, quoteChar || '"');
 };
 
-},{"./surround":87}],72:[function(require,module,exports){
+},{"./surround":89}],74:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -23997,7 +24491,7 @@ module.exports = function repeat(str, qty, separator) {
   return repeat.join(separator);
 };
 
-},{"./helper/makeString":51,"./helper/strRepeat":52}],73:[function(require,module,exports){
+},{"./helper/makeString":53,"./helper/strRepeat":54}],75:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function replaceAll(str, find, replace, ignorecase) {
@@ -24007,21 +24501,21 @@ module.exports = function replaceAll(str, find, replace, ignorecase) {
   return makeString(str).replace(reg, replace);
 };
 
-},{"./helper/makeString":51}],74:[function(require,module,exports){
+},{"./helper/makeString":53}],76:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function reverse(str) {
   return chars(str).reverse().join('');
 };
 
-},{"./chars":34}],75:[function(require,module,exports){
+},{"./chars":36}],77:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function rpad(str, length, padStr) {
   return pad(str, length, padStr, 'right');
 };
 
-},{"./pad":68}],76:[function(require,module,exports){
+},{"./pad":70}],78:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimRight = String.prototype.trimRight;
@@ -24033,7 +24527,7 @@ module.exports = function rtrim(str, characters) {
   return str.replace(new RegExp(characters + '+$'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":47,"./helper/makeString":51}],77:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],79:[function(require,module,exports){
 var trim = require('./trim');
 var dasherize = require('./dasherize');
 var cleanDiacritics = require('./cleanDiacritics');
@@ -24042,7 +24536,7 @@ module.exports = function slugify(str) {
   return trim(dasherize(cleanDiacritics(str).replace(/[^\w\s-]/g, '-').toLowerCase()), '-');
 };
 
-},{"./cleanDiacritics":38,"./dasherize":40,"./trim":94}],78:[function(require,module,exports){
+},{"./cleanDiacritics":40,"./dasherize":42,"./trim":96}],80:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function splice(str, i, howmany, substr) {
@@ -24051,13 +24545,13 @@ module.exports = function splice(str, i, howmany, substr) {
   return arr.join('');
 };
 
-},{"./chars":34}],79:[function(require,module,exports){
+},{"./chars":36}],81:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').sprintf,
   'sprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":31,"util-deprecate":103}],80:[function(require,module,exports){
+},{"sprintf-js":33,"util-deprecate":105}],82:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -24068,7 +24562,7 @@ module.exports = function startsWith(str, starts, position) {
   return str.lastIndexOf(starts, position) === position;
 };
 
-},{"./helper/makeString":51,"./helper/toPositive":53}],81:[function(require,module,exports){
+},{"./helper/makeString":53,"./helper/toPositive":55}],83:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeft(str, sep) {
@@ -24078,7 +24572,7 @@ module.exports = function strLeft(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":51}],82:[function(require,module,exports){
+},{"./helper/makeString":53}],84:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeftBack(str, sep) {
@@ -24088,7 +24582,7 @@ module.exports = function strLeftBack(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":51}],83:[function(require,module,exports){
+},{"./helper/makeString":53}],85:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRight(str, sep) {
@@ -24098,7 +24592,7 @@ module.exports = function strRight(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":51}],84:[function(require,module,exports){
+},{"./helper/makeString":53}],86:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRightBack(str, sep) {
@@ -24108,26 +24602,26 @@ module.exports = function strRightBack(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":51}],85:[function(require,module,exports){
+},{"./helper/makeString":53}],87:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function stripTags(str) {
   return makeString(str).replace(/<\/?[^>]+>/g, '');
 };
 
-},{"./helper/makeString":51}],86:[function(require,module,exports){
+},{"./helper/makeString":53}],88:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, 1);
 };
 
-},{"./helper/adjacent":46}],87:[function(require,module,exports){
+},{"./helper/adjacent":48}],89:[function(require,module,exports){
 module.exports = function surround(str, wrapper) {
   return [wrapper, str, wrapper].join('');
 };
 
-},{}],88:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function swapCase(str) {
@@ -24136,7 +24630,7 @@ module.exports = function swapCase(str) {
   });
 };
 
-},{"./helper/makeString":51}],89:[function(require,module,exports){
+},{"./helper/makeString":53}],91:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function titleize(str) {
@@ -24145,7 +24639,7 @@ module.exports = function titleize(str) {
   });
 };
 
-},{"./helper/makeString":51}],90:[function(require,module,exports){
+},{"./helper/makeString":53}],92:[function(require,module,exports){
 var trim = require('./trim');
 
 function boolMatch(s, matchers) {
@@ -24167,14 +24661,14 @@ module.exports = function toBoolean(str, trueValues, falseValues) {
   if (boolMatch(str, falseValues || ['false', '0'])) return false;
 };
 
-},{"./trim":94}],91:[function(require,module,exports){
+},{"./trim":96}],93:[function(require,module,exports){
 module.exports = function toNumber(num, precision) {
   if (num == null) return 0;
   var factor = Math.pow(10, isFinite(precision) ? precision : 0);
   return Math.round(num * factor) / factor;
 };
 
-},{}],92:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 var rtrim = require('./rtrim');
 
 module.exports = function toSentence(array, separator, lastSeparator, serial) {
@@ -24188,14 +24682,14 @@ module.exports = function toSentence(array, separator, lastSeparator, serial) {
   return a.length ? a.join(separator) + lastSeparator + lastMember : lastMember;
 };
 
-},{"./rtrim":76}],93:[function(require,module,exports){
+},{"./rtrim":78}],95:[function(require,module,exports){
 var toSentence = require('./toSentence');
 
 module.exports = function toSentenceSerial(array, sep, lastSep) {
   return toSentence(array, sep, lastSep, true);
 };
 
-},{"./toSentence":92}],94:[function(require,module,exports){
+},{"./toSentence":94}],96:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrim = String.prototype.trim;
@@ -24207,7 +24701,7 @@ module.exports = function trim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":47,"./helper/makeString":51}],95:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],97:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function truncate(str, length, truncateStr) {
@@ -24217,14 +24711,14 @@ module.exports = function truncate(str, length, truncateStr) {
   return str.length > length ? str.slice(0, length) + truncateStr : str;
 };
 
-},{"./helper/makeString":51}],96:[function(require,module,exports){
+},{"./helper/makeString":53}],98:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function underscored(str) {
   return trim(str).replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
 };
 
-},{"./trim":94}],97:[function(require,module,exports){
+},{"./trim":96}],99:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var htmlEntities = require('./helper/htmlEntities');
 
@@ -24246,7 +24740,7 @@ module.exports = function unescapeHTML(str) {
   });
 };
 
-},{"./helper/htmlEntities":50,"./helper/makeString":51}],98:[function(require,module,exports){
+},{"./helper/htmlEntities":52,"./helper/makeString":53}],100:[function(require,module,exports){
 module.exports = function unquote(str, quoteChar) {
   quoteChar = quoteChar || '"';
   if (str[0] === quoteChar && str[str.length - 1] === quoteChar)
@@ -24254,13 +24748,13 @@ module.exports = function unquote(str, quoteChar) {
   else return str;
 };
 
-},{}],99:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').vsprintf,
   'vsprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":31,"util-deprecate":103}],100:[function(require,module,exports){
+},{"sprintf-js":33,"util-deprecate":105}],102:[function(require,module,exports){
 var isBlank = require('./isBlank');
 var trim = require('./trim');
 
@@ -24269,7 +24763,7 @@ module.exports = function words(str, delimiter) {
   return trim(str, delimiter).split(delimiter || /\s+/);
 };
 
-},{"./isBlank":58,"./trim":94}],101:[function(require,module,exports){
+},{"./isBlank":60,"./trim":96}],103:[function(require,module,exports){
 // Wrap
 // wraps a string by a certain width
 
@@ -24373,7 +24867,7 @@ module.exports = function wrap(str, options){
   }
 };
 
-},{"./helper/makeString":51}],102:[function(require,module,exports){
+},{"./helper/makeString":53}],104:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -25923,7 +26417,7 @@ module.exports = function wrap(str, options){
   }
 }.call(this));
 
-},{}],103:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 (function (global){
 
 /**
@@ -25994,7 +26488,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],104:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 (function (global){
 
 ; _ = global._ = require("underscore");
@@ -26071,4 +26565,4 @@ Mousetrap = global.Mousetrap = require("mousetrap");
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"backbone":21,"mousetrap":26,"underscore":102}]},{},[2]);
+},{"backbone":21,"mousetrap":26,"underscore":104}]},{},[2]);

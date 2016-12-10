@@ -95,10 +95,20 @@ strong.speaker {
 }*/
 
 
+::selection {
+    background-color: #3a98d7;
+    color: white;
+}
+
+
 .highlight {
   /*background-color: yellow;*/
-/*  color: white;*/
+  /*color: white;*/
   box-shadow: 0px 2px 0px #3a98d7;
+
+     /*background-image: linear-gradient(-100deg, rgba(255, 255, 255, 0), yellow 85%, rgba(255, 255, 255, 0));*/
+   
+
   /*background-color: greenyellow;*/
   /*text-decoration: underline; */
 }
@@ -106,10 +116,17 @@ strong.speaker {
 .highlight:hover {
   background-color: #3a98d7!important;
   color: white!important;
+
+   /*background-color: yellow!important;*/
+    /*color: #000000!important;*/
+
   /*box-shadow: 0px 2px 0px #3a98d7;*/
   /*background-color: greenyellow;*/
   /*text-decoration: underline; */
 }
+
+
+
 
 
 .searched{
