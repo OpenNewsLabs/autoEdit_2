@@ -95,13 +95,12 @@ npm run make_dmg
 ```
  -->
 
----
+
 
 ## Documentation 
 
 For more info check out the [project documentation](http://www.autoedit.io/jsdoc_docs/)
 
----
 
 ## Contributing
 Feel free to get in touch with any questions. [via email](pietro@autoedit.io) or [twitter @pietropassarell](https://twitter.com/pietropassarell).Fork the project and send me a pull request.
