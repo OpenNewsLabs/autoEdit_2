@@ -47,7 +47,7 @@ You'd also need to get IBM watson STT keys or have the Gentle Open source app ru
 
 ### Building/packaging the app
 
-Building and packaging the app, can be done with you can do it with one comand. 
+Building and packaging the app, can be done with one comand. 
 
 
 ```
@@ -94,7 +94,7 @@ To create a dmg for distributing the app for OS X.
 npm run make_dmg
 ```
  -->
- 
+
 ---
 
 ## Documentation 
