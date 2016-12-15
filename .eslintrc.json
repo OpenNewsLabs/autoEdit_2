@@ -1,24 +1,139 @@
 {
-  "env": {
-    "browser": true,
-    "commonjs": true
-  },
-  "extends": "eslint:recommended",
-  "rules": {
-    "no-console": "off",
-    "no-trailing-spaces": "error",
-    "no-whitespace-before-property": "error",
-    "require-jsdoc": "warn",
-    "space-before-blocks": "error",
-    "space-in-parens": "error",
-    "space-infix-ops": "error",
-    "space-unary-ops": "error",
-    "spaced-comment": "error",
-    "indent": [ "error", 2 ],
-    "linebreak-style": [ "error", "unix" ],
-    "quotes": [ "error", "single", { "avoidEscape": true } ],
-    "semi": [ "error", "always" ],
-    "key-spacing": "error",
-    "keyword-spacing": "error"
-  }
+    /* Default ESLint settings for project
+    #
+    # Those settings can be overwritten in subdirectories
+    # by adding another .eslintrc file
+    */
+    "env": {
+        "browser": true,
+        "commonjs": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "accessor-pairs": [
+            2, {
+                "getWithoutSet": false
+            }
+        ],
+        "block-scoped-var": 2,
+        "camelcase": 2,
+        "comma-dangle": [
+            2,
+            "never"
+        ],
+        "comma-style": [
+            2,
+            "last" // No leading commas
+        ],
+        "curly": [
+            2,
+            "all"
+        ],
+        // Enforce newline at the end of file with no multiple empty lines
+        "eol-last": 2,
+        "eqeqeq": [
+            2,
+            "allow-null"
+        ],
+        "guard-for-in": 2,
+        "no-alert": 2,
+        // Use the literal syntax for array creation
+        "no-array-constructor": 2,
+        "no-bitwise": 2,
+        "no-caller": 2,
+        "no-console": 2,
+        "no-debugger": 2,
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "no-duplicate-case": 2,
+        "no-empty": 2,
+        "no-ex-assign": 2,
+        "no-extra-semi": 2,
+        "no-func-assign": 2,
+        "no-inner-declarations": [
+            2,
+            "both"
+        ],
+        "no-invalid-regexp": 2,
+        "no-irregular-whitespace": 2,
+        "no-loop-func": 2,
+        "no-multi-spaces": 2,
+        "no-native-reassign": 2,
+        "no-negated-in-lhs": 2,
+        "no-new": 2,
+        // Use the literal syntax for object creation.
+        "no-new-object": 2,
+        "no-obj-calls": 2,
+        "no-proto": 2,
+        "no-redeclare": [
+            2, {
+                "builtinGlobals": true
+            }
+        ],
+        "no-regex-spaces": 2,
+        "no-self-compare": 2,
+        "no-sequences": 2,
+        "no-script-url": 2,
+        // Disallow declaration of variables already declared in the outer scope
+        "no-shadow": 2,
+        "no-sparse-arrays": 2,
+        "no-throw-literal": 2,
+        "no-undef": 2,
+        "no-unexpected-multiline": 2,
+        "no-unused-expressions": [
+            2, {
+                "allowTernary": true,
+                "allowShortCircuit": true
+            }
+        ],
+        "no-unreachable": 2,
+        // we want to use underscore to identify "private" variables
+        "no-underscore-dangle": 0,
+        "no-unused-vars": 2,
+        "no-useless-call": 2,
+        "no-useless-concat": 2,
+        "no-void": 2,
+        "no-warning-comments": 2,
+        "no-with": 2,
+        "quotes": [
+            2,
+            "single"
+        ],
+        /* http://eslint.org/docs/rules/quote-props.html
+        #  we set it to 2 - "as-needed" with the additional options "keywords"
+        #  since CQ minification doesn't allow reserved words
+        # - https://github.com/yui/yuicompressor/issues/47.
+        */
+        "quote-props": [
+            2,
+            "as-needed", {
+                "keywords": true,
+                "unnecessary": false
+            }
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        /* "never" mode - see
+        #  https://github.com/eslint/eslint/blob/master/docs/rules/strict.md
+        */
+        "strict": [
+            2,
+            "never"
+        ],
+        "use-isnan": 2,
+        // makes sure the typeof operator is used for comparison only with valid strings
+        "valid-typeof": 2,
+        "vars-on-top": 2,
+        "wrap-iife": [
+            2,
+            "outside"
+        ],
+        "yoda": 2,
+        "globals": [{
+            "require": true,
+            "module": true
+        }]
+    }
 }
