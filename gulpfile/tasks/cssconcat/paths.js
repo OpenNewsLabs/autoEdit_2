@@ -1,6 +1,7 @@
-import paths from '../../paths';
+'use strict';
+const paths = require('../../paths');
 
-export default {
+module.exports = {
     targetAuthorFiles: paths.targetAuthorCssFiles,
     targetPublishFiles: paths.targetPublishCssFiles,
     targetAuthor: paths.targetAuthorCss,

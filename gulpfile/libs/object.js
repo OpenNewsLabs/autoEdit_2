@@ -1,4 +1,5 @@
-export default {
+'use strict';
+module.exports = {
     getDeepCopy(obj) {
             return JSON.parse(JSON.stringify(obj));
         },

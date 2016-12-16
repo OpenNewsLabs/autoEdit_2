@@ -1,9 +1,10 @@
-import gutil from 'gulp-util';
-import notify from 'gulp-notify';
-import _ from 'underscore';
-import env from './env';
-import { stringify } from './object';
-import { ensureArray } from './object';
+'use strict';
+const gutil = require('gulp-util');
+const notify = require('gulp-notify');
+const _ = require('underscore');
+const env = require('./env');
+const  stringify  = require('./object');
+const  ensureArray  = require('./object');
 
 const _defaultOptions = {
     keys: {
@@ -41,7 +42,7 @@ function _normalizeErrorMessage(error, keys) {
     return normalizedError;
 }
 
-export default {
+module.exports = {
     handle(errors, options) {
         const opt = _.extendOwn({}, _defaultOptions, options);
         const err = ensureArray(errors);

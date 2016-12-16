@@ -1,4 +1,6 @@
-export default {
+'use strict';
+
+module.exports = {
     // Get from given task sets a valid input for gulp-sequence
     // by flattening the sets but still leaving the expected execution order.
     //

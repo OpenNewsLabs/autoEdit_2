@@ -1,12 +1,11 @@
-import path from 'path';
+const path = require('path');
 
-export default {
+module.exports = {
     // Properties
-
     frontendBaseDir: '',
 
     // Getters
-
+    // Sass
     get designPackage() {
         return path.join(this.frontendBaseDir, '../..');
     },
@@ -38,6 +37,7 @@ export default {
     get main() {
         return path.join(this.src, 'main');
     },
+    // JavaScript
     get mainJS() {
         return path.join(this.main, 'js');
     },

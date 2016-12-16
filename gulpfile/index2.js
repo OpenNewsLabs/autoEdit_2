@@ -1,10 +1,11 @@
+'use strict';
 // - Sass compiler DONE
 // - Watcher DONE
 // - Run Sequence DONE
 // - ESLinter DONE
 // - Browserify
 // - Autoprefixer
-// - Babel
+// - Babel DONE
 // - Minification
 
 const gulp = require('gulp');

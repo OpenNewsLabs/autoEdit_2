@@ -119,11 +119,19 @@ In this case, Gulp first runs `task-one`. When `task-one` is completed, Gulp run
 ### Minification
 ### Autoprefixer
 ### Babel
+From: https://markgoodyear.com/2015/06/using-es6-with-gulp/
 
+- Installed `$ npm install babel-core babel-preset-es2015 --save-dev`
+- Created `.babelrc`:
+  ```
+  {
+    "presets": ["es2015"]
+  }
+  ```
 
 ## Further steps (the gulpfile.js is falling apart)
 - Created `gulpfile.js` folder in the root
-- Renamed `gulpfiles.js` in `index.js`
+- Renamed `gulpfile.js` in `gulpfile.babel.js`
 - Created `paths.js` for files paths (installed `path` through `npm install path --save-dev` [not sure whether this is needed])
 - Created `enabledTasks.js` to activate/deactivated tasks 
 - Created `error.js` (Installed `gulp-notify` for pop-up errors)
@@ -135,6 +143,7 @@ In this case, Gulp first runs `task-one`. When `task-one` is completed, Gulp run
 - Created `watch` folder and `index.js`
 - Created `git.js`
 - Installed `autoprefixer`, `css-mqpacker`, `gulp-postcss`, `gulp-concat-css`, `gulp-cached`
+
 
 ## How to configure further tasks in Gulp and overview on it
 
@@ -199,3 +208,4 @@ Most workflows with Gulp tend to only require 4 different globbing patterns:
 * [Adding ESLint with Gulp.js](https://davidwalsh.name/gulp-eslint)
 * [ESLint using Gulp.js](http://justinchmura.com/2016/06/28/eslint-using-gulp/)
 * [Simple Linting using SCSSlint, ESlint, and Gulp in Atom](http://brendan-quinn.xyz/post/simple-linting-using-scsslint-eslint-and-gulp-in-atom/)
+* [Using ES6 with gulp](https://markgoodyear.com/2015/06/using-es6-with-gulp/)

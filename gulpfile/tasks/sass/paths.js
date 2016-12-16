@@ -1,6 +1,6 @@
-import paths from '../../paths';
+const paths = require('../../paths');
 
-export default {
+module.exports = {
     authorFiles: paths.sassAuthorFiles,
     commonFiles: paths.sassCommonFiles,
     publishFiles: paths.sassPublishFiles,

@@ -1,6 +1,6 @@
-import paths from './paths';
+const paths = require('./paths');
 
-export default {
+module.exports = {
     getTargetPath(mode) {
         if (mode === 'publish') {
             return paths.targetPublish;

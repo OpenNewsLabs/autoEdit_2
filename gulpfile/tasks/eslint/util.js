@@ -1,8 +1,9 @@
+'use strict';
 // const env = require('../../libs/env');
 // const git = require('../../libs/git');
 // const paths = require('./paths');
 
-export default {
+module.exports = {
     getSrcFiles() {
         /* if (!env.isPrecommit) {
             return paths.defaultFiles;

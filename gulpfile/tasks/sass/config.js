@@ -1,6 +1,8 @@
-import paths from '../../paths';
+'use strict';
 
-export default {
+const paths = require('../../paths');
+
+module.exports = {
     includePaths: [paths.sassCommon],
     outputStyle: 'compressed',
 };

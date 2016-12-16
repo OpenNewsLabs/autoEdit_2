@@ -1,8 +1,9 @@
-import env from '../../libs/env';
-import git from '../../libs/git';
-import paths from './paths';
+'use strict';
+const env = require('../../libs/env');
+const git = require('../../libs/git');
+const paths = require('./paths');
 
-export default {
+module.exports = {
     getSrcFiles(mode) {
         let gitStagedFiles;
         let defaultSrcFiles;

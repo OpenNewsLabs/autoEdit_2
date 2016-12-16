@@ -1,7 +1,9 @@
-import gulp from 'gulp';
-import runSequence from 'run-sequence';
-import enabledTasks from '../enabledTasks';
-import taskHelper from '../libs/taskHelper';
+'use strict';
+
+var gulp = require('gulp');
+var runSequence = require('run-sequence');
+var taskHelper = require('../libs/taskHelper');
+var enabledTasks = require('../enabledTasks');
 
 gulp.task('default', cb => {
     const taskSets = [

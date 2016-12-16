@@ -1,13 +1,14 @@
-import _ from 'underscore';
-import path from 'path';
-import env from './env';
-import paths from '../paths';
+'use strict';
+const _ = require('underscore');
+const path = require('path');
+const env = require('./env');
+const paths = require('../paths');
 const _defaultOptions = {
     extensions: [], // e.g. 'scss', 'js'
     excludes: [],
 };
 
-export default {
+module.exports = {
     getStagedFiles(options) {
         const filePaths = env.getVar('git-staged-files').split('\n');
         const opt = _.extendOwn({}, _defaultOptions, options);

@@ -1,9 +1,11 @@
-import cache from 'gulp-cached';
-import gulp from 'gulp';
-import sass from 'gulp-sass';
-import config from './config';
-import util from './util';
-import {handle as handleErrors} from '../../libs/error';
+'use strict';
+
+const cache = require('gulp-cached');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const config = require('./config');
+const util = require('./util');
+const handleErrors = require('../../libs/error').handle;
 
 function compileSASS(gulpSrcFiles, targetFolder) {
     return gulp.src(gulpSrcFiles)

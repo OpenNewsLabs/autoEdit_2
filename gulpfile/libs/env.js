@@ -1,5 +1,6 @@
-import {stripIndent as tagStripIndent} from 'common-tags';
-import {argv} from 'yargs';
+'use strict';
+const tagStripIndent = require('common-tags').stripIndent;
+const argv = require('yargs');
 
 let _nodeEnv;
 
@@ -46,4 +47,4 @@ try {
     _nodeEnv = 'production';
 }
 
-export default env;
+module.exports = env;

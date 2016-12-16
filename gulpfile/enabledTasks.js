@@ -1,12 +1,14 @@
-import _ from 'underscore';
-import env from './libs/env';
+'use strict';
+
+const _ = require('underscore');
+const env = require('./libs/env');
 
 // Grouped by different phases of the build
 // and by what can run in parellel
 let _beforeCode = [];
-let _code = ['sass', 'icon-font', 'systemjs-builder'];
+let _code = ['sass'];
 let _afterCode = [
-    'cssconcat',
+    ['cssconcat'],
 ];
 let _delayed = [];
 
@@ -17,7 +19,7 @@ if (env.isDevelopment) {
     _beforeCode = [];
     _code = [];
     _afterCode = ['watch'];
-    _delayed = ['eslint', 'systemjs-builder', 'sass', 'cssconcat'];
+    _delayed = ['eslint', 'sass', 'cssconcat'];
 } else if (env.isPrecommit) {
     _beforeCode = [];
     _code = [];
@@ -25,7 +27,7 @@ if (env.isDevelopment) {
     _delayed = [];
 }
 
-export default {
+module.exports = {
     all: _.flatten([_beforeCode, _code, _afterCode, _delayed]),
     beforeCode: _beforeCode,
     code: _code,

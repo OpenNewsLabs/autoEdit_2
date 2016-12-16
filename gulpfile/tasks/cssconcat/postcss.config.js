@@ -1,7 +1,8 @@
-import autoprefixer from 'autoprefixer';
-import mqpacker from 'css-mqpacker';
+'use strict';
+const autoprefixer = require('autoprefixer');
+const mqpacker = require('css-mqpacker');
 
-export default {
+module.exports = {
     processors: [
         autoprefixer({
             browsers: [

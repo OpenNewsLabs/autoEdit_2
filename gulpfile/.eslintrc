@@ -1,3 +1,5 @@
+// ESLinter configuration file 
+// TODO: can this be a shared file?
 {
     "extends": "airbnb-base",
     "rules": {

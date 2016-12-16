@@ -77,6 +77,8 @@
   "devDependencies": {
     "appdmg": "^0.4.5",
     "autoprefixer": "^6.5.4",
+    "babel-core": "^6.20.0",
+    "babel-preset-es2015": "^6.18.0",
     "browserify": "^13.1.1",
     "common-tags": "^1.4.0",
     "copy-dir": "^0.3.0",
@@ -98,6 +100,7 @@
     "nw-builder": "^2.2.6",
     "path": "^0.12.7",
     "run-sequence": "^1.2.2",
+    "systemjs-builder": "^0.15.34",
     "underscore": "^1.8.3",
     "watchify": "^3.7.0",
     "yargs": "^6.5.0"

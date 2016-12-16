@@ -1,9 +1,9 @@
-import gulpConcatCss from 'gulp-concat-css';
-import gulp from 'gulp';
-import path from 'path';
-import postcss from 'gulp-postcss';
-import util from './util';
-import configPostcss from './postcss.config';
+const gulpConcatCss = require('gulp-concat-css');
+const gulp = require('gulp');
+const path = require('path');
+const postcss = require('gulp-postcss');
+const util = require('./util');
+const configPostcss = require('./postcss.config');
 
 function concatStyles(mode, cb) {
     const srcFiles = util.getSrcFiles(mode);
