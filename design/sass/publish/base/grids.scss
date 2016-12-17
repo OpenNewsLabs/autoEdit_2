@@ -1,0 +1,110 @@
+@charset "UTF-8";
+@import "common_dependencies"; // Load the dependencies
+
+// -b : Set a breakpoint with sass-breakpoint
+// -c : Comment
+// -float : Set a float via mixin
+// -gallery : Add a susy gallery mixin
+// -rem : Pixel to rem
+// -span : Add a susy span mixin
+// -z : Set a z-index with the SASS nn-z-index function
+
+@mixin getCol($n,$total) {
+    @include span($total/$n);
+  box-sizing:border-box;
+  &:nth-child(#{$n}n+#{$n}) {
+      @include span($total/$n last);
+  }
+}
+.grid {
+    &-container {
+        padding: 0 $nc-gutter;
+        margin: $nc-spacing 0;
+        box-sizing: content-box; // for the grid to be respected
+        @include container(12 center);
+
+        &--nomargin {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+    }
+    &-col-1 {
+        @include getCol(1,12);
+    }
+    &-col-2 {
+        @include getCol(2,12);
+    }
+    &-col-3 {
+        @include getCol(3,12);
+    }
+    &-col-4 {
+        @include getCol(4,12);
+    }
+    &-col-6 {
+        @include getCol(6,12);
+    }
+
+    &-col-8-from-12 {
+        @include getCol(1.5, 12);
+    }
+
+    @include susy-breakpoint($bp-medium $bp-large) {
+        &-col-4 {
+            @include getCol(2,12);
+        }
+
+        &-col-6 {
+            @include getCol(3,12);
+        }
+    }
+
+    @include susy-breakpoint($bp-small $bp-medium) {
+        &-col-4 {
+            @include getCol(2,12);
+        }
+        &-col-6 {
+            @include getCol(3,12);
+        }
+
+    }
+
+    @include susy-breakpoint(0 $bp-small) {
+
+        &-col-1 {
+            @include getCol(1,12);
+        }
+        &-col-2 {
+            @include getCol(1,12);
+        }
+        &-col-3 {
+            @include getCol(1,12);
+        }
+        &-col-4 {
+            @include getCol(1,12);
+        }
+        &-col-6 {
+            @include getCol(1,12);
+        }
+
+    }
+
+    &-col-1,
+    &-col-2,
+    &-col-3,
+    &-col-4,
+    &-col-6 {
+        &.center {
+            float: none;
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    &-content {
+        @include span(12);
+        position: relative;
+        @include susy-breakpoint($bp-xlarge) {
+            @include span(9 last);
+        }
+    }
+}

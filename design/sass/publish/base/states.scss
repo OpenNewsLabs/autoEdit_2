@@ -1,0 +1,131 @@
+@import "common_dependencies";
+
+/* ==========================================================================
+   State classes
+   ========================================================================== */
+
+// Hide from both screenreaders and browsers: h5bp.com/u
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+// Hide only visually, but have it available for screenreaders: h5bp.com/v
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+    // Extends the .visuallyhidden class to allow the element to be focusable
+    // when navigated to via the keyboard: h5bp.com/p
+    &.isfocusable:active,
+    &.isfocusable:focus {
+        clip: auto;
+        height: auto;
+        margin: 0;
+        overflow: visible;
+        position: static;
+        width: auto;
+    }
+}
+
+.isVisuallyHidden {
+    visibility: hidden;
+}
+
+// Hide visually and from screenreaders, but maintain layout
+.invisible {
+    visibility: hidden;
+}
+
+.loading {
+    position: relative;
+    margin: 0px auto;
+    width: 40px;
+    height: 40px;
+    &:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
+}
+
+.circular {
+    animation: rotate 3s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.path {
+    stroke-dasharray: 45, 250;
+    stroke-dashoffset: 0;
+    stroke-width: 3px;
+    animation: dash 5.25s ease-in-out infinite, color 5.25s ease-in-out infinite;
+    stroke: $nc-purple-900;
+}
+
+@keyframes rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 250;
+        stroke-dashoffset: 0;
+    }
+    60% {
+        stroke-dasharray: 88, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 88, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+
+@keyframes color {
+    100%,
+    0% {
+        stroke: $nc-purple-900;
+    }
+    30% {
+        stroke: $nc-purple-900;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes grow {
+    from {
+        font-size: 0;
+    }
+    to {
+        font-size: 90px;
+    }
+}
+
+@keyframes shrink {
+    from {
+        font-size: 90px;
+    }
+    to {
+        font-size: 0;
+    }
+}

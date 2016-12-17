@@ -1,0 +1,13 @@
+@mixin lines($width, $height, $color:transparent, $color-light:transparent, $color-dark:transparent, $type:solid, $padding:1px){
+    margin-bottom: $padding;
+    padding-bottom: $padding;
+    width: $width;
+    border-bottom: $height $type $color;
+
+    @if $color-light != transparent and $color-dark != transparent {
+        @include set-on-dark-background(border-bottom, $height $type $color-dark);
+        @include set-on-light-background(border-bottom, $height $type $color-light);
+    }
+
+    display: block;
+}

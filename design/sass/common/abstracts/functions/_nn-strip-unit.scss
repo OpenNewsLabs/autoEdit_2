@@ -1,0 +1,29 @@
+/*doc
+---
+title: Strip unit
+name: nn-strip-unit
+category: functions
+---
+
+Strips of the unit of a number
+
+
+## Parameters
+---
+@parameter $num = number with unit (5px, 5em, 5rem)
+
+
+## Example
+---
+
+```html_example
+nn-strip-unit(5px) //Output: 5
+nn-strip-unit(10em) // Output: 10
+nn-strip-unit(15rem) // Output: 15
+```
+
+*/
+
+@function nn-strip-unit($num) {
+    @return $num / ($num * 0 + 1);
+}

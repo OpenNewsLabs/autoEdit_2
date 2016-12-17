@@ -44,7 +44,7 @@ try {
     _nodeEnv = env.getVar('NODE_ENV');
 } catch (e) {
     // default environment is production
-    _nodeEnv = 'production';
+    _nodeEnv = 'development';
 }
 
 module.exports = env;

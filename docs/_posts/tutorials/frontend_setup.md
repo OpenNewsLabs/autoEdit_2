@@ -1,7 +1,8 @@
 # FrontEnd Setup
 
-## List of features added
+## List of added features
 - Sass compiler
+- CSS concat
 - Watcher
 - Run Sequence
 - ESLinter
@@ -118,6 +119,8 @@ In this case, Gulp first runs `task-one`. When `task-one` is completed, Gulp run
 ### Browserify 
 ### Minification
 ### Autoprefixer
+Installed `autoprefixer`
+
 ### Babel
 From: https://markgoodyear.com/2015/06/using-es6-with-gulp/
 
@@ -129,23 +132,7 @@ From: https://markgoodyear.com/2015/06/using-es6-with-gulp/
   }
   ```
 
-## Further steps (the gulpfile.js is falling apart)
-- Created `gulpfile.js` folder in the root
-- Renamed `gulpfile.js` in `gulpfile.babel.js`
-- Created `paths.js` for files paths (installed `path` through `npm install path --save-dev` [not sure whether this is needed])
-- Created `enabledTasks.js` to activate/deactivated tasks 
-- Created `error.js` (Installed `gulp-notify` for pop-up errors)
-- Created `object.js` for utility methods on objects
-- Created `taskHelper.js`
-- Created `time.js`
-- Created `tasks` folder
-- Created `default.js` for _default_ task
-- Created `watch` folder and `index.js`
-- Created `git.js`
-- Installed `autoprefixer`, `css-mqpacker`, `gulp-postcss`, `gulp-concat-css`, `gulp-cached`
-
-
-## How to configure further tasks in Gulp and overview on it
+# How to configure further tasks in Gulp and overview on it
 
 Gulp is a streaming build system. It’s streaming nature is what allows it to pipe and pass around the data being manipulated or used by it’s plugins. The plugins are intended to only do one job each, so it’s not uncommon to pass a singular file through multiple plugins.
 
@@ -196,6 +183,105 @@ Most workflows with Gulp tend to only require 4 different globbing patterns:
 - *.+(scss|sass): The plus + and parentheses () allows Gulp to match multiple patterns, with different patterns separated by the pipe | character. In this case, Gulp will match any file ending with .scss or .sass in the root folder.
 
 (source: https://css-tricks.com/gulp-for-beginners/)
+
+
+
+# The `gulpfile.js` is falling apart
+## `/`
+### Created `gulpfile.js` folder in the root
+The `gulpfile.js` now `require()`s `gulpfile/index.js`.
+
+
+### Using `gulpfile.js` as `gulpfile.babel.js`
+Rename the `gulpfile.js` if transpiling ES6 is needed (babel will automatically kick in).
+
+### Created `paths.js` for files paths 
+##### (installed `path` through `npm install path --save-dev` [not sure whether this is needed])
+
+The `path` module contains all the path variables and provides the following paths combination:
+```
+===== PATHS CONFIGURATION OUTPUT =====
+frontendBaseDir 
+designPackage 
+gulp 
+
+----- SASS SRCS -----
+sass 
+sassCommon 
+sassCommonFiles 
+sassPublishFiles 
+targetPublishCss 
+targetPublishCssFiles 
+targetPublishCssFilesForPostProccessing 
+
+----- JS SRCS -----
+src 
+libJS 
+nwjsJS 
+allJSFiles 
+jsPublishEntry 
+jsPublishFiles
+target 
+targetArtifacts 
+targetJSComponents 
+targetPublish 
+===========================
+```
+
+
+
+
+### Created `enabledTasks.js` to activate/deactivated tasks 
+**Requires** `underscore`
+
+This module provides the groups of tasks that must be exectuted.
+
+The **order of execution** can be established by assigning a task to one of the five groups:
+- `all`: all the tasks run at the same time
+- `beforeCode`: tasks needed before touching system files (babel ?)
+- `code`: tasks needed during development (like watcher, etc...)
+- `afterCode`: tasks for post processign
+- `delayed`
+
+## `libs/`
+### `error.js` 
+####(Installed `gulp-notify` for pop-up errors)
+Provides pop-ups when a syntax error occurs
+
+### `object.js` 
+Utility methods on objects
+### `taskHelper.js`
+### `time.js`
+### `git.js`
+
+## `tasks/`
+### `default.js` 
+For _default_ task
+
+## `tasks/watch/`
+### `index.js`
+
+## `tasks/sass/`
+### `index.js`
+### `config.js`
+### `paths.js`
+### `util.js`
+
+## `tasks/eslint/`
+### `index.js`
+### `paths.js`
+### `util.js`
+
+## `tasks/cssconcat/`
+### `index.js`
+### `paths.js`
+### `postcss.config.js`
+### `util.js`
+
+- Installed, `css-mqpacker`, `gulp-postcss`, `gulp-concat-css`, `gulp-cached`, `susy`
+
+
+
 
 #### Notes
 * [Getting Started](https://github.com/gulpjs/gulp/blob/master/docs/getting-started.md)

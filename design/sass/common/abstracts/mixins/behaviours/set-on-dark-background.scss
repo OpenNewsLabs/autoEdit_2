@@ -1,0 +1,6 @@
+@mixin set-on-dark-background($property, $value) {
+    .is-dark &,
+    .is-light .is-dark & {
+        #{$property}:$value;
+    }
+}

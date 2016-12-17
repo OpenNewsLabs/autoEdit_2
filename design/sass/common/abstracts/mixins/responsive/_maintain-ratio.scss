@@ -1,0 +1,57 @@
+/*doc
+---
+title: Maintain ratio mixin
+name: Maintain ratio mixin
+category: mixins
+---
+
+Maintain ratio mixin. Great for responsive grids, or videos.
+
+## Live Template abbreviations
+---
+
+## Parameters
+---
+$ratio - Ratio the element needs to maintain.
+
+## Dependencies
+---
+
+## Example
+---
+
+A 16:9 ratio would look like this:
+
+.element {
+    @include maintain-ratio(16 9);
+}
+
+
+## Source
+---
+
+*/
+
+@mixin maintain-ratio($ratio: 1 1) {
+    @if length($ratio) != 2 {
+        @warn "$ratio must be a list with two values.";
+    }
+
+    width: 100%;
+    height: 0;
+    padding-bottom: percentage(nth($ratio, 2) / nth($ratio, 1));
+    position: relative;
+
+    .img__base { position: static; }
+
+    iframe,
+    img,
+    picture,
+    video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+}

@@ -1,22 +1,23 @@
+'use strict';
+
 const path = require('path');
 
 module.exports = {
     // Properties
+
     frontendBaseDir: '',
 
     // Getters
-    // Sass
     get designPackage() {
-        return path.join(this.frontendBaseDir, '../..');
+        // return path.join(this.frontendBaseDir, '../..');
+        return path.join(this.frontendBaseDir, 'design');
     },
     get gulp() {
         return path.join(this.frontendBaseDir, 'gulpfile.js');
     },
+    // Sass Sources
     get sass() {
-        return path.join(this.src, 'main', 'sass');
-    },
-    get sassAuthorFiles() {
-        return [path.join(this.sass, 'author/**/*.scss')];
+        return path.join(this.frontendBaseDir, 'design', 'sass');
     },
     get sassCommon() {
         return path.join(this.sass, 'common');
@@ -31,96 +32,71 @@ module.exports = {
             path.join(this.sass, 'publish/**/*.scss'),
         ];
     },
-    get src() {
-        return path.join(this.designPackage, 'src');
-    },
-    get main() {
-        return path.join(this.src, 'main');
-    },
-    // JavaScript
-    get mainJS() {
-        return path.join(this.main, 'js');
-    },
-    get test() {
-        return path.join(this.src, 'test');
-    },
-    get testJS() {
-        return path.join(this.test, 'js');
-    },
-    get allJSFiles() {
-        return [
-            path.join(this.mainJS, '**/*.js'),
-            path.join(this.testJS, '**/*.js'),
-        ];
-    },
-    get jsPublishEntry() {
-        return path.join(this.mainJS, 'publish/main.js');
-    },
-    get jsPublishFiles() {
-        return [
-            path.join(this.mainJS, 'publish/**/*.js'),
-        ];
-    },
-    get jsAuthorEntry() {
-        return path.join(this.mainJS, 'author/main.js');
-    },
+    // Sass target
     get target() {
-        return path.join(this.designPackage, 'target');
+        return path.join(this.frontendBaseDir, 'nwjs');
     },
     get targetArtifacts() {
-        return path.join(this.target, 'package/jcr_root/etc/designs/nc/website');
-    },
-    get targetAuthorCss() {
-        return path.join(this.targetArtifacts, 'author/css');
-    },
-    get targetAuthorCssFiles() {
-        return [
-            path.join(this.targetAuthorCss, 'base/**/*.css'),
-            path.join(this.targetAuthorCss, 'components/**/*.css'),
-        ];
-    },
-    get targetAuthorCssFilesForPostProccessing() {
-        return path.join(this.targetAuthorCss, '*.css');
+        return path.join(this.target, 'style');
     },
     get targetPublishCss() {
-        return path.join(this.targetArtifacts, 'publish/css');
+        return path.join(this.targetArtifacts);
     },
     get targetPublishCssFiles() {
         return [
             path.join(this.targetPublishCss, 'base/**/*.css'),
-            path.join(this.targetPublishCss, 'components/**/*.css'),
+            path.join(this.targetPublishCss, 'modules/**/*.css'),
             path.join(this.targetPublishCss, 'template/**/*.css'),
-        ];
-    },
-    get targetPublishFonts() {
-        return path.join(this.targetArtifacts, 'publish/fonts');
-    },
-    get targetPublishFontsFiles() {
-        return [
-            path.join(this.targetPublishFonts, '**/*.*'),
         ];
     },
     get targetPublishCssFilesForPostProccessing() {
         return path.join(this.targetPublishCss, '*.css');
     },
-
-    get targetJcrRoot() {
-        return path.join(this.target, 'package/jcr_root');
+    // JS source
+    get src() {
+        return path.join(this.designPackage, 'js');
     },
+    get libJS() {
+        return path.join(this.src, 'lib');
+    },
+    get nwjsJS() {
+        return path.join(this.src, 'nwjs');
+    },
+    get allJSFiles() {
+        return [
+            path.join(this.libJS, '**/*.js'),
+            path.join(this.nwjsJS, '**/*.js'),
+        ];
+    },
+    get jsPublishEntry() {
+        return path.join(this.libJS, 'publish/main.js');
+    },
+    get jsPublishFiles() {
+        return [
+            path.join(this.libJS, 'publish/**/*.js'),
+        ];
+    },
+    // get targetPublishFonts() {
+    //     return path.join(this.targetArtifacts, 'publish/fonts');
+    // },
+    // get targetPublishFontsFiles() {
+    //     return [
+    //         path.join(this.targetPublishFonts, '**/*.*'),
+    //     ];
+    // },
     get targetJSComponents() {
         return path.join(this.targetPublish, 'js', 'components');
     },
     get targetPublish() {
         return path.join(this.targetArtifacts, 'publish');
     },
-
-    get assets() {
-        return path.join(this.main, 'assets');
-    },
-    get svgIcons() {
-        return path.join(this.assets, 'icons/*.svg');
-    },
-    get targetIconFont() {
-        return path.join(this.targetPublish, 'fonts');
-    }
-}
+    // get assets() {
+    //     return path.join(this.main, 'assets');
+    // },
+    // get svgIcons() {
+    //     return path.join(this.assets, 'icons/*.svg');
+    // },
+    // get targetIconFont() {
+    //     return path.join(this.targetPublish, 'fonts');
+    // }
+};

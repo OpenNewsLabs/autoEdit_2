@@ -1,0 +1,14 @@
+@mixin retina-background($min-height) {
+
+    /* Large screens */
+    @media only screen and (min-width : 1824px) { min-height : $min-height;  }
+
+    // iPad 3 & 4 Media Queries + Iphone 6, 6+
+    @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) and (-webkit-min-device-pixel-ratio: 2) { min-height: $min-height }
+
+
+    @media only screen // iPhone 2G-5 in portrait & landscape
+    and (min-device-width : 320px)
+    and (max-device-width : 568px) { min-height: $min-height / 2}
+
+}

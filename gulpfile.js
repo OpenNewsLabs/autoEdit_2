@@ -1,4 +1,3 @@
 'use strict';
-
-const feSetup = require('./gulpfile/index'); 
+require('./gulpfile/index'); 
 

@@ -1,0 +1,137 @@
+@charset "UTF-8";
+@import "common_dependencies"; // Load the dependencies
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,600italic,700,700italic,400italic,300italic);
+body {
+    @include font($t-default);
+}
+
+h1 {
+    @include font($t-1);
+    margin-top: nn-px-to-em($f-space-top-h1, $fs-h1-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h1, $fs-h1-px);
+}
+
+h2 {
+    @include font($t-2);
+    margin-top: nn-px-to-em($f-space-top-h2, $fs-h2-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h2, $fs-h2-px);
+}
+
+h3 {
+    @include font($t-3);
+    margin-top: nn-px-to-em($f-space-top-h3, $fs-h3-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h3, $fs-h3-px);
+}
+
+h4 {
+    @include font($t-4);
+    margin-top: nn-px-to-em($f-space-top-h4, $fs-h4-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h4, $fs-h4-px);
+}
+
+h5 {
+    @include font($t-5);
+    margin-top: nn-px-to-em($f-space-top-h5, $fs-h5-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h5, $fs-h5-px);
+}
+
+h6 {
+    @include font($t-6);
+    margin-top: nn-px-to-em($f-space-top-h6, $fs-h6-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-h6, $fs-h6-px);
+}
+
+p {
+    margin-top: nn-px-to-em($f-space-top-p, $fs-text-px);
+    margin-bottom: nn-px-to-em($f-space-bottom-p, $fs-text-px);
+}
+
+.center {
+    text-align: center;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    blockquote,
+    p,
+    span,
+    pre,
+    a,
+    abbr,
+    acronym,
+    address,
+    big,
+    cite,
+    code,
+    del,
+    dfn,
+    em,
+    img,
+    ins,
+    kbd,
+    q,
+    s,
+    samp,
+    small,
+    strike,
+    strong,
+    sub,
+    sup,
+    tt,
+    var,
+    b,
+    u,
+    i,
+    center,
+    dl,
+    dt,
+    dd,
+    ol,
+    ul,
+    li,
+    fieldset,
+    form,
+    label,
+    legend,
+    table,
+    caption,
+    tbody,
+    tfoot,
+    thead,
+    tr,
+    th,
+    td,
+    article,
+    aside,
+    canvas,
+    details,
+    embed,
+    figure,
+    figcaption,
+    footer,
+    header,
+    hgroup,
+    menu,
+    nav,
+    output,
+    ruby,
+    section,
+    summary,
+    time,
+    mark,
+    audio,
+    video {
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+blockquote {
+    @include font($t-quotes);
+    font-style: italic;
+    quotes: "\201C""\201D""\2018""\2019";
+    margin: $f-top-margin * $fs-text $f-top-margin * $fs-text;
+}

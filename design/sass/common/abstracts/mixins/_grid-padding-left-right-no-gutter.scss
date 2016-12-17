@@ -1,0 +1,4 @@
+@mixin grid-padding-left-right-no-gutter($number-columns: 1) {
+    padding-left: span($number-columns);
+    padding-right: span($number-columns);
+}

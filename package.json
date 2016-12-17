@@ -100,6 +100,7 @@
     "nw-builder": "^2.2.6",
     "path": "^0.12.7",
     "run-sequence": "^1.2.2",
+    "susy": "^2.2.12",
     "systemjs-builder": "^0.15.34",
     "underscore": "^1.8.3",
     "watchify": "^3.7.0",

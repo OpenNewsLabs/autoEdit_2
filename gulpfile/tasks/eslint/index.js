@@ -1,7 +1,9 @@
-import eslint from 'gulp-eslint';
-import gulp from 'gulp';
-import {handle as handleErrors} from '../../libs/error';
-import paths from '../../paths';
+'use strict';
+
+const eslint = require( 'gulp-eslint');
+const gulp = require( 'gulp');
+const handleErrors = require( '../../libs/error').handle;
+const paths = require( '../../paths');
 const srcFiles = paths.allJSFiles;
 
 gulp.task('eslint', cb => {

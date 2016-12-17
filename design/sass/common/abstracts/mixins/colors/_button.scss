@@ -1,0 +1,46 @@
+@mixin button ($backgroundColor, $hoverColor, $inactiveColor, $fontColor, $hoverFontColor, $inactiveFontColor, $radius, $mobileHeight: 45, $desktopHeight: 35, $horizontalPadding: 14) {
+    @include border-radius($radius, $radius, $radius, $radius);
+    //@include font($sr3-x);
+    padding-left: $horizontalPadding + px;
+    padding-right: $horizontalPadding + px;
+    height: $mobileHeight + px;
+    padding-bottom: 0;
+    padding-top: 0;
+    border: 0;
+    background-color: $backgroundColor;
+    color: $fontColor;
+    transition: background 0.3s linear;
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
+    outline: none;
+    user-select: none;
+
+    @include susy-breakpoint($mqs-desktop) {
+        height: $desktopHeight + px;
+    }
+
+    & > span,
+    & > a,
+    & > button {
+        line-height: $mobileHeight + px;
+        text-align: center;
+
+        @include susy-breakpoint($mqs-desktop) {
+            line-height: $desktopHeight + px;
+        }
+    }
+
+    &:hover {
+        background-color: $hoverColor;
+        color: $hoverFontColor;
+        cursor: pointer;
+    }
+
+    &:disabled,
+    &.disabled {
+        background-color: $inactiveColor;
+        color: $inactiveFontColor;
+        cursor: not-allowed;
+    }
+}

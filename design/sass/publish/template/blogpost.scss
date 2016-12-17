@@ -1,0 +1,35 @@
+@charset "UTF-8";
+@import "common_dependencies";
+// Load the dependencies
+$cl: 'blogpost';
+$ts: 'teaser';
+.#{$cl} {
+    &__base {
+        &__twitter {
+            display: none;
+            @include susy-breakpoint($bp-small) {
+                display: block;
+            }
+        }
+        .#{$ts} {
+          &__base {
+            display: none;
+            @include susy-breakpoint($bp-small) {
+                display: block;
+            }
+          }
+        }
+    }
+    &__content {
+        @include span(12);
+        @include susy-breakpoint($bp-small) {
+            @include span(8);
+        }
+    }
+    &__aside {
+        @include span(12);
+        @include susy-breakpoint($bp-small) {
+            @include span(4 last);
+        }
+    }
+}

@@ -1,0 +1,48 @@
+/*doc
+---
+title: Border
+name: border
+category: mixins
+---
+
+Set the background image aware of the document direction
+
+Use this plugin always for the background when a
+background image is involved
+
+
+## Parameters
+---
+@parameter $color = The value must look like one of this examples:
+@parameter $border = all | top | right | bottom | left
+@parameter $line-width = width with unit
+@parameter $line-type = solid | dashed | dotted
+
+
+## Example
+---
+
+```html_example
+@include border();
+@include border($c-grey, right);
+@include border($c-grey, all, 3px, dashed);
+@include border($c-grey, top bottom, 4px);
+```
+
+
+*/
+
+@mixin border($color, $border: all, $line-width: 1px, $line-type: solid) {
+
+    $border-style: $line-width $line-type $color;
+
+    @if $border == all {
+        border: $border-style;
+    }
+
+    @else {
+        @each $position in $border {
+            border-#{$position}: $border-style;
+        }
+    }
+}

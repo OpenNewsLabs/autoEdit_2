@@ -1,0 +1,48 @@
+/*doc
+---
+title: Pixel to unitless
+name: nn-px-to-unitless
+category: functions
+---
+
+This makes the same calculation as px to em. But it don't print out the unit.
+
+Use this for line-heights.
+
+
+## Live Template abbreviations
+---
+
+
+
+## Parameters
+---
+@parameter $value = pixel based number (without unit)
+@parameter $base = pixel based number (without unit)
+
+
+## Dependencies
+---
+
+
+
+## Example
+---
+
+```html_example
+line-height: nn-px-to-unitless(5) // Output: 0.3125
+```
+
+
+## Source
+---
+
+
+*/
+
+$base-font-size: 16px !default;
+
+@function nn-px-to-unitless($value, $base: $base-font-size) {
+    $return: #{$value / nn-strip-unit($base)};
+    @return $return;
+}

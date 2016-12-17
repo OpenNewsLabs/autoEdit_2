@@ -1,0 +1,15 @@
+@mixin full-width-on-breakpoints($mq-from: 2, $mq-to: 6) {
+    $map-mq-fullwidth: (
+        //2: $mq2-min,
+        //3: $mq3-min,
+        //4: $mq4-min,
+        //5: $mq5-min,
+        //6: $mq6-min
+    );
+
+    @for $mq from $mq-from through $mq-to {
+        @include susy-breakpoint(map-get($map-mq-fullwidth, $mq)) {
+           width: map-get($map-mq-fullwidth, $mq);
+        }
+    }
+}

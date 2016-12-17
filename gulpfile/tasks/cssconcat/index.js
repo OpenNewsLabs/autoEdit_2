@@ -1,3 +1,5 @@
+'use strict';
+
 const gulpConcatCss = require('gulp-concat-css');
 const gulp = require('gulp');
 const path = require('path');
@@ -21,12 +23,13 @@ function concatStyles(mode, cb) {
     cb();
 }
 
-gulp.task('cssconcat', ['cssconcatPublish', 'cssconcatAuthor']);
+// gulp.task('cssconcat', ['cssconcatPublish', 'cssconcatAuthor']);
+gulp.task('cssconcat', ['cssconcatPublish']);
 
 gulp.task('cssconcatPublish', cb => {
     concatStyles('publish', cb);
 });
 
-gulp.task('cssconcatAuthor', cb => {
-    concatStyles('author', cb);
-});
+// gulp.task('cssconcatAuthor', cb => {
+//     concatStyles('author', cb);
+// });
