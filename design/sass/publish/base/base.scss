@@ -12,7 +12,7 @@ html {
 
 body {
     color: $text-default;
-    background-color: $nc-white;
+    background-color: $ae-white;
     font-size: 100%;
     min-height: 100vh;
     word-wrap: break-word;
@@ -99,7 +99,7 @@ a {
 }
 
 a {
-    color: $nc-purple-900;
+    color: $ae-purple-900;
     text-decoration: none;
     font-weight: 600;
 }
@@ -115,7 +115,7 @@ a.icon {
 
 hr {
     border: 0;
-    background: $nc-gray-700;
+    background: $ae-gray-700;
     height: 1px;
     margin: 0;
 }
@@ -143,7 +143,7 @@ textarea:focus {
 pre {
     font-family: monospace;
     white-space: pre;
-    background-color: $nc-gray-100;
+    background-color: $ae-gray-100;
     padding-left: 10px;
 }
 
@@ -157,14 +157,14 @@ h3,
 h4,
 h5,
 h6 {
-    color: $nc-purple-900;
+    color: $ae-purple-900;
 }
 
 .inverted {
-    @include linear-gradient(-22deg, $nc-purple-500 30%, $nc-purple-900 100%);
-    color: $nc-white;
+    @include linear-gradient(-22deg, $ae-purple-500 30%, $ae-purple-900 100%);
+    color: $ae-white;
     a {
-        color: $nc-white;
+        color: $ae-white;
         font-weight: 800;
     }
 }

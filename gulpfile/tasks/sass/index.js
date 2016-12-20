@@ -22,7 +22,6 @@ function compileSASS(gulpSrcFiles, targetFolder) {
         .pipe(gulp.dest(targetFolder));
 }
 
-// gulp.task('sass', ['sassPublish', 'sassAuthor']);
 gulp.task('sass', ['sassPublish']);
 
 gulp.task('sassPublish', cb => {
@@ -35,17 +34,6 @@ gulp.task('sassPublish', cb => {
         return compileSASS(srcFiles, targetPath);
     }
 });
-
-// gulp.task('sassAuthor', cb => {
-//     const srcFiles = util.getSrcFiles('author');
-//     const targetPath = util.getTargetPath('author');
-
-//     if (!srcFiles.length) {
-//         cb();
-//     } else {
-//         return compileSASS(srcFiles, targetPath);
-//     }
-// });
 
 gulp.task('sassResetCachedStyles', cb => {
     delete cache.caches.sass; // reset the cache

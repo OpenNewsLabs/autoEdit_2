@@ -2,23 +2,23 @@
 @import "common_dependencies"; // Load the dependencies
 .btn {
     &__base {
-        padding: $nc-btn-padding;
-        border-radius: $nc-btn-radius;
+        padding: $ae-btn-padding;
+        border-radius: $ae-btn-radius;
         @include font($t-btn);
         text-transform: uppercase;
-        background: $nc-purple-700;
-        color: $nc-white;
-        margin: $nc-spacing 0;
+        background: $ae-purple-700;
+        color: $ae-white;
+        margin: $ae-spacing 0;
         display: inline-block;
         &:hover {
-            background: $nc-purple-900;
-            color: $nc-white;
+            background: $ae-purple-900;
+            color: $ae-white;
             text-decoration: none;
-            color: $nc-white;
+            color: $ae-white;
             transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
         }
         &.disabled {
-            background-color: $nc-gray-800;
+            background-color: $ae-gray-800;
         }
     }
     &__container {
@@ -37,13 +37,13 @@
 .inverted {
     .btn {
         &__base {
-            background: $nc-gray-100;
-            color: $nc-gray-900;
+            background: $ae-gray-100;
+            color: $ae-gray-900;
             &:hover,
             &:active,
             &--active {
-                background: $nc-white;
-                color: $nc-purple-900;
+                background: $ae-white;
+                color: $ae-purple-900;
                 transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
             }
         }

@@ -83,6 +83,7 @@
     "common-tags": "^1.4.0",
     "copy-dir": "^0.3.0",
     "css-mqpacker": "^5.0.1",
+    "del": "^2.2.2",
     "docco": "^0.7.0",
     "eslint": "^3.12.2",
     "eslint-config-airbnb-base": "^11.0.0",

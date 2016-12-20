@@ -19,17 +19,13 @@ function concatStyles(mode, cb) {
         .pipe(postcss(configPostcss.processors))
         .pipe(gulp.dest(targetPath));
 
-    process.emit('nn:fileGenerated', path.join(targetPath, targetFileName));
+    // process.emit('nn:fileGenerated', path.join(targetPath, targetFileName));
     cb();
 }
 
-// gulp.task('cssconcat', ['cssconcatPublish', 'cssconcatAuthor']);
 gulp.task('cssconcat', ['cssconcatPublish']);
 
 gulp.task('cssconcatPublish', cb => {
+    console.log('concat');
     concatStyles('publish', cb);
 });
-
-// gulp.task('cssconcatAuthor', cb => {
-//     concatStyles('author', cb);
-// });

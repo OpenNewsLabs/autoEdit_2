@@ -18,8 +18,8 @@
 }
 .grid {
     &-container {
-        padding: 0 $nc-gutter;
-        margin: $nc-spacing 0;
+        padding: 0 $ae-gutter;
+        margin: $ae-spacing 0;
         box-sizing: content-box; // for the grid to be respected
         @include container(12 center);
 

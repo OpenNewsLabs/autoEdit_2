@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import "../abstract/import_abstract";
+@import "../abstracts/import_abstract";
 // Variables
 // Breakpoints
 $bp-xsmall: 320px;
@@ -13,9 +13,9 @@ $bp-xxlarge: 1900px;
 $bp-landscape: orientation landscape;
 
 // Sizes
-$nc-gutter: 20px;
-$nc-spacing: 30px;
-$nc-width: 100%;
+$ae-gutter: 20px;
+$ae-spacing: 30px;
+$ae-width: 100%;
 
 // Susy global settings
 $susy: (
@@ -29,81 +29,81 @@ $susy: (
 );
 
 
-// nc Animations
+// ae Animations
 // easing
-$nc-ease-in-out: ease-in-out;
+$ae-ease-in-out: ease-in-out;
 
-$nc-bezier-slow: cubic-bezier(.25, .8, .25, 1);
-$nc-bezier-medium: cubic-bezier(0.4, 0.0, 1, 1);
-$nc-bezier-medium-2: cubic-bezier(0.4, 0.0, 0.2, 1);
-$nc-bezier-fast: cubic-bezier(0.0, 0.0, 0.2, 1);
+$ae-bezier-slow: cubic-bezier(.25, .8, .25, 1);
+$ae-bezier-medium: cubic-bezier(0.4, 0.0, 1, 1);
+$ae-bezier-medium-2: cubic-bezier(0.4, 0.0, 0.2, 1);
+$ae-bezier-fast: cubic-bezier(0.0, 0.0, 0.2, 1);
 
-// nc Colors
+// ae Colors
 
-$nc-transparent: transparent;
+$ae-transparent: transparent;
 
 // white
-$nc-white: #fff;
-$nc-white-03: rgba(255,255, 255, 0.3);
+$ae-white: #fff;
+$ae-white-03: rgba(255,255, 255, 0.3);
 // black
-$nc-black: #000;
-$nc-black-012: rgba(0, 0, 0, 0.12);
-$nc-black-024: rgba(0, 0, 0, 0.24);
-$nc-black-07:rgba(0, 0, 0, 0.7);
+$ae-black: #000;
+$ae-black-012: rgba(0, 0, 0, 0.12);
+$ae-black-024: rgba(0, 0, 0, 0.24);
+$ae-black-07:rgba(0, 0, 0, 0.7);
 // purples
-$nc-purple-nc: #2C2D70;
-$nc-purple-50: #EDE7F6;
-$nc-purple-100: #D1C4E9;
-$nc-purple-200: #B39DDB;
-$nc-purple-300: #9575CD;
-$nc-purple-400: #7E57C2;
-$nc-purple-500: #673AB7;
-$nc-purple-600: #5E35B1;
-$nc-purple-700: #512DA8;
-$nc-purple-800: #4527A0;
-$nc-purple-900: #311B92;
-$nc-purple-A100: #B388FF;
-$nc-purple-A200: #7C4DFF;
-$nc-purple-A400: #651FFF;
-$nc-purple-A700: #6200EA;
+$ae-purple-ae: #2C2D70;
+$ae-purple-50: #EDE7F6;
+$ae-purple-100: #D1C4E9;
+$ae-purple-200: #B39DDB;
+$ae-purple-300: #9575CD;
+$ae-purple-400: #7E57C2;
+$ae-purple-500: #673AB7;
+$ae-purple-600: #5E35B1;
+$ae-purple-700: #512DA8;
+$ae-purple-800: #4527A0;
+$ae-purple-900: #311B92;
+$ae-purple-A100: #B388FF;
+$ae-purple-A200: #7C4DFF;
+$ae-purple-A400: #651FFF;
+$ae-purple-A700: #6200EA;
 
-$nc-purple-ap: #CEC5E4; 
+$ae-purple-ap: #CEC5E4; 
 
-$nc-purple-rollover-1: rgba(61, 25, 134, 1);
-$nc-purple-rollover-08: rgba(61, 25, 134, 0.8);
-$nc-purple-rollover-042: rgba(61, 25, 134, 0.42);
+$ae-purple-rollover-1: rgba(61, 25, 134, 1);
+$ae-purple-rollover-08: rgba(61, 25, 134, 0.8);
+$ae-purple-rollover-042: rgba(61, 25, 134, 0.42);
 
 
-$nc-purple-focus: #9ECAED;
+$ae-purple-focus: #9ECAED;
 // grays
-$nc-gray-50: #FAFAFA;
-$nc-gray-100: #F5F5F5;
-$nc-gray-200: #EEEEEE;
-$nc-gray-300: #E0E0E0;
-$nc-gray-400: #BDBDBD;
-$nc-gray-500: #9E9E9E;
-$nc-gray-600: #757575;
-$nc-gray-700: #616161;
-$nc-gray-800: #424242;
-$nc-gray-900: #212121;
-$nc-gray-mid-03: rgba(125, 125, 125, 0.3);
+$ae-gray-50: #FAFAFA;
+$ae-gray-100: #F5F5F5;
+$ae-gray-200: #EEEEEE;
+$ae-gray-300: #E0E0E0;
+$ae-gray-400: #BDBDBD;
+$ae-gray-500: #9E9E9E;
+$ae-gray-600: #757575;
+$ae-gray-700: #616161;
+$ae-gray-800: #424242;
+$ae-gray-900: #212121;
+$ae-gray-mid-03: rgba(125, 125, 125, 0.3);
 // red
-$nc-red: #DD083B;
+$ae-red: #DD083B;
 // orange
-$nc-orange: #FA933E;
+$ae-orange: #FA933E;
 // green
-$nc-green: #167384;
+$ae-green: #167384;
 
 // Fonts defaults
-$text-default: $nc-gray-900;
-// nc Fonts family
+$text-default: $ae-gray-900;
+// ae Fonts family
 $f-1: 'Open Sans', Helvetica, Arial, sans-serif;
-// nc Fonts weight
+// ae Fonts weight
 $fw-light: 300;
 $fw-normal: 400;
 $fw-semibold: 600;
 $fw-bold: 700;
-// nc Fonts sizes
+// ae Fonts sizes
 $fs-h1-px: 45px;
 $fs-h2-px: 40px;
 $fs-h3-px: 30px;
@@ -140,17 +140,17 @@ $f-space-top-p: 12;
 
 $f-top-margin: .8;
 $f-bottom-margin: .5;
-// nc default line-height
+// ae default line-height
 $lh: 1.5em;
 
 // Button config
-$nc-btn-padding: 10px 30px 12px;
-$nc-btn-radius: 6px;
+$ae-btn-padding: 10px 30px 12px;
+$ae-btn-radius: 6px;
 
 // Blog Accordion config
-$nc-height: 500px;
+$ae-height: 500px;
 // position text along bottom
-$text-offset: $nc-height - 170;
+$text-offset: $ae-height - 170;
 
 // Font styles
 $t-default: (

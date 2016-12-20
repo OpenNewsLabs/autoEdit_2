@@ -49,6 +49,9 @@ module.exports = {
             path.join(this.targetPublishCss, 'template/**/*.css'),
         ];
     },
+    get targetDeleteTmpCss() {
+       return path.join(this.targetPublishCss, '*/**/*.css'); 
+    },
     get targetPublishCssFilesForPostProccessing() {
         return path.join(this.targetPublishCss, '*.css');
     },
@@ -69,11 +72,11 @@ module.exports = {
         ];
     },
     get jsPublishEntry() {
-        return path.join(this.libJS, 'publish/main.js');
+        return path.join(this.libJS, 'main.js');
     },
     get jsPublishFiles() {
         return [
-            path.join(this.libJS, 'publish/**/*.js'),
+            path.join(this.libJS, '**/*.js'),
         ];
     },
     // get targetPublishFonts() {

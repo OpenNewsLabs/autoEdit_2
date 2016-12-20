@@ -72,7 +72,7 @@
     stroke-dashoffset: 0;
     stroke-width: 3px;
     animation: dash 5.25s ease-in-out infinite, color 5.25s ease-in-out infinite;
-    stroke: $nc-purple-900;
+    stroke: $ae-purple-900;
 }
 
 @keyframes rotate {
@@ -99,10 +99,10 @@
 @keyframes color {
     100%,
     0% {
-        stroke: $nc-purple-900;
+        stroke: $ae-purple-900;
     }
     30% {
-        stroke: $nc-purple-900;
+        stroke: $ae-purple-900;
     }
 }
 

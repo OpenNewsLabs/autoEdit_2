@@ -5,12 +5,12 @@ module.exports = {
         if (mode === 'publish') {
             return paths.targetPublish;
         }
-        return paths.targetAuthor;
+        return;
     },
     getSrcFiles(mode) {
         if (mode === 'publish') {
             return paths.targetPublishFiles;
         }
-        return paths.targetAuthorFiles;
+        return;
     },
 };

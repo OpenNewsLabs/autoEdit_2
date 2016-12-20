@@ -3,14 +3,14 @@
 const _ = require('underscore');
 const env = require('./libs/env');
 
-// NODE_ENV needs to be specified in the shell otherwise edit value in libs/env.js
+// NODE_ENV needs to be specified in the shell otherwise just edit the value in libs/env.js
 
 // Grouped by different phases of the build
 // and by what can run in parallel
 let _beforeCode = [];
-let _code = ['sass', 'eslint'];
+let _code = ['sass', 'systemjs-builder', 'eslint'];
 let _afterCode = [
-    ['cssconcat'],
+    ['cssconcat', 'clean-css'],
 ];
 let _delayed = [];
 
@@ -21,7 +21,7 @@ if (env.isDevelopment) {
     _beforeCode = [];
     _code = [];
     _afterCode = ['watch'];
-    _delayed = ['eslint', 'sass', 'cssconcat'];
+    _delayed = ['eslint', 'systemjs-builder', 'sass', 'cssconcat', 'clean-css'];
 } else if (env.isPrecommit) {
     _beforeCode = [];
     _code = [];

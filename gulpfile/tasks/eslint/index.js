@@ -12,15 +12,8 @@ gulp.task('eslint', cb => {
     } else {
         return gulp.src(srcFiles)
        // .eslintrc files are automatically detected.
-       // We have different ones for different parts of the JS code base
+       // We may have different ones for different parts of the JS code base
        .pipe(eslint())
        .pipe(eslint.format());
-       // fail on errors in configured environments
-       /*.pipe(eslint.failAfterError().on('error', function (errors) {
-           handleErrors(errors, {
-               notify: false,
-               task: 'eslint',
-           });
-       }));*/
     }
 });

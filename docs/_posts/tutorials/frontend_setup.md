@@ -278,7 +278,7 @@ For _default_ task
 ### `postcss.config.js`
 ### `util.js`
 
-- Installed, `css-mqpacker`, `gulp-postcss`, `gulp-concat-css`, `gulp-cached`, `susy`
+- Installed, `css-mqpacker`(for media queries utilities), `gulp-postcss`, `gulp-concat-css`, `gulp-cached`, `susy`, `del`
 
 
 
@@ -295,3 +295,5 @@ For _default_ task
 * [ESLint using Gulp.js](http://justinchmura.com/2016/06/28/eslint-using-gulp/)
 * [Simple Linting using SCSSlint, ESlint, and Gulp in Atom](http://brendan-quinn.xyz/post/simple-linting-using-scsslint-eslint-and-gulp-in-atom/)
 * [Using ES6 with gulp](https://markgoodyear.com/2015/06/using-es6-with-gulp/)
+* [How can you delete a folder and its contents after all tasks have been run in Gulp?](http://stackoverflow.com/questions/28648312/how-can-you-delete-a-folder-and-its-contents-after-all-tasks-have-been-run-in-gu)
+* [Gulp Series Introduction](http://learningwithjb.com/posts/gulp-series-introduction)

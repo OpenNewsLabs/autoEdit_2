@@ -3,8 +3,8 @@ const gutil = require('gulp-util');
 const notify = require('gulp-notify');
 const _ = require('underscore');
 const env = require('./env');
-const  stringify  = require('./object');
-const  ensureArray  = require('./object');
+const stringify = require('./object').stringify;
+const ensureArray = require('./object').ensureArray;
 
 const _defaultOptions = {
     keys: {
