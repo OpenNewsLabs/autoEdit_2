@@ -1,5 +1,8 @@
 # FrontEnd Setup
 
+## How to run the tasks
+With the terminal pointing to main folder type `gulp` in the console.
+
 ## List of added features
 - Sass compiler
 - CSS concat
