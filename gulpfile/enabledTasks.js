@@ -8,7 +8,7 @@ const env = require('./libs/env');
 // Grouped by different phases of the build
 // and by what can run in parallel
 let _beforeCode = [];
-let _code = ['sass', 'systemjs-builder', 'eslint'];
+let _code = ['sass', 'eslint'];
 let _afterCode = [
     ['cssconcat', 'clean-css'],
 ];
@@ -21,7 +21,7 @@ if (env.isDevelopment) {
     _beforeCode = [];
     _code = [];
     _afterCode = ['watch'];
-    _delayed = ['eslint', 'systemjs-builder', 'sass', 'cssconcat', 'clean-css'];
+    _delayed = ['eslint', 'sass', 'cssconcat', 'clean-css'];
 } else if (env.isPrecommit) {
     _beforeCode = [];
     _code = [];

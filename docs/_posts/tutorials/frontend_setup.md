@@ -113,13 +113,16 @@ In this case, Gulp first runs `task-one`. When `task-one` is completed, Gulp run
 - Added the `require()`ing:
 `const eslint = require('gulp-eslint');`
 
-- Created task:
+- Created task
 
-
-### Browserify 
-### Minification
 ### Autoprefixer
 Installed `autoprefixer`
+
+### Browserify 
+Not yet implemented
+
+### Minification
+Not yet implemented on `publish.css`
 
 ### Babel
 From: https://markgoodyear.com/2015/06/using-es6-with-gulp/
@@ -134,6 +137,7 @@ From: https://markgoodyear.com/2015/06/using-es6-with-gulp/
 
 # How to configure further tasks in Gulp and overview on it
 
+### Overview
 Gulp is a streaming build system. It’s streaming nature is what allows it to pipe and pass around the data being manipulated or used by it’s plugins. The plugins are intended to only do one job each, so it’s not uncommon to pass a singular file through multiple plugins.
 
 The gulp api is incredibly light containing 4 top level functions. They are
@@ -169,6 +173,30 @@ gulp.task('copyHtml', function() {
 });
 ```
 (surce: https://scotch.io/tutorials/automate-your-tasks-easily-with-gulp-js)
+
+### Create a new task
+A task with the current gulp configuration is made up of an `index.js` file for the main task and possibily few configuration or utilities files.
+
+To create a new task add a folder with task name in `gulpfile/tasks`.
+You can use the following boilerplate as structure for the `index.js` :
+```
+const gulp = require('gulp');
+const paths = require('../../paths');
+const path = require('path');
+
+function FUNCTION_NAME(cb) {
+
+  // add code here
+  
+  cb();
+}
+
+gulp.task('TASK_NAME', cb => {
+  FUNCTION_NAME(cb);
+});
+```
+
+Eventually modify `enabledTask.js` by adding the new task label.
 
 ## Globbing in Node
 Globs are matching patterns for files that allow you to add more than one file into gulp.src. It's like regular expressions, but specifically for file paths.
@@ -278,6 +306,7 @@ For _default_ task
 ### `postcss.config.js`
 ### `util.js`
 
+#### Further dependencies
 - Installed, `css-mqpacker`(for media queries utilities), `gulp-postcss`, `gulp-concat-css`, `gulp-cached`, `susy`, `del`
 
 

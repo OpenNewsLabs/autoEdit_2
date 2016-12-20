@@ -10,8 +10,6 @@ module.exports = {
 
         if (mode === 'publish') {
             defaultSrcFiles = paths.publishFiles.concat(paths.commonFiles);
-        } else {
-            defaultSrcFiles = paths.authorFiles;
         }
 
         if (!env.isPrecommit) {
@@ -30,6 +28,5 @@ module.exports = {
         if (mode === 'publish') {
             return paths.targetPublish;
         }
-        return paths.targetAuthor;
-    },
+    }
 };

@@ -11,17 +11,12 @@ gulp.task('watch', watchTaskCallback => {
 
     // JS files
     gulp.watch(paths.allJSFiles, ['eslint']);
-    gulp.watch(paths.jsPublishFiles, ['watch-js-publish']);
 
     // CSS files
     gulp.watch(sassPaths.publishFiles, ['watch-css-publish']);
     gulp.watch(sassPaths.commonFiles, ['watch-css-common']);
 
     watchTaskCallback();
-});
-
-gulp.task('watch-js-publish', cb => {
-    runSequence('systemjs-builder-publish', cb);
 });
 
 gulp.task('watch-css-publish', cb => {
