@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>transcription_show.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>transcription_show.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* app, for namescope 
+*@todo: is this the right way to do this?
+*/</span>
+<span class="hljs-meta">"use strict"</span>;
+
+<span class="hljs-keyword">var</span> app = app || {};
+
+<span class="hljs-comment">/**
+* Backbone view for transcription view for individual transcriptions 
+* @class app.TranscriptionView
+* @constructor
+* @extends Backbone.View
+*/</span>
+app.TranscriptionView = Backbone.View.extend({
+  <span class="hljs-attr">tagName</span>: <span class="hljs-string">'div'</span>,
+  <span class="hljs-attr">className</span>: <span class="hljs-string">'container-fluid'</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>TODO: change this so that id is interpolated from model this.el.id or this.el.ciud</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  id: <span class="hljs-string">"transcription-n"</span>,<span class="hljs-comment">//+this.model.id+"",</span>
+
+  initialize: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    <span class="hljs-keyword">this</span>.editable = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">var</span> tmpHighlights =  <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+
+    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i &lt; tmpHighlights.length; i++ ){
+      <span class="hljs-keyword">var</span> min =  tmpHighlights[i].startTime;
+      <span class="hljs-keyword">var</span> max = tmpHighlights[i].endTime;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>needs to grab the words of the element of the view not in the dom        </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.$(<span class="hljs-string">".words"</span>).filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+        <span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">'start-time'</span>) &gt;= min &amp;&amp; $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">'end-time'</span>) &lt;= max;
+      }).addClass(<span class="hljs-string">"highlight"</span>);
+    }
+   },
+ 
+  <span class="hljs-attr">events</span>:{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>playback keyboard shortcuts</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #pausePlayVideo"</span>   : <span class="hljs-string">"pausePlayVideo"</span>,
+    <span class="hljs-string">"click #slowVideo"</span>        : <span class="hljs-string">"slowVideo"</span>,
+    <span class="hljs-string">"click #fastVideo"</span>        : <span class="hljs-string">"fastVideo"</span>,
+    <span class="hljs-string">"click #fastForwardVideo"</span> : <span class="hljs-string">"fastForwardVideo"</span>,
+    <span class="hljs-string">"click #volumeDown"</span>       : <span class="hljs-string">"volumeDown"</span>,
+    <span class="hljs-string">"click #volumeUp"</span>         : <span class="hljs-string">"volumeUp"</span>,
+    <span class="hljs-string">"click #rewindVideo"</span>      : <span class="hljs-string">"rewindVideo"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>interactive transcript click word plays video</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click span.words"</span>                  : <span class="hljs-string">"playWord"</span>,
+    <span class="hljs-string">"click .timecodes"</span>                  : <span class="hljs-string">"playWord"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>search field </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"keyup #searchCurrentTranscription"</span> :<span class="hljs-string">"search"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>text selection in transcription </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"mouseup .transcription"</span>            : <span class="hljs-string">"selectingWords"</span>,
+    <span class="hljs-string">"click #clearHighlights"</span>            : <span class="hljs-string">"clearHighlights"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>edit text in transcription mode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #editWords"</span>      : <span class="hljs-string">"makeEditable"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>hilight text in transcription mode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #highlightWords"</span>: <span class="hljs-string">"makeHilightable"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>TODO: sequence preview not in use 
+TODO: remove associated functions </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #playPreviewChrono"</span>  : <span class="hljs-string">"playPreviewChrono"</span>,
+    <span class="hljs-string">"click #playPreviewSelOrd"</span>  : <span class="hljs-string">"playPreviewSelOrd"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>EDL Export</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #exportEdlChronological"</span>   : <span class="hljs-string">"exportEdlChronological"</span>,
+    <span class="hljs-string">"click #exportEdlSelectionOrder"</span>  : <span class="hljs-string">"exportEdlSelectionOrder"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Text export </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #exportPlainText"</span>              : <span class="hljs-string">"exportPlainText"</span>,
+    <span class="hljs-string">"click #exportTimecodedTranscription"</span> : <span class="hljs-string">"exportTimecodedTranscription"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Export Text EDL</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #exportPlainTextEDL"</span>                 : <span class="hljs-string">"exportPlainTextEDL"</span>,
+    <span class="hljs-string">"click #exportPlainTextEDLSelOrder"</span>         : <span class="hljs-string">"exportPlainTextEDLSelOrder"</span>,
+    <span class="hljs-string">"click #exportPlainTimecodedTextEDL"</span>        : <span class="hljs-string">"exportPlainTimecodedTextEDL"</span>,
+    <span class="hljs-string">"click #exportPlainTimecodedTextEDLSelOrder"</span>: <span class="hljs-string">"exportPlainTimecodedTextEDLSelOrder"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>JSON Export</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #exportJsonEDL"</span>            : <span class="hljs-string">"exportJsonEDL"</span>,
+    <span class="hljs-string">"click #exportJsonEDLSelOrder"</span>    : <span class="hljs-string">"exportJsonEDLSelOrder"</span>,
+    <span class="hljs-string">"click #exportJsonTranscription"</span>  : <span class="hljs-string">"exportJsonTranscription"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Export Captions </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #expoertCaptionsSrt"</span>     : <span class="hljs-string">"expoertCaptionsSrt"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>TODO: currently not in use </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #expoertCaptionsSrtEDL"</span>  : <span class="hljs-string">"expoertCaptionsSrtEDL"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>video and audio export</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #exporthtml5Video"</span> : <span class="hljs-string">"exporthtml5Video"</span>,
+    <span class="hljs-string">"click #exportAudio"</span>      : <span class="hljs-string">"exportAudio"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>link to user manual </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-string">"click #edlUserManualInfo"</span>  : <span class="hljs-string">"edlUserManualInfo"</span>
+  },
+
+  <span class="hljs-comment">/**
+  * @function makeHilightable
+  * @description function to disable words contet ediable to allow to select text of transcription
+  */</span>
+  makeHilightable: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> modeNotice =  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"hilightModeNoticeContainer"</span>);
+
+    <span class="hljs-keyword">var</span> hilightNotice = <span class="hljs-string">"&lt;div class='alert alert-info alert-dismissible hidden-print' role='alert' id='hilightModeNotice'&gt;"</span>;
+    hilightNotice +=<span class="hljs-string">"&lt;button type='button' class='close' data-dismiss='alert' aria-label='Close'&gt;&lt;span aria-hidden='true'&gt;&amp;times;&lt;/span&gt;&lt;/button&gt;"</span>;
+    hilightNotice += <span class="hljs-string">"&lt;strong&gt;You are in hilight mode.&lt;/strong&gt;"</span>;
+    hilightNotice +=<span class="hljs-string">"&lt;p&gt;Select words to include in your Edit Decision List (EDL) video sequence.&lt;/p&gt;"</span>;
+    hilightNotice +=<span class="hljs-string">"&lt;/div&gt;"</span>;
+
+    <span class="hljs-keyword">var</span> status = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span>( $(<span class="hljs-string">"#highlightWords"</span>).hasClass(<span class="hljs-string">"btn-primary"</span>)){
+      status = <span class="hljs-literal">true</span>;
+    }<span class="hljs-keyword">else</span>{
+      status = <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-keyword">if</span>(status){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>disable editing
+TODO: check if you can remove more thne one class at once with JQuery comand?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#highlightWords"</span>).removeClass(<span class="hljs-string">"active btn-primary"</span>);
+      $(<span class="hljs-string">"#highlightWords"</span>).addClass(<span class="hljs-string">"btn-default"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>highlightWords</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#editWords"</span>).removeClass(<span class="hljs-string">"btn-default"</span>);
+      $(<span class="hljs-string">"#editWords"</span>).addClass(<span class="hljs-string">"active btn-primary"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>enable content editable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">'.words'</span>).attr(<span class="hljs-string">'contenteditable'</span>,<span class="hljs-string">'true'</span>);
+    }<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>Editing active </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#editWords"</span>).removeClass(<span class="hljs-string">"active btn-primary"</span>);
+      $(<span class="hljs-string">"#editWords"</span>).addClass(<span class="hljs-string">"btn-default"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>highlightWords</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#highlightWords"</span>).removeClass(<span class="hljs-string">"btn-default"</span>);
+      $(<span class="hljs-string">"#highlightWords"</span>).addClass(<span class="hljs-string">"active btn-primary"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-24">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-24">&#182;</a>
+              </div>
+              <p>disable editable on words </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">'.words'</span>).attr(<span class="hljs-string">'contenteditable'</span>,<span class="hljs-string">'false'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-25">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-25">&#182;</a>
+              </div>
+              <p>add hilight notice </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>       modeNotice.innerHTML = hilightNotice;
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function makeEditable
+  * @description function to make words contet ediable to allow to edit the text of transcription
+  */</span>
+  makeEditable: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> modeNotice =  <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"hilightModeNoticeContainer"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-26">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-26">&#182;</a>
+              </div>
+              <p>remove hilight mode notice 
+add text editing notice </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> editNotice= <span class="hljs-string">"&lt;div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'&gt; "</span>;
+      editNotice +=<span class="hljs-string">"&lt;button type='button' class='close' data-dismiss='alert' aria-label='Close'&gt;&lt;span aria-hidden='true'&gt;&amp;times;&lt;/span&gt;&lt;/button&gt;"</span>;
+      editNotice +=<span class="hljs-string">"&lt;strong&gt;You are in text edit mode.&lt;/strong&gt;"</span>;
+      editNotice +=<span class="hljs-string">"&lt;p&gt;Click on a word to edit. Use &lt;code&gt;cmd&lt;/code&gt; + &lt;code&gt;a&lt;/code&gt; to select a word. Tab or click to move to the next word.&lt;/p&gt;"</span>;
+      editNotice +=<span class="hljs-string">"&lt;/div&gt;"</span>;
+
+    <span class="hljs-keyword">var</span> status = <span class="hljs-literal">false</span>;
+    <span class="hljs-keyword">if</span>( $(<span class="hljs-string">"#editWords"</span>).hasClass(<span class="hljs-string">"btn-primary"</span>)){
+      status = <span class="hljs-literal">true</span>;
+    }<span class="hljs-keyword">else</span>{
+      status = <span class="hljs-literal">false</span>;  
+    }
+
+    <span class="hljs-keyword">if</span>(status){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-27">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>Editing active </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>     $(<span class="hljs-string">"#editWords"</span>).removeClass(<span class="hljs-string">"active"</span>);
+     $(<span class="hljs-string">"#editWords"</span>).removeClass(<span class="hljs-string">"btn-primary"</span>);
+     $(<span class="hljs-string">"#editWords"</span>).addClass(<span class="hljs-string">"btn-default"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <p>highlightWords</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>     $(<span class="hljs-string">"#highlightWords"</span>).removeClass(<span class="hljs-string">"btn-default"</span>);
+     $(<span class="hljs-string">"#highlightWords"</span>).addClass(<span class="hljs-string">"btn-primary"</span>);
+     $(<span class="hljs-string">"#highlightWords"</span>).addClass(<span class="hljs-string">"active"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
+              </div>
+              <p>disable editable on words </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>     $(<span class="hljs-string">'.words'</span>).attr(<span class="hljs-string">'contenteditable'</span>,<span class="hljs-string">'false'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-30">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>remove edit notice 
+modeNotice.removeChild(document.getElementById(“editModeNotice”)) ;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>disable editing</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#highlightWords"</span>).removeClass(<span class="hljs-string">"active"</span>);
+      $(<span class="hljs-string">"#highlightWords"</span>).removeClass(<span class="hljs-string">"btn-primary"</span>);
+      $(<span class="hljs-string">"#highlightWords"</span>).addClass(<span class="hljs-string">"btn-default"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>editWords</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">"#editWords"</span>).removeClass(<span class="hljs-string">"btn-default"</span>);
+      $(<span class="hljs-string">"#editWords"</span>).addClass(<span class="hljs-string">"btn-primary"</span>);
+      $(<span class="hljs-string">"#editWords"</span>).addClass(<span class="hljs-string">"active"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>enable content editable</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">'.words'</span>).attr(<span class="hljs-string">'contenteditable'</span>,<span class="hljs-string">'true'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>remove hilight notice 
+add edit notice </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      modeNotice.innerHTML = editNotice;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>listener on word changed </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> contents = $(<span class="hljs-string">'.words'</span>).html();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>TODO: input change to event that detect when focus out or somehting else so that i doesn’t auto save as typing coz that is super slow…</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>when using click for moving between words in edit mode, this auto selects the current word in content editbale. 
+users have requested this feature to make it faster to, delete/replace word with correct one. they currently do cmd+a</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">".words"</span>).on(<span class="hljs-string">"click"</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>select all text in content edibale </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-built_in">document</span>.execCommand(<span class="hljs-string">'selectAll'</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">null</span>);
+      });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <p>same as above but when using tab to move between words</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">'.words'</span>).on( <span class="hljs-string">'keyup'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"> e </span>) </span>{
+          <span class="hljs-keyword">if</span>( e.which == <span class="hljs-number">9</span> ) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
+              </div>
+              <p>select all text in content edibale </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            <span class="hljs-built_in">document</span>.execCommand(<span class="hljs-string">'selectAll'</span>,<span class="hljs-literal">false</span>,<span class="hljs-literal">null</span>);
+          }
+      } );
+
+
+      $( <span class="hljs-string">".words"</span> ).on( <span class="hljs-string">"focusout"</span>, { <span class="hljs-attr">model</span>: <span class="hljs-keyword">this</span>.model }, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">event</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-41">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-41">&#182;</a>
+              </div>
+              <p>pause word </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> model       = event.data.model;
+        <span class="hljs-keyword">var</span> tmpWordId   =  $( <span class="hljs-keyword">this</span> )[<span class="hljs-number">0</span>].dataset.wordId;
+        <span class="hljs-keyword">var</span> tmpWordText = $( <span class="hljs-keyword">this</span> ).text();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-42">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-42">&#182;</a>
+              </div>
+              <p>find word to update in transcription text attribute to replace/update and save </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        _.each(model.attributes.text, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraphs</span>)</span>{
+          _.each(paragraphs, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">paragraph</span>)</span>{
+            _.each(paragraph, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">lines</span>)</span>{
+              _.each(lines.line, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">word</span>)</span>{
+                <span class="hljs-keyword">if</span>(word.id == tmpWordId){
+                  word.text = tmpWordText;
+                    model.save({<span class="hljs-attr">wait</span>: <span class="hljs-literal">false</span>});
+                }        
+              });
+            });
+          });
+        });
+      });
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportHelper
+  */</span>
+  exportHelper(config){
+    <span class="hljs-keyword">if</span>(config.fileContent === <span class="hljs-string">""</span>){
+      alert(<span class="hljs-string">"File "</span>+config.fileName+<span class="hljs-string">" seems to be empty"</span>);
+    }
+    <span class="hljs-keyword">var</span> fileName    =  config.fileName; <span class="hljs-comment">//this.title _ + append time of day to name</span>
+    <span class="hljs-keyword">var</span> fileContent =  config.fileContent;
+    <span class="hljs-keyword">var</span> urlId       = config.urlId;
+   <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS){
+    <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);
+      fs.writeFileSync(process.env.HOME+<span class="hljs-string">"/Desktop/"</span>+fileName, fileContent );
+       alert(fileName+<span class="hljs-string">" Saved on the desktop"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-43">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-43">&#182;</a>
+              </div>
+              <p>opening folder item has been saved in, desktop, and opening file. might be confusing for EDL.
+require(‘nw.gui’).Shell.showItemInFolder(process.env.HOME+”/Desktop/“+fileName);
+require(‘nw.gui’).Shell.openItem(process.env.HOME+”/Desktop/“+fileName);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    }<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-44">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-44">&#182;</a>
+              </div>
+              <p>if client side not running inside NWJS then 
+creates a blob on the client size </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">var</span> formBlob = <span class="hljs-keyword">new</span> Blob([fileContent], { <span class="hljs-attr">type</span>: <span class="hljs-string">'text/plain'</span> });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-45">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
+              </div>
+              <p>replaces link for EDL button with link to blob</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(urlId).attr(<span class="hljs-string">"href"</span>,  <span class="hljs-built_in">window</span>.URL.createObjectURL(formBlob));</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-46">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-46">&#182;</a>
+              </div>
+              <p>make link downloadable and set file name for downloaded file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(urlId).attr(<span class="hljs-string">"download"</span>, fileName);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-47">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
+              </div>
+              <p>someLink.href = window.URL.createObjectURL(formBlob);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(urlId).click();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-48">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-48">&#182;</a>
+              </div>
+              <p>document.getElementById(‘test’).click();
+alert(“export EDL client side”);</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } 
+
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportHelper
+  */</span>
+  nameFileHelper(name, ext){
+    <span class="hljs-keyword">return</span> <span class="hljs-string">""</span>+name.replace(<span class="hljs-string">" "</span>, <span class="hljs-string">"_"</span>) +<span class="hljs-string">"_"</span>+ timeNowFileName() +<span class="hljs-string">"."</span>+ext;
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportEdlChronological
+  * @description EDL - Chronological
+  */</span>
+  exportEdlChronological: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+    <span class="hljs-keyword">var</span> edlSq = {  <span class="hljs-string">"title"</span>: <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>), <span class="hljs-attr">offset</span>: <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"metadata"</span>).timecode};
+    edlSq.events = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-49">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-49">&#182;</a>
+              </div>
+              <p>ad line number to paper-cuts
+NOTE: here you can decide to sort them chronologically(ie by startTime)
+TODO: this could probably be moved in the model . eg return chrone order hiligths </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> k = <span class="hljs-number">0</span>; k&lt;  <span class="hljs-keyword">this</span>.model.attributes.highlights.length; k++){
+      <span class="hljs-keyword">var</span> event =  <span class="hljs-keyword">this</span>.model.attributes.highlights[k];
+      event.id = k+<span class="hljs-number">1</span>;
+      edlSq.events.push(event);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-50">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-50">&#182;</a>
+              </div>
+              <p>end move in model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> edl = <span class="hljs-keyword">new</span> EDL(edlSq)
+    <span class="hljs-keyword">var</span> edlFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_chronological"</span>,<span class="hljs-string">"edl"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: edlFileName, <span class="hljs-attr">fileContent</span>: edl.compose(), <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportEdlChronological"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportEdlSelectionOrder
+  * @description EDL - election order
+  */</span>
+  exportEdlSelectionOrder: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+    <span class="hljs-keyword">var</span> edlSq = {  <span class="hljs-string">"title"</span>: <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>), <span class="hljs-attr">offset</span>: <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"metadata"</span>).timecode};
+    edlSq.events = [];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-51">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-51">&#182;</a>
+              </div>
+              <p>TODO: this could probably be moved in the model . eg return selection order hiligths </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> selections = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span>   selectionsSorted =  _.sortBy(selections, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">o</span>) </span>{ <span class="hljs-keyword">return</span> o.paperCutOrder; });
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> k = <span class="hljs-number">0</span>; k&lt;  selectionsSorted.length; k++){
+      <span class="hljs-keyword">var</span> event =  selectionsSorted[k];
+      event.id = k+<span class="hljs-number">1</span>;
+      edlSq.events.push(event);
+    }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-52">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-52">&#182;</a>
+              </div>
+              <p>end of move in the model </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> edl = <span class="hljs-keyword">new</span> EDL(edlSq);
+    <span class="hljs-keyword">var</span> edlFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_selection_order"</span>,<span class="hljs-string">"edl"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-53">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-53">&#182;</a>
+              </div>
+              <p>if client side running inside NWJS then do this </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: edlFileName, <span class="hljs-attr">fileContent</span>: edl.compose(), <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportEdlSelectionOrder"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function expoertCaptionsSrt
+  * @description Captions
+  */</span>
+  expoertCaptionsSrt: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-54">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-54">&#182;</a>
+              </div>
+              <p>ISSUE: not working client side only.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> fileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>),<span class="hljs-string">"srt"</span>); 
+    <span class="hljs-keyword">var</span> srtFileContent =  <span class="hljs-keyword">this</span>.model.constructor.returnSrtContent(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"text"</span>));
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: fileName, <span class="hljs-attr">fileContent</span>: srtFileContent, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#expoertCaptionsSrt"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function expoertCaptionsSrtEDL
+  * @todo not in use, turn it back on by adding export options under captions
+  * @description Captions
+  */</span>
+  expoertCaptionsSrtEDL: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-55">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-55">&#182;</a>
+              </div>
+              <p>ISSUE: not working client side only.
+ISSUE: papercuts selections, ammount of text per seelection might not be the optimal ammount for srt displaying on screen.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> srtFileContent =  <span class="hljs-keyword">this</span>.model.constructor.returnEDLSrtJson(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>));
+
+    <span class="hljs-keyword">var</span> fileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"srt"</span>); 
+
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: fileName, <span class="hljs-attr">fileContent</span>: srtFileContent, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#expoertCaptionsSrtEDL"</span>});
+
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportPlainText
+  * @description Plain Text - Transcription
+  */</span> 
+  exportPlainText: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-56">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-56">&#182;</a>
+              </div>
+              <p>NOTE: temporary patch 
+Better implementation is to fetch this from db, or have model function that 
+organises and formats the text properly </p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-57">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-57">&#182;</a>
+              </div>
+              <p>TODO: if want to add speaker names, before paragraph, get this from backend.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+    <span class="hljs-keyword">var</span> tmp = $(<span class="hljs-string">".words"</span>).text().replace(<span class="hljs-regexp">/%HESITATION /g</span>, <span class="hljs-string">"\n\n"</span>);
+    <span class="hljs-keyword">var</span> plainTextFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>),<span class="hljs-string">"txt"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: plainTextFileName, <span class="hljs-attr">fileContent</span>: tmp, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportPlainText"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportTimecodedTranscription
+  * @description Timecoded - Transcription
+  */</span> 
+  exportTimecodedTranscription: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-58">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-58">&#182;</a>
+              </div>
+              <p>TODO in model, make timecoded plain text demo</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> tmp =  <span class="hljs-string">"Timecoded text demo"</span>
+    <span class="hljs-keyword">var</span> plainTextTimecoded =  <span class="hljs-keyword">this</span>.model.constructor.returnPlainTextTimecoded(<span class="hljs-keyword">this</span>.model.attributes);
+    <span class="hljs-keyword">var</span> textFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>),<span class="hljs-string">"txt"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: textFileName, <span class="hljs-attr">fileContent</span>: plainTextTimecoded, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportTimecodedTranscription"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportPlainTextEDL
+  * @description EDL - Plain Text 
+  */</span> 
+  exportPlainTextEDL: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-59">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-59">&#182;</a>
+              </div>
+              <p>ISSUE: it doesn’t work in client side browser only mode</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>     <span class="hljs-keyword">var</span> paperCuts = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+     <span class="hljs-keyword">var</span> tmp =makePlainText(paperCuts);
+     <span class="hljs-keyword">var</span> textFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"txt"</span>); 
+     <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: textFileName,<span class="hljs-attr">fileContent</span>: tmp, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportPlainTextEDL"</span>});
+
+        <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makePlainText</span>(<span class="hljs-params">paperCuts</span>)</span>{
+          <span class="hljs-keyword">var</span> result =<span class="hljs-string">""</span>;
+          <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i&lt; paperCuts.length; i++){
+            result += <span class="hljs-string">"["</span>+paperCuts[i].speaker+<span class="hljs-string">"]"</span> +<span class="hljs-string">"\n"</span>;
+            result += paperCuts[i].text +<span class="hljs-string">"\n\n"</span>;
+          }
+          <span class="hljs-keyword">return</span> result;
+        }
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportPlainTextEDLSelOrder
+  * 
+  */</span> 
+  exportPlainTextEDLSelOrder: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> paperCuts = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span>   selectionsSorted =  _.sortBy(paperCuts, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">o</span>) </span>{ <span class="hljs-keyword">return</span> o.paperCutOrder; });
+    <span class="hljs-keyword">var</span> selections =makePlainText(selectionsSorted);
+    <span class="hljs-keyword">var</span> textFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"txt"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: textFileName,<span class="hljs-attr">fileContent</span>: selections, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportPlainTextEDLSelOrder"</span>});
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makePlainText</span>(<span class="hljs-params">paperCuts</span>)</span>{
+        <span class="hljs-keyword">var</span> result =<span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i&lt; paperCuts.length; i++){
+           result += <span class="hljs-string">"["</span>+paperCuts[i].speaker+<span class="hljs-string">"]"</span> +<span class="hljs-string">"\n"</span>;
+          result += paperCuts[i].text +<span class="hljs-string">"\n\n"</span>;
+        }
+        <span class="hljs-keyword">return</span> result;
+      }
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportPlainTimecodedTextEDL
+  */</span> 
+  exportPlainTimecodedTextEDL: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-60">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-60">&#182;</a>
+              </div>
+              <p>ISSUE: in browser client side mode, doesn’t seem to be making the paper-cuts it just returns the words, why?</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeTimecodedPlainText</span>(<span class="hljs-params">paperCuts</span>)</span>{
+        <span class="hljs-keyword">var</span> result =<span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i&lt; paperCuts.length; i++){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-61">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-61">&#182;</a>
+              </div>
+              <p>convert with timecode function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          result += <span class="hljs-string">"["</span>+fromSeconds(paperCuts[i].startTime) +<span class="hljs-string">"\t"</span>;
+          result += fromSeconds(paperCuts[i].endTime) +<span class="hljs-string">"\t"</span>;
+          result += paperCuts[i].speaker+<span class="hljs-string">"]"</span> +<span class="hljs-string">"\n"</span>;
+          result += paperCuts[i].text +<span class="hljs-string">"\n\n"</span>;
+        }
+        <span class="hljs-keyword">return</span> result;
+      }
+
+    <span class="hljs-keyword">var</span> paperCuts = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span> tmp =makeTimecodedPlainText(paperCuts);
+    <span class="hljs-keyword">var</span> textFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"txt"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: textFileName,<span class="hljs-attr">fileContent</span>: tmp, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportPlainTimecodedTextEDL"</span>});
+  },
+
+
+  <span class="hljs-comment">/**
+  * @function exportPlainTimecodedTextEDLSelOrder
+  */</span> 
+  exportPlainTimecodedTextEDLSelOrder: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+
+      <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeTimecodedPlainText</span>(<span class="hljs-params">paperCuts</span>)</span>{
+          <span class="hljs-keyword">var</span> result =<span class="hljs-string">""</span>;
+          <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i =<span class="hljs-number">0</span>; i&lt; paperCuts.length; i++){</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-62">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-62">&#182;</a>
+              </div>
+              <p>convert with timecode function</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>            result += <span class="hljs-string">"["</span>+fromSeconds(paperCuts[i].startTime) +<span class="hljs-string">"\t"</span>;
+            result += fromSeconds(paperCuts[i].endTime) +<span class="hljs-string">"\t"</span>;
+            result += paperCuts[i].speaker+<span class="hljs-string">"]"</span> +<span class="hljs-string">"\n"</span>;
+            result += paperCuts[i].text +<span class="hljs-string">"\n\n"</span>;
+          }
+          <span class="hljs-keyword">return</span> result;
+        }
+
+    <span class="hljs-keyword">var</span> paperCuts        = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span> selectionsSorted = _.sortBy(paperCuts, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">o</span>) </span>{ <span class="hljs-keyword">return</span> o.paperCutOrder; });
+    <span class="hljs-keyword">var</span> tmp             = makeTimecodedPlainText(selectionsSorted);
+    <span class="hljs-keyword">var</span> textFileName    = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"txt"</span>); 
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: textFileName,<span class="hljs-attr">fileContent</span>: tmp, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportPlainTimecodedTextEDL"</span>});
+  },
+
+
+  <span class="hljs-comment">/**
+  * @function exportPlainTimecodedTextEDLSelOrder
+  * @description /JSON - Transcription 
+  */</span> 
+  exportJsonTranscription: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> transcription = <span class="hljs-keyword">this</span>.model.attributes;
+    <span class="hljs-keyword">var</span> tmpTranscription = <span class="hljs-built_in">JSON</span>.stringify(transcription,<span class="hljs-literal">null</span>,<span class="hljs-string">"\t"</span>);
+    <span class="hljs-keyword">var</span> jsonFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>),<span class="hljs-string">"json"</span>);  
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: jsonFileName,<span class="hljs-attr">fileContent</span>: tmpTranscription, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportJsonTranscription"</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportJsonEDL
+  * @description JSON - EDL 
+  */</span> 
+  exportJsonEDL: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> paperCuts = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span> tmpPaperCuts = <span class="hljs-built_in">JSON</span>.stringify(paperCuts,<span class="hljs-literal">null</span>,<span class="hljs-string">"\t"</span>);
+    <span class="hljs-keyword">var</span> jsonFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"json"</span>);  
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: jsonFileName,<span class="hljs-attr">fileContent</span>: tmpPaperCuts, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportJsonEDL"</span>});
+   },
+
+  <span class="hljs-comment">/**
+  * @function exportJsonEDL
+  * @description JSON - EDL 
+  */</span> 
+  exportJsonEDLSelOrder: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> paperCuts = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+    <span class="hljs-keyword">var</span> selectionsSorted =  _.sortBy(paperCuts, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">o</span>) </span>{ <span class="hljs-keyword">return</span> o.paperCutOrder; });
+    <span class="hljs-keyword">var</span> tmpPaperCuts = <span class="hljs-built_in">JSON</span>.stringify(selectionsSorted,<span class="hljs-literal">null</span>,<span class="hljs-string">"\t"</span>);
+    <span class="hljs-keyword">var</span> jsonFileName = <span class="hljs-keyword">this</span>.nameFileHelper(<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"title"</span>)+<span class="hljs-string">"_EDL"</span>,<span class="hljs-string">"json"</span>);  
+    <span class="hljs-keyword">this</span>.exportHelper({<span class="hljs-attr">fileName</span>: jsonFileName,<span class="hljs-attr">fileContent</span>: tmpPaperCuts, <span class="hljs-attr">urlId</span>: <span class="hljs-string">"#exportJsonEDLSelOrder"</span>});
+   },
+
+  <span class="hljs-comment">/**
+  * @function exporthtml5Video
+  */</span> 
+  exporthtml5Video: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS){
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.model.attributes.processedVideo){
+        <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+        
+        <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
+        <span class="hljs-keyword">var</span> input = path.resolve(<span class="hljs-keyword">this</span>.model.attributes.videoOgg);
+
+        <span class="hljs-keyword">var</span> output = process.env.HOME+<span class="hljs-string">"/Desktop/"</span>+ 
+        path.parse(<span class="hljs-keyword">this</span>.model.attributes.videoOgg).base;
+
+        fs.createReadStream(input).pipe(fs.createWriteStream(output));
+        alert(<span class="hljs-string">"File saved on desktop"</span>);
+       }<span class="hljs-keyword">else</span>{
+          alert(<span class="hljs-string">"Video is still being converted, try again later"</span>);
+       }
+     }<span class="hljs-keyword">else</span>{
+      alert(<span class="hljs-string">"Feature not availeble in this context "</span>);
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function exportAudio
+  */</span> 
+  exportAudio: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">if</span>(<span class="hljs-built_in">window</span>.frontEndEnviromentNWJS){
+      <span class="hljs-keyword">if</span>(<span class="hljs-keyword">this</span>.model.attributes.processedAudio){
+        <span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+        
+        <span class="hljs-keyword">var</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">"path"</span>);
+        <span class="hljs-keyword">var</span> input = path.resolve(<span class="hljs-keyword">this</span>.model.attributes.audioFile);
+
+        <span class="hljs-keyword">var</span> output = process.env.HOME+<span class="hljs-string">"/Desktop/"</span>+ 
+        path.parse(<span class="hljs-keyword">this</span>.model.attributes.audioFile).base;
+
+        fs.createReadStream(input).pipe(fs.createWriteStream(output));
+        alert(<span class="hljs-string">"File saved on desktop"</span>);
+      }<span class="hljs-keyword">else</span>{
+          alert(<span class="hljs-string">"Audio is still being converted, try again later"</span>);
+      }
+    }<span class="hljs-keyword">else</span>{
+      alert(<span class="hljs-string">"Feature not availeble in this context "</span>);
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function edlUserManualInfo
+  */</span> 
+  edlUserManualInfo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+     <span class="hljs-keyword">if</span>( <span class="hljs-built_in">window</span>.frontEndEnviromentNWJS ){
+        <span class="hljs-built_in">require</span>(<span class="hljs-string">'nw.gui'</span>).Shell.openExternal(<span class="hljs-string">'https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#reconnect-in-video-editing-software-of-choice'</span>);
+      }
+  },
+
+  <span class="hljs-comment">/**
+  * @function selectingWords
+  */</span> 
+  selectingWords: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-63">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-63">&#182;</a>
+              </div>
+              <p><a href="https://stackoverflow.com/questions/11300590/how-to-captured-selected-text-range-in-ios-after-text-selection-expansion">https://stackoverflow.com/questions/11300590/how-to-captured-selected-text-range-in-ios-after-text-selection-expansion</a> 
+<a href="https://jsfiddle.net/JasonMore/gWZfb/">https://jsfiddle.net/JasonMore/gWZfb/</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> selectedRange = <span class="hljs-literal">null</span>;
+   <span class="hljs-keyword">if</span> (<span class="hljs-built_in">window</span>.getSelection) {
+     selectedRange = <span class="hljs-built_in">window</span>.getSelection().getRangeAt(<span class="hljs-number">0</span>).cloneContents();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-64">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-64">&#182;</a>
+              </div>
+              <p>console.log(“window”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } <span class="hljs-keyword">else</span> {
+      selectedRange = <span class="hljs-built_in">document</span>.getSelection().getRangeAt(<span class="hljs-number">0</span>).cloneContents();</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-65">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-65">&#182;</a>
+              </div>
+              <p>console.log(“document”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }
+
+    <span class="hljs-keyword">var</span> selectedElements = $(selectedRange).find(<span class="hljs-string">'span'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-66">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-66">&#182;</a>
+              </div>
+              <p>first element of selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> firstElement = $(selectedRange).find(<span class="hljs-string">'span'</span>)[<span class="hljs-number">0</span>];
+    <span class="hljs-keyword">var</span> elemCount = $(selectedRange).find(<span class="hljs-string">'span'</span>).length ;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-67">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-67">&#182;</a>
+              </div>
+              <p>last element</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> lastElIndex =elemCount - <span class="hljs-number">1</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-68">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-68">&#182;</a>
+              </div>
+              <p>last element of selection</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> lastElement = $(selectedRange).find(<span class="hljs-string">'span'</span>)[lastElIndex];
+    <span class="hljs-keyword">var</span> tmpCounter = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"counterForPaperCuts"</span>);
+      
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; elemCount; i++){
+      <span class="hljs-keyword">var</span> element = $(<span class="hljs-string">".words[data-start-time='"</span>+selectedElements[i].dataset.startTime.toString()+<span class="hljs-string">"']"</span>);
+
+      <span class="hljs-keyword">if</span>(element.hasClass( <span class="hljs-string">"highlight"</span> )){
+        element.removeClass(<span class="hljs-string">"highlight"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-69">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-69">&#182;</a>
+              </div>
+              <p>remove addedCounter from element
+decrease counter of addedCounter in transcription
+TODO: check if var <code>tmpCounter</code> needs to be redifined. with var or can remove var.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> tmpCounter = <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"counterForPaperCuts"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-70">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-70">&#182;</a>
+              </div>
+              <p>this.model.set({counterForPaperCuts: tmpCounter-1 })</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        element.removeData( <span class="hljs-string">"counterForPaperCuts"</span> );
+      }<span class="hljs-keyword">else</span> {
+        element.addClass(<span class="hljs-string">"highlight"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-71">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-71">&#182;</a>
+              </div>
+              <p>increment added counter in transcription</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.model.set({<span class="hljs-attr">counterForPaperCuts</span>: tmpCounter+<span class="hljs-number">1</span> });
+        element.data( <span class="hljs-string">"paper-cut-order"</span>, tmpCounter+<span class="hljs-number">1</span> );
+      }
+    }
+
+   <span class="hljs-keyword">var</span> m =  <span class="hljs-keyword">this</span>.model;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-72">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-72">&#182;</a>
+              </div>
+              <p>overwright/set the highlights</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.model.set({<span class="hljs-attr">highlights</span>:  <span class="hljs-keyword">this</span>.makePaperEdit($(<span class="hljs-string">".words"</span>).filter(<span class="hljs-string">".highlight"</span>), m) });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-73">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-73">&#182;</a>
+              </div>
+              <p>save the model</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.model.save({<span class="hljs-attr">wait</span>: <span class="hljs-literal">false</span>});
+  },
+
+  <span class="hljs-comment">/**
+  * @function search
+  */</span> 
+  search:<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-74">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-74">&#182;</a>
+              </div>
+              <p>alert(“searching”)</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> searchedText = $(e.currentTarget).val();
+    searchTextArray = searchedText.split(<span class="hljs-string">" "</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-75">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-75">&#182;</a>
+              </div>
+              <p>TODO: need to resest the search
+make search as a</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    $(<span class="hljs-string">".words"</span>).removeClass(<span class="hljs-string">"searched"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-76">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-76">&#182;</a>
+              </div>
+              <p>$( ‘p:contains(‘+searchedText+’)’ ).css( “text-decoration”, “underline” );</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span>(searchTextArray.length &gt; <span class="hljs-number">0</span>){
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; searchTextArray.length; i++){
+        $(<span class="hljs-string">'.words[data-text='</span>+searchTextArray[i]+<span class="hljs-string">']'</span>).addClass(<span class="hljs-string">"searched"</span>);
+      }
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function playWord
+  */</span> 
+  playWord: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)</span>{
+    <span class="hljs-keyword">var</span> wordStartTime = e.currentTarget.dataset.startTime;
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#"</span>+e.currentTarget.dataset.videoId;
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+    videoElem.currentTime = wordStartTime;
+    videoElem.play();
+    <span class="hljs-keyword">var</span> vid = <span class="hljs-built_in">document</span>.getElementById(e.currentTarget.dataset.videoId);
+
+    vid.ontimeupdate = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+      $(<span class="hljs-string">"span.words"</span>).filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+        <span class="hljs-keyword">if</span>($(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">"start-time"</span>) &lt; $(videoIdElem)[<span class="hljs-number">0</span>].currentTime){
+          $(<span class="hljs-keyword">this</span>).removeClass( <span class="hljs-string">"text-muted"</span> );
+        }<span class="hljs-keyword">else</span>{
+          $(<span class="hljs-keyword">this</span>).addClass(<span class="hljs-string">"text-muted"</span>);
+        }
+      });
+    };
+  },
+
+  <span class="hljs-comment">/**
+  * @function clearHighlights
+  */</span> 
+  clearHighlights: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-keyword">var</span> r = confirm(<span class="hljs-string">"You are about to clear all of the highlights selections from this transcription. Press Ok to continue or Cancel to abort"</span>);
+    <span class="hljs-keyword">if</span> (r === <span class="hljs-literal">true</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-77">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-77">&#182;</a>
+              </div>
+              <p>txt = “You pressed OK!”;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      $(<span class="hljs-string">".words"</span>).filter(<span class="hljs-string">".highlight"</span>).removeClass(<span class="hljs-string">"highlight"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-78">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-78">&#182;</a>
+              </div>
+              <p>.removeData( “counterForPaperCuts” );
+ this.model.set({counterForPaperCuts: 0 })</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">this</span>.model.set({<span class="hljs-attr">highlights</span>:  [] });</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-79">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-79">&#182;</a>
+              </div>
+              <p>this.model.save({wait: false});</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    } <span class="hljs-keyword">else</span> {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-80">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-80">&#182;</a>
+              </div>
+              <p>txt = “You pressed Cancel!”;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      alert(<span class="hljs-string">"relax, nothing was cancelled"</span>);
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function makePaperEdit
+  * @description gets a a papercut sequence from hilighted words
+  */</span>
+  makePaperEdit: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">selection, model</span>)</span>{
+    <span class="hljs-comment">/**
+    * @function groupContiguosWordsInPapercuts
+    * Groups words from selection into array of contiguos words
+    * uuses modified version of this code to divide contiguos numbers 
+    https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript
+    */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">groupContiguosWordsInPapercuts</span>(<span class="hljs-params">selectedWords</span>)</span>{
+      <span class="hljs-keyword">var</span> result = [], temp = [], difference;
+      <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; selectedWords.length; i += <span class="hljs-number">1</span>) {
+        $($(<span class="hljs-string">".words"</span>)[<span class="hljs-number">1</span>]);
+        <span class="hljs-keyword">var</span> wordId = $($(selectedWords[i]) ).data(<span class="hljs-string">"word-id"</span>);   
+        <span class="hljs-keyword">if</span> (difference !== ( wordId- i)) {
+          <span class="hljs-keyword">if</span> (difference !== <span class="hljs-literal">undefined</span>) {
+            result.push(temp);
+            temp = [];
+          }
+          difference = wordId - i;
+        }
+        temp.push(selectedWords[i]);
+      }
+      <span class="hljs-keyword">if</span> (temp.length) {
+        result.push(temp);
+      }
+      <span class="hljs-keyword">return</span> result;
+    }
+    <span class="hljs-comment">/**
+    * @function makeSection
+    * @description Makes papercuts of group of words.
+    * by taking start of first word and end of last word.
+    */</span>
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">makeSection</span>(<span class="hljs-params">arrayOfPapercuts</span>)</span>{
+      <span class="hljs-keyword">var</span> result=[];
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i&lt; arrayOfPapercuts.length; i++){
+        <span class="hljs-keyword">var</span> firstWord = arrayOfPapercuts[i][<span class="hljs-number">0</span>];
+        <span class="hljs-keyword">var</span> lastWord = arrayOfPapercuts[i][arrayOfPapercuts[i].length <span class="hljs-number">-1</span>];</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-81">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-81">&#182;</a>
+              </div>
+              <p>TODO: iterate from first word to last word 
+use  0 as starting point 
+arrayOfPapercuts[i].length -1 as end point 
+iterate over arrayOfPapercuts[i] </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">var</span> words = [];
+        <span class="hljs-keyword">var</span> selectionText = <span class="hljs-string">""</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> j =<span class="hljs-number">0</span>; j&lt; (arrayOfPapercuts[i].length <span class="hljs-number">-1</span> ); j++){
+          <span class="hljs-keyword">var</span> wordText = $(arrayOfPapercuts[i][j]).data(<span class="hljs-string">"text"</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-82">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-82">&#182;</a>
+              </div>
+              <p>TODO:recreate word from data attributes</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          <span class="hljs-keyword">var</span> word = {
+            <span class="hljs-string">"id"</span>: $(arrayOfPapercuts[i][j]).data(<span class="hljs-string">"word-id"</span>),
+            <span class="hljs-string">"text"</span>:  $(arrayOfPapercuts[i][j]).data(<span class="hljs-string">"text"</span>),
+            <span class="hljs-string">"startTime"</span>:  $(arrayOfPapercuts[i][j]).data(<span class="hljs-string">"start-time"</span>),
+            <span class="hljs-string">"endTime"</span>: $(arrayOfPapercuts[i][j]).data(<span class="hljs-string">"end-time"</span>)
+          };</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-83">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-83">&#182;</a>
+              </div>
+              <p>TODO: add the word to the words array </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          words.push(word);
+          selectionText+=wordText+<span class="hljs-string">" "</span>;
+        }
+        model.attributes.counterForPaperCuts +=<span class="hljs-number">1</span>;
+        <span class="hljs-keyword">var</span> paperCut = {
+          <span class="hljs-attr">id</span>: i,
+          <span class="hljs-attr">paperCutOrder</span>: model.attributes.counterForPaperCuts,
+          <span class="hljs-attr">startTime</span>: $(firstWord).data(<span class="hljs-string">"start-time"</span>),
+          <span class="hljs-attr">endTime</span>:  $(lastWord).data(<span class="hljs-string">"end-time"</span>),
+          <span class="hljs-attr">reelName</span>: $(firstWord).data(<span class="hljs-string">"reel-name"</span>),
+          <span class="hljs-attr">clipName</span>: $(firstWord).data(<span class="hljs-string">"clip-name"</span>),
+          <span class="hljs-attr">speaker</span>: $(firstWord).data(<span class="hljs-string">"speaker"</span>),</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-84">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-84">&#182;</a>
+              </div>
+              <p>wordId: $(firstWord).data(“word-id”),
+lineId: $(firstWord).data(“line-id”),
+paragraphId: $(firstWord).data(“paragaph-id”),</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>          transcriptionId: $(firstWord).data(<span class="hljs-string">"transcription-id"</span>),
+          <span class="hljs-attr">videoId</span>: $(firstWord).data(<span class="hljs-string">"video-id"</span>),
+          <span class="hljs-attr">videoOgg</span>: $(firstWord).data(<span class="hljs-string">"src"</span>),
+          <span class="hljs-attr">audioFile</span>: $(firstWord).data(<span class="hljs-string">"audioFile"</span>),
+          <span class="hljs-attr">text</span>: selectionText,
+          <span class="hljs-attr">words</span>: words</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-85">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-85">&#182;</a>
+              </div>
+              <p>TODO: Add the word array of selection to the papercut</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        };
+        result.push(paperCut);
+      }
+      <span class="hljs-keyword">return</span> result;
+    }
+
+  <span class="hljs-keyword">return</span> makeSection(groupContiguosWordsInPapercuts(selection));
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-86">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-86">&#182;</a>
+              </div>
+              <p>keyboard event using mouse trap backbone version </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  keyboardEvents: {
+    <span class="hljs-string">'command+k'</span>           : <span class="hljs-string">'pausePlayVideo'</span>,
+    <span class="hljs-string">'ctrl+k'</span>              : <span class="hljs-string">'pausePlayVideo'</span>,
+    <span class="hljs-string">'command+shift+k'</span>     : <span class="hljs-string">'pausePlayVideo'</span>,
+    <span class="hljs-string">'ctrl+shift+k'</span>        : <span class="hljs-string">'pausePlayVideo'</span>,
+    <span class="hljs-string">'command+j'</span>           : <span class="hljs-string">'slowVideo'</span>,
+    <span class="hljs-string">'ctrl+j'</span>              : <span class="hljs-string">'slowVideo'</span>,
+    <span class="hljs-string">'command+l'</span>           : <span class="hljs-string">'fastVideo'</span>,
+    <span class="hljs-string">'ctrl+l'</span>              : <span class="hljs-string">'fastVideo'</span>,
+    <span class="hljs-string">'command+shift+l'</span>     : <span class="hljs-string">'fastForwardVideo'</span>,
+    <span class="hljs-string">'ctrl+shift+l'</span>        : <span class="hljs-string">'fastForwardVideo'</span>,
+    <span class="hljs-string">'command+shift+right'</span> : <span class="hljs-string">'fastForwardVideo'</span>,
+    <span class="hljs-string">'ctrl+shift+right'</span>    : <span class="hljs-string">'fastForwardVideo'</span>,
+    <span class="hljs-string">'command+shift+j'</span>     : <span class="hljs-string">'rewindVideo'</span>,
+    <span class="hljs-string">'ctrl+shift+j'</span>        : <span class="hljs-string">'rewindVideo'</span>,
+    <span class="hljs-string">'command+shift+left'</span>  : <span class="hljs-string">'rewindVideo'</span>,
+    <span class="hljs-string">'ctrl+shift+left'</span>     : <span class="hljs-string">'rewindVideo'</span>,
+    <span class="hljs-string">'command+shift+up'</span>    : <span class="hljs-string">'volumeUp'</span>,
+    <span class="hljs-string">'ctrl+shift+up'</span>       : <span class="hljs-string">'volumeUp'</span>,
+    <span class="hljs-string">'command+shift+down'</span>  : <span class="hljs-string">'volumeDown'</span>,
+    <span class="hljs-string">'ctrl+shift+down'</span>     : <span class="hljs-string">'volumeDown'</span>,
+    <span class="hljs-string">'shift+/'</span>             : <span class="hljs-string">'showHideShortcuts'</span>
+  },
+
+  <span class="hljs-comment">/**
+  * @function Shortcuts
+  */</span>
+  showHideShortcuts: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"show shorcuts"</span>);
+    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"shortcuts"</span>).click();
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for playback - 
+  */</span>
+  slowVideo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    ev.preventDefault();
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+
+    <span class="hljs-keyword">if</span>(videoElem.playbackRate &lt;= <span class="hljs-number">0.5</span>){
+      videoElem.playbackRate =  <span class="hljs-number">0.5</span> ;
+    }<span class="hljs-keyword">else</span>{
+      videoElem.playbackRate = videoElem.playbackRate - <span class="hljs-number">0.5</span> ;
+    }
+
+    <span class="hljs-keyword">if</span> (videoElem.paused) {
+      videoElem.play();
+    } 
+    
+    <span class="hljs-keyword">this</span>.updateSpeedDisplay(videoElem.playbackRate);
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for playback -
+  */</span>
+  fastVideo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+
+    <span class="hljs-keyword">if</span>(videoElem.playbackRate &gt;= <span class="hljs-number">4</span>){
+      videoElem.playbackRate = <span class="hljs-number">4</span> ;
+    }<span class="hljs-keyword">else</span>{
+      videoElem.playbackRate = videoElem.playbackRate + <span class="hljs-number">0.5</span> ;
+    }
+
+    <span class="hljs-keyword">if</span> (videoElem.paused) {
+      videoElem.play();
+    } 
+
+    <span class="hljs-keyword">this</span>.updateSpeedDisplay(videoElem.playbackRate);
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for playback - play/pause
+  */</span>
+  pausePlayVideo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+    
+    <span class="hljs-keyword">if</span> (videoElem.paused) {
+      videoElem.play();
+    } <span class="hljs-keyword">else</span> {
+      videoElem.pause();
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for volume - decrease
+  */</span>
+  volumeDown: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+   
+    <span class="hljs-keyword">if</span> (videoElem.volume &lt;= <span class="hljs-number">0</span>){
+      videoElem.volume = <span class="hljs-number">0</span>;
+    }<span class="hljs-keyword">else</span>{
+      videoElem.volume -= <span class="hljs-number">0.2</span>;
+    }
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for volume - increase
+  */</span>
+  volumeUp: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+    videoElem.volume += <span class="hljs-number">0.2</span>;
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for playback - fastforward
+  */</span>
+  fastForwardVideo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+    videoElem.currentTime += <span class="hljs-number">5</span>;
+  },
+
+  <span class="hljs-comment">/**
+  * @function Keyboard shortcuts for playback - rewind
+  */</span>
+  rewindVideo: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">ev</span>)</span>{
+    <span class="hljs-keyword">var</span> videoIdElem=<span class="hljs-string">"#videoId_"</span>+<span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"id"</span>);
+    <span class="hljs-keyword">var</span> videoElem = $(videoIdElem)[<span class="hljs-number">0</span>];
+    videoElem.currentTime -= <span class="hljs-number">5</span>;
+  },
+
+  <span class="hljs-comment">/**
+  * @function helper function to update diplay speed
+  */</span>
+  updateSpeedDisplay: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">speed</span>)</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-87">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-87">&#182;</a>
+              </div>
+              <p>subtracting 1 because playback rate default / nromal is 1. but for display to user makes more sense to have zero as default</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"speedInput"</span>).value = speed<span class="hljs-number">-1</span>;
+  },</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-88">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-88">&#182;</a>
+              </div>
+              <p>end of playback volume control</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+  <span class="hljs-comment">/**
+  * template
+  */</span>
+  template: _.template($(<span class="hljs-string">'#transcriptionShow'</span>).html()),
+
+  <span class="hljs-comment">/**
+  * @function render
+  */</span>
+  render: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{    
+    <span class="hljs-keyword">this</span>.model.attributes.id = <span class="hljs-keyword">this</span>.model.attributes._id;
+    <span class="hljs-keyword">var</span> sectionTemplate = <span class="hljs-keyword">this</span>.template(<span class="hljs-keyword">this</span>.model.attributes);
+    <span class="hljs-keyword">this</span>.$el.html(sectionTemplate);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-89">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-89">&#182;</a>
+              </div>
+              <p>modify compiled template to update hilights. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> tmpHighlights =  <span class="hljs-keyword">this</span>.model.get(<span class="hljs-string">"highlights"</span>);
+      <span class="hljs-keyword">for</span>(<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; tmpHighlights.length; i++ ){
+        <span class="hljs-keyword">var</span> min =  tmpHighlights[i].startTime ;
+        <span class="hljs-keyword">var</span> max = tmpHighlights[i].endTime ;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-90">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-90">&#182;</a>
+              </div>
+              <p>needs to grab the words of the element of the view not in the dom        </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>        <span class="hljs-keyword">this</span>.$(<span class="hljs-string">".words"</span>).filter(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+          <span class="hljs-keyword">return</span> $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">'start-time'</span>) &gt;= min &amp;&amp; $(<span class="hljs-keyword">this</span>).data(<span class="hljs-string">'end-time'</span>) &lt;= max;
+        }).addClass(<span class="hljs-string">"highlight"</span>);
+      }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-91">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-91">&#182;</a>
+              </div>
+              <p>/end of modify compiled template to update hilights. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>;
+  }
+  
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>parse.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt.html">
+                  gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="gentle_stt_example.html">
+                  gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt.html">
+                  parse_gentle_stt.js
+                </a>
+              
+                
+                <a class="source" href="parse_gentle_stt_example.html">
+                  parse_gentle_stt_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_wav.html">
+                  convert_to_wav.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="parse.html">
+                  parse.js
+                </a>
+              
+                
+                <a class="source" href="sam_transcriber_json_convert.html">
+                  sam_transcriber_json_convert.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson.html">
+                  send_to_watson.js
+                </a>
+              
+                
+                <a class="source" href="send_to_watson_test.html">
+                  send_to_watson_test.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="split_example.html">
+                  split_example.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="trimmer_example.html">
+                  trimmer_example.js
+                </a>
+              
+                
+                <a class="source" href="write_out.html">
+                  write_out.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index_example.html">
+                  index_example.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>parse.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+* Takes IBM Watson STT Service json and adds time offest onto each word.
+* this is so that each chunk of audio that has been transcribed separately can be joined back togethere.
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>function parse(data, offset) {
+  console.log(“############## Parse”)
+  if (typeof offset === ‘undefined’) offset = 0;</p>
+<p>  var out = {
+    sentences: []
+  };</p>
+<p>  out.sentences = data.results.map(function(r) {
+    var item = {};
+    var result = {}
+    result.results = [];</p>
+<pre><code><span class="hljs-comment">//add results</span>
+<span class="hljs-keyword">var</span> _item = r.alternatives[<span class="hljs-number">0</span>];
+<span class="hljs-comment">// item.transcript = _item.transcript;</span>
+<span class="hljs-comment">// item.confidence = _item.confidence;</span>
+item.timestamps = _item.timestamps.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>{
+  <span class="hljs-comment">//return modified array</span>
+  <span class="hljs-keyword">var</span> resAr = []
+  resAr[<span class="hljs-number">0</span>]= t[<span class="hljs-number">0</span>];
+  resAr[<span class="hljs-number">1</span>]=t[<span class="hljs-number">1</span>] + offset;
+  resAr[<span class="hljs-number">2</span>]=t[<span class="hljs-number">2</span>] + offset;
+  <span class="hljs-comment">// return {</span>
+  <span class="hljs-comment">//   word: t[0],</span>
+  <span class="hljs-comment">//   start: t[1] + offset,</span>
+  <span class="hljs-comment">//   end: t[2] + offset</span>
+  <span class="hljs-comment">// };</span>
+  <span class="hljs-keyword">return</span> resAr;
+
+  <span class="hljs-comment">//</span>
+});
+<span class="hljs-keyword">var</span> alternatives = []
+alternatives.push(item)
+<span class="hljs-comment">// {"alternatives": []}</span>
+result.results.push(alternatives)
+<span class="hljs-keyword">return</span> result;
+</code></pre><p>  });</p>
+<p>  return out;
+}</p>
+<p>module.exports = parse;</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+
+<span class="hljs-comment">/**
+* Takes IBM Watson STT Service json and adds time offest onto each word.
+* this is so that each chunk of audio that has been transcribed separately can be joined back togethere.
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">parse</span>(<span class="hljs-params">data, offset</span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"############## .parse"</span>)
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> offset === <span class="hljs-string">'undefined'</span>) offset = <span class="hljs-number">0</span>;
+
+  <span class="hljs-keyword">var</span> out = {
+    <span class="hljs-attr">sentences</span>: []
+  };
+
+  out.sentences = data.results.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">r</span>) </span>{
+    <span class="hljs-keyword">var</span> item = {};</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>add results</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> _item = r.alternatives[<span class="hljs-number">0</span>];
+    item.transcript = _item.transcript;
+    item.confidence = _item.confidence;
+    item.words = _item.timestamps.map(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">t</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>      <span class="hljs-keyword">return</span> {
+        <span class="hljs-attr">word</span>: t[<span class="hljs-number">0</span>],
+        <span class="hljs-attr">start</span>: t[<span class="hljs-number">1</span>] + offset,
+        <span class="hljs-attr">end</span>: t[<span class="hljs-number">2</span>] + offset
+      };
+    });
+    <span class="hljs-keyword">return</span> item;
+  });
+
+  <span class="hljs-keyword">return</span> out;
+}
+
+
+<span class="hljs-built_in">module</span>.exports = parse;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

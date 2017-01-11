@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: 2016-09-08-usage</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: 2016-09-08-usage</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>2016-09-08-usage</h2>
+</header>
+
+<article>
+    <hr>
+<p>layout: page
+title: &quot;User Manual &quot;
+category: user_manual</p>
+<h2>date: 2016-09-08 17:07:45</h2><!-- TOC -->
+<!-- Overview Giff -->
+<p>If first time using the tool go ahead and <a href="{{site.baseurl}}/user_manual/setup.html">setup the STT API system first</a>.</p>
+<h3>1. Adding a video/audio</h3><ol>
+<li>Click on <code>new</code></li>
+<li>Chose the media you want to open, audio or video.</li>
+<li>Fill in title and description </li>
+<li>Chose Speech To Text system you want to use (IBM American English is the default)</li>
+<li><code>Save Transcription</code></li>
+</ol>
+<p><img src="{{ site.baseurl }}/img/gif/1_getting_started.gif" class="sixtypercent" alt="Getting started adding media"></p>
+<!-- if you using Gentle STT for offline transcription seee setup STT API for Gentle []()-->
+<p><a href="https://ffmpeg.org/general.html#Supported-File-Formats_002c-Codecs-or-Features">For a list of supported media file type see ffmpeg(which is what has been used for the file conversion under the hood)</a></p>
+<hr>
+<p>The transcription will take a round <strong>5 minutes</strong> to process regardless of the length of the media.</p>
+<p><img src="{{ site.baseurl }}/img/gif/2_processing_transcription.gif" class="sixtypercent" alt="processing transcription"></p>
+<hr>
+<h3>2. Selecting text from a transcription</h3><p>Make selections of text you'd like to include in your video sequence.</p>
+<p><img src="{{ site.baseurl }}/img/gif/3_transcription.gif" class="sixtypercent" alt="Transcription"></p>
+<hr>
+<!-- gif  -->
+<h3>3. Exporting a video sequence(EDL)</h3><p>Export an EDL, which is an <a href="https://en.wikipedia.org/wiki/Edit_decision_list">Edit decision list</a>{:target=&quot;_blank&quot;}.</p>
+<p><img src="{{ site.baseurl }}/img/gif/4_export.gif" class="sixtypercent" alt="Transcription"></p>
+<p>You can export a video sequence of selection as they appear chronologically in the video. 
+Or you can export them in the order you selected them, getting you closer to make a paper edit.</p>
+<hr>
+<!-- gif  -->
+<h3>4. Reconnect in video editing software of choice</h3><p>EDL is compatible with all major editing software. </p>
+<ul>
+<li>Adobe Premiere</li>
+<li>Avid Media Composer </li>
+<li>Final Cut Pro 7 </li>
+<li>And any other editing software that lets you import an EDL file...</li>
+</ul>
+<p>To import the EDL and reconnect the sequence</p>
+<ol>
+<li>Import the EDL</li>
+<li>Go to the sequence</li>
+<li>Reconnect the offline sequence</li>
+<li>Continue your editing</li>
+</ol>
+<h4>Adobe Premiere example</h4><p><img src="{{ site.baseurl }}/img/gif/5_EDL_in_premiere.gif" class="sixtypercent" alt="processing transcription"></p>
+<!-- ---
+
+[Adobe EDL import]()
+
+#### Avid Media Composer
+
+click click ...
+
+[Avid EDL import]()
+
+---
+
+#### Final cut pro 7 
+
+[Final Cut Pro 7 EDL import]()
+
+---
+ -->
+<p><strong>a Note on working with Final cut pro X</strong><br>For now a workaround for Final cut pro X not supporting EDL is that you can open the  EDL in <a href="https://www.blackmagicdesign.com/products/davinciresolve">Davinci resolve</a> convert it to XML that will work with final cut X.</p>
+<hr>
+<!-- To be tried out -->
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-2016-09-07-components.html">2016-09-07-components</a></li><li><a href="tutorial-2016-09-07-configuration.html">2016-09-07-configuration</a></li><li><a href="tutorial-2016-09-07-dependencies.html">2016-09-07-dependencies</a></li><li><a href="tutorial-2016-09-07-deployment.html">2016-09-07-deployment</a></li><li><a href="tutorial-2016-09-07-doc.html">2016-09-07-doc</a></li><li><a href="tutorial-2016-09-07-faqs.html">2016-09-07-faqs</a></li><li><a href="tutorial-2016-09-07-github.html">2016-09-07-github</a></li><li><a href="tutorial-2016-09-07-intro.html">2016-09-07-intro</a></li><li><a href="tutorial-2016-09-07-licence.html">2016-09-07-licence</a></li><li><a href="tutorial-2016-09-07-prerequisites.html">2016-09-07-prerequisites</a></li><li><a href="tutorial-2016-09-07-setup.html">2016-09-07-setup</a></li><li><a href="tutorial-2016-09-07-test-suite.html">2016-09-07-test-suite</a></li><li><a href="tutorial-2016-09-07-uninstalling.html">2016-09-07-uninstalling</a></li><li><a href="tutorial-2016-09-07-wiki.html">2016-09-07-wiki</a></li><li><a href="tutorial-2016-09-08-usage.html">2016-09-08-usage</a></li><li><a href="tutorial-2016-09-12-installing.html">2016-09-12-installing</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 16:20:31 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

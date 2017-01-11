@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: interactive_transcription_generator/sam_transcriber/split.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: interactive_transcription_generator/sam_transcriber/split.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Takes in an audio file, if it exceeds 5 minutes, it splits at 5 minutes intervalls. 
+ * Used by sam_transcriber/index.js module.
+ * @author Pietro Passarelli 
+ * @todo: technically this does not guarantee that each file will be less then 100mb, altho seems to work with no problems is not 100% sure. 
+ * @todo: figure out how to make sure each file does not exceeen 100mb (othwerwise it be rejected by IBM Watson STT service )
+ *
+ * takes in file, tmp folder where to put audio files trimmed. and a callback tha returns array with name of files and offest from start, to be able to concact the transcription json from IBM Watson STT Service back togethere as one big file, with word timecodes relative to the original audio/video file times.
+ * @example &lt;caption>Example usage &lt;/caption>
+ split(newFile, tmpFolder, ffmpegPath, ffprobePath, function(files) {
+    //can do something with array of files
+ })
+ * @example &lt;caption>Example output `files`&lt;/caption>
+   [
+    {
+      name: filename,
+      offset: 0
+     },
+     ...
+   ]
+ *
+ * @todo refactor to use config object instead of 5 param. Would need updating sam_transcriber/index.js.
+ * 
+ * @requires fluent-ffmpeg
+ * @requires path
+ * @requires fs
+ * @requires trimmer.js uses costum trimer module to actually cut the clips.
+ */
+
+var ffmpeg  = require('fluent-ffmpeg');
+var path    =  require('path');
+var fs      = require('fs');
+var trimmer = require('./trimmer.js');
+
+/**
+* @function split
+* @description splits an audio file, if it exceeds 5 minutes, in 5 minutes intervalls.  
+* using `ffprobe` to read duration. `ffmpeg` passed to `trimmer` module.
+* saves trimmed clips in temp folder.  
+* 
+* @todo refactor using config, needs refactroing index.js of sam transcriber if you do
+* @param {string} file -  audio file path
+* @param {string} tmpFolder - path to a temporary folder to put temporary audio files created when dividing audio file into chunks to send to STT API.
+* @param {string} ffmpegBinPath - path to ffmpeg binary. to pass to trimmer module
+* @param {string} ffprobeBinPath - path to ffprobe binary. If not present it will try to use system one.
+* @param {callback} callback - 
+* @returns {callback} callback - returns array of audio clips names with offsts eg [{ name: filename, offset: 0 }]
+*/
+function split(file, tmpFolder, ffmpegBinPath, ffprobeBinPath, cb) {
+  //maximum legth of clips in seconds. 5 minutes each.
+  var maxLength = 60 * 5;
+  //number of files
+  var total = 0;
+  //list of files
+  var files = [];
+
+  // set ffprobe bin
+  if(ffprobeBinPath) {
+    ffmpeg.setFfprobePath(ffprobeBinPath);
+  } else {
+    console.warn("ffprobe binary path not defined, so using system one. if available");
+  }
+
+  /**
+  * @function finishedSplit
+  * @description helper function used as callback to add info on trimmed clips to list of files. 
+  * @param {string} - name of the audio clip 
+  * @param {number} - clip time offset in seconds, in 5 min intervals
+  * @returns {callback} callback - return list of files
+  */
+  var finishedSplit = function(filename, start) {
+    files.push({
+      name: filename,
+      offset: start
+    });
+    total--;
+    if (parseInt(total) === 0) {
+      console.log("end of split function");
+      cb(files);
+    }
+  };
+
+  // ffprobe to get duration
+  ffmpeg.ffprobe(file, function(err, metadata) {
+    //reads duration of file from metadata
+    var duration = metadata.streams[0].duration;
+    //divides total audio duration by the maximum length of the trimmed clips to work out in how many instance it needs to be divided
+    total = parseInt(duration/maxLength)+1;
+    // if click it's longer then 5 minutes
+    if (duration > maxLength) {
+      //trim audio file into clips 
+      for(var i =0; i&lt;duration; i+=maxLength){
+        //file name of original audio file
+        var fileName = path.parse(file).base;
+        //file name for clips 
+        var filePart = tmpFolder+"/"+ fileName + '.' + i + '.wav';
+        //trim audio files 
+        trimmer.trim({
+          src: file,
+          input: i,
+          duration: maxLength,
+          outputName: filePart,
+          ffmpegBin: ffmpegBinPath,
+          //when done trimming add clip to the list through callback. finishedSplit takes in filename and start
+          callback: finishedSplit
+        });
+
+      }
+    } else {
+      //if the audio file is less then 5 minutes then it returns a list with one element. to keep the interface.
+      cb([{
+        name: file,
+        offset: 0
+      }]);
+    }
+  });
+}
+
+module.exports = split;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 17:47:22 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Tutorial: 2016-09-07-doc</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Tutorial: 2016-09-07-doc</h1>
+
+    <section>
+
+<header>
+    
+
+    <h2>2016-09-07-doc</h2>
+</header>
+
+<article>
+    <hr>
+<p>layout: page_documentation
+title: &quot;Documentation&quot;
+category: system_manual</p>
+<h2>date: 2016-09-07 17:42:20</h2><ol>
+<li><p><a href="/docco_docs/autoEdit2API.html">Docco style code documentation</a>{:target=&quot;_blank&quot;}</p>
+</li>
+<li><p><a href="/jsdoc_docs/index.html">JSdoc style code documentation</a>{:target=&quot;_blank&quot;}</p>
+</li>
+</ol>
+<p>Note that for now the <code>index.html</code> nwjs starter page is left out of the automatically generated docs.</p>
+<h3>Updating documentation with Docco</h3><p>Using <a href="http://jashkenas.github.io/docco/">docco</a> for documentation inspired by <a href="http://samwize.com/2014/01/31/the-best-documentation-generator-for-node/">this</a> blog post.
+In conjunction with json doc.</p>
+<p>install docco globally </p>
+<pre class="prettyprint source"><code>npm install docco -g</code></pre><p>to re-generate documentation run from root of app     </p>
+<pre class="prettyprint source lang-bash"><code>npm run document_docco</code></pre><p>this puts documentation in <code>/docs/docco_docs</code> folder.</p>
+<h4>Docco config</h4><p>The setup for this is done in <code>package.json</code> scripts where the folders/files to consider for documentations and destination folder(<code>-o</code>) are specified.</p>
+<pre class="prettyprint source lang-json"><code>&quot;document_docco&quot;: &quot;docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js&quot;,</code></pre><h3>Updating documentation with JSDoc</h3><p>install jsdoc locally </p>
+<pre class="prettyprint source"><code>npm install jsdoc -save</code></pre><p>Edit config file as explain in <a href="http://samwize.com/2014/01/31/the-best-documentation-generator-for-node/">blog post</a>{:target=&quot;_blank&quot;}</p>
+<blockquote>
+<p>This is because you need to edit the config file in the module at .<code>/node_modules/jsdoc/config.json</code>. And this part of the information is at <a href="http://usejsdoc.org/about-configuring-jsdoc.html">usejsdoc.org</a>.</p>
+</blockquote>
+<p>to re-generate documentation run from root of app </p>
+<pre class="prettyprint source"><code>npm run document_jsdoc</code></pre><h4>Jsdoc config</h4><p>This executes the script in <code>package.json</code>, and places the documentation inside of <code>/docs/jsdoc_docs</code>.</p>
+<pre class="prettyprint source lang-json"><code> &quot;document_jsdoc&quot;: &quot;./node_modules/.bin/jsdoc *.js  --destination ./docs/jsdoc_docs  ./*.js ./frontEnd/*.js ./frontEnd/date_now/*.js ./frontEnd/edl_composer/*.js ./frontEnd/srt/*.js ./frontEnd/js/*.js ./frontEnd/js/models/*.js ./frontEnd/js/views/*.js ./frontEnd/js/collections/*.js ./interactive_transcription_generator/*.js ./interactive_transcription_generator/**/*.js&quot;</code></pre><p><a href="https://github.com/voxmedia/411/wiki/Javascript-Style-and-Syntax-Guide#important-comments">see here for jsodc tags to use</a></p>
+</article>
+
+</section>
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-2016-09-07-components.html">2016-09-07-components</a></li><li><a href="tutorial-2016-09-07-configuration.html">2016-09-07-configuration</a></li><li><a href="tutorial-2016-09-07-dependencies.html">2016-09-07-dependencies</a></li><li><a href="tutorial-2016-09-07-deployment.html">2016-09-07-deployment</a></li><li><a href="tutorial-2016-09-07-doc.html">2016-09-07-doc</a></li><li><a href="tutorial-2016-09-07-github.html">2016-09-07-github</a></li><li><a href="tutorial-2016-09-07-licence.html">2016-09-07-licence</a></li><li><a href="tutorial-2016-09-07-prerequisites.html">2016-09-07-prerequisites</a></li><li><a href="tutorial-2016-09-07-test-suite.html">2016-09-07-test-suite</a></li><li><a href="tutorial-intro.html">intro</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 17:08:30 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

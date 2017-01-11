@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/app/views/transcription_form_view.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/app/views/transcription_form_view.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+var $ = require('jquery');
+var Backbone = require('backbone');
+var render = require('./utils').render;
+
+/**
+* Backbone view for transcription form for creating a new transcription
+* @class TranscriptionFormView
+* @constructor
+* @extends Backbone.View
+*/
+module.exports = Backbone.View.extend({
+  events :{
+  	'click #submitBtn': 'save'
+  },
+
+  save: function(e){
+  	e.preventDefault();
+
+    var sttEngine; 
+
+    //reading values from form 
+    var newTitle        = this.$('input[name=title]').val();
+    var newDescription  = this.$('textarea[name=description]').val();;
+    var newFilePath     = this.$('input[name=file]').val();
+    var newLanguage     = $('#languageModel').find(":selected")[0].value;
+
+    if($('#IBMoption')[0].checked){
+      sttEngine         = "ibm";
+    }else if($('#genelteOption')[0].checked){
+       sttEngine        = "gentle";
+    };
+    
+    var newSTTLanguage  = $('#IBMoption')[0].checked;
+
+  	this.model.save({title: newTitle, description: newDescription,videoUrl:newFilePath, languageModel: newLanguage, sttEngine: sttEngine},{
+      success: function(mode, response, option){      
+           Backbone.history.navigate("transcriptions", {trigger:true}); 
+      },
+      error: function(model, xhr,options){
+        var errors = JSON.parse(xhr.responseText).errors;
+        alert("ops, something when wrong with saving the transcription:" + errors)
+      }
+    });
+  },
+
+
+  render: function(){
+    this.$el.html(render('transcriptionFormTemplate', this.model.attributes));
+    return this;
+  }
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-db.html">db</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-JQuery_and_NWJS_packaging.html">JQuery_and_NWJS_packaging</a></li><li><a href="tutorial-Roadmap.html">Roadmap</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-current_db_setup.html">current_db_setup</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#displayMain">displayMain</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getWatsonAPIKeysFromUser">getWatsonAPIKeysFromUser</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
+Groups words from selection into array of contiguos words
+uuses modified version of this code to divide contiguos numbers 
+    https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript</a></li><li><a href="global.html#helperfunctiontoupdatediplayspeed">helper function to update diplay speed</a></li><li><a href="global.html#Keyboardshortcutsforplayback-">Keyboard shortcuts for playback -</a></li><li><a href="global.html#Keyboardshortcutsforplayback-fastforward">Keyboard shortcuts for playback - fastforward</a></li><li><a href="global.html#Keyboardshortcutsforplayback-play/pause">Keyboard shortcuts for playback - play/pause</a></li><li><a href="global.html#Keyboardshortcutsforplayback-rewind">Keyboard shortcuts for playback - rewind</a></li><li><a href="global.html#Keyboardshortcutsforvolume-decrease">Keyboard shortcuts for volume - decrease</a></li><li><a href="global.html#Keyboardshortcutsforvolume-increase">Keyboard shortcuts for volume - increase</a></li><li><a href="global.html#makeEditable">makeEditable</a></li><li><a href="global.html#makeHilightable">makeHilightable</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#makeSection">makeSection</a></li><li><a href="global.html#playWord">playWord</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#selectingWords">selectingWords</a></li><li><a href="global.html#Shortcuts">Shortcuts</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 11 2017 14:48:44 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
