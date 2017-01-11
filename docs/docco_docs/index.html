@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>index.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>index.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/**
+ * @module video_to_html5_webm
+ * @description Converts audio or video file into a HTML5 video webm.
+ * uses code from [this issue/question from fluent-ffmepg](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274)
+ * to understand the ffmpeg used to encode webm video see [this guide](https://trac.ffmpeg.org/wiki/Encode/VP8)
+ * @author Pietro Passarelli 
+ * @example &lt;caption&gt;Example usage&lt;/caption&gt;
+
+  convert_video({
+    src: "path/to/vide_file.mov",
+    outputName: "path/to/webm_file.webm",
+    ffmpegBin: "path/to/bin/ffmpge",
+    callback: function(resp){
+</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>do something with output, path to webm video</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    }
+  });
+* @example &lt;caption&gt;Example of object retunred video webm html5 &lt;/caption&gt;
+  {
+    videoOgg: "path/to/video/webmFile.webm",
+    processedVideo: true 
+  }
+ * @requires fluent-ffmpeg
+ * @requires an ffmpeg binary. For example if packaged inside a nwjs app. This can be set in config attributes options.
+ */
+"use strict";
+
+var ffmpeg = require('fluent-ffmpeg');
+
+/**
+ * @function convert
+ * @description Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.
+ * @param {object} config - The parameter containting attribute options.
+ * @param {string} config.src - full path of video or audio to convert.
+ * @param {string} config.outputName - full path of video file name, needs to have `.webm` extension.
+ * @param {string} config.ffmpegBin - Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.
+ * @returns {callback} config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as `config.outputName` input.
+ */
+var convert = function(config){
+
+  var videoSrc = config.src;
+  var outputName = config.outputName;
+  var callback;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>optional callback</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(config.callback){
+    callback = config.callback;
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>setting ffmpeg bin, optional. if not specified in input fluent-ffmpeg will try to use system one if present. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  <span class="hljs-keyword">if</span>(config.ffmpegBin){
+    ffmpeg.setFfmpegPath(config.ffmpegBin);
+  }<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>case in which ffmpeg bin not provided in input and not present on system not covered.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">"ffmpeg binary path not defined, so using system one. if available."</span>);
+  }</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>executing ffmpeg comand </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  ffmpeg(videoSrc)
+    .output(outputName)
+    .withVideoCodec(<span class="hljs-string">'libvpx'</span>)
+    .addOptions([<span class="hljs-string">'-qmin 0'</span>, <span class="hljs-string">'-qmax 50'</span>, <span class="hljs-string">'-crf 5'</span>])
+    .withVideoBitrate(<span class="hljs-number">1024</span>)
+    .withAudioCodec(<span class="hljs-string">'libvorbis'</span>)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>when done executing returning output file name to callback </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    .on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{ callback(outputName); })
+    .run();
+};
+
+<span class="hljs-built_in">module</span>.exports = convert;</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

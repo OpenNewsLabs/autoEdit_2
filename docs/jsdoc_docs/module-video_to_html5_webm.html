@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Module: video_to_html5_webm</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Module: video_to_html5_webm</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        
+            
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+            <div class="description"><p>Converts audio or video file into a HTML5 video webm.<br>uses code from <a href="https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/issues/274">this issue/question from fluent-ffmepg</a><br>to understand the ffmpeg used to encode webm video see <a href="https://trac.ffmpeg.org/wiki/Encode/VP8">this guide</a></p></div>
+        
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-author">Author:</dt>
+    <dd class="tag-author">
+        <ul>
+            <li>Pietro Passarelli</li>
+        </ul>
+    </dd>
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_interactive_transcription_generator_video_to_html5_webm_index.js.html">lib/interactive_transcription_generator/video_to_html5_webm/index.js</a>, <a href="lib_interactive_transcription_generator_video_to_html5_webm_index.js.html#line1">line 1</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption">Example usage</p>
+    
+    <pre class="prettyprint"><code>  convert_video({
+    src: "path/to/vide_file.mov",
+    outputName: "path/to/webm_file.webm",
+    ffmpegBin: "path/to/bin/ffmpge",
+    callback: function(resp){
+      // do something with output, path to webm video
+    }
+  });</code></pre>
+
+        <p class="code-caption">Example of object retunred video webm html5 </p>
+    
+    <pre class="prettyprint"><code>  {
+    videoOgg: "path/to/video/webmFile.webm",
+    processedVideo: true 
+  }</code></pre>
+
+
+
+        
+    
+    </div>
+
+    
+
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li>module:fluent-ffmpeg</li>
+        
+            <li>module:an</li>
+        </ul>
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="~convert"><span class="type-signature">(inner) </span>convert<span class="signature">(config)</span><span class="type-signature"> &rarr; {callback}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>config</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The parameter containting attribute options.</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>src</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>full path of video or audio to convert.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>outputName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>full path of video file name, needs to have <code>.webm</code> extension.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ffmpegBin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Path to the ffmpeg binary. Optional, if no provided it will try to use system one if present.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="lib_interactive_transcription_generator_video_to_html5_webm_index.js.html">lib/interactive_transcription_generator/video_to_html5_webm/index.js</a>, <a href="lib_interactive_transcription_generator_video_to_html5_webm_index.js.html#line29">line 29</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>config.callback - Optional callback to return when video done processing. It returns the converted webm path name. Same as <code>config.outputName</code> input.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">callback</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-db.html">db</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-JQuery_and_NWJS_packaging.html">JQuery_and_NWJS_packaging</a></li><li><a href="tutorial-Roadmap.html">Roadmap</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-current_db_setup.html">current_db_setup</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#displayMain">displayMain</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getWatsonAPIKeysFromUser">getWatsonAPIKeysFromUser</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
+Groups words from selection into array of contiguos words
+uuses modified version of this code to divide contiguos numbers 
+    https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript</a></li><li><a href="global.html#helperfunctiontoupdatediplayspeed">helper function to update diplay speed</a></li><li><a href="global.html#Keyboardshortcutsforplayback-">Keyboard shortcuts for playback -</a></li><li><a href="global.html#Keyboardshortcutsforplayback-fastforward">Keyboard shortcuts for playback - fastforward</a></li><li><a href="global.html#Keyboardshortcutsforplayback-play/pause">Keyboard shortcuts for playback - play/pause</a></li><li><a href="global.html#Keyboardshortcutsforplayback-rewind">Keyboard shortcuts for playback - rewind</a></li><li><a href="global.html#Keyboardshortcutsforvolume-decrease">Keyboard shortcuts for volume - decrease</a></li><li><a href="global.html#Keyboardshortcutsforvolume-increase">Keyboard shortcuts for volume - increase</a></li><li><a href="global.html#makeEditable">makeEditable</a></li><li><a href="global.html#makeHilightable">makeHilightable</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#makeSection">makeSection</a></li><li><a href="global.html#playWord">playWord</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#selectingWords">selectingWords</a></li><li><a href="global.html#Shortcuts">Shortcuts</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Wed Jan 11 2017 14:48:44 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

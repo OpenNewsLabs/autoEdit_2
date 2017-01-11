@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: interactive_transcription_generator/sam_transcriber/parse.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: interactive_transcription_generator/sam_transcriber/parse.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+* Takes IBM Watson STT Service json and adds time offest onto each word.
+* this is so that each chunk of audio that has been transcribed separately can be joined back togethere.
+*/
+// function parse(data, offset) {
+//   console.log("############## Parse")
+//   if (typeof offset === 'undefined') offset = 0;
+//
+//   var out = {
+//     sentences: []
+//   };
+//
+//   out.sentences = data.results.map(function(r) {
+//     var item = {};
+//     var result = {}
+//     result.results = [];
+//
+//     //add results
+//     var _item = r.alternatives[0];
+//     // item.transcript = _item.transcript;
+//     // item.confidence = _item.confidence;
+//     item.timestamps = _item.timestamps.map(function(t) {
+//       //return modified array
+//       var resAr = []
+//       resAr[0]= t[0];
+//       resAr[1]=t[1] + offset;
+//       resAr[2]=t[2] + offset;
+//       // return {
+//       //   word: t[0],
+//       //   start: t[1] + offset,
+//       //   end: t[2] + offset
+//       // };
+//       return resAr;
+//
+//       //
+//     });
+//     var alternatives = []
+//     alternatives.push(item)
+//     // {"alternatives": []}
+//     result.results.push(alternatives)
+//     return result;
+//   });
+//
+//   return out;
+// }
+//
+//
+// module.exports = parse;
+
+
+/**
+* Takes IBM Watson STT Service json and adds time offest onto each word.
+* this is so that each chunk of audio that has been transcribed separately can be joined back togethere.
+*/
+function parse(data, offset) {
+  console.log("############## .parse")
+  if (typeof offset === 'undefined') offset = 0;
+
+  var out = {
+    sentences: []
+  };
+
+  out.sentences = data.results.map(function(r) {
+    var item = {};
+    //add results
+    var _item = r.alternatives[0];
+    item.transcript = _item.transcript;
+    item.confidence = _item.confidence;
+    item.words = _item.timestamps.map(function(t) {
+      //
+      return {
+        word: t[0],
+        start: t[1] + offset,
+        end: t[2] + offset
+      };
+    });
+    return item;
+  });
+
+  return out;
+}
+
+
+module.exports = parse;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="autoEdit2API.html">autoEdit2API</a></li><li><a href="EDL.html">EDL</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#convertTakesinaconfigobjectwithpropreties:src,outputName,ffmpegBinandoptionalcallback.">convert
+Takes in a config object with propreties: src, outputName, ffmpegBin and optional callback.</a></li><li><a href="global.html#convertToWav">convertToWav</a></li><li><a href="global.html#createSrtContent">createSrtContent</a></li><li><a href="global.html#fileExists">fileExists</a></li><li><a href="global.html#finishedSplit">finishedSplit</a></li><li><a href="global.html#fromSeconds">fromSeconds</a></li><li><a href="global.html#fromSecondsForSrt">fromSecondsForSrt</a></li><li><a href="global.html#fs">fs</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#nw">nw</a></li><li><a href="global.html#padNumber">padNumber</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#send_to_gentle">send_to_gentle</a></li><li><a href="global.html#SendToWatson">SendToWatson</a></li><li><a href="global.html#split">split</a></li><li><a href="global.html#toSeconds">toSeconds</a></li><li><a href="global.html#transcribe">transcribe</a></li><li><a href="global.html#trim">trim</a></li><li><a href="global.html#%257Bstirng%257DEDL-andEDLstringforanEDLline.">{stirng} EDL - and EDL string  for an EDL line.</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Tue Oct 18 2016 17:47:22 GMT-0400 (EDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

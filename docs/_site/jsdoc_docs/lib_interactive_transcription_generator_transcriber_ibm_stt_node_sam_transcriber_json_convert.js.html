@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lib/interactive_transcription_generator/transcriber/ibm_stt_node/sam_transcriber_json_convert.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: lib/interactive_transcription_generator/transcriber/ibm_stt_node/sam_transcriber_json_convert.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module parseSamJsonToTranscripJson
+ * @description Converts a transcription of json witb IBM STT API specs to a transcription json that meets autoEdit2 specs 
+ * @author Pietro Passarelli 
+ * @example &lt;caption>Example usage parsing IBM STT transcription Json specs&lt;/caption>
+  var fs = require("fs")
+  var demo= "tramscription.json"
+  var demoContent = JSON.parse(fs.readFileSync(demo).toString());
+
+  parseSamJsonToTranscripJson(demoContent, function(res){
+    console.log(JSON.stringify(res, nul, 4))
+    fs.writeFileSync("./transcription.json",JSON.stringify(res, nul, 4) )
+  })
+ * @example &lt;caption>Exampleoutput&lt;/caption>
+[
+    {
+      "id": 0,
+      "speaker": "Unnamed Speaker",
+      "paragraph": [
+        {
+          "line": [
+            {
+              "id": 0,
+              "text": "there",
+              "startTime": 0.14,
+              "endTime": 0.38
+            },
+            ...
+ * @require fs 
+ * @tutorial IBM_watson_stt_specs
+ * @tutorial autoEdit2_transcrition_json_spec
+ */
+
+// "use strict";
+
+/**
+* @function parseSamJsonToTranscripJson
+* @description Converts a transcription of json witb IBM STT API specs to a transcription json that meets autoEdit2 specs 
+* @param  {object} - IBM STT transcription json spec
+*/
+function parseSamJsonToTranscripJson(transcriptionJson){
+  var wordCounter = 0;
+  var lines = [];
+  var line ={"line":[]};
+  //for now IBM does not do speaker diarization so adding everything into one paragraph for now. But modeled transcription with paragraph containing lines with speaker associated to it. 
+  var paragraphs = [{"id":0,  "speaker": "Unnamed Speaker","paragraph":{}}];
+  //iterating over the IBM STT json lines 
+  for(var i =0; i&lt; transcriptionJson.length; i++){
+    var oldLine = transcriptionJson[i];
+    //iteratign over words 
+    for(var k =0; k&lt; oldLine.words.length; k++){
+      var oldWord = oldLine.words[k];
+      //creates a word object 
+      var newWord = {
+        id: wordCounter,
+        text: oldWord.word,
+        startTime: oldWord.start,
+        endTime: oldWord.end
+      };
+      //ad counter id to line object 
+      line.id =i;
+
+      //line start and end time, same as first and last word object times
+      line.startTime = oldLine.words[0].start;
+      line.endTime =  oldLine.words[oldLine.words.length-1].end;
+      //adding words to line
+      line.line.push(newWord);
+
+      wordCounter+=1;//
+    }
+    //add to lines 
+    lines.push(line);
+    //reset words in line for next iteration 
+    line ={"line":[]};
+  }
+  //return results
+  paragraphs[0].paragraph  = lines;
+  return paragraphs;
+}
+
+
+module.exports = parseSamJsonToTranscripJson;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-convert_to_audio.html">convert_to_audio</a></li><li><a href="module-db.html">db</a></li><li><a href="module-edl_composer.html">edl_composer</a></li><li><a href="module-interactive_transcriptionn_generator..html">interactive_transcriptionn_generator.</a></li><li><a href="module-parse.html">parse</a></li><li><a href="module-parseSamJsonToTranscripJson.html">parseSamJsonToTranscripJson</a></li><li><a href="module-send_to_gentle.html">send_to_gentle</a></li><li><a href="module-SendToWatson.html">SendToWatson</a></li><li><a href="module-split.html">split</a></li><li><a href="module-srt.html">srt</a></li><li><a href="module-transcriber.html">transcriber</a></li><li><a href="module-trimmer.html">trimmer</a></li><li><a href="module-video_metadata_reader.html">video_metadata_reader</a></li><li><a href="module-video_to_html5_webm.html">video_to_html5_webm</a></li><li><a href="module-writeOut.html">writeOut</a></li></ul><h3>Classes</h3><ul><li><a href="module.html#.exports">exports</a></li><li><a href="module-edl_composer-EDL.html">EDL</a></li><li><a href="SendToWatson.html">SendToWatson</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-EDL_format.html">EDL_format</a></li><li><a href="tutorial-IBM_watson_stt_specs.html">IBM_watson_stt_specs</a></li><li><a href="tutorial-JQuery_and_NWJS_packaging.html">JQuery_and_NWJS_packaging</a></li><li><a href="tutorial-autoEdit2_transcrition_json_spec.html">autoEdit2_transcrition_json_spec</a></li><li><a href="tutorial-components.html">components</a></li><li><a href="tutorial-configuration.html">configuration</a></li><li><a href="tutorial-current_db_setup.html">current_db_setup</a></li><li><a href="tutorial-dependencies.html">dependencies</a></li><li><a href="tutorial-deployment.html">deployment</a></li><li><a href="tutorial-gentle_transcription_json_spec.html">gentle_transcription_json_spec</a></li><li><a href="tutorial-github.html">github</a></li><li><a href="tutorial-intro.html">intro</a></li><li><a href="tutorial-licence.html">licence</a></li><li><a href="tutorial-prerequisites.html">prerequisites</a></li><li><a href="tutorial-tests.html">tests</a></li><li><a href="tutorial-updating_the_documentation.html">updating_the_documentation</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clearHighlights">clearHighlights</a></li><li><a href="global.html#displayMain">displayMain</a></li><li><a href="global.html#edlUserManualInfo">edlUserManualInfo</a></li><li><a href="global.html#expoertCaptionsSrt">expoertCaptionsSrt</a></li><li><a href="global.html#expoertCaptionsSrtEDL">expoertCaptionsSrtEDL</a></li><li><a href="global.html#exportEdlChronological">exportEdlChronological</a></li><li><a href="global.html#exportEdlSelectionOrder">exportEdlSelectionOrder</a></li><li><a href="global.html#exportHelper">exportHelper</a></li><li><a href="global.html#exportJsonEDL">exportJsonEDL</a></li><li><a href="global.html#exportPlainText">exportPlainText</a></li><li><a href="global.html#exportPlainTextEDL">exportPlainTextEDL</a></li><li><a href="global.html#exportPlainTextEDLSelOrder">exportPlainTextEDLSelOrder</a></li><li><a href="global.html#exportPlainTimecodedTextEDL">exportPlainTimecodedTextEDL</a></li><li><a href="global.html#exportPlainTimecodedTextEDLSelOrder">exportPlainTimecodedTextEDLSelOrder</a></li><li><a href="global.html#exportTimecodedTranscription">exportTimecodedTranscription</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getWatsonAPIKeysFromUser">getWatsonAPIKeysFromUser</a></li><li><a href="global.html#groupContiguosWordsInPapercutsGroupswordsfromselectionintoarrayofcontiguoswordsuusesmodifiedversionofthiscodetodividecontiguosnumbershttps://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript">groupContiguosWordsInPapercuts
+Groups words from selection into array of contiguos words
+uuses modified version of this code to divide contiguos numbers 
+    https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript</a></li><li><a href="global.html#helperfunctiontoupdatediplayspeed">helper function to update diplay speed</a></li><li><a href="global.html#Keyboardshortcutsforplayback-">Keyboard shortcuts for playback -</a></li><li><a href="global.html#Keyboardshortcutsforplayback-fastforward">Keyboard shortcuts for playback - fastforward</a></li><li><a href="global.html#Keyboardshortcutsforplayback-play/pause">Keyboard shortcuts for playback - play/pause</a></li><li><a href="global.html#Keyboardshortcutsforplayback-rewind">Keyboard shortcuts for playback - rewind</a></li><li><a href="global.html#Keyboardshortcutsforvolume-decrease">Keyboard shortcuts for volume - decrease</a></li><li><a href="global.html#Keyboardshortcutsforvolume-increase">Keyboard shortcuts for volume - increase</a></li><li><a href="global.html#makeEditable">makeEditable</a></li><li><a href="global.html#makeHilightable">makeHilightable</a></li><li><a href="global.html#makePaperEdit">makePaperEdit</a></li><li><a href="global.html#makeSection">makeSection</a></li><li><a href="global.html#playWord">playWord</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#selectingWords">selectingWords</a></li><li><a href="global.html#Shortcuts">Shortcuts</a></li><li><a href="global.html#transcribe">transcribe</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Mon Nov 28 2016 16:15:08 GMT-0500 (EST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

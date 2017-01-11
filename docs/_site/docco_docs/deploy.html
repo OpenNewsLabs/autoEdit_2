@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>deploy.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="config.html">
+                  config.js
+                </a>
+              
+                
+                <a class="source" href="deploy.html">
+                  deploy.js
+                </a>
+              
+                
+                <a class="source" href="autoEdit2API.html">
+                  autoEdit2API.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="demo_jr.html">
+                  demo_jr.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="transcriptions.html">
+                  transcriptions.js
+                </a>
+              
+                
+                <a class="source" href="transcription.html">
+                  transcription.js
+                </a>
+              
+                
+                <a class="source" href="router.html">
+                  router.js
+                </a>
+              
+                
+                <a class="source" href="sync.html">
+                  sync.js
+                </a>
+              
+                
+                <a class="source" href="transcription_form.html">
+                  transcription_form.js
+                </a>
+              
+                
+                <a class="source" href="transcription_index.html">
+                  transcription_index.js
+                </a>
+              
+                
+                <a class="source" href="transcription_show.html">
+                  transcription_show.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="convert_to_audio.html">
+                  convert_to_audio.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="split.html">
+                  split.js
+                </a>
+              
+                
+                <a class="source" href="trimmer.html">
+                  trimmer.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+                
+                <a class="source" href="index.html">
+                  index.js
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>deploy.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-comment">/*
+* @file Simple script to automate the deployment of the app.
+*/</span>
+<span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"fs"</span>);
+<span class="hljs-keyword">var</span> spawn = <span class="hljs-built_in">require</span>(<span class="hljs-string">'child_process'</span>).spawn;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p><a href="https://www.npmjs.com/package/nwjs-builder">https://www.npmjs.com/package/nwjs-builder</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> NwBuilder = <span class="hljs-built_in">require</span>(<span class="hljs-string">'nw-builder'</span>);
+
+<span class="hljs-keyword">var</span> buildDir = <span class="hljs-string">'./build'</span>;
+<span class="hljs-keyword">var</span> packageJsonFile = <span class="hljs-string">"./package.json"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>read package.json file </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> packageJson = <span class="hljs-built_in">require</span>(packageJsonFile);
+
+<span class="hljs-comment">/**
+* checks if build dir exists and if it doesn't creates it.
+*/</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"checking if build folder is present"</span>)
+
+<span class="hljs-keyword">if</span> (!fs.existsSync(buildDir)){
+	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"build folder not present, creating build folder"</span>)
+    fs.mkdirSync(buildDir);
+}<span class="hljs-keyword">else</span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>do nothing, build folder was already there</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"build folder was already present"</span>)
+}
+
+<span class="hljs-comment">/**
+* Hiding toolbar for deployment
+*/</span>
+packageJson.window.toolbar = <span class="hljs-literal">false</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>write file back to system.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>fs.writeFileSync(packageJsonFile, <span class="hljs-built_in">JSON</span>.stringify(packageJson, <span class="hljs-literal">null</span>,  <span class="hljs-number">4</span>))
+
+<span class="hljs-comment">/**
+* Setup deploy code preferences
+*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>// Deploying/building app</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> nw = <span class="hljs-keyword">new</span> NwBuilder({</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>files: [‘./**’], // simple-glob format, would select everything in current folder.
+chosing files to include, excludes everything else.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  files: [<span class="hljs-string">'./frontEnd/**'</span>,<span class="hljs-string">'./interactive_transcription_generator/**'</span>,<span class="hljs-string">'./node_modules/**'</span>,<span class="hljs-string">'./config.js'</span>,<span class="hljs-string">'./package.json'</span> ],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>platforms: [‘osx32’, ‘osx64’, ‘win32’, ‘win64’, ‘linux32’, ‘linux64’]
+for now only osx64 as need to recompile ffmpeg for other versions. </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  platforms: [<span class="hljs-string">'osx64'</span>,<span class="hljs-string">'win64'</span>],</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p><a href="https://github.com/nwjs/nw-builder#optionsmacicns">https://github.com/nwjs/nw-builder#optionsmacicns</a></p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  macIcns: <span class="hljs-string">"./nw.icns"</span>,</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>MAC ONLY: Pass a string containing the path to your own plist file. If a string isn’t passed, a plist file will be generated from your package.json. Pass an object to overwrite or add properties to the generated plist file.
+<a href="https://github.com/nwjs/nw-builder#optionsmacplist">https://github.com/nwjs/nw-builder#optionsmacplist</a>
+macPlist: “”,
+nwjs version 
+MAC ONLY: Use a app.nw folder instead of ZIP file, this significantly improves the startup speed of applications on mac, since no decompressing is needed. Builds on other platforms will still use ZIP files. The default behaviour of node-webkit-builder is to not use ZIP files on the mac platform. In case of the mac platform the option macZip can override the option zip.
+zip: true,</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>  version: <span class="hljs-string">'0.12.3'</span>
+});
+
+<span class="hljs-comment">/**
+* Building/deploying the app in build folder.
+*/</span>
+<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"About to package the app"</span>)
+
+nw.build().then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Finished packaging the app'</span>);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>on deploy finish, change to show toolbar,for development</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	packageJson.window.toolbar = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>write file back down to disk </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	fs.writeFileSync(packageJsonFile, <span class="hljs-built_in">JSON</span>.stringify(packageJson, <span class="hljs-literal">null</span>,  <span class="hljs-number">4</span>))
+
+
+	<span class="hljs-comment">/**
+	* packaging app in dmg for os x, and placing it on the Desktop.
+	* `npm install appdmg  -g` might require to be installed globally for it to work
+	* appdmg appdmg.json ~/Desktop/autoEdit2.dmg
+	* seems like this could be the issue https://github.com/LinusU/node-appdmg/issues/63
+	*/</span></pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>/////////////////////////////////////////////////////
+// or spawn process
+// appdmg appdmg.json ~/Desktop/autoEdit2.dmg
+var spawn = require(‘child_process’).spawn;
+var appdmg = spawn(‘appdmg’, [‘./appdmg.json’, ‘~/Desktop/autoEdit2.dmg’]);</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>appdmg.stdout.on(‘data’, function(data) {
+  console.log(“stdout: “ +data);
+});</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>appdmg.stderr.on(‘data’, function(data) {
+  console.log(“stderr:” +data);
+});</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>appdmg.on(‘close’, function(code)  {
+  console.log(“child process exited with code” +code);
+});
+/////////////////////////////////////////////////////
+var appdmg = require(‘appdmg’);
+var ee = appdmg({ source: ‘./appdmg.json’, target: ‘~/Desktop/autoEdit2.dmg’ });</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>ee.on(‘progress’, function (info) {
+   console.log(“progress”)
+  // console.log(info.current, into.total, info.type)
+  // info.current is the current step 
+  // info.total is the total number of steps 
+  // info.type is on of ‘step-begin’, ‘step-end’ </p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>  // ‘step-begin’ 
+  // info.title is the title of the current step </p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>  // ‘step-end’ 
+  // info.status is one of ‘ok’, ‘skip’, ‘fail’ 
+});</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>ee.on(‘finish’, function () {
+  // There now is a <code>test.dmg</code> file 
+  console.log(“check desktop for .dmg file”)
+});</p>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-21">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <p>ee.on(‘error’, function (err) {
+  // An error occurred 
+  console.log(“error”)
+  console.log(err)
+});</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+	
+}).catch(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
+  <span class="hljs-built_in">console</span>.error(error);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-22">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>on deploy finish, change to show toolbar,for development use</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	packageJson.window.toolbar = <span class="hljs-literal">true</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-23">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-23">&#182;</a>
+              </div>
+              <p>write file back down to disk </p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	fs.writeFileSync(packageJsonFile, <span class="hljs-built_in">JSON</span>.stringify(packageJson, <span class="hljs-literal">null</span>,  <span class="hljs-number">4</span>))
+	
+});</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
