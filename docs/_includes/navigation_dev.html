@@ -1,8 +1,0 @@
-<ul class="nav nav-list">
-    <li><a href="{{ site.baseurl }}/">Home</a></li>
-
-        {% for page in site.categories["system_manual"] %}
-            <li data-order="{{ page.order }}"><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
-        {% endfor %}
- 
-</ul>

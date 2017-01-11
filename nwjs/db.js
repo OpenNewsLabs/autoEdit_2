@@ -11,6 +11,7 @@
  * @todo add error handling and error callbacks
  */
 
+var path = require("path");
 var fs = require('fs');
 var LinvoDB = require('linvodb3');
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
@@ -36,8 +37,8 @@ var DB = {};
 
 // Setting up media folders for media and tmp media on local file system,
 // user libary application support folder
-var tmpMediaFolder = dataPath + '/tmp_media';
-var mediaFolder = dataPath + '/media';
+var tmpMediaFolder = path.join(dataPath, 'tmp_media');
+var mediaFolder = path.join(dataPath, 'media');
 
 // if media folder does not exists create it
 if (!fs.existsSync(tmpMediaFolder)) {
