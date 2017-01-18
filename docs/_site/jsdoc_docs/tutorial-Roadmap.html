@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Module: srt</title>
+    <title>JSDoc: Tutorial: Roadmap</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,545 +17,64 @@
 
 <div id="main">
 
-    <h1 class="page-title">Module: srt</h1>
+    <h1 class="page-title">Tutorial: Roadmap</h1>
 
-    
-
-
-
-
-<section>
+    <section>
 
 <header>
     
-        
-            
-        
-    
+
+    <h2>Roadmap</h2>
 </header>
 
 <article>
-    <div class="container-overview">
-    
-        
-            <div class="description"><p>provides a function to convert srt line object json to srt file content as string<br>originally from <a href="https://github.com/pietrop/srtParserComposer">srtParserComposer</a> and  <a href="https://www.npmjs.com/package/srt_parser_composer">on npm</a><br>Expecting srtJsonContent to be like so</p></div>
-        
-
-        
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li>Pietro Passarelli</li>
-        </ul>
-    </dd>
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_srt_index.js.html">lib/srt/index.js</a>, <a href="lib_srt_index.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Examples</h5>
-    
-    <pre class="prettyprint"><code>&lt;caption>Example USage&lt;/catpion>
-var srtJsonContent = [
-  {
-    "id": "1",
-    "startTime": "00:00:00,160",
-    "endTime": "00:00:04,890",
-    "text": "There’s this door on the 10th floor I just\nhate so much.\n"
-  },
-  {
-    "id": "3",
-    "startTime": "00:00:05,799",
-    "endTime": "00:00:11,629",
-    "text": "Goddammit!\nDo you ever get this door wrong? “pretty\n"
-  },
-  {
-    "text": "regularly.”\nHow often? “like 30% of the time.”\n",
-    "id": "4",
-    "startTime": "00:00:11,629",
-    "endTime": "00:00:12,000"
-  },
-  {
-    "id": "6",
-    "startTime": "00:00:14,290",
-    "endTime": "00:00:16,869",
-    "text": "Have you seen people misuse it?\nAll the time. Every day. Constantly.\n"
-  }
-]
-
-createSrtContent(srtJsonContent, function(resp){
-  //do something with the srt file content returned as a string
-})
- </code></pre>
-
-        <p class="code-caption"> it returns a string content of the srt file like so</p>
-    
-    <pre class="prettyprint"><code>1
-00:00:00,160 --> 00:00:04,890
-There’s this door on the 10th floor I just
-hate so much.
-
-3
-00:00:05,799 --> 00:00:11,629
-Goddammit!
-Do you ever get this door wrong? “pretty
-
-4
-00:00:11,629 --> 00:00:12,000
-regularly.”
-How often? “like 30% of the time.”
-
-6
-00:00:14,290 --> 00:00:16,869
-Have you seen people misuse it?
-All the time. Every day. Constantly.</code></pre>
-
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    <h4 class="name" id="~createSrtContent"><span class="type-signature">(inner) </span>createSrtContent<span class="signature">(srtContent, callback)</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>Srt composer from json of lines objets</p>
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>srtContent</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">json</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>callback</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">cb</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_srt_index.js.html">lib/srt/index.js</a>, <a href="lib_srt_index.js.html#line70">line 70</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-    <dt class="tag-todo">To Do:</dt>
-    <dd class="tag-todo">
-        <ul>
-            <li>add error handling and error.</li>
-        </ul>
-    </dd>
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~fromSecondsForSrt"><span class="type-signature">(inner) </span>fromSecondsForSrt<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>converts time in seconds to timecode for srt file<br><a href="https://github.com/Synchronized-TV/node-timecodes/blob/master/src/toSeconds.js">modified from </a></p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_srt_index.js.html">lib/srt/index.js</a>, <a href="lib_srt_index.js.html#line101">line 101</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-<div class="param-desc">
-    <p>result - returns string &quot;hh:mm:ss:ms&quot; eg &quot;00:00:00,00&quot;</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-        
-            
-
-    
-
-    <h4 class="name" id="~padNumber"><span class="type-signature">(inner) </span>padNumber<span class="signature">()</span><span class="type-signature"></span></h4>
-
-    
-
-
-
-<div class="description">
-    <p>helper function to make timecode consistent eg 00:05:00:00 vs 00:5:00:00</p>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lib_srt_index.js.html">lib/srt/index.js</a>, <a href="lib_srt_index.js.html#line92">line 92</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-    
-
-    
-
-    
+    <h1>Roadmap  - Draft</h1><hr>
+<h2>Refactoring consolidating</h2><p>Before diving into the paper-editing side of things some refactoring is needed to setup the app so that is easier to add features to it.</p>
+<p><a href="https://github.com/OpenNewsLabs/autoEdit_2/issues">see current github issues</a>.</p>
+<hr>
+<h2>Make NWJS auto-update feature ?</h2><hr>
+<h2>Update NWJS boilerplate with - browserify boilerplate ?</h2><hr>
+<h2>More STT APIs support for transcriber module</h2><p>Add possibility to expand on different STT APIs.</p>
+<h3>Settings panel</h3><p>in order to expand on more APIs support, it makes sense to refactor and add a setting panel.<br>The setting panel should read from the interactive transcriber.<br>Figure out what options for STT APIs are available and provide form fields for those options.<br>This would make it easier to expand and add more options over time.</p>
+<p>The new transcription view should also auto generate options for STT based on those that have a API Keys in the settings panel, and hide those that don't. </p>
+<h3>Refactoring Transcriber module</h3><p>This needs refactoring the transcriber module to make it easier to add new STT APIs.<br>Separate modules that are re-used by transcriber module (eg, convert to audio, trim etc..)</p>
+<p>Maybe use ES6 and classes to write this?</p>
+<p>Write tutorial for dev documentation on how to add custom STT APIs.  maybe pluging system?<br>Define specs autoEdit 2 transcript needs to have to be accepted by application. </p>
+<p>make 5 minutes chunking optional, for wider compatibility, eg when IBM incorporates this, it could be turned off. </p>
+<hr>
+<h2>Exporting Video / Audio</h2><h3>Exporting video</h3><p>Look at ffmpeg documentation </p>
+<p>Look at Laurian ffmpeg-remix, how could this work with other formats?how could it work with mixed format?</p>
+<p>Allow user to chose export format, mp4, webm, ogg, mov?<br>(check which once are supported by twitter/facebook/youtube upload to ensure compatibility. if webm is ok then stick with that)</p>
+<h3>exporting audio</h3><p>see what needs to change in the code to export audio.</p>
+<hr>
+<h2>Captioning - export</h2><h3>Breaking down sentences</h3><p>Reverse engegneering the YouTube Captioning tool. Especially the alligner. How does it figure out how to make lines fit on screen and space/time them so nicely?</p>
+<h4>Option one, space using math.</h4><p>calcualte number of words per line per screen, and see space between one line and following to work out spacing</p>
+<p>also work out how long captions need to stay on, to avoid feeling short.</p>
+<h4>Option 2, use Gentle to re-allign</h4><p>can this be of help?</p>
+<hr>
+<h2>Text editing</h2><blockquote>
+<p>“So I do kind of wish you could edit the whole row instead of word by word. it’s just frustrating when ibm gets a whole phrase off and to go word by word makes it a little harder”</p>
+<ul>
+<li>Scotty Kan user interview 28th Sept 2016.</li>
+</ul>
+</blockquote>
+<p>Look into </p>
+<ul>
+<li>Contenteditable over whole line + resync with gentle </li>
+<li>Or text area boxes for paragraphs to edit + resync with Gentle.</li>
+<li>another option is to make line or paragraph editable and then re-sync that with Gentle.</li>
+</ul>
+<p>For the gentle implementation it be best to incorporate Gentle into the app.<br>It can be run as python module.or started as a server.</p>
+<hr>
+<h2>Incorporating Gentle into autoEdit</h2><p>So that it can be added as default STT without needing extra setup. </p>
+<p>This requires </p>
+<p>1- changing Gentle so that from terminal python comand text attribute is optional and can return transcription. this currenlty only happens in curl comand with API more info on this refactoring here.  <a href="https://docs.google.com/document/u/1/d/1UlKkjAVK3WDWtnp3C2x_r6bYgEvon5ZEQj-eDJnyB7E/edit?usp=drive_web">more details on what it would take to do this here</a>.</p>
+<p>2 - looking into <a href="#Refactoring Transcriber module">Refactoring Transcriber module</a> from above section to see how to best integrate it.<br>If Gentle is part of the transcriber module. It could take trimmed audio file as input, same as other transcriber APIs, and to do so ffmpeg could be removed from a &quot;gentle light&quot; version which narrows down the code needed to be added as a transcriber plugin. </p>
+<hr>
+<h2>audotEdit -&gt; paperedit roadmap</h2><p>more info in google docs &lt;-- link coming soon </p>
 </article>
 
 </section>
-
-
-
 
 </div>
 

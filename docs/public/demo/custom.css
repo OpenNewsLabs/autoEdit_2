@@ -209,8 +209,14 @@ audio {
 }
 
 
-
-
 #transcriptionCard {
    cursor: pointer;
 }
+
+
+/* disabling link for brand*/
+#brandAppName{
+ pointer-events: none;
+ cursor: default;
+}
+ 

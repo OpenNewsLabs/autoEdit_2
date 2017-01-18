@@ -143,7 +143,7 @@ is the front end of the project.
 	└── watson_keys.js
 ```
 
-`db.js` overrides `backbone.sync` method to provide a backend for the app and persistent storage using linvodb3, which uses `medeadown` to storing db on the user file system. see [current db setup tutorial for more info](/jsdoc_docs/current_db_setup.html)
+`db.js` used in `lib/app/app.js` to override `backbone.sync` method to provide a backend for the app and persistent storage using linvodb3, which uses `medeadown` to storing db on the user file system. see [current db setup tutorial for more info](/jsdoc_docs/current_db_setup.html)
 
 
 backbone front end . `demo_jr.js` is the code that runs the demo when index is runned in client side mode in the browser.
