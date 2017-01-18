@@ -1,0 +1,23 @@
+// Defines the table element and horizontal aligning.
+@mixin table-wrapper($halign: center) {
+  display: table;
+  @if $halign {
+    text-align: $halign;
+  }
+}
+
+// Defines table cells and vertical aligning.
+@mixin table-cell($valign: middle) {
+  display: table-cell;
+  @if $valign {
+    vertical-align: $valign;
+  }
+}
+
+// A wrapper to define a table and it's cells in one go.
+@mixin table-module($halign: left, $valign: top) {
+  @include table-wrapper($halign);
+  > * {
+    @include table-cell($valign);
+  }
+}

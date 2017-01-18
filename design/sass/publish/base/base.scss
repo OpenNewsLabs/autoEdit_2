@@ -1,0 +1,186 @@
+@charset "UTF-8";
+@import "common_dependencies";
+@import "../../common/vendor/reset";
+html {
+    min-height: 100%;
+    width: 100vw;
+    max-width: 100%;
+    -webkit-text-size-adjust: 100%;
+    /* Prevent font scaling in landscape while allowing user zoom */
+    @include font($t-default);
+}
+
+body {
+    color: $text-default;
+    background-color: $ae-white;
+    font-size: 100%;
+    min-height: 100vh;
+    word-wrap: break-word;
+    @include font($t-default);
+    position: relative;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0); // Prevents default blue highlight for focus on mobiles.
+    -webkit-tap-highlight-color: transparent; // i.e. Nexus5/Chrome and Kindle Fire HD 7''
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    hyphens: none;
+}
+
+main {
+    clear: both;
+    width: 100%;
+    // chorme only adjustment
+    display: block;
+    @include clearfix;
+    padding-bottom: 393px;
+}
+
+audio,
+canvas,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+img {
+    max-width: 100%;
+    width: 100%;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+select {
+    word-wrap: normal;
+    hyphens: none;
+}
+
+// RTE styling
+sup,
+sub {
+    line-height: 0;
+    font-size: 70%;
+}
+
+sub {
+    vertical-align: sub;
+}
+
+sup {
+    vertical-align: super;
+}
+
+strong {
+    font-weight: bold;
+}
+
+i {
+    font-style: italic;
+}
+
+b {
+    font-weight: bold;
+}
+
+button,
+a {
+    cursor: pointer;
+    outline: none;
+}
+
+a {
+    color: $ae-purple-900;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+}
+
+a.icon {
+    text-decoration: none;
+}
+
+hr {
+    border: 0;
+    background: $ae-gray-700;
+    height: 1px;
+    margin: 0;
+}
+
+button::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+input,
+textarea {
+    outline: none;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+}
+
+pre {
+    font-family: monospace;
+    white-space: pre;
+    background-color: $ae-gray-100;
+    padding-left: 10px;
+}
+
+div {
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $ae-purple-900;
+}
+
+.inverted {
+    @include linear-gradient(-22deg, $ae-purple-500 30%, $ae-purple-900 100%);
+    color: $ae-white;
+    a {
+        color: $ae-white;
+        font-weight: 800;
+    }
+}
+
+.link--empty {
+    cursor: default;
+    display: block;
+}
+
+.is-visuallyHidden {
+    display: none;
+}
+
+section,
+footer,
+header,
+.grid-container {
+    @include clearfix();
+}

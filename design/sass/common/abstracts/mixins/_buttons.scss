@@ -1,0 +1,10 @@
+@mixin remove-button-appearance {
+    box-shadow: none;
+    background-color: transparent;
+    transition: none;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    padding: 0;
+    margin: 0;
+}

@@ -1,0 +1,7 @@
+@mixin set-on-light-background($property, $value) {
+    .is-light &,
+    .is-dark .is-light &
+    {
+        #{$property}:$value;
+    }
+}

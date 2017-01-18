@@ -1,0 +1,100 @@
+/*doc
+---
+
+category: mixins
+---
+
+
+
+
+
+
+## Live Template abbreviations
+---
+
+
+
+## Parameters
+---
+
+
+
+## Dependencies
+---
+
+
+
+## Example
+---
+
+```html_example
+
+```
+
+
+## Source
+---
+
+
+*/
+
+$icon-font: ubs-icons !default;
+
+@mixin font-icon($icon, $icon-font: $icon-font, $icon-spacing: none, $alignment: left, $position: static, $vertical-alignment: top,
+$topPadding:none, $bottomPadding:none, $font-size:none, $defaultBreakpoint: true) {
+    $pseudo: before;
+    @if ($alignment == right) {
+        $pseudo: after
+    }
+    &:#{$pseudo} {
+        //only set once
+        @if($defaultBreakpoint == true){
+            font-family: $icon-font;
+            content: $icon;
+            speak: none;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            vertical-align: baseline;
+            @if ($position == static) {
+                line-height: 0;
+            } @else if ($position == absolute) {
+                position: absolute;
+                @if ($vertical-alignment == top) {
+                    top: 0;
+                } @else if ($vertical-alignment == bottom) {
+                    bottom: 0;
+                } @else if ($vertical-alignment == center) {
+                    transform: translateY(-50%);
+                    top: 50%
+                }
+                @if ($alignment == left) {
+                    left: 0;
+                } @else if ($alignment == right) {
+                    right: 0;
+                }
+            }
+            /* Better Font Rendering =========== */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        //set on every breakpoint
+        @if ($position == static) {
+            @if ($icon-spacing != none){
+                @if ($alignment == left) {
+                    padding-right: nn-px-to-em($icon-spacing, $font-size);
+                } @else if ($alignment == right) {
+                    padding-left: nn-px-to-em($icon-spacing, $font-size);
+                }
+            }
+        } @else if ($position == absolute) {
+            @if($topPadding != none){
+                padding-top: nn-px-to-em($topPadding, $font-size);
+            }
+            @if($bottomPadding != none){
+                padding-bottom: nn-px-to-em($bottomPadding, $font-size);
+            }
+        }
+    }
+}

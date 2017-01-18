@@ -1,0 +1,78 @@
+/*doc
+---
+title: Font
+name: font
+category: mixins
+---
+
+Use this mixing to add fonts.
+
+Documentation:
+
+- https://projects.netcentric.biz/wiki/display/FRONTEND/Font+management+with+SCSS
+
+## Parameters
+---
+@param $font-type
+
+*/
+
+@mixin font($font-type) {
+
+    // Iterate over all breakpoints defined in the font
+    @each $breakpoint, $rules in $font-type {
+
+        @if $breakpoint == "default" {
+
+            @each $type, $value in $rules {
+
+                @if ($type == "font-family") {
+                    font-family: $value;
+                }
+
+                @if ($type == "font-weight") {
+                    font-weight: $value;
+                }
+
+                @if ($type == "font-size") {
+                    font-size: $value;
+                }
+
+                @if ($type == "line-height") {
+                    line-height: $value;
+                }
+
+                @if ($type == "active") {
+                    &:active,
+                    &:visited {
+                        color: $value;
+                    }
+                }
+                @if ($type == "focus") {
+                    &:hover,
+                    &:focus {
+                        color: $value;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        @else {
+
+            @include susy-breakpoint($breakpoint) {
+
+                @each $type, $value in $rules {
+
+                    @if ($type == "font-size") {
+                        font-size: $value;
+                    }
+
+                    @if ($type == "line-height") {
+                        line-height: $value;
+                    }
+                }
+            }
+        }
+    }
+}

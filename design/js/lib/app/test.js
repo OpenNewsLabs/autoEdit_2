@@ -1,0 +1,5 @@
+test
+
+function () {
+	console.log("");
+}

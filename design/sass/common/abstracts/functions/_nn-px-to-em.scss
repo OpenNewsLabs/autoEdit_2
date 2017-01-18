@@ -1,0 +1,45 @@
+
+/*doc
+---
+title: Pixel to em
+name: nn-px-to-em
+category: functions
+---
+
+Calculate the em with a given pixel with the given base font size
+If you don't set a $base the $base-font-size is used as the context
+
+
+## Live Template abbreviations
+---
+-ptu
+
+
+## Parameters
+---
+@parameter $value = pixel based number (without unit)
+@parameter $base = pixel based number (without unit)
+
+
+## Dependencies
+---
+nn-strip-unit
+
+
+## Example
+---
+
+```html_example
+nn-px-to-em(5) // Output: 0.3125em
+nn-px-to-em(5, 10) // Output: 0.5em
+nn-px-to-em(5, 20) // Output: 0.25em
+```
+
+*/
+
+$base-font-size: 16px !default;
+
+@function nn-px-to-em($value, $base: $base-font-size) {
+    $em: #{$value / nn-strip-unit($base)}em;
+    @return $em;
+}

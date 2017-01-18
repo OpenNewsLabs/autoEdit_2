@@ -1,0 +1,44 @@
+/*doc
+---
+title: Pixel to rem
+name: nn-px-to-rem
+category: functions
+---
+
+Calculate the rem with a given pixel with the given base font size
+
+In:  5px
+Out: 0.3125rem
+
+
+## Live Template abbreviations
+---
+-rem
+
+
+## Parameters
+---
+@parameter $value = pixel based number (without unit)
+
+
+## Dependencies
+---
+nn-strip-unit
+
+
+## Example
+---
+
+```html_example
+nn-px-to-rem(5) // Output 0.3125rem
+```
+
+*/
+
+
+$base-font-size: 16px !default;
+
+@function nn-px-to-rem($value) {
+    $rem: #{$value / nn-strip-unit($base-font-size)}rem;
+    @return $rem;
+}

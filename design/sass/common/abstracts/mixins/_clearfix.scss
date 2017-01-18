@@ -1,0 +1,47 @@
+/*doc
+---
+title: Clearfix
+name: clearfix
+category: mixins
+---
+
+Clears after floating element
+
+Use this mixin only inside media queries where you can't use the
+abstract/extends/utils/_clearfix version, which adds less code to css
+
+
+## Live Template abbreviations
+---
+
+
+
+## Example
+---
+
+```html_example
+@include clearfix;
+```
+
+
+## Source
+---
+http://nicolasgallagher.com/micro-clearfinn-hack/
+
+*/
+
+@mixin clearfix {
+    zoom: 1;
+
+    &:before,
+    &:after {
+        content: ".";
+        display: block;
+        height: 0;
+        overflow: hidden;
+    }
+
+    &:after {
+        clear: both;
+    }
+}

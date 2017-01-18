@@ -1,0 +1,10 @@
+@charset "UTF-8";
+@import "common_dependencies";
+// Load the dependencies
+$cl: 'test';
+
+.#{$cl} {
+    &__base {
+        position: absolute;
+    }
+}

@@ -1,0 +1,51 @@
+@charset "UTF-8";
+@import "common_dependencies"; // Load the dependencies
+.btn {
+    &__base {
+        padding: $ae-btn-padding;
+        border-radius: $ae-btn-radius;
+        @include font($t-btn);
+        text-transform: uppercase;
+        background: $ae-purple-700;
+        color: $ae-white;
+        margin: $ae-spacing 0;
+        display: inline-block;
+        &:hover {
+            background: $ae-purple-900;
+            color: $ae-white;
+            text-decoration: none;
+            color: $ae-white;
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        &.disabled {
+            background-color: $ae-gray-800;
+        }
+    }
+    &__container {
+        display: block;
+        width: 100%;
+        @include clearfix();
+        &.left {
+            text-align: left;
+        }
+        &.right {
+            text-align: right;
+        }
+    }
+}
+
+.inverted {
+    .btn {
+        &__base {
+            background: $ae-gray-100;
+            color: $ae-gray-900;
+            &:hover,
+            &:active,
+            &--active {
+                background: $ae-white;
+                color: $ae-purple-900;
+                transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            }
+        }
+    }
+}

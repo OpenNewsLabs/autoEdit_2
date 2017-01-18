@@ -1,0 +1,14 @@
+/*
+  Used to define all relevant color states related to an anchor element.
+*/
+@mixin link-colors($static-color: $rvp-green-1, $action-color: $rch-grey-4) {
+    &:link,
+    &:visited {
+        color: $static-color;
+    }
+    &:hover,
+    &:active,
+    &:focus {
+        color: $action-color;
+    }
+}

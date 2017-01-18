@@ -1,0 +1,96 @@
+/*doc
+---
+title: z-index
+name: nn-z-index
+category: functions
+---
+ 
+Because z-indices can get tricky we manage them in the theme.scss globally.
+
+Always use this mixin to set set a z-index.
+  
+Read the Best Practice to get an full documentation:
+https://projects.netcentric.biz/wiki/display/FRONTEND/How+to+set+a+z-index
+ 
+ 
+## Live Template abbreviations
+---
+-z
+ 
+ 
+## Parameters
+---
+@parameter $element = Name of the element (normally this will be the module name for the main stack)
+@parameter $list = Name of the list (default $z-indices). Must be only set for stack context
+@parameter $min = Set a minimum z-index which will be added to the list.
+
+ 
+## Dependencies
+---
+$z-indices variable in the theme.scss
+
+
+## Example
+---
+  
+```html_example
+
+// In the SASS theme file
+
+$z-indices: slider, modal, dialog, navigation;
+
+
+// In the SASS module file
+
+.modal {
+    &__base {
+        position: absolute;
+        z-index: nn-z-index(modal);
+    }
+}
+```
+ 
+
+## Source
+---
+http://www.smashingmagazine.com/2014/06/12/sassy-z-index-management-for-complex-layouts/
+
+*/
+
+
+@function nn-z-index($element, $list: $z-indices) {
+    $min: 0;
+  	$index: index($list, $element);
+  	$index-cq-toolbar: index($list, 'cq-toolbar');
+    $index-cq-editor: index($list, 'cq-editor');
+
+    @if $index {
+
+        // If the element comes after the cq-toolbar
+        // it gets a higher z-index than the toolbar has
+        @if $index-cq-toolbar {
+            @if $index-cq-toolbar < $index {
+                $min: 8010;
+            }
+        }
+
+        // If the element comes after the cq-editor
+        // it gets a higher z-index than the editor has
+  		@if $index-cq-editor {
+            @if $index-cq-editor < $index {
+                $min: 20010;
+            }
+        }
+
+        @if (0 < $min) {
+            @if type-of($min) == number {
+                $index: $index + $min;
+            }
+        }
+
+        @return $index;
+    }
+
+    @warn 'There is no item "#{$element}" in this list; choose one of: #{$list}';
+    @return null;
+}

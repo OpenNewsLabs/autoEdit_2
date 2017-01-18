@@ -1,0 +1,45 @@
+/*doc
+---
+title: Clip
+name: clip
+category: mixins
+---
+
+Generates a css clip.
+
+
+## Live Template abbreviations
+---
+-clip
+
+
+## Parameters
+---
+@parameter $correction = integer with px value without unit
+@parameter $top = integer with px value without unit
+@parameter $height = integer with px value without unit
+@parameter $width = integer with px value without unit
+@parameter $left = integer with px value without unit
+
+
+## Example
+---
+
+```html_example
+-@include clip(10, 20, 30, 40, 50);
+
+```
+
+*/
+
+@mixin clip($correction: 0, $top: 0, $height: 12, $width: 12, $left: 0) {
+    clip: rect(#{$top}px #{$left + $width}px #{$top + $height}px #{$left}px);
+
+    @if $left != '0' or $correction != '0' {
+       top: #{-$top + $correction}px;
+    }
+
+    @if $left != '0' {
+        left: #{$left}px;
+    }
+}
