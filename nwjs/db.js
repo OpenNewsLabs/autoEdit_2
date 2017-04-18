@@ -28,10 +28,15 @@ LinvoDB.dbPath = dataPath;
 
 // setting up transcription model in database.
 var transcriptionModel = 'transcription';
+var papereditModel = 'paperedit';
 // Non-strict always, can be left empty
-var schema = {};
-var options = {};
-var Transcription = new LinvoDB(transcriptionModel, schema, options);
+var transcriptionSchema = {};
+var papereditSchema = {};
+var transcriptionOptions = {};
+var papereditOptions = {};
+
+var Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+var Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
 
 var DB = {};
 
@@ -85,7 +90,7 @@ function makeLinvoCallback(success, error) {
  * @param {object} options - Sucess or failure callback.
  * @returns {object} sucess callback with backbone model containing db id
  */
-DB.create = function(model, success, error) {
+DB.create = function(model, success, error){
   console.debug('DB.create', model.constructor.modelType);
   if (model.constructor.modelType == 'transcription') {
     var newElement = model.toJSON();
@@ -173,7 +178,25 @@ DB.create = function(model, success, error) {
       });
 
     });
-  }
+  }else if(model.constructor.modelType == 'paperedit'){
+    console.log("PAPEREDIT CREATE DB ", model );
+
+    var newElementPaperedit = model.toJSON();
+    // create transcription element to save in db
+    var paperedit = new Paperedit(newElementPaperedit);
+    // save transcription in db
+    paperedit.save(function(err) {
+      if (err) {
+        // if we have an error, log it and bail
+        console.error(err);
+        return error(err);
+      }//.error 
+      // updating backbone with saved transcritpion, containing db id
+      model.set(paperedit);
+      // returning saved transcription callback
+      success(model);
+    });//.save
+  }//.else if 
 };
 
 /**
@@ -192,13 +215,19 @@ DB.read = function(model, success, error) {
     if (model.constructor.modelType === 'transcriptions') {
       // look in database
       Transcription.find({}, makeLinvoCallback(success, error));
-    }// if transcription collection
+    }else if(model.constructor.modelType === 'paperedits'){
+       console.log("PAPEREDIT READ DB ", model )
+        Paperedit.find({}, makeLinvoCallback(success, error));
+    }
   } else {
     console.debug('DB.read', 'Model', model.constructor.modelType, model.get('_id'));
     // for transcription model
     if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
       Transcription.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
+    }else if (model.constructor.modelType === 'paperedit'){
+       console.log("PAPEREDIT READ DB - singular", model )
+        Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }
   }
 };
@@ -235,6 +264,19 @@ DB.update = function(model, success, error) {
       // saving transcription to database
       doc.save(makeLinvoCallback(success, error));
     });
+  }else if (model.constructor.modelType == 'paperedit'){
+    console.log("PAPEREDIT UPDATE DB ", model );
+      Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+      // TODO: there's got to be a better way to do this
+      // NOTE: rather then using update, which did not seemed to be optimised for speed.
+      // uses `findOne`, replaces attributes with new once.
+      doc.title               = model.attributes.title;
+      doc.description         = model.attributes.description;
+      doc.events              = model.attributes.events;
+      doc.offset              = model.attributes.offset;
+      // saving transcription to database
+      doc.save(makeLinvoCallback(success, error));
+    });
   }
 };
 
@@ -263,6 +305,17 @@ DB.patch = function(model, success, error) {
       doc.sttEngine           = model.attributes.sttEngine;
       doc.audioFile           = model.attributes.audioFile;
       doc.metadata            = model.attributes.metadata;
+
+      doc.save(makeLinvoCallback(success, error));
+    });
+  }else if (model.constructor.modelType == 'paperedit'){
+    console.log("PAPEREDIT PATCH DB ", model );
+     Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+      // TODO: there's got to be a better way to do this
+      doc.title               = model.attributes.title;
+      doc.description         = model.attributes.description;
+      doc.events              = model.attributes.events;
+      doc.offset              = model.attributes.offset;
 
       doc.save(makeLinvoCallback(success, error));
     });
@@ -304,6 +357,24 @@ DB.delete = function(model, success, error) {
         }
         // returns sucess callback
         console.debug('Deleted transcription ' + model.attributes._id);
+        success(model);
+      }
+    });
+  }else if (model.constructor.modelType == 'paperedit'){
+    console.log("PAPEREDIT DELETE DB ", model );
+    Paperedit.remove({ _id: model.get('_id') }, {multi: false }, function (err, numRemoved) {
+      if (err) {
+        console.error(err);
+        error(err);
+      } else if (numRemoved < 1) {
+        var msg = "Couldn't delete paperedit " + model.get('_id');
+        console.error(msg);
+        error(msg);
+      } else {
+        // removing media associated with transcription.
+        // TODO: this only deletes the video if the video has done processing. think about refactoring so that attribute can be present before processing starts. As it is now this means incomplete vidoes are left in the folder if the transcription is deleted
+        // returns sucess callback
+        console.debug('Deleted Paperedit ' + model.attributes._id);
         success(model);
       }
     });
