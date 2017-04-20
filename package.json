@@ -108,10 +108,15 @@
   "browser": {
     "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
     "backbone.mousetrap": "./vendor/backbone.mousetrap.js",
-    "sortablejs": "./node_modules/sortablejs/Sortable.js"
+    "jquery-sortable": "./node_modules/jquery-sortable/source/js/jquery-sortable.js"
   },
   "browserify-shim": {
     "bootstrap": {
+      "depends": [
+        "jquery:jQuery"
+      ]
+    },
+    "jquery-sortable": {
       "depends": [
         "jquery:jQuery"
       ]
