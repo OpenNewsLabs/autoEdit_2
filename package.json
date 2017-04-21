@@ -17,8 +17,7 @@
     "width": 800,
     "height": 670,
     "position": "mouse",
-    "min_width": 770,
-    "min_height": 500
+        "min_height": 500
   },
   "platformOverrides": {
     "win": {
@@ -108,15 +107,10 @@
   "browser": {
     "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
     "backbone.mousetrap": "./vendor/backbone.mousetrap.js",
-    "jquery-sortable": "./node_modules/jquery-sortable/source/js/jquery-sortable.js"
+    "videocompositor": "./vendor/videocompositor.js"
   },
   "browserify-shim": {
     "bootstrap": {
-      "depends": [
-        "jquery:jQuery"
-      ]
-    },
-    "jquery-sortable": {
       "depends": [
         "jquery:jQuery"
       ]

@@ -219,4 +219,10 @@ audio {
  pointer-events: none;
  cursor: default;
 }
+
+
+.videoPlayer {
+  background-color: black;
+}
+
  

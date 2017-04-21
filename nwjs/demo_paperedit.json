@@ -1,14 +1,59 @@
 [
   {
-    "title": "Paper edit 1 ",
-    "description": "Description 1",
-    "offset": "00:00:00:00",
-	"events": []
-   },
-   {
-    "title": "Paper edit 2",
-    "description": "Description 2",
-    "offset" : "00:00:00:00",
-	"events": []
-   }
+  "title": "Test Paperedit ",
+  "events": [
+    {
+      "startTime": "39.05",
+      "endTime": "46.29",
+      "transcriptionId": "78885461",
+      "reelName": "NA",
+      "clipName": "Jesselyn Radack-Mobile.mp4",
+      "videoId": "videoId_78885461",
+      "speaker": "Unnamed Speaker",
+      "src": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Jesselyn_Radack-Mobile.mp4.1486205670442.webm",
+      "audioFile": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Jesselyn_Radack-Mobile.mp4.1486205670442.ogg",
+      "offset": "NA",
+      "id": 1
+    },
+    {
+      "startTime": "48.94",
+      "endTime": "51.27",
+      "transcriptionId": "c4918195",
+      "reelName": "NA",
+      "clipName": "Annie Machon-Mobile.mp4",
+      "videoId": "videoId_c4918195",
+      "speaker": "Unnamed Speaker",
+      "src": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Annie_Machon-Mobile.mp4.1486169842687.webm",
+      "audioFile": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Annie_Machon-Mobile.mp4.1486169842687.ogg",
+      "offset": "NA",
+      "id": 2
+    },
+    {
+      "startTime": "157.51",
+      "endTime": "160.77",
+      "transcriptionId": "2f127558",
+      "reelName": "NA",
+      "clipName": "Coleen Rowley-Mobile.mp4",
+      "videoId": "videoId_2f127558",
+      "speaker": "Unnamed Speaker",
+      "src": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Coleen_Rowley-Mobile.mp4.1486171486838.webm",
+      "audioFile": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Coleen_Rowley-Mobile.mp4.1486171486838.ogg",
+      "offset": "NA",
+      "id": 3
+    },
+    {
+      "startTime": "34.57",
+      "endTime": "37.98",
+      "transcriptionId": "8d782de2",
+      "reelName": "NA",
+      "clipName": "Thomas Drake-Mobile.mp4",
+      "videoId": "videoId_8d782de2",
+      "speaker": "Unnamed Speaker",
+      "src": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Thomas_Drake-Mobile.mp4.1486167975334.webm",
+      "audioFile": "/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Thomas_Drake-Mobile.mp4.1486167975334.ogg",
+      "offset": "NA",
+      "id": 4
+    }
+   ]
+  }
 ]

@@ -12,7 +12,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"_process":32,"path":31}],2:[function(require,module,exports){
+},{"_process":45,"path":44}],2:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -21,6 +21,9 @@ var Backbone = require('backbone');
 // and have nothing to export directly.
 require('bootstrap');
 require('backbone.mousetrap');
+
+
+
 
 // Connect up the backend for backbone
 if (typeof window.DB !== 'undefined') {
@@ -33,6 +36,7 @@ var config = require('../../config');
 
 // app backbone files
 var TranscriptionRouter = require('./router');
+var PapereditRouter = require('./router_paperedit');
 
 // This starts the application
 $(document).ready(function() {
@@ -106,13 +110,57 @@ $(document).ready(function() {
 
   // Initialize the router and start the app
   window.app = new TranscriptionRouter();
+  window.appPaperedit = new PapereditRouter();
   Backbone.history.start();
 
   // TODO: not sure if this is the right thing to do
   window.location = 'index.html#transcriptions';
 });
 
-},{"../../config":1,"./demo_db":4,"./router":7,"backbone":21,"backbone.mousetrap":106,"bootstrap":22,"jquery":24}],3:[function(require,module,exports){
+},{"../../config":1,"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":34,"backbone.mousetrap":119,"bootstrap":35,"jquery":37}],3:[function(require,module,exports){
+'use strict';
+var Backbone = require('backbone');
+var config = require('../../../config');
+var Paperedit = require('../models/paperedit');
+
+/**
+ * Transcriptions collection
+ * https://addyosmani.com/backbone-fundamentals/#views-1
+ */
+module.exports = Backbone.Collection.extend({
+  model: Paperedit,
+  url: config.serverUrl + '/paperedit',
+  // Filter down the list of all transcription models that are completed.
+  // completed: function() {
+  //   return this.filter(function(paperedit) {
+  //     return paperedit.get('status');
+  //   });
+  // },
+  // Filter down the list to only todo items that are still not finished.
+  // remaining: function() {
+  //   // returns transcription models that are complete, eg status == true
+  //   return this.without.apply(this, this.completed());
+  // },
+  // A nextOrder() method implements a sequence generator while a comparator()
+  // sorts items by their insertion order.
+  // We keep the Todos in sequential order, despite being saved by unordered
+  // GUID in the database. This generates the next order number for new items.
+  // nextOrder: function() {
+  //   if (!this.length) {
+  //     return 1;
+  //   }
+  //   return this.last().get('order') + 1;
+  // },
+  // Todos are sorted by their original insertion order.
+  // comparator: function(todo) {
+  //   return todo.get('order');
+  // }
+}, {
+  // sets type for autoEditAPI to know if we are retrieving model or collection
+  modelType: 'paperedits'
+});
+
+},{"../../../config":1,"../models/paperedit":7,"backbone":34}],4:[function(require,module,exports){
 'use strict';
 var Backbone = require('backbone');
 var config = require('../../../config');
@@ -155,7 +203,7 @@ module.exports = Backbone.Collection.extend({
   modelType: 'transcriptions'
 });
 
-},{"../../../config":1,"../models/transcription":6,"backbone":21}],4:[function(require,module,exports){
+},{"../../../config":1,"../models/transcription":8,"backbone":34}],5:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
@@ -220,7 +268,7 @@ module.exports = function(method, model, options) {
   DB[method](model, options.success, options.error);
 };
 
-},{"jquery":24,"underscore":104}],5:[function(require,module,exports){
+},{"jquery":37,"underscore":117}],6:[function(require,module,exports){
 /**
  * Here we define or require functions that will be made availabe to templates
  */
@@ -228,7 +276,82 @@ module.exports = {
   fromSeconds: require('node-timecodes').fromSeconds
 };
 
-},{"node-timecodes":29}],6:[function(require,module,exports){
+},{"node-timecodes":42}],7:[function(require,module,exports){
+'use strict';
+var path = require("path");
+var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
+var fromSeconds =  require('node-timecodes').fromSeconds;
+var createSrtContent = require('../../srt').createSrtContent;
+var Backbone = require('backbone');
+var config = require('../../../config');
+
+// 
+// getting transcriptions for paperedit  
+var Transcriptions = require('../collections/transcriptions');
+
+// http://backbonejs.org/#Model
+module.exports = Backbone.Model.extend({
+  idAttribute: '_id',
+  urlRoot: path.join(config.serverUrl, 'paperedit'),
+  defaults: {
+    title: 'Default Title ',
+    description: 'Default Description',
+    offset: "00:00:00:00",
+    //papercuts 
+    events: []
+  },
+
+  // validate
+  // http://beletsky.net/2012/11/baby-steps-to-backbonejs-model.html
+  //  or
+  // https://github.com/thedersen/backbone.validation
+  // example https://jsfiddle.net/thedersen/udXL5/
+  validate: function(attributes) {
+    if (!attributes.title) {
+      return 'Remember to set a title for your section.';
+      // }else if(!attributes.videoUrl){
+      //   return 'Remember to pick a video file';
+    }
+  },
+
+  // initializer
+  initialize: function() {
+    // catch error if invalid initialization.
+    // console.log('This model has been initialized.');
+    // this.id = this._id;
+    
+    this.transcriptionsList = new Transcriptions();
+    console.log("this.transcriptionsList",this.transcriptionsList);
+
+
+    this.on('invalid', function(model, error) {
+      console.info(error);
+    });
+
+    this.on('change', function() {
+      // console.info('- Values for this model have changed.');
+    });
+
+    this.on('change:events', function() {
+      console.log('text value for this model has changed.');
+    });
+    this.on('destroy', function() {
+    });
+  }
+
+  // app.TranscriptionsList.get(1).constructor.returnSrtJson()
+  // https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name
+}, {
+
+  modelType: 'paperedit',
+
+  // TODO: change this to returnSrt coz that's what it is doing
+  // and make rturns srtJson in helper function in model
+
+
+});
+
+},{"../../../config":1,"../../srt":33,"../collections/transcriptions":4,"backbone":34,"node-timecodes":42,"path":44}],8:[function(require,module,exports){
 'use strict';
 var path = require("path");
 var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
@@ -253,15 +376,14 @@ module.exports = Backbone.Model.extend({
     audioFile: undefined,
     processedAudio: false,
     processedVideo: false,
+    // status is marked as false by default and turned to true when transcription has been processed
     status: false,
     highlights: [],
     // orderedPaperCuts:[],
     videoOgg: undefined,
+    //TODO: get date from metadata of video
     metadata: undefined,
     text: undefined
-
-    // status is marked as false by default and turned to true when transcription has been processed
-    // get date from metadata of video
   },
 
   // validate
@@ -527,7 +649,7 @@ module.exports = Backbone.Model.extend({
 
 });
 
-},{"../../../config":1,"../../srt":20,"backbone":21,"node-timecodes":29,"path":31}],7:[function(require,module,exports){
+},{"../../../config":1,"../../srt":33,"backbone":34,"node-timecodes":42,"path":44}],9:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -567,7 +689,7 @@ module.exports = Backbone.Router.extend({
   },
 
   initialize: function() {
-    console.debug('Router: INITIALIZED ROUTER');
+    console.debug('TRANSCRIPTION Router: INITIALIZED ROUTER');
     // Setup canonical transcriptions collection
     this.transcriptionsList = new Transcriptions();
   },
@@ -619,7 +741,113 @@ module.exports = Backbone.Router.extend({
   }
 });
 
-},{"./collections/transcriptions":3,"./models/transcription":6,"./views/transcription_form_view":14,"./views/transcription_list_view":16,"./views/transcription_view":17,"./views/utils":18,"backbone":21,"jquery":24}],8:[function(require,module,exports){
+},{"./collections/transcriptions":4,"./models/transcription":8,"./views/transcription_form_view":27,"./views/transcription_list_view":29,"./views/transcription_view":30,"./views/utils":31,"backbone":34,"jquery":37}],10:[function(require,module,exports){
+'use strict';
+var $ = require('jquery');
+var Backbone = require('backbone');
+var PapereditListView = require('./views/paperedit_list_view');
+var PapereditFormView = require('./views/paperedit_form_view');
+var PapereditView = require('./views/paperedit_view');
+var Paperedit = require('./models/paperedit');
+var Paperedits = require('./collections/paperedits');
+var render = require('./views/utils').render;
+
+// Transcriptions collection for paperedit show
+var Transcriptions = require('./collections/transcriptions');
+
+/**
+ * Render a string or view to the main container on the page
+ * @param {(Object|String)} string_or_view A string or backbone view
+ **/
+function displayMain(string_or_view) {
+  var content;
+  if (typeof string_or_view === 'string') {
+    content = string_or_view;
+  } else {
+    content = string_or_view.el;
+    string_or_view.render();
+  }
+  $('#main').html(content);
+}
+
+/**
+* Paperedits application router
+*/
+module.exports = Backbone.Router.extend({
+  routes: {
+    // '': 'index',
+    'paperedits': 'papereditsList',
+    'paperedits/new': 'newPaperedit',
+    'paperedit/:id': 'showPaperedit',
+    'paperedit/:id/edit': 'editPaperedit'
+  },
+
+  initialize: function() {
+    console.debug('PAPEREDIT Router: INITIALIZED ROUTER');
+    // Setup canonical paperedits collection
+    this.papereditsList = new Paperedits();
+  },
+
+  // TODO: router not going to default page
+  // index: function() {
+  //   displayMain(render('welcome'));
+  // },
+
+  papereditsList: function() {
+    var self = this;
+    console.debug('Router: Paperedits list');
+    if ( typeof this.papereditsListView === 'undefined' ) {
+      this.papereditsListView = new PapereditListView({collection: this.papereditsList});
+    }
+    this.papereditsList.fetch({success: function() {
+      displayMain(self.papereditsListView);
+    }});
+  },
+
+  newPaperedit: function() {
+    console.debug('Router: new paperedit');
+    // creating a paperedit object, here could add default values such as
+    // {title: "Video Interview "+getTimeNow(), description: getTimeNow()}
+    var newPaperedit          = new Paperedit({title: '', description: ''});
+    var newPapereditFormView  = new PapereditFormView({model: newPaperedit});
+    // rendering in view
+    displayMain(newPapereditFormView);
+  },
+
+  showPaperedit: function(cid) {
+    var tmpPaperedit = this.papereditsList.get({'cid': cid});
+    console.debug('Router: showPaperedit', cid, tmpPaperedit.attributes.title);
+
+  
+
+    this.transcriptionsList = new Transcriptions();
+    this.transcriptionsList.fetch({success: function(collection, transciptions, errors) {
+      // displayMain(self.transcriptionsListView);
+      console.log("transciptions", transciptions);
+       // console.log("Router this.transcriptionsList", this.transcriptionsList);
+
+      var tmpPapereditView = new PapereditView({model: tmpPaperedit, transciptions: transciptions , transcriptionCollection: collection });
+      displayMain(tmpPapereditView);    
+    }});
+   
+  },
+
+  editPaperedit: function(id) {
+    console.debug('Router: editPaperedit: ' + id);
+    var tmpEditPaperedit = this.papereditsList.get({'cid': id});
+    var editPapereditFormView = new PapereditFormView({model: tmpEditPaperedit});
+    displayMain(editPapereditFormView);
+  },
+
+
+  notFound: function() {
+    console.error('Not found');
+    displayMain(render('404'));
+    alert('Not found');
+  }
+});
+
+},{"./collections/paperedits":3,"./collections/transcriptions":4,"./models/paperedit":7,"./views/paperedit_form_view":23,"./views/paperedit_list_view":25,"./views/paperedit_view":26,"./views/utils":31,"backbone":34,"jquery":37}],11:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -629,17 +857,247 @@ __p+='<div class="container-fluid">Not found</div>\n';
 return __p;
 };
 
-},{"underscore":104}],9:[function(require,module,exports){
+},{"underscore":117}],12:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center text-muted" style="font-size:2.5em;">\n  <span class="glyphicon glyphicon-film" aria-hidden="true"></span>\n  <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>\n  </p>\n  <p class="lead text-center text-muted">You dont have any transcriptions</p>\n  <p class="text-center">\n  <a href="#transcriptions/new">Add an audio or video file</a> to get it <br>automatically transcribed\n  </p>\n</div>\n';
+__p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center text-muted" style="font-size:2.5em;">\n  <span class="glyphicon glyphicon-film" aria-hidden="true"></span>\n  <span class="glyphicon glyphicon-headphones" aria-hidden="true"></span>\n  </p>\n  <p class="lead text-center text-muted">You dont have any transcriptions</p>\n  <p class="text-center">\n  <a href="#transcriptions/new">Add an audio or video file</a> to get it <br>automatically transcribed\n  </p>\n   <p class="text-center">\n  Then <a href="#paperedits/new">create a new paper edit</a> to  <br> get started with your story crafting.</p>\n</div>\n';
 }
 return __p;
 };
 
-},{"underscore":104}],10:[function(require,module,exports){
+},{"underscore":117}],13:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='          <div id="transcript-n" class="transcription">\n            <!-- <h2><small>Transcript 1</small></h2> -->\n            <!-- <img class="img-responsive hidden-print video"  src="demoVideoPlaceholder.png" > -->\n            <!-- video -->\n            <div class="row">\n              <div class="embed-responsive embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                <!--  Media -->\n\t\t\t    <!--  if audio has been processed but video has not -->\n\t\t\t    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n\t\t\t    <!-- also check media type if audio only then use audio  -->\n\t\t\t    ';
+ if(processedAudio && !processedVideo) { 
+__p+='\n\t\t\t   \n\t\t\t     <div class="alert alert-success alert-dismissible" role="alert">\n\t\t\t        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t\t         Video is being processed  \n\t\t\t         <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate text-muted" aria-hidden="true"></span>    \n\t\t\t      </div>\n\n\t\t\t      <!-- progress circle line if type of media is video -->\n\t\t\t      <audio id="'+
+((__t=( 'videoId_'+ _id ))==null?'':__t)+
+'"   width="10%" controls>\n\t\t\t        <source src="'+
+((__t=( audioFile ))==null?'':__t)+
+'" type="audio/wav">\n\t\t\t          Your browser does not support the audio element.\n\t\t\t      </audio>\n\t\t\t  ';
+ }else if (processedVideo) { 
+__p+='\n\n\t\t\t<!-- ///////////////////////// -->\n\t\t\t      <!-- if using safari on ios  -->\n\t\t\t     ';
+ if (window.userAgentSafari) { 
+__p+='\n\t\t\t     <!-- Repeating audio code -->\n\t\t\t        <!-- progress circle line if type of media is video -->\n\t\t\t      <audio id="'+
+((__t=( 'videoId_'+ _id ))==null?'':__t)+
+'"   width="10%" controls>\n\t\t\t        <source src="'+
+((__t=( audioFile ))==null?'':__t)+
+'" type="audio/wav">\n\t\t\t          Your browser does not support the audio element.\n\t\t\t      </audio>\n\t\t\t      <!-- end repeating audio code -->\n\n\t\t\t     ';
+ }else{ 
+__p+=' <!-- else if using safari  -->\n\n\t\t\t        <!-- if video has been processed -->\n\t\t\t        <video id="'+
+((__t=( 'videoId_'+ _id ))==null?'':__t)+
+'" poster="" width="100%" controls webkit-playsinline>\n\t\t\t          ';
+ if(videoOgg) { 
+__p+='\n\t\t\t          <!-- TODO: video type should be a var, videoOgg var should be changed to videoHTML5?or add new line with webm? -->\n\t\t\t            <source src="'+
+((__t=( videoOgg ))==null?'':__t)+
+'" type="video/webm">\n\t\t\t              ';
+ }else{ 
+__p+='\n\t\t\t            <source src="" type="video/ogg">\n\t\t\t              ';
+ }
+__p+='\n\t\t\t              Your browser does not support the video tag.\n\t\t\t          </video>\n\n\t\t\t     ';
+ }
+__p+=' <!-- if using safari  -->\n\t\t\t<!-- ///////////////////////// -->\n\t\t\t  ';
+ }else { 
+__p+='\n\t\t\t    <p>Media preview not ready </p>\n\t\t\t  ';
+ } 
+__p+='\n                  </div><!--  col -->\n                </div><!--  row -->\n                <!-- end video -->\n                <!-- <hr> -->\n\n\n                <!-- search -->\n                <!-- TODO: in transcript search you can search current transcript or across transcripts, you can also set filters on current transcript or across transcripts for tags, and speaker names.  -->\n                <div class="input-group hidden-print">\n                  <input type="text" class="form-control" placeholder="Search transcript">\n                  <span class="input-group-btn">\n                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"\n                      data-toggle="popover"title="set Filter options for search"  data-placement="bottom"  data-content="allows to set search or filter, across current transcript or all transcripts in proejct. filter by tag/s speaker/s. filters also work with searches.">\n                    </span><span class="caret"></span></button>\n                    <button class="btn btn-default"  data-toggle="popover"title="set options such as quick add"  data-placement="bottom"  data-content="aquick add, maybe a checkbox? that allows user to select, and when done with selection, eg mouse up, or with keyboard shortcut eg cmd left arrow it moves the text at the end of the paperedit.">\n                      <span class="glyphicon glyphicon-cog">\n                      </button>\n                    </span>\n                  </div><!-- /input-group -->\n                  <!--end search  -->\n\n\n                  <div class="transcript-n-text row" id="sampleTranscript">\n\n                   <!-- that that text exists -->\n                  ';
+ if(text){
+__p+='\n\n\t\t\t          <!-- Paragaph module -->\n\t\t\t          ';
+ _.each(text, function(paragraph) { 
+__p+='\n\t\t\t          <dl class="dl-horizontal">\n\t\t\t            <dt>'+
+((__t=( paragraph.speaker ))==null?'':__t)+
+'\n\t\t\t               </dt> <dt>\n\t\t\t              <!-- fir is the first  -->\n\t\t\t              <a data-start-time="'+
+((__t=( paragraph.paragraph[0].line[0].startTime ))==null?'':__t)+
+'" data-video-id="'+
+((__t=( 'videoId_'+ _id  ))==null?'':__t)+
+'" class="timecodes">'+
+((__t=( fromSeconds(paragraph.paragraph[0].line[0].startTime) ))==null?'':__t)+
+'</a>\n\t\t\t            </dt>\n\t\t\t              ';
+ _.each(paragraph.paragraph, function(lines) { 
+__p+='\n\t\t\t              ';
+ _.each(lines, function(line) { 
+__p+='\n\t\t\t            <dd >\n\t\t\t              <!--  <p class="lines" contenteditable="false"> -->\n\t\t\t                ';
+ _.each(line, function(word) { 
+__p+='\n\t\t\t                  <span contenteditable="false" \n\t\t\t                        class="words text-muted transcriptionsWords" data-transcription-id="'+
+((__t=( _id ))==null?'':__t)+
+'" \n\t\t\t                        data-paragaph-id="'+
+((__t=( paragraph.id ))==null?'':__t)+
+'"  data-word-id="'+
+((__t=( word.id ))==null?'':__t)+
+'" \n\t\t\t                        data-line-id="'+
+((__t=( line.id ))==null?'':__t)+
+'" data-reel-name="'+
+((__t=( metadata.reelName ))==null?'':__t)+
+'"\n\t\t\t                        data-clip-name="'+
+((__t=( metadata.fileName ))==null?'':__t)+
+'" data-video-id="'+
+((__t=( 'videoId_'+ _id ))==null?'':__t)+
+'"\n\t\t\t                        data-speaker="'+
+((__t=( paragraph.speaker ))==null?'':__t)+
+'" data-src="'+
+((__t=( videoOgg ))==null?'':__t)+
+'"\n\t\t\t                        data-audio-file="'+
+((__t=( audioFile ))==null?'':__t)+
+'" data-start-time="'+
+((__t=( word.startTime ))==null?'':__t)+
+'"\n\t\t\t                        data-text="'+
+((__t=( word.text ))==null?'':__t)+
+'" data-end-time="'+
+((__t=( word.endTime ))==null?'':__t)+
+'"\n\t\t\t                        data-offset="'+
+((__t=( metadata.timecode ))==null?'':__t)+
+'"\n\t\t\t                        >'+
+((__t=( word.text ))==null?'':__t)+
+' </span>\n\t\t\t                  ';
+ }) 
+__p+='\n\t\t\t           <!--    </p> -->\n\t\t\t           </dd>\n\t\t\t             ';
+ }) 
+__p+='\n\t\t\t            ';
+ }) 
+__p+='\n\t\t\t          </dl>\n\t\t\t          ';
+ }) 
+__p+='\n\t\t\t          <!-- ./paragraph module -->\n\n                  \t';
+ }else{ 
+__p+='\n                  \t\t<p>Transcription is currently not avaible for this media, check again later</p>\n                  ';
+}
+__p+='\n\n\n\n\n                    </div>   <!--transcript-n-text -->\n                  </div>   <!--transcript-n -->';
+}
+return __p;
+};
+
+},{"underscore":117}],14:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='\n<div class="row papercut" draggable="true" \ndata-start-time="'+
+((__t=( papercut[0].startTime ))==null?'':__t)+
+'"  \ndata-end-time="'+
+((__t=( papercut[papercut.length -1].endTime ))==null?'':__t)+
+'" \ndata-transcription-id="'+
+((__t=( papercut[0].transcriptionId ))==null?'':__t)+
+'" \ndata-reel-name="'+
+((__t=( papercut[0].reelName ))==null?'':__t)+
+'" \ndata-clip-name="'+
+((__t=( papercut[0].clipName ))==null?'':__t)+
+'" \ndata-video-id="'+
+((__t=( papercut[0].videoId ))==null?'':__t)+
+'" \ndata-speaker="'+
+((__t=( papercut[0].speaker ))==null?'':__t)+
+'" \ndata-src="'+
+((__t=( papercut[0].src ))==null?'':__t)+
+'" \ndata-audio-file="'+
+((__t=( papercut[0].audioFile ))==null?'':__t)+
+'" \ndata-offset="'+
+((__t=( papercut[0].offset ))==null?'':__t)+
+'" \n>\n\t<dl class="dl-horizontal">\n\t\t<dt>'+
+((__t=( papercut[0].speaker ))==null?'':__t)+
+'</dt> \n\t\t<dt>\n\t  \t\t<a data-start-time="'+
+((__t=( papercut[0].startTime ))==null?'':__t)+
+'" data-video-id="'+
+((__t=( papercut[0].videoId ))==null?'':__t)+
+'" class="timecodes">'+
+((__t=( fromSeconds(papercut[0].startTime) ))==null?'':__t)+
+'</a>\n\t\t</dt>\n\t\t<dd>\n\t\t\t';
+ for(var i=0; i<papercut.length; i++){
+__p+='\n\t\t\t \t<span contenteditable="false" class="words text-muted papereditWords" \n\t\t\t \tdata-transcription-id="'+
+((__t=( papercut[i].transcriptionId ))==null?'':__t)+
+'" \n\t\t\t \tdata-reel-name="'+
+((__t=( papercut[i].reelName ))==null?'':__t)+
+'" \n\t\t\t \tdata-clip-name="'+
+((__t=( papercut[i].clipName ))==null?'':__t)+
+'" \n\t\t\t \tdata-video-id="'+
+((__t=( papercut[i].videoId ))==null?'':__t)+
+'" \n\t\t\t \tdata-speaker="'+
+((__t=( papercut[i].speaker ))==null?'':__t)+
+'" \n\t\t\t \tdata-src="'+
+((__t=( papercut[i].src ))==null?'':__t)+
+'" \n\t\t\t \tdata-audio-file="'+
+((__t=( papercut[i].audioFile ))==null?'':__t)+
+'" \n\t\t\t \tdata-start-time="'+
+((__t=( papercut[i].startTime ))==null?'':__t)+
+'" \n\t\t\t \tdata-text="'+
+((__t=( papercut[i].text ))==null?'':__t)+
+'" \n\t\t\t \tdata-end-time="'+
+((__t=( papercut[i].endTime ))==null?'':__t)+
+'">'+
+((__t=( papercut[i].text ))==null?'':__t)+
+' </span>\n\t \t\t';
+ } 
+__p+='\n\t \t</dd>\n\t</dl>\n</div>';
+}
+return __p;
+};
+
+},{"underscore":117}],15:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+=' <li class="row papercut" data-title="Introduction" draggable="true">\n  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n    <h4><span class="glyphicon glyphicon-pencil" ></span>   <span contenteditable="true">'+
+((__t=( title ))==null?'':__t)+
+'</span></h4>\n  </div> \n</li> ';
+}
+return __p;
+};
+
+},{"underscore":117}],16:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='   <div class="container">\n\n    <!-- Demo notice  -->\n  ';
+ if(!window.frontEndEnviromentNWJS ){
+__p+='\n   <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot create a Paperedit</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n     To view demo/example Paperedits <a href="/public/demo/frontEnd/index.html#paperedits"> click here.</a><br>\n     To view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n  </div>  \n ';
+ }
+__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Paperedits</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n      <p>Chose a title and description for your paper-edit. </p>\n      <p>Transcriptions that you have previously added in autoEdit will be available in the next view once you click save.</p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Paperedit</label>\n          <input type="text" name="title" value="'+
+((__t=( title ))==null?'':__t)+
+'" class="form-control" id="title" placeholder="e.g. Documentary about Facebook ">\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Paperedit for documentary on Facebook">'+
+((__t=( description ))==null?'':__t)+
+'</textarea>\n        </div>\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n    <div class="row">\n        <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Paperedit</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Paperedit</a>\n          <a id="cancel" class="btn btn-default" href="#paperedits">Cancel</a>\n      </div><!-- ./col -->\n      </div><!-- ./row -->\n  </form>\n  </div>\n\n';
+}
+return __p;
+};
+
+},{"underscore":117}],17:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='    <div class="row">\n          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="papereditCard">\n          <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
+((__t=( title ))==null?'':__t)+
+'</button>\n          <p>'+
+((__t=( description ))==null?'':__t)+
+'</p>\n          </div>\n          <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <!-- edit btn -->\n         <!--    <button type="button"  class="btn  btn-default btn-xs editBtn" disabled>\n              <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">\n            </button> -->\n            <!-- delete btn -->\n            <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n            </button>\n          </div>\n    </div>\n    <hr>\n';
+}
+return __p;
+};
+
+},{"underscore":117}],18:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n  <style media="screen">\n  .highlighted {\n    background-color: yellow;\n\n  }\n\n  .highlighted-used {\n    background-color: #FFFF99;\n    /*FFFFCC*/\n  }\n\n  .transcript-n-text.row {\n    height: 70vh;\n    overflow: scroll;\n  }\n\n  .transcriptionsTabs{\n     height: 90vh;\n    overflow: scroll;\n  }\n\n  /*.video {\n  height: 20vh;\n  }*/\n\n  .embed-responsive-16by9 {\n    padding-bottom: 30%!important;\n  }\n\n  .syncPlayTest {\n    background-color: lightgreen;\n    cursor: pointer;\n  }\n\n  /*Dragula style*/\n\n  .gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n    -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n    width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n    height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n    background-color: rgba(0, 0, 0, .5);\n    border-radius: 10px;\n    border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n    border-radius: 10px;\n    background-color: #ffffff;\n}\n\n  </style>\n\n\n  <div class="container-fluid">\n    <div class="row">\n      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#paperedits">Paperedits</a></li>\n          <li class="active">'+
+((__t=( title ))==null?'':__t)+
+'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n<!-- Export modal + button -->\n\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdl" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL \n        </a>\n\n         <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL JSON \n        </a>\n\n        <a id="exportEdlJSONWithTitles" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  JSON with titles\n        </a>\n\n        \n\n       <!-- End export option -->\n      </div>\n      <div class="modal-footer" >\n        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- Export end modal + button -->   \n  \n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n\n\n \n\n<!-- Paperedit  -->\n\n\n    <div class="row">\n      <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n        <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n        <!-- Transcripts list  -->\n        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n\n         <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
+ for(var i =0; i<transcriptions.length;i++){ 
+__p+='\n          <!-- class="active"-->\n            <li class="liTranscriptionTabLink"><a  id="'+
+((__t=( transcriptions[i]._id ))==null?'':__t)+
+'" class="transcriptionTabLink" \n           >'+
+((__t=( transcriptions[i].title ))==null?'':__t)+
+' </a></li>\n          ';
+ }
+__p+='\n          </ul>\n\n            <!-- Tab panes -->\n   <!--  https://getbootstrap.com/javascript/#markup -->\n   <!--    <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="home">...</div>\n    <div role="tabpanel" class="tab-pane" id="profile">...</div>\n    <div role="tabpanel" class="tab-pane" id="messages">...</div>\n    <div role="tabpanel" class="tab-pane" id="settings">...</div>\n  </div>\n -->\n\n        </div>\n        <!-- end transcript list end -->\n\n        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n\n <!-- Tab panes -->\n\n  <div class="transcription-tab-content" >\n  \n<!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- <h2><small>Transcript 1</small></h2> -->\n            <!-- <img class="img-responsive hidden-print video"  src="demoVideoPlaceholder.png" > -->\n            <!-- video -->\n            <div class="row">\n              <div class="embed-responsive embed-responsive-16by9 videoPlayer hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                <video id="videoId"  controls>\n                  <source src="video/Thomas_Drake.mp4" type="video/mp4">\n                    <source src="movie.ogg" type="video/ogg">\n                      Your browser does not support the video tag.\n                    </video>\n                  </div><!--  col -->\n                </div><!--  row -->\n                <!-- end video -->\n                <!-- <hr> -->\n                <!-- search -->\n                <!-- TODO: in transcript search you can search current transcript or across transcripts, you can also set filters on current transcript or across transcripts for tags, and speaker names.  -->\n                <div class="input-group hidden-print">\n                  <input type="text" class="form-control" placeholder="Search transcript">\n                  <span class="input-group-btn">\n                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"\n                      data-toggle="popover"title="set Filter options for search"  data-placement="bottom"  data-content="allows to set search or filter, across current transcript or all transcripts in proejct. filter by tag/s speaker/s. filters also work with searches.">\n                    </span><span class="caret"></span></button>\n                    <button class="btn btn-default"  data-toggle="popover"title="set options such as quick add"  data-placement="bottom"  data-content="aquick add, maybe a checkbox? that allows user to select, and when done with selection, eg mouse up, or with keyboard shortcut eg cmd left arrow it moves the text at the end of the paperedit.">\n                      <span class="glyphicon glyphicon-cog">\n                      </button>\n                    </span>\n                  </div><!-- /input-group -->\n                  \n                  <!--end search  -->\n                  <div class="transcript-n-text row" id="sampleTranscript">\n                    <!-- speaker section -->\n                    <div class="row">\n                      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">\n                        <strong>speaker 1</strong>\n                        <!-- <code  class="timecode-for-print visible-print-inline"><small>00:00:00:00 - 00:00:00:00</small></code> -->\n                      </div>\n                      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">\n                        <p>Lorem ipsum dolor sit amet, <span class="highlighted-used"  type="button" data-toggle="popover"title="Tag name and Tag description here"  data-placement="bottom"  data-content="any comment on this hilight and the use of this tag in this specific goes here ">consectetur adipiscing elit, sed do eiusmod tempor incididunt</span> ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<p> \n                      </div>\n                    </div>\n                    </div>   <!--transcript-n-text -->\n                  </div>   <!--transcript-n -->\n<!-- End hypertranscript -->\n</div><!-- Tab paenl End  -->\n\n\n                </div>\n              </div>\n\n              <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n                <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n\n                <div class="row">\n                  <div class="embed-responsive embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                    <canvas id="vc-canvas"></canvas>\n\n                        <!-- Add poster image black screen? -->\n                    <video id="videoPreview" class="videoPlayer" width="400" >\n                    <!--   <source src="" type="video/mp4"> -->\n                    <!--   <source src="" type="video/ogg"> -->\n                      Your browser does not support HTML5 video.\n                    </video>\n\n\n\n\n                  </div>\n                  <!--  col -->\n                </div>\n                <!--  row -->\n\n           \n       \n\n              <!-- <hr> -->\n\n              <div class="btn-group" role="group" aria-label="...">\n                <button type="button" class="btn btn-xs btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  </button>\n                <button type="button" class="btn btn-xs btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button>\n                <button type="button" class="btn btn-xs btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n\n                <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-xs btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n                <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-xs btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button>\n              </div>\n\n              <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-xs btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n\n            \n\n              <!-- Single button -->\n             <!--   <div class="btn-group">\n                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n                  Export <span class="caret"></span>\n                </button>\n                <ul class="dropdown-menu">\n                  <li><a href="#">edl</a></li>\n                  <li><a href="#">docx</a></li>\n                <li><a href="#">Something else here</a></li>\n                  <li role="separator" class="divider"></li>\n                  <li><a href="#">Separated link</a></li> \n                </ul>\n              </div>-->\n\n              <div id="sortable" class="transcript-n-text row paperedit">\n              <!-- \n                <li class="row papercut" data-title="Introduction" draggable="true">\n                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                    <h4><span class="glyphicon glyphicon-pencil" ></span>   <span contenteditable="true">Introduction</span></h4>\n                  </div> \n                </li> row -->\n                \n                <!-- speaker section -->\n                 <!--<div class="row">\n                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                  <dl class="dl-horizontal">\n                    <dt>Unnamed Speaker</dt> \n                    <dt>\n                        <a data-start-time="0.06" data-video-id="videoId_24dcd88b" class="timecodes">00:00:00:01</a>\n                    </dt>\n                    <dd>\n                    <span contenteditable="false" class="words text-muted" data-transcription-id="24dcd88b" data-paragaph-id="0" data-word-id="18" data-line-id="" data-reel-name="NA" data-clip-name="Ian Perkin-Mobile.mp4" data-video-id="videoId_24dcd88b" data-speaker="Unnamed Speaker" data-src="/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.webm" data-audio-file="/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.ogg" data-start-time="19.07" data-text="sales" data-end-time="19.38">sales </span>\n\n                    ....\n                   </dd>\n                  </dl>-->\n                </div><!--.col-->\n                </div><!--.row-->\n\n            </div>   <!--transcript-n-text -->\n          </div>   <!--transcript-n -->\n\n\n        </div>\n\n      </div> <!-- end row -->\n\n<script src=\'./node_modules/jquery-sortable/source/js/jquery-sortable.js\'></script>\n\n\n';
+}
+return __p;
+};
+
+},{"underscore":117}],19:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -657,7 +1115,7 @@ __p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol 
 return __p;
 };
 
-},{"underscore":104}],11:[function(require,module,exports){
+},{"underscore":117}],20:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -681,7 +1139,7 @@ __p+='\n    </div>\n    <hr>\n';
 return __p;
 };
 
-},{"underscore":104}],12:[function(require,module,exports){
+},{"underscore":117}],21:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -689,7 +1147,7 @@ with(obj||{}){
 __p+='  <div class="container">\n    <div class="row">\n      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">'+
 ((__t=( title ))==null?'':__t)+
 '</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n<!-- Export modal + button -->\n<!-- Button trigger modal -->\n<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n  Export <span class="glyphicon glyphicon-save"></span>\n</button>\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order or in the order in which you selected them.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  - Chronological order\n        </a>\n\n        <!-- Btn EDL - selection order  -->\n        <a id="exportEdlSelectionOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL - selection order \n        </a></p>\n\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological or selection order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL Chronological \n        </a>\n        <!-- Btn Plain Text Selection Order -->\n        <a id="exportPlainTextEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL Selection Order\n        </a>\n        <br> <br>\n         <p> You can get your text selections as plain text in chronological or selection order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL Chronological\n        </a>\n\n        <!-- Btn Timecoded Plain Text Selection Order -->\n        <a id="exportPlainTimecodedTextEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL Selection Order\n        </a></p>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL Chronological order.</p>\n\n        <!-- Btn Json  EDL Chronological -->\n        <p><a id="exportJsonEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json  EDL Chronological \n        </a>\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL Selection order\n        </a></p>\n\n        <p>You can export a JSON of selections in order they where selected. This is equivalent to EDL selection order.</p>\n\n\n        ';
- if (!window.userAgentSafari) { /* Safari and IE don't support the download attribute */ 
+ if (!window.userAgentSafari) { /* Safari and IE no support for the download attribute */ 
 __p+='\n        <h3><small>HTML5 Media</small></h3>\n\n        <p>You can export HTML5 audio and video previews generated by the app. </p>\n\n        <p>\n          <!-- Btn HTML5 Webm video -->\n          <a id="exporthtml5Video" class="btn btn-primary btn-sm"\n            ';
  if (processedVideo) { 
 __p+='download href="'+
@@ -817,7 +1275,7 @@ __p+='\n          <!-- ./paragraph module -->\n      </div>\n    </div>\n    </d
 return __p;
 };
 
-},{"underscore":104}],13:[function(require,module,exports){
+},{"underscore":117}],22:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -827,7 +1285,760 @@ __p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center te
 return __p;
 };
 
-},{"underscore":104}],14:[function(require,module,exports){
+},{"underscore":117}],23:[function(require,module,exports){
+'use strict';
+var $ = require('jquery');
+var Backbone = require('backbone');
+var render = require('./utils').render;
+
+/**
+* Backbone view for transcription form for creating a new transcription
+* @class TranscriptionFormView
+* @constructor
+* @extends Backbone.View
+*/
+module.exports = Backbone.View.extend({
+   initialize: function() {
+      console.log("PAPEREDIT NEW FORM");
+   },
+
+  events :{
+  	'click #submitBtn': 'save'
+  },
+
+  save: function(e){
+  	e.preventDefault();
+
+    //reading values from form 
+    var newTitle        = this.$('input[name=title]').val();
+    var newDescription  = this.$('textarea[name=description]').val();;
+
+  	this.model.save({title: newTitle, description: newDescription},{
+      success: function(mode, response, option){      
+           Backbone.history.navigate("paperedits", {trigger:true}); 
+      },
+      error: function(model, xhr,options){
+        var errors = JSON.parse(xhr.responseText).errors;
+        alert("ops, something when wrong with saving the paperedit:" + errors)
+      }
+    });
+  },
+
+
+  render: function(){
+    this.$el.html(render('papereditFormTemplate', this.model.attributes));
+    return this;
+  }
+});
+
+},{"./utils":31,"backbone":34,"jquery":37}],24:[function(require,module,exports){
+'use strict';
+var Backbone = require('backbone');
+var render = require('./utils').render;
+
+/**
+ * Backbone view for single Paperedit model view to be used in view for
+ * collection PapereditsListView
+ * @class PapereditListElementView
+ * @constructor
+ * @extends Backbone.View
+ */
+module.exports = Backbone.View.extend({
+  tagName: 'div',
+  className: 'media',
+  initialize: function() {
+    console.warn("paperedit list element");
+    console.warn(this);
+
+    this.listenTo(this.model, 'change', this.render);
+
+  },
+  events:{
+    "click #papereditCard": "showPaperedit",
+    "click button.editBtn": "editPaperedit",
+    "click button.deleteBtn": "deletePaperedit"
+  },
+  showPaperedit: function(){
+    //navigate to paperedit page
+    //TODO: is this the right way to do this?
+    Backbone.history.navigate("paperedit/"+this.model.cid, {trigger:true});
+  },
+
+  //TODO: delete is not working properly 
+  deletePaperedit: function(){
+    if (confirm("You sure you want to delete this paperedit?")) {
+      this.model.destroy({success: function(model, response) {
+        // app.papereditRouter.papereditsList.fetch({reset: true}); 
+        // Backbone.history.navigate("paperedits", {trigger:true}); 
+      }})
+    } else {
+      alert("Paperedit was not deleted")
+    }
+  },
+
+  editPaperedit: function(){
+    alert("Edit paperedit")
+  },
+
+  render: function(){
+    var sectionTemplate = render('papereditIndex', this.model.attributes);
+    this.$el.html(sectionTemplate);
+    return this;
+  }
+});
+
+},{"./utils":31,"backbone":34}],25:[function(require,module,exports){
+'use strict';
+var $ = require('jquery');
+var Backbone = require('backbone');
+var PapereditListElementView = require('./paperedit_list_element_view');
+var render = require('./utils').render;
+
+/**
+ * Backbone view for paperedits list
+ * @class PapereditsListView
+ * @constructor
+ * @extends Backbone.View
+ */
+module.exports = Backbone.View.extend({
+  tagName: 'div',
+  className: 'container',
+  initialize: function() {
+    var paperedits = this.collection;
+    // this.listenTo(paperedits, 'sync',   this.render);
+    // this.listenTo(paperedits, 'destroy', this.render);
+    // this.listenTo(paperedits, 'add',     this.render);
+  },
+
+  render: function() {
+    console.debug('Render paperedit list view');
+    // if there are  paperedits it shows
+    if (!this.collection.isEmpty()) {
+      this.$el.empty();
+      console.debug("build PapereditsList");
+      this.collection.each(this.addOne, this);
+      return this;
+      // if there are no paperedits it shows helpfull message to create a new one
+    } else {
+      // this.$el.append
+      // TODO: there seems to be a bug on this line, object is not a function.
+      this.$el.html(render('homePage'));
+      return this;
+    }
+  },
+
+  addOne: function(papereditItem) {
+    console.debug(papereditItem.attributes);
+    var papereditView = new PapereditListElementView({model: papereditItem});
+    this.$el.append(papereditView.render().el);
+  }
+});
+
+},{"./paperedit_list_element_view":24,"./utils":31,"backbone":34,"jquery":37}],26:[function(require,module,exports){
+'use strict';
+var $ = require('jquery');
+var _ = require('underscore');
+var Backbone = require('backbone');
+var render = require('./utils').render;
+var FileSaver = require('file-saver');
+var moment = require('moment');
+var fromSeconds =  require('node-timecodes').fromSeconds;
+var EDL = require('../../edl_composer/index');
+
+
+/**
+* Backbone view for transcription view for individual transcriptions 
+* @class TranscriptionView
+* @constructor
+* @extends Backbone.View
+*/
+module.exports = Backbone.View.extend({
+  tagName: 'div',
+  className: 'container-fluid',
+  //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
+  id: "paperedit-n",//+this.model.id+"",
+
+  initialize: function(options) {
+    // console.log("this", this, this.el, this.$el);
+    // console.log(" this.$('.transcriptionsTabs')", this.$(".transcriptionsTabs"));
+    // console.log("options.transcriptions",options);
+    // console.log("options.transcriptions",options.transciptions);
+    // set transcriptions, maybe get it from the router
+    this.transcriptions = options.transciptions; 
+    this.transcriptionsCollection = options.transcriptionCollection;
+
+    // console.log("this.model", this.model);
+    // this.paperedit = this.model;
+    // 
+    // 
+    // List of transcriptions on the left side. 
+    // 
+    this.transcriotionsListElements = this.$(".transcriptionsTabs");
+    //  <li class="active"><a href="#">Transcript 1</a></li>
+    //  
+     var node = document.createElement("LI");
+     var textnode = document.createTextNode("Transcription 111");   
+     node.appendChild(textnode);      
+     // this.transcriotionsListElements.appendChild(textnode); 
+     // this.$(".transcriptionsTabs").append( "<li class='active'><a href='#'>Transcript 11111</a></li>");
+     // console.log(" this.transcriotionsListElements", this.transcriotionsListElements);
+     // this.$(".transcription-tab-content").innerHTML= render('hypertranscript', this.transcriptionsCollection.attributes);
+     // 
+    // document.addEventListener("selectionchange", function(event) {
+    //   console.log('Selection changed.',event); 
+    // });
+    
+    // Needed for drag and dop 
+    // https://www.html5rocks.com/en/tutorials/dnd/basics/
+    this.dragSrcEl = null;
+    this.dragSrcElInnerHTML = "";
+
+    this.edlJson = null;
+
+
+    this.previewCounter = 0; 
+    // console.log("YO",this.model.get("events"),this.$(".paperedit"));
+    // this.$(".transcription-tab-content").html( render('hypertranscript', transcriptionAttributes));
+    //this.createHTMLDomElementFromString()
+    // document.querySelector(".paperedit").innerHTML = "yo"
+    // console.log(this.$(".paperedit").innerHTML );
+    
+    ////
+    // var papercut = this.model.get("events");
+    // console.log("papercuts",papercut);
+    // // console.log("papercuts",papercuts.length>0);
+    // var papercutsElements;
+    // var papercutElement;
+    // if(papercut.length >0 ){
+    //   for(var i =0; i< papercut.length; i++){
+    //     if( papercut[i].title){
+    //       console.log("with title papercut[i]",papercut[i]);
+    //           papercutElement = render('papercutTitle', papercut[i]); 
+    //           // // papercutsElements+=papercutElement;
+    //           // this.addElementToPaperEditElement(papercutElement);
+    //           console.log("papercutElement",papercutElement);
+    //     }else{
+    //        console.log("without title papercuts[i]",papercut,papercut[i],this.model.get("events"));
+    //           // var papercut = papercut[i];
+    //           // papercutElement = render('papercut',papercut[i]); 
+    //           // console.log("papercutElement",papercutElement);
+    //           // // papercutsElements+=papercutElement;
+    //           // this.addElementToPaperEditElement(papercutElement);
+              
+    //     }
+       
+    //   }
+    //   // this.addElementToPaperEditElement(papercutsElements);
+    // }
+    ////
+
+   },
+ 
+  events:{
+    "click .transcriptionTabLink" : "transcriptionTabLink",
+    "click .transcriptionsWords"  : "playWord",
+    "click .timecodes"            : "playWord",
+    "mouseup .transcription"      : "selectingWords",
+    "click .addStoryPointBtn"     : "addStoryPointBtn",
+
+    // D&D
+    "dragstart .papercut" : "dragStartPapercut",
+    'dragenter .papercut' : 'sortablePapercut',
+    'dragleave .papercut' : 'sortablePapercut',
+    'drop .papercut'      : 'dropPapercut',
+    'dragover .papercut': function(ev) {
+        ev.preventDefault();
+    },
+
+    'dragover .deletePapercut': function(ev) {
+        ev.preventDefault();
+    },
+
+    'drop .deletePapercut': "deletePapercut",
+
+    'click .deletePapercut': "deleteAllPapercuts",
+
+    "click #exportEdlJSON" : "exportEdlJSON",
+    "click #exportEdlJSONWithTitles": "exportEdlJSONWithTitles",
+    "click #exportEdl" : "exportEdl",
+
+    "click .savePapercutsBtn": "savePapercuts",
+
+    "click .playPapercutsBtn": "playPapercuts"
+    // "click .storyPointHeading" : "newStoryPointHeading",
+    // "click .papereditWords" : "previevPaperedit"
+  },
+
+  //keyboard event using mouse trap backbone version 
+  keyboardEvents: {
+
+  },
+
+  //transform JSON EDL of papercuts/paperedit into a video sequence that can be previewed.
+  // videoSequenceForPreview: function(){
+  //   var papercuts = this.getEDLJsonDataFromDom();
+  //   console.log(JSON.stringify(papercuts, null, 4))
+  //   var videoSequence = [{"src": "http://dl1.webmfiles.org/big-buck-bunny_trailer.webm", "inPoint":3.2 , "outPoint":6},{"src": "http://dl1.webmfiles.org/elephants-dream.webm", "inPoint": 1, "outPoint":3},{"src": "http://dl1.webmfiles.org/big-buck-bunny_trailer.webm", "inPoint": 10, "outPoint":15}]
+  //    console.log(JSON.stringify(videoSequence, null, 4))
+  //  return videoSequence;
+  // },
+
+  playPapercuts: function(){
+   var videoSequence = this.getEDLJsonDataFromDom();
+   //Video instance
+    var video = document.getElementById("videoPreview");
+    var counter = 0;
+
+    function playVideoSegments(videoSequence){
+      // initialised counter to play video segments in the array    
+      /*******************base case, first video ****************/
+      //base case, playing first video segment in sequence
+      var videoSrc  = videoSequence[counter]['src'];
+      var inPoint   = videoSequence[counter]['startTime'];
+      var outPoint  = videoSequence[counter]['endTime'];
+      // helper function to play one video segment
+      video.src = videoSrc + "#t="+inPoint+","+outPoint;
+      console.log(video.src);
+      video.load;
+      video.play();
+      counter += 1;
+      
+      video.addEventListener("timeupdate", function() {
+        if (video.currentTime >= outPoint) {
+          videoSrc  = videoSequence[counter]['src'];
+          inPoint   = videoSequence[counter]['startTime'];
+          outPoint  = videoSequence[counter]['endTime'];
+          //    counter += 1;
+          playVideoSegments(videoSequence);
+        }
+       }, false);
+    }
+
+    playVideoSegments(videoSequence);
+
+  },
+
+
+  savePapercuts : function(){
+     // TODO: figure out a better way to serialize data, at th emoment just converting the whole HTML of papereidt into string
+    // // and saving it in events attribute of paperedit. 
+    // // on inizialization rendering repopulating that field. 
+      this.model.set({events: document.querySelector(".paperedit").innerHTML });
+      // console.log("inside save",document.querySelector(".paperedit").innerHTML , this.model.get("events"));
+      //save the model
+      this.model.save({wait: false});
+      // console.log( this.getPapercutsJsonDataFromDomToSaveInDb() );
+      // console.log("SAVED?");
+      alert("Saved");
+  },
+
+  // getPapercutsJsonDataFromDomToSaveInDb: function(){
+  //   var papercuts =[];
+  //   var papercutsElements= document.querySelectorAll(".papercut");
+  //   for(var i =0; i< papercutsElements.length; i++){
+  //     var papercut={};
+  //     if(papercutsElements[i].dataset.title){
+  //       papercut.title = papercutsElements[i].dataset.title;
+  //       papercuts.push(papercut);
+  //     }else{
+  //       // papercut = [];
+  //       var wordsElements = papercutsElements[i].querySelectorAll("span");
+  //       papercut = [];
+  //       for(var j=0; j<wordsElements.length; j++){
+  //         var word = {};
+  //         word = JSON.parse(JSON.stringify(wordsElements[j].dataset));
+  //         papercut.push(word);
+  //       }
+  //       // papercut.push(words);
+  //       // console.log(words,papercut);
+  //       papercuts.push(papercut);
+  //     }
+  //   }
+  //   // console.log(papercut);
+  //   return papercuts;
+  // },
+
+  //TODO: refactor EDL export helper in backbone views utils/helpers.
+  /**
+  * @function exportEdl
+  * @description EDL - Chronological
+  */
+  exportEdl: function(e){
+    console.log("EXPORT EDL");
+    var papereditJson=  this.makeEDLJSON(false);
+    console.log(JSON.stringify(papereditJson, null, 2));
+    //end move in model
+    var edl = new EDL(papereditJson);
+    console.log(edl.compose());
+    var edlFileName = this.nameFileHelper(papereditJson.title +"_chronological","edl"); 
+    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdl"});
+  },
+
+
+  //titlesBol boolean to decide whether to add titles as array in the EDL JSON or not.
+  makeEDLJSON: function(titlesBol){
+     var papereditJson ={};
+        papereditJson.title = this.model.get("title");
+        papereditJson.events = this.getEDLJsonDataFromDom(titlesBol); 
+     return papereditJson;
+  },
+
+   exportEdlJSONWithTitles: function(){
+    var papereditJson=  this.makeEDLJSON(true);
+
+    var tmpPaperedit = JSON.stringify(papereditJson,null,"\t");
+    var jsonFileName = this.nameFileHelper(papereditJson.title+"_EDL","json");  
+    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperedit, urlId: "#exportJsonEDL"});
+
+    // console.log(papereditJson,tmpPaperedit);
+  },
+
+  exportEdlJSON: function(){
+    var papereditJson=  this.makeEDLJSON();
+
+    var tmpPaperedit = JSON.stringify(papereditJson,null,"\t");
+    var jsonFileName = this.nameFileHelper(papereditJson.title+"_EDL","json");  
+    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperedit, urlId: "#exportJsonEDL"});
+
+    // console.log(papereditJson,tmpPaperedit);
+  },
+
+
+  //TODO: both make file helper and exportHelper should be moved in shared util and refactored out of transcription view as well
+  /**
+  * @function exportHelper
+  */
+  nameFileHelper(name, ext){
+    var timeStr = moment().format('DD_MM_YYYY_HH-mm-ss');
+    return ""+name.replace(" ", "_") +"_"+ timeStr +"."+ext;
+  },
+
+
+  /**
+  * @function exportHelper
+  */
+  exportHelper(config){
+    if(config.fileContent === ""){
+      alert("File " + config.fileName + " seems to be empty");
+    }
+
+    var fileName = config.fileName; //this.title _ + append time of day to name
+    var fileContent = config.fileContent;
+    var urlId = config.urlId;
+
+    var formBlob = new Blob([fileContent], { type: 'text/plain' });
+    FileSaver.saveAs(formBlob, config.fileName);
+  },
+
+
+
+  deleteAllPapercuts: function(e){
+    var r = confirm("Click ok to delete all papercuts in the paperedit, cancel to abort");
+    if (r == true) {
+      document.querySelector(".paperedit").innerHTML="";
+      // update EDL
+      this.getEDLJsonDataFromDom();
+      this.savePapercuts();
+    } else {
+        alert("Relax, nothing was deleted");
+    }
+    //SAVE/Update
+   
+  },
+
+  deletePapercut: function(e){
+    e.preventDefault();
+    // console.log("deletePapercut",e);
+    this.dragSrcEl.remove();
+    this.dragSrcEl = null;
+    //update EDL
+    this.getEDLJsonDataFromDom();
+    this.savePapercuts();
+
+  },
+
+  dragStartPapercut: function(e){
+    this.dragSrcEl = e.currentTarget;
+    // console.log(e.currentTarget, e);
+    // TODO: sortout horribel patch. instead of innerHTML get all element as HTML. 
+    // in theory should use data transfer object from the drag and drop event but couldn't get it to work. might be confusion between jquery and plain js methods to set and get.
+    this.dragSrcElInnerHTML = e.currentTarget.outerHTML;
+  },
+
+  dropPapercut: function(e){
+    console.log("DROP!1");
+      //it's not a swaps the elements on drop. 
+     // on drop it needs to append the draged element after the drop element.
+     //  e.currentTarget is current target element.
+      if (e.stopPropagation) {
+        // Stops some browsers from redirecting.
+        e.stopPropagation(); 
+      }
+      //  Don't do anything if dropping the same element/raw/papercut we're dragging.
+      if (this.dragSrcEl !=  e.currentTarget) {
+        // TODO: could be abstracted as own function. that makes dom element from string.
+        // https://stackoverflow.com/questions/3103962/converting-html-string-into-dom-elements
+        var tmpDiv = this.createHTMLDomElementFromString(this.dragSrcElInnerHTML);
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+        e.currentTarget.insertAdjacentHTML('beforebegin', this.dragSrcElInnerHTML);
+        // Remove this.dragSrcEl element, remove the element that was initially dragged from it's original place.
+        this.dragSrcEl.remove();
+      }
+
+    //   return false;
+
+    // //TODO: save EDL 
+    // create EDL 
+    this.getEDLJsonDataFromDom();
+    // // Save paperedit EDL.  save in internal state.
+    console.log("DROP!2");
+    this.savePapercuts();
+    // // add a this.paperEdit in initialise
+    // // also add a save model for paperedit when EDL is updated.
+  },
+
+
+  getEDLJsonDataFromDom: function(keepTitlesBool){
+    //default don't keep titles, if no arg provided
+    var keepTitles = false; 
+    //else use what the user has requested
+    if(arguments.length != 0){
+      keepTitles = keepTitlesBool;
+    }
+    // {"startTime":"21.97",
+    // "endTime":"26.61","
+    // transcriptionId":"24dcd88b",
+    // "reelName":"NA",
+    // "clipName":"Ian Perkin-Mobile.mp4",
+    // "videoId":"videoId_24dcd88b",
+    // "speaker":"Unnamed Speaker",
+    // "src":"/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.webm",
+    // "audioFile":"/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.ogg"}"
+    var papercutsElements = document.querySelectorAll('.papercut'); 
+    var papercuts = [];
+    for (var i=0; i< papercutsElements.length; i++){
+      var papercut  = JSON.parse(JSON.stringify(papercutsElements[i].dataset));
+          //so that it starts from 1 and not from zero.
+          papercut.id = i+1;
+      //exclude titles from EDL
+      //if keep title true add all papercuts to the array
+      if(keepTitles){
+          papercuts.push(papercut); 
+      //otherwise only add the paper cut when there isn't a title in it.
+      }else{
+         if(!papercut.title){
+          papercuts.push(papercut); 
+        }
+      }
+     
+        
+    }
+  
+    this.edlJson = papercuts; 
+    //SAVE/UPDATE
+    // this.savePapercuts(true);
+    console.log(papercuts);
+    return papercuts; 
+  },
+
+  sortablePapercut: function(){
+    // console.log("drag start");
+  },
+
+  createHTMLDomElementFromString: function(string){
+    var parser = new DOMParser();
+    var tmpDiv = parser.parseFromString(string, "text/xml");
+    return tmpDiv;
+  },
+
+  addStoryPointBtn: function (){
+    var storyPointHeading = prompt("Had a heading for your story point", "Section A: ");
+    if (storyPointHeading != null) {
+      // var papercutElement = document.createElement('h4');
+      // TODO: replace with ejs template
+      var papercutHeadingStringTemplate ="<div data-title='"+storyPointHeading+"' class='row papercut' draggable='true'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
+          papercutHeadingStringTemplate +="<h4><span class='glyphicon glyphicon-pencil' ></span> <span contenteditable='true'>"+storyPointHeading+"</span></h4></div></li> ";
+      // var papercutElement.innerHTML = papercutHeadingStringTemplate;
+      this.addElementToPaperEditElement(papercutHeadingStringTemplate);
+    }
+  },
+   
+  selectingWords: function(e){
+    // https://stackoverflow.com/questions/11300590/how-to-captured-selected-text-range-in-ios-after-text-selection-expansion 
+    // https://jsfiddle.net/JasonMore/gWZfb/
+    var selectedRange = null;
+   if (window.getSelection) {
+     selectedRange = window.getSelection().getRangeAt(0).cloneContents();
+     // console.log("window")
+    } else {
+      selectedRange = document.getSelection().getRangeAt(0).cloneContents();
+      // console.log("document")
+    }
+
+    var selectedElements = $(selectedRange).find('span');
+    //first element of selection
+    var firstElement = $(selectedRange).find('span')[0];
+    var elemCount = $(selectedRange).find('span').length ;
+    //last element
+    var lastElIndex =elemCount - 1;
+    //last element of selection
+    var lastElement = $(selectedRange).find('span')[lastElIndex];
+    // var tmpCounter = this.model.get("counterForPaperCuts");
+    
+    var papercut = this.extractEDLJSONPapercutFromElement(selectedElements);
+        console.log("HERE",papercut);
+    var papercutElement = render('papercut', papercut); 
+    // console.log(papercutElement);
+
+    this.addElementToPaperEditElement(papercutElement);
+
+    this.getEDLJsonDataFromDom();
+  },
+
+  addElementToPaperEditElement: function(stringElement){
+    //get paperedit element 
+    if(typeof stringElement == "string"){
+      var papereditElement = document.querySelector(".paperedit");
+      var papercutElement = document.createElement('div');
+      papercutElement.innerHTML = stringElement;
+      //add papercut at end of paperedit element
+      papereditElement.appendChild(papercutElement);
+    }else{
+      var papereditElement = document.querySelector(".paperedit");
+      // var papercutElement = document.createElement('div');
+      // papercutElement.innerHTML = stringElement;
+      // //add papercut at end of paperedit element
+      papereditElement.appendChild(stringElement);
+    }
+  
+  },
+
+  extractEDLJSONPapercutFromElement: function(elements){
+    // console.log("elements", elements);
+
+    var papercutAr = [];
+      for(var i = 0; i< elements.length; i++){
+        var word = {};
+            word.text             = elements[i].innerHTML;
+            word.clipName         = elements[i].dataset.clipName;
+            word.reelName         = elements[i].dataset.reelName;
+            word.startTime        = elements[i].dataset.startTime;
+            word.endTime          = elements[i].dataset.endTime;
+            word.speaker          = elements[i].dataset.speaker; 
+            word.audioFile        = elements[i].dataset.audioFile;
+            word.src              = elements[i].dataset.src;
+            word.transcriptionId  = elements[i].dataset.transcriptionId;
+            word.videoId          = elements[i].dataset.videoId;
+            //HARDCODED!!
+            word.offset           = elements[i].dataset.offset;
+        papercutAr.push(word);
+      }
+      var papercut= {};
+      papercut.papercut = papercutAr; 
+        // return papercut;
+      return papercut;
+
+  },
+
+  //param JSON Of transcription model.attributes
+  //helper function to Show Highlights selections in hypertranscripts
+  renderHighlights: function(transcriptionAttributes,self){
+   var tmpHighlights =  transcriptionAttributes.highlights;
+
+    for (var i =0; i < tmpHighlights.length; i++ ){
+      var min =  tmpHighlights[i].startTime;
+      var max = tmpHighlights[i].endTime;
+      //needs to grab the words of the element of the view not in the dom  
+      //TODO: move loop out of a function?      
+      self.$(".words").filter(function(){
+        return $(this).data('start-time') >= min && $(this).data('end-time') <= max;
+      }).addClass("highlight");
+    }
+  },
+
+  showTranscriptionComponent: function(transcriptionAttributes){
+     document.querySelector(".transcription-tab-content").innerHTML= render('hypertranscript', transcriptionAttributes);
+    //Show Highlights selections in hypertranscripts
+    this.renderHighlights(transcriptionAttributes,this);
+  }, 
+
+  transcriptionTabLink: function(event){
+    event.preventDefault();
+    
+    var transcriptionId = event.target.attributes.id.value;
+    // get transcription from id 
+    var transcriptionTmp =this.transcriptionsCollection.get(transcriptionId );
+    // console.log("transcriptionTmp",transcriptionTmp, transcriptionTmp.attributes);
+    var currentElement = event.currentTarget.parentElement;
+    // make css blue of current element in tab inactive. 
+    // not knowing which one is active, roll through all of them and remove class.
+    // perhaps better solution is to keep state of current active element and remove class from that one, and then
+    // assigned new one. 
+    $('.liTranscriptionTabLink').removeClass("active");
+    //make current element active. active property is in li that containe link, so adding class to parent.
+    $(currentElement).addClass("active");
+    //update hypertranscript component with current transcript selection.
+   
+    this.showTranscriptionComponent(transcriptionTmp.attributes);
+
+  },
+
+
+  /**
+  * @function playWord
+  */ 
+  playWord: function(e){
+    var wordStartTime = e.currentTarget.dataset.startTime;
+    var videoIdElem="#"+e.currentTarget.dataset.videoId;
+    var videoElem = $(videoIdElem)[0];
+    videoElem.currentTime = wordStartTime;
+    videoElem.play();
+    var vid = document.getElementById(e.currentTarget.dataset.videoId);
+
+    vid.ontimeupdate = function() {
+      $("span.words").filter(function() {
+        if($(this).data("start-time") < $(videoIdElem)[0].currentTime){
+          $(this).removeClass( "text-muted" );
+        }else{
+          $(this).addClass("text-muted");
+        }
+      });
+    };
+  },
+
+  // some kind of view listner to make hyper transcript eg click on word, it moves to correspondind part of video. 
+ 
+  /**
+  * @function render
+  */
+  render: function(){    
+    this.model.attributes.id = this.model.attributes._id;
+    // Not sure if this is the right way to add this to the view.
+    // probably it be better to compose view elements
+    this.model.attributes.transcriptions = this.transcriptions;
+    var sectionTemplate = render('papereditShow', this.model.attributes);
+
+    this.$el.html(sectionTemplate);
+    ///end of modify compiled template to update hilights. 
+    // set default hypertranscript 
+    var transcriptionAttributes = this.transcriptionsCollection.models[0].attributes;
+    
+    // Add default hypertranstript first one of transcription collection. 
+    this.$(".transcription-tab-content").html( render('hypertranscript', transcriptionAttributes));
+    //Show Highlights selections in hypertranscripts
+    // call show hilights on first transcription. 
+    this.renderHighlights(transcriptionAttributes,this);
+    // TODO: mark first LI element of transcription tab as active 
+    // TODO: figure out a better way to serialize data, at th emoment just converting the whole HTML of papereidt into string
+    // // and saving it in events attribute of paperedit. 
+    // // on inizialization rendering repopulating that field. 
+    this.$(".paperedit").html(this.model.get('events'));
+    return this;
+  }
+  
+});
+
+},{"../../edl_composer/index":32,"./utils":31,"backbone":34,"file-saver":36,"jquery":37,"moment":38,"node-timecodes":42,"underscore":117}],27:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -881,7 +2092,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./utils":18,"backbone":21,"jquery":24}],15:[function(require,module,exports){
+},{"./utils":31,"backbone":34,"jquery":37}],28:[function(require,module,exports){
 'use strict';
 var Backbone = require('backbone');
 var render = require('./utils').render;
@@ -897,8 +2108,8 @@ module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'media',
   initialize: function() {
-    console.warn("transcription list element");
-    console.warn(this);
+    // console.warn("transcription list element");
+    // console.warn(this);
 
     this.listenTo(this.model, 'change', this.render);
 
@@ -937,7 +2148,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"./utils":18,"backbone":21}],16:[function(require,module,exports){
+},{"./utils":31,"backbone":34}],29:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var Backbone = require('backbone');
@@ -963,13 +2174,12 @@ module.exports = Backbone.View.extend({
     // milliseconds, checking for transcriptions update every 1/2 minute.
     
     setInterval(function() {
-      console.log("in interval");
-      console.log(transcriptions);
+      // console.log("in interval");
+      // console.log(transcriptions);
       if (transcriptions.remaining().length > 0) {
-
         transcriptions.fetch({reset: true});
-        console.warn("after fetch");
-        console.log(transcriptions);
+        // console.warn("after fetch");
+        // console.log(transcriptions);
       }
     }, 30000);
     
@@ -994,13 +2204,13 @@ module.exports = Backbone.View.extend({
   },
 
   addOne: function(transcriptionItem) {
-    console.debug(transcriptionItem.attributes);
+    // console.debug(transcriptionItem.attributes);
     var transcriptionView = new TranscriptionListElementView({model: transcriptionItem});
     this.$el.append(transcriptionView.render().el);
   }
 });
 
-},{"./transcription_list_element_view":15,"./utils":18,"backbone":21,"jquery":24}],17:[function(require,module,exports){
+},{"./transcription_list_element_view":28,"./utils":31,"backbone":34,"jquery":37}],30:[function(require,module,exports){
 'use strict';
 var $ = require('jquery');
 var _ = require('underscore');
@@ -1026,6 +2236,7 @@ module.exports = Backbone.View.extend({
 
   initialize: function() {
     this.editable = false;
+    
     var tmpHighlights =  this.model.get("highlights");
 
     for (var i =0; i < tmpHighlights.length; i++ ){
@@ -1842,14 +3053,14 @@ module.exports = Backbone.View.extend({
   
 });
 
-},{"../../edl_composer/index":19,"./utils":18,"backbone":21,"file-saver":23,"jquery":24,"moment":25,"node-timecodes":29,"underscore":104}],18:[function(require,module,exports){
+},{"../../edl_composer/index":32,"./utils":31,"backbone":34,"file-saver":36,"jquery":37,"moment":38,"node-timecodes":42,"underscore":117}],31:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var helpers = require('../helpers');
 var underscored = require('underscore.string').underscored;
 
 // Preload all templates from lib/apps/templates (using require-globify)
-var templates = {'404': require('../templates/404.html.ejs'),'home_page': require('../templates/home_page.html.ejs'),'transcription_form_template': require('../templates/transcription_form_template.html.ejs'),'transcription_index': require('../templates/transcription_index.html.ejs'),'transcription_show': require('../templates/transcription_show.html.ejs'),'welcome': require('../templates/welcome.html.ejs')};
+var templates = {'404': require('../templates/404.html.ejs'),'home_page': require('../templates/home_page.html.ejs'),'hypertranscript': require('../templates/hypertranscript.html.ejs'),'papercut': require('../templates/papercut.html.ejs'),'papercut_title': require('../templates/papercut_title.html.ejs'),'paperedit_form_template': require('../templates/paperedit_form_template.html.ejs'),'paperedit_index': require('../templates/paperedit_index.html.ejs'),'paperedit_show': require('../templates/paperedit_show.html.ejs'),'transcription_form_template': require('../templates/transcription_form_template.html.ejs'),'transcription_index': require('../templates/transcription_index.html.ejs'),'transcription_show': require('../templates/transcription_show.html.ejs'),'welcome': require('../templates/welcome.html.ejs')};
 
 /**
  * Find a template
@@ -1873,6 +3084,8 @@ function getTemplate(templateName) {
  * @return {String} html tasty html
  */
 function render(templateName, templateData) {
+  // console.log("called Render",templateName,templateData);
+  // console.log("templateData",templateData);
   templateData = _.clone(templateData || {}); // templateData is optional
   // Get the template function, pass the provided data and extra helper functions
   return getTemplate(templateName)(_.defaults(templateData, helpers, {
@@ -1884,7 +3097,7 @@ function render(templateName, templateData) {
 module.exports.getTemplate = getTemplate;
 module.exports.render = render;
 
-},{"../helpers":5,"../templates/404.html.ejs":8,"../templates/home_page.html.ejs":9,"../templates/transcription_form_template.html.ejs":10,"../templates/transcription_index.html.ejs":11,"../templates/transcription_show.html.ejs":12,"../templates/welcome.html.ejs":13,"jquery":24,"underscore":104,"underscore.string":58}],19:[function(require,module,exports){
+},{"../helpers":6,"../templates/404.html.ejs":11,"../templates/home_page.html.ejs":12,"../templates/hypertranscript.html.ejs":13,"../templates/papercut.html.ejs":14,"../templates/papercut_title.html.ejs":15,"../templates/paperedit_form_template.html.ejs":16,"../templates/paperedit_index.html.ejs":17,"../templates/paperedit_show.html.ejs":18,"../templates/transcription_form_template.html.ejs":19,"../templates/transcription_index.html.ejs":20,"../templates/transcription_show.html.ejs":21,"../templates/welcome.html.ejs":22,"jquery":37,"underscore":117,"underscore.string":71}],32:[function(require,module,exports){
 'use strict';
 /**
 * @module edl_composer
@@ -1904,25 +3117,27 @@ var fs = require("fs");
 var edlSqDemo = {
     "title": "Demo Title of project",
     //offset is optional default is "00:00:00:00"
-    "offset": "00:00:28:08",
     "events":  [
       { "id":1,
         "startTime": 10,
         "endTime": 20,
         "reelName":"SomeReelName",
         "clipName":"Something.mov"
+        "offset": "00:00:28:08"
       },
       { "id":2,
         "startTime": 45,
         "endTime": 55,
         "reelName":"SomeOtherReelName",
-        "clipName":"SomethingElse.mov"
+        "clipName":"SomethingElse.mov",
+        "offset": "00:00:28:08"
       },
         { "id":2,
         "startTime": 45,
         "endTime": 55,
         "reelName":"NA",
         "clipName":"SomethingElse.mov"
+        "offset": "00:00:28:08"
       }
     ]
 }
@@ -1963,25 +3178,24 @@ var timecodes = require('node-timecodes');
 * @constructor
 * @param {Object} config - EDL video sequence as JSON
 * @param {string} config.title - Title of the EDL video sequence
-* @param {string} config.offset - The camera timecode, eg free run, rec run, time of day, repsent a time offset from the time relative to the beginning of the video file timeline. in format of timecode eg "00:00:28:08" such as "hh:mm:ss:ms" because that's how cameras write it in the metadata of the file. if it is  "NA" then it uses default 0.
+
 * @param {Object[]} config.events - array of video segment makind up the EDL sequence
 * @param {string} config.events[].id - "id" of video segment
 * @param {number} config.events[].startTime - start time of video segment in seconds
 * @param {number} config.events[].endTime - end time of video segment in seconds
 * @param {string} config.events[].reelName - reel name of video segment, generally the name of the card the footage was filmed on or not available
 * @param {string} config.events[].clipName - file name that the video segment belongs to. Only file name. no path.
+* @param {string} config.events[].offset - The camera timecode, eg free run, rec run, time of day, repsent a time offset from the time relative to the beginning of the video file timeline. in format of timecode eg "00:00:28:08" such as "hh:mm:ss:ms" because that's how cameras write it in the metadata of the file. if it is  "NA" then it uses default 0.
 * @returns {stirng} EDL - and EDL string that can written to file to import EDL into video editing software.
 */
 var EDL = function(config) {
+  console.log("EDL",config);
   // creating head of EDL with project title.
   this.head = 'TITLE: ' + config.title + '\nFCM: NON-DROP FRAME\n\n';
   // by default setting offset to zero, equivalent to as if it was "00:00:00:00"
-  this.offset = 0;
+  // this.offset = 0;
   // if offset exists
-  if (config.offset != 'NA') {
-    // converting offset to seconds
-    this.offset = timecodes.toSeconds(config.offset) ;
-  }
+
   // creating body of the EDL
   this.body = function() {
     // startime relative to EDL sequence always starts from zero, equivvalent to "00:00:00:00"
@@ -1992,7 +3206,7 @@ var EDL = function(config) {
     for (var j = 0; j < config.events.length; j++) {
       var event =  config.events[j];
       // creating EDL Lines, startTimecode passed as second param so that it can increment for every line
-      var edlLine = new EDLline(event, startTimecode, this.offset);
+      var edlLine = new EDLline(event, startTimecode);
       // set startTimecode to increment for next line by keeping value of current.
       startTimecode = edlLine.tapeOut();
       // transform segment into string
@@ -2015,15 +3229,32 @@ var EDL = function(config) {
 * @param {number} config.events[].endTime - end time of video segment in seconds
 * @param {string} config.events[].reelName - reel name of video segment, generally the name of the card the footage was filmed on or not available
 * @param {string} config.events[].clipName - file name that the video segment belongs to. Only file name. no path.
+* @param {string} config.events[].offet - Camera timecode offset. 
 * @function {string} EDL - and EDL string  for an EDL line.
 */
-var EDLline = function(event, tapeIn, offset) {
+var EDLline = function(event, tapeIn) {
 
-  this.offset = offset;
+console.log("event",event,event.offset);
+  if (event.offset != 'NA') {
+    // converting offset to seconds
+    // if event.offset is not defined.
+    // TODO: make offset optional 
+    if(event.offset){
+      this.offset = timecodes.toSeconds(event.offset) ;
+    }else{
+      this.offset = 0 ;
+    }
+  }else{
+    this.offset = 0;
+  }
+   console.log("this.offset",this.offset);
 
   this.counter = event.id;
 
   this.n = function() {
+    //TODO FIX THIS it says it's undefined!!!!! coz event.it doesn't have a number. 
+    // if undefined should make it's own counter. c
+    // return this.counter; 
     if (this.counter.toString().length == 1) {
       return '00' + this.counter.toString();
     } else if (this.counter.toString().length == 2) {
@@ -2040,6 +3271,7 @@ var EDLline = function(event, tapeIn, offset) {
 
   this.clipInPoint = function() {
     // return convert  this.endTime to TC
+    // console.log("parseFloat(this.startTime) ", parseFloat(this.startTime) );
     return parseFloat(this.startTime) ;
   };
   this.clipOutPoint = function() {
@@ -2070,8 +3302,11 @@ var EDLline = function(event, tapeIn, offset) {
     } else {
       res =  '' + this.n() + '   ' + ' AX  AA/V  C  ';
     }
+    //TODO Figure out why it is giving error with timecode: perhaps console.log the timecodes and see what's
     res += timecodes.fromSeconds(this.clipInPoint() + this.offset) + ' ' + timecodes.fromSeconds(this.clipOutPoint() + this.offset) + ' ';
     res += timecodes.fromSeconds(this.tapeIn) + ' ' + timecodes.fromSeconds(this.tapeOut()) + '\n';
+    // res += this.clipInPoint() + this.offset + ' ' + this.clipOutPoint() + this.offset + ' ';
+    // res += this.tapeIn + ' ' + this.tapeOut() + '\n';
     res += '* FROM CLIP NAME: ' + this.clipName + '\n';
     // Handling lack of reel name in clip.
     if (this.reelName != 'NA') {
@@ -2079,6 +3314,7 @@ var EDLline = function(event, tapeIn, offset) {
     } else {
       res += '\n';
     }
+    // console.log("EDL Compose", res);
     return res;
   };
 
@@ -2086,7 +3322,7 @@ var EDLline = function(event, tapeIn, offset) {
 
 module.exports = EDL;
 
-},{"node-timecodes":29}],20:[function(require,module,exports){
+},{"node-timecodes":42}],33:[function(require,module,exports){
 /**
 * @module srt
 * @description provides a function to convert srt line object json to srt file content as string
@@ -2217,7 +3453,7 @@ var fromSecondsForSrt = function (seconds) {
 
 module.exports.fromSecondsForSrt = fromSecondsForSrt;
 
-},{}],21:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -4141,7 +5377,7 @@ module.exports.fromSecondsForSrt = fromSecondsForSrt;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":24,"underscore":104}],22:[function(require,module,exports){
+},{"jquery":37,"underscore":117}],35:[function(require,module,exports){
 (function (global){
 
 ; jQuery = global.jQuery = require("jquery");
@@ -6527,7 +7763,7 @@ if (typeof jQuery === 'undefined') {
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":24}],23:[function(require,module,exports){
+},{"jquery":37}],36:[function(require,module,exports){
 /* FileSaver.js
  * A saveAs() FileSaver implementation.
  * 1.3.2
@@ -6717,7 +7953,7 @@ if (typeof module !== "undefined" && module.exports) {
   });
 }
 
-},{}],24:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.12.4
  * http://jquery.com/
@@ -17727,7 +18963,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],25:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 //! moment.js
 //! version : 2.16.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
@@ -22027,7 +23263,7 @@ return hooks;
 
 })));
 
-},{}],26:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /*global define:false */
 /**
  * Copyright 2016 Craig Campbell
@@ -23067,7 +24303,7 @@ return hooks;
     }
 }) (typeof window !== 'undefined' ? window : null, typeof  window !== 'undefined' ? document : null);
 
-},{}],27:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -23077,7 +24313,7 @@ exports['default'] = {
   defaultFramerate: 25
 };
 module.exports = exports['default'];
-},{}],28:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -23122,7 +24358,7 @@ function fromSeconds(seconds) {
 
 exports['default'] = fromSeconds;
 module.exports = exports['default'];
-},{"./constants":27}],29:[function(require,module,exports){
+},{"./constants":40}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -23148,7 +24384,7 @@ exports['default'] = {
   toSeconds: _toSeconds2['default']
 };
 module.exports = exports['default'];
-},{"./fromSeconds":28,"./toSeconds":30}],30:[function(require,module,exports){
+},{"./fromSeconds":41,"./toSeconds":43}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -23176,7 +24412,7 @@ function toSeconds(timecode) {
 
 exports['default'] = toSeconds;
 module.exports = exports['default'];
-},{"./constants":27}],31:[function(require,module,exports){
+},{"./constants":40}],44:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -23404,7 +24640,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":32}],32:[function(require,module,exports){
+},{"_process":45}],45:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -23586,7 +24822,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],33:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -23796,7 +25032,7 @@ process.umask = function() { return 0; };
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],34:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 var trim = require('./trim');
 var decap = require('./decapitalize');
 
@@ -23812,7 +25048,7 @@ module.exports = function camelize(str, decapitalize) {
   }
 };
 
-},{"./decapitalize":43,"./trim":96}],35:[function(require,module,exports){
+},{"./decapitalize":56,"./trim":109}],48:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function capitalize(str, lowercaseRest) {
@@ -23822,14 +25058,14 @@ module.exports = function capitalize(str, lowercaseRest) {
   return str.charAt(0).toUpperCase() + remainingChars;
 };
 
-},{"./helper/makeString":53}],36:[function(require,module,exports){
+},{"./helper/makeString":66}],49:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function chars(str) {
   return makeString(str).split('');
 };
 
-},{"./helper/makeString":53}],37:[function(require,module,exports){
+},{"./helper/makeString":66}],50:[function(require,module,exports){
 module.exports = function chop(str, step) {
   if (str == null) return [];
   str = String(str);
@@ -23837,7 +25073,7 @@ module.exports = function chop(str, step) {
   return step > 0 ? str.match(new RegExp('.{1,' + step + '}', 'g')) : [str];
 };
 
-},{}],38:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var camelize = require('./camelize');
 var makeString = require('./helper/makeString');
@@ -23847,14 +25083,14 @@ module.exports = function classify(str) {
   return capitalize(camelize(str.replace(/[\W_]/g, ' ')).replace(/\s/g, ''));
 };
 
-},{"./camelize":34,"./capitalize":35,"./helper/makeString":53}],39:[function(require,module,exports){
+},{"./camelize":47,"./capitalize":48,"./helper/makeString":66}],52:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function clean(str) {
   return trim(str).replace(/\s\s+/g, ' ');
 };
 
-},{"./trim":96}],40:[function(require,module,exports){
+},{"./trim":109}],53:[function(require,module,exports){
 
 var makeString = require('./helper/makeString');
 
@@ -23878,7 +25114,7 @@ module.exports = function cleanDiacritics(str) {
   });
 };
 
-},{"./helper/makeString":53}],41:[function(require,module,exports){
+},{"./helper/makeString":66}],54:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, substr) {
@@ -23890,14 +25126,14 @@ module.exports = function(str, substr) {
   return str.split(substr).length - 1;
 };
 
-},{"./helper/makeString":53}],42:[function(require,module,exports){
+},{"./helper/makeString":66}],55:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function dasherize(str) {
   return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 };
 
-},{"./trim":96}],43:[function(require,module,exports){
+},{"./trim":109}],56:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function decapitalize(str) {
@@ -23905,7 +25141,7 @@ module.exports = function decapitalize(str) {
   return str.charAt(0).toLowerCase() + str.slice(1);
 };
 
-},{"./helper/makeString":53}],44:[function(require,module,exports){
+},{"./helper/makeString":66}],57:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 function getIndent(str) {
@@ -23935,7 +25171,7 @@ module.exports = function dedent(str, pattern) {
   return str.replace(reg, '');
 };
 
-},{"./helper/makeString":53}],45:[function(require,module,exports){
+},{"./helper/makeString":66}],58:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -23950,7 +25186,7 @@ module.exports = function endsWith(str, ends, position) {
   return position >= 0 && str.indexOf(ends, position) === position;
 };
 
-},{"./helper/makeString":53,"./helper/toPositive":55}],46:[function(require,module,exports){
+},{"./helper/makeString":66,"./helper/toPositive":68}],59:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var escapeChars = require('./helper/escapeChars');
 
@@ -23969,7 +25205,7 @@ module.exports = function escapeHTML(str) {
   });
 };
 
-},{"./helper/escapeChars":50,"./helper/makeString":53}],47:[function(require,module,exports){
+},{"./helper/escapeChars":63,"./helper/makeString":66}],60:[function(require,module,exports){
 module.exports = function() {
   var result = {};
 
@@ -23981,7 +25217,7 @@ module.exports = function() {
   return result;
 };
 
-},{}],48:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function adjacent(str, direction) {
@@ -23992,7 +25228,7 @@ module.exports = function adjacent(str, direction) {
   return str.slice(0, -1) + String.fromCharCode(str.charCodeAt(str.length - 1) + direction);
 };
 
-},{"./makeString":53}],49:[function(require,module,exports){
+},{"./makeString":66}],62:[function(require,module,exports){
 var escapeRegExp = require('./escapeRegExp');
 
 module.exports = function defaultToWhiteSpace(characters) {
@@ -24004,7 +25240,7 @@ module.exports = function defaultToWhiteSpace(characters) {
     return '[' + escapeRegExp(characters) + ']';
 };
 
-},{"./escapeRegExp":51}],50:[function(require,module,exports){
+},{"./escapeRegExp":64}],63:[function(require,module,exports){
 /* We're explicitly defining the list of entities we want to escape.
 nbsp is an HTML entity, but we don't want to escape all space characters in a string, hence its omission in this map.
 
@@ -24025,14 +25261,14 @@ var escapeChars = {
 
 module.exports = escapeChars;
 
-},{}],51:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function escapeRegExp(str) {
   return makeString(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 };
 
-},{"./makeString":53}],52:[function(require,module,exports){
+},{"./makeString":66}],65:[function(require,module,exports){
 /*
 We're explicitly defining the list of entities that might see in escape HTML strings
 */
@@ -24053,7 +25289,7 @@ var htmlEntities = {
 
 module.exports = htmlEntities;
 
-},{}],53:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 /**
  * Ensure some object is a coerced to a string
  **/
@@ -24062,7 +25298,7 @@ module.exports = function makeString(object) {
   return '' + object;
 };
 
-},{}],54:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = function strRepeat(str, qty){
   if (qty < 1) return '';
   var result = '';
@@ -24073,12 +25309,12 @@ module.exports = function strRepeat(str, qty){
   return result;
 };
 
-},{}],55:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 module.exports = function toPositive(number) {
   return number < 0 ? 0 : (+number || 0);
 };
 
-},{}],56:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var underscored = require('./underscored');
 var trim = require('./trim');
@@ -24087,7 +25323,7 @@ module.exports = function humanize(str) {
   return capitalize(trim(underscored(str).replace(/_id$/, '').replace(/_/g, ' ')));
 };
 
-},{"./capitalize":35,"./trim":96,"./underscored":98}],57:[function(require,module,exports){
+},{"./capitalize":48,"./trim":109,"./underscored":111}],70:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function include(str, needle) {
@@ -24095,7 +25331,7 @@ module.exports = function include(str, needle) {
   return makeString(str).indexOf(needle) !== -1;
 };
 
-},{"./helper/makeString":53}],58:[function(require,module,exports){
+},{"./helper/makeString":66}],71:[function(require,module,exports){
 /*
 * Underscore.string
 * (c) 2010 Esa-Matti Suuronen <esa-matti aet suuronen dot org>
@@ -24240,21 +25476,21 @@ for (var method in prototypeMethods) prototype2method(prototypeMethods[method]);
 
 module.exports = s;
 
-},{"./camelize":34,"./capitalize":35,"./chars":36,"./chop":37,"./classify":38,"./clean":39,"./cleanDiacritics":40,"./count":41,"./dasherize":42,"./decapitalize":43,"./dedent":44,"./endsWith":45,"./escapeHTML":46,"./exports":47,"./helper/escapeRegExp":51,"./humanize":56,"./include":57,"./insert":59,"./isBlank":60,"./join":61,"./levenshtein":62,"./lines":63,"./lpad":64,"./lrpad":65,"./ltrim":66,"./map":67,"./naturalCmp":68,"./numberFormat":69,"./pad":70,"./pred":71,"./prune":72,"./quote":73,"./repeat":74,"./replaceAll":75,"./reverse":76,"./rpad":77,"./rtrim":78,"./slugify":79,"./splice":80,"./sprintf":81,"./startsWith":82,"./strLeft":83,"./strLeftBack":84,"./strRight":85,"./strRightBack":86,"./stripTags":87,"./succ":88,"./surround":89,"./swapCase":90,"./titleize":91,"./toBoolean":92,"./toNumber":93,"./toSentence":94,"./toSentenceSerial":95,"./trim":96,"./truncate":97,"./underscored":98,"./unescapeHTML":99,"./unquote":100,"./vsprintf":101,"./words":102,"./wrap":103}],59:[function(require,module,exports){
+},{"./camelize":47,"./capitalize":48,"./chars":49,"./chop":50,"./classify":51,"./clean":52,"./cleanDiacritics":53,"./count":54,"./dasherize":55,"./decapitalize":56,"./dedent":57,"./endsWith":58,"./escapeHTML":59,"./exports":60,"./helper/escapeRegExp":64,"./humanize":69,"./include":70,"./insert":72,"./isBlank":73,"./join":74,"./levenshtein":75,"./lines":76,"./lpad":77,"./lrpad":78,"./ltrim":79,"./map":80,"./naturalCmp":81,"./numberFormat":82,"./pad":83,"./pred":84,"./prune":85,"./quote":86,"./repeat":87,"./replaceAll":88,"./reverse":89,"./rpad":90,"./rtrim":91,"./slugify":92,"./splice":93,"./sprintf":94,"./startsWith":95,"./strLeft":96,"./strLeftBack":97,"./strRight":98,"./strRightBack":99,"./stripTags":100,"./succ":101,"./surround":102,"./swapCase":103,"./titleize":104,"./toBoolean":105,"./toNumber":106,"./toSentence":107,"./toSentenceSerial":108,"./trim":109,"./truncate":110,"./underscored":111,"./unescapeHTML":112,"./unquote":113,"./vsprintf":114,"./words":115,"./wrap":116}],72:[function(require,module,exports){
 var splice = require('./splice');
 
 module.exports = function insert(str, i, substr) {
   return splice(str, i, 0, substr);
 };
 
-},{"./splice":80}],60:[function(require,module,exports){
+},{"./splice":93}],73:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function isBlank(str) {
   return (/^\s*$/).test(makeString(str));
 };
 
-},{"./helper/makeString":53}],61:[function(require,module,exports){
+},{"./helper/makeString":66}],74:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var slice = [].slice;
 
@@ -24265,7 +25501,7 @@ module.exports = function join() {
   return args.join(makeString(separator));
 };
 
-},{"./helper/makeString":53}],62:[function(require,module,exports){
+},{"./helper/makeString":66}],75:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 /**
@@ -24319,27 +25555,27 @@ module.exports = function levenshtein(str1, str2) {
   return nextCol;
 };
 
-},{"./helper/makeString":53}],63:[function(require,module,exports){
+},{"./helper/makeString":66}],76:[function(require,module,exports){
 module.exports = function lines(str) {
   if (str == null) return [];
   return String(str).split(/\r\n?|\n/);
 };
 
-},{}],64:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lpad(str, length, padStr) {
   return pad(str, length, padStr);
 };
 
-},{"./pad":70}],65:[function(require,module,exports){
+},{"./pad":83}],78:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lrpad(str, length, padStr) {
   return pad(str, length, padStr, 'both');
 };
 
-},{"./pad":70}],66:[function(require,module,exports){
+},{"./pad":83}],79:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimLeft = String.prototype.trimLeft;
@@ -24351,7 +25587,7 @@ module.exports = function ltrim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],67:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],80:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, callback) {
@@ -24362,7 +25598,7 @@ module.exports = function(str, callback) {
   return str.replace(/./g, callback);
 };
 
-},{"./helper/makeString":53}],68:[function(require,module,exports){
+},{"./helper/makeString":66}],81:[function(require,module,exports){
 module.exports = function naturalCmp(str1, str2) {
   if (str1 == str2) return 0;
   if (!str1) return -1;
@@ -24393,7 +25629,7 @@ module.exports = function naturalCmp(str1, str2) {
   return str1 < str2 ? -1 : 1;
 };
 
-},{}],69:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function numberFormat(number, dec, dsep, tsep) {
   if (isNaN(number) || number == null) return '';
 
@@ -24407,7 +25643,7 @@ module.exports = function numberFormat(number, dec, dsep, tsep) {
   return fnums.replace(/(\d)(?=(?:\d{3})+$)/g, '$1' + tsep) + decimals;
 };
 
-},{}],70:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -24435,14 +25671,14 @@ module.exports = function pad(str, length, padStr, type) {
   }
 };
 
-},{"./helper/makeString":53,"./helper/strRepeat":54}],71:[function(require,module,exports){
+},{"./helper/makeString":66,"./helper/strRepeat":67}],84:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, -1);
 };
 
-},{"./helper/adjacent":48}],72:[function(require,module,exports){
+},{"./helper/adjacent":61}],85:[function(require,module,exports){
 /**
  * _s.prune: a more elegant version of truncate
  * prune extra chars, never leaving a half-chopped word.
@@ -24471,14 +25707,14 @@ module.exports = function prune(str, length, pruneStr) {
   return (template + pruneStr).length > str.length ? str : str.slice(0, template.length) + pruneStr;
 };
 
-},{"./helper/makeString":53,"./rtrim":78}],73:[function(require,module,exports){
+},{"./helper/makeString":66,"./rtrim":91}],86:[function(require,module,exports){
 var surround = require('./surround');
 
 module.exports = function quote(str, quoteChar) {
   return surround(str, quoteChar || '"');
 };
 
-},{"./surround":89}],74:[function(require,module,exports){
+},{"./surround":102}],87:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -24496,7 +25732,7 @@ module.exports = function repeat(str, qty, separator) {
   return repeat.join(separator);
 };
 
-},{"./helper/makeString":53,"./helper/strRepeat":54}],75:[function(require,module,exports){
+},{"./helper/makeString":66,"./helper/strRepeat":67}],88:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function replaceAll(str, find, replace, ignorecase) {
@@ -24506,21 +25742,21 @@ module.exports = function replaceAll(str, find, replace, ignorecase) {
   return makeString(str).replace(reg, replace);
 };
 
-},{"./helper/makeString":53}],76:[function(require,module,exports){
+},{"./helper/makeString":66}],89:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function reverse(str) {
   return chars(str).reverse().join('');
 };
 
-},{"./chars":36}],77:[function(require,module,exports){
+},{"./chars":49}],90:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function rpad(str, length, padStr) {
   return pad(str, length, padStr, 'right');
 };
 
-},{"./pad":70}],78:[function(require,module,exports){
+},{"./pad":83}],91:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimRight = String.prototype.trimRight;
@@ -24532,7 +25768,7 @@ module.exports = function rtrim(str, characters) {
   return str.replace(new RegExp(characters + '+$'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],79:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],92:[function(require,module,exports){
 var trim = require('./trim');
 var dasherize = require('./dasherize');
 var cleanDiacritics = require('./cleanDiacritics');
@@ -24541,7 +25777,7 @@ module.exports = function slugify(str) {
   return trim(dasherize(cleanDiacritics(str).replace(/[^\w\s-]/g, '-').toLowerCase()), '-');
 };
 
-},{"./cleanDiacritics":40,"./dasherize":42,"./trim":96}],80:[function(require,module,exports){
+},{"./cleanDiacritics":53,"./dasherize":55,"./trim":109}],93:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function splice(str, i, howmany, substr) {
@@ -24550,13 +25786,13 @@ module.exports = function splice(str, i, howmany, substr) {
   return arr.join('');
 };
 
-},{"./chars":36}],81:[function(require,module,exports){
+},{"./chars":49}],94:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').sprintf,
   'sprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":33,"util-deprecate":105}],82:[function(require,module,exports){
+},{"sprintf-js":46,"util-deprecate":118}],95:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -24567,7 +25803,7 @@ module.exports = function startsWith(str, starts, position) {
   return str.lastIndexOf(starts, position) === position;
 };
 
-},{"./helper/makeString":53,"./helper/toPositive":55}],83:[function(require,module,exports){
+},{"./helper/makeString":66,"./helper/toPositive":68}],96:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeft(str, sep) {
@@ -24577,7 +25813,7 @@ module.exports = function strLeft(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":53}],84:[function(require,module,exports){
+},{"./helper/makeString":66}],97:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeftBack(str, sep) {
@@ -24587,7 +25823,7 @@ module.exports = function strLeftBack(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":53}],85:[function(require,module,exports){
+},{"./helper/makeString":66}],98:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRight(str, sep) {
@@ -24597,7 +25833,7 @@ module.exports = function strRight(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":53}],86:[function(require,module,exports){
+},{"./helper/makeString":66}],99:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRightBack(str, sep) {
@@ -24607,26 +25843,26 @@ module.exports = function strRightBack(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":53}],87:[function(require,module,exports){
+},{"./helper/makeString":66}],100:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function stripTags(str) {
   return makeString(str).replace(/<\/?[^>]+>/g, '');
 };
 
-},{"./helper/makeString":53}],88:[function(require,module,exports){
+},{"./helper/makeString":66}],101:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, 1);
 };
 
-},{"./helper/adjacent":48}],89:[function(require,module,exports){
+},{"./helper/adjacent":61}],102:[function(require,module,exports){
 module.exports = function surround(str, wrapper) {
   return [wrapper, str, wrapper].join('');
 };
 
-},{}],90:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function swapCase(str) {
@@ -24635,7 +25871,7 @@ module.exports = function swapCase(str) {
   });
 };
 
-},{"./helper/makeString":53}],91:[function(require,module,exports){
+},{"./helper/makeString":66}],104:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function titleize(str) {
@@ -24644,7 +25880,7 @@ module.exports = function titleize(str) {
   });
 };
 
-},{"./helper/makeString":53}],92:[function(require,module,exports){
+},{"./helper/makeString":66}],105:[function(require,module,exports){
 var trim = require('./trim');
 
 function boolMatch(s, matchers) {
@@ -24666,14 +25902,14 @@ module.exports = function toBoolean(str, trueValues, falseValues) {
   if (boolMatch(str, falseValues || ['false', '0'])) return false;
 };
 
-},{"./trim":96}],93:[function(require,module,exports){
+},{"./trim":109}],106:[function(require,module,exports){
 module.exports = function toNumber(num, precision) {
   if (num == null) return 0;
   var factor = Math.pow(10, isFinite(precision) ? precision : 0);
   return Math.round(num * factor) / factor;
 };
 
-},{}],94:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 var rtrim = require('./rtrim');
 
 module.exports = function toSentence(array, separator, lastSeparator, serial) {
@@ -24687,14 +25923,14 @@ module.exports = function toSentence(array, separator, lastSeparator, serial) {
   return a.length ? a.join(separator) + lastSeparator + lastMember : lastMember;
 };
 
-},{"./rtrim":78}],95:[function(require,module,exports){
+},{"./rtrim":91}],108:[function(require,module,exports){
 var toSentence = require('./toSentence');
 
 module.exports = function toSentenceSerial(array, sep, lastSep) {
   return toSentence(array, sep, lastSep, true);
 };
 
-},{"./toSentence":94}],96:[function(require,module,exports){
+},{"./toSentence":107}],109:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrim = String.prototype.trim;
@@ -24706,7 +25942,7 @@ module.exports = function trim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":49,"./helper/makeString":53}],97:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],110:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function truncate(str, length, truncateStr) {
@@ -24716,14 +25952,14 @@ module.exports = function truncate(str, length, truncateStr) {
   return str.length > length ? str.slice(0, length) + truncateStr : str;
 };
 
-},{"./helper/makeString":53}],98:[function(require,module,exports){
+},{"./helper/makeString":66}],111:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function underscored(str) {
   return trim(str).replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
 };
 
-},{"./trim":96}],99:[function(require,module,exports){
+},{"./trim":109}],112:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var htmlEntities = require('./helper/htmlEntities');
 
@@ -24745,7 +25981,7 @@ module.exports = function unescapeHTML(str) {
   });
 };
 
-},{"./helper/htmlEntities":52,"./helper/makeString":53}],100:[function(require,module,exports){
+},{"./helper/htmlEntities":65,"./helper/makeString":66}],113:[function(require,module,exports){
 module.exports = function unquote(str, quoteChar) {
   quoteChar = quoteChar || '"';
   if (str[0] === quoteChar && str[str.length - 1] === quoteChar)
@@ -24753,13 +25989,13 @@ module.exports = function unquote(str, quoteChar) {
   else return str;
 };
 
-},{}],101:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').vsprintf,
   'vsprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":33,"util-deprecate":105}],102:[function(require,module,exports){
+},{"sprintf-js":46,"util-deprecate":118}],115:[function(require,module,exports){
 var isBlank = require('./isBlank');
 var trim = require('./trim');
 
@@ -24768,7 +26004,7 @@ module.exports = function words(str, delimiter) {
   return trim(str, delimiter).split(delimiter || /\s+/);
 };
 
-},{"./isBlank":60,"./trim":96}],103:[function(require,module,exports){
+},{"./isBlank":73,"./trim":109}],116:[function(require,module,exports){
 // Wrap
 // wraps a string by a certain width
 
@@ -24872,7 +26108,7 @@ module.exports = function wrap(str, options){
   }
 };
 
-},{"./helper/makeString":53}],104:[function(require,module,exports){
+},{"./helper/makeString":66}],117:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -26422,7 +27658,7 @@ module.exports = function wrap(str, options){
   }
 }.call(this));
 
-},{}],105:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 (function (global){
 
 /**
@@ -26493,7 +27729,7 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],106:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 (function (global){
 
 ; _ = global._ = require("underscore");
@@ -26570,4 +27806,4 @@ Mousetrap = global.Mousetrap = require("mousetrap");
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"backbone":21,"mousetrap":26,"underscore":104}]},{},[2]);
+},{"backbone":34,"mousetrap":39,"underscore":117}]},{},[2]);
