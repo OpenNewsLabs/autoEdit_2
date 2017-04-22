@@ -1,5 +1,10 @@
 [
   {
+  "id": 1,
+  "_id": "c41eab1f",
+  "description": "Yo! description ",
+  "offset": "00:00:00:00",
+  "videoId_": "1",
   "title": "Test Paperedit ",
   "events": [
     {

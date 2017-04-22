@@ -77,7 +77,7 @@ function makeLinvoCallback(success, error) {
       return error(err);
     }
     // return transcription collection
-    console.log("found",found);
+    // console.log("found",found);
     success(found);
   };
 }

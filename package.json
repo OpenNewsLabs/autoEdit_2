@@ -17,7 +17,8 @@
     "width": 800,
     "height": 670,
     "position": "mouse",
-        "min_height": 500
+    "min_width": 770,
+    "min_height": 500
   },
   "platformOverrides": {
     "win": {
@@ -39,7 +40,7 @@
   "scripts": {
     "test": "jasmine",
     "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
-    "start": "nw",
+    "nwjs": "nw",
     "make_js": "browserify lib/app/app.js > nwjs/app.js",
     "make_nw": "node build.js",
     "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
@@ -48,7 +49,7 @@
     "jsdoc": "jsdoc *.js  -c ./config/jsdoc_conf.json",
     "make_demo": "node ./config/make_demo.js",
     "build": "npm install && npm run make_js && npm run make_nw && npm run make_dmg",
-    "start_make_js": "npm run make_js && npm start"
+    "start": "npm run make_js && npm run nwjs"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "ISC",
