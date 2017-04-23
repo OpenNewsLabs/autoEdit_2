@@ -238,4 +238,9 @@ audio {
   background-color: black;
 }
 
+
+.currentPapercutElement {
+  border-bottom: solid orange 2px;
+}
+
  
