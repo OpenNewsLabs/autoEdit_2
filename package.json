@@ -42,13 +42,16 @@
     "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
     "nwjs": "nw",
     "make_js": "browserify lib/app/app.js > nwjs/app.js",
-    "make_nw": "node build.js",
-    "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
+
     "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
     "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
     "jsdoc": "jsdoc *.js  -c ./config/jsdoc_conf.json",
     "make_demo": "node ./config/make_demo.js",
+    
+    "make_nw": "node build.js",
+    "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
     "build": "npm install && npm run make_js && npm run make_nw && npm run make_dmg",
+    
     "start": "npm run make_js && npm run nwjs"
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
@@ -67,16 +70,17 @@
     "mousetrap": "^1.6.0",
     "node-timecodes": "^2.4.1",
     "node-underscorify": "0.0.14",
-    "nw": "^0.12.3",
+    "nw": "0.12.3",
     "path": "^0.12.7",
     "require-globify": "^1.4.1",
     "sortablejs": "^1.5.1",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4",
-    "watson-developer-cloud": "^2.4.1"
+    "watson-developer-cloud": "2.4.1"
   },
   "devDependencies": {
     "appdmg": "^0.4.5",
+    "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "copy-dir": "^0.3.0",
     "docco": "^0.7.0",
@@ -84,6 +88,10 @@
     "jsdoc": "^3.4.1",
     "nw-builder": "^2.2.6",
     "watchify": "^3.7.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/OpenNewsLabs/autoEdit_2.git"
   },
   "browserify": {
     "transform": [
@@ -102,7 +110,8 @@
         }
       ],
       "browserify-shim",
-      "require-globify"
+      "require-globify",
+      "babelify"
     ]
   },
   "browser": {
