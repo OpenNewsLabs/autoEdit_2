@@ -144,29 +144,33 @@ DB.create = function(model, success, error){
             });
           });
         },
-        cbTranscription: function(respT) {
+        cbTranscription: function(respErr, respT) {
           // updating current transcription with transcription json.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.debug('got transcription json for transcription: ' + trs._id);
-            console.log(trs);
-            // updating transcription attributes with result
-            trs.audioFile = respT.audioFile;
-            trs.processedAudio = respT.processedAudio;
-            trs.text = respT.text;
-            // if(respErr){
-            //   trs.status = null;
-            // }else{
+            // updating transcription attributes with result         
+            if(respErr){
+              trs.status = null;
+              trs.error = respErr;
+              model.set(trs);
+              console.error(respErr);
+            }else{
+              console.debug('got transcription json for transcription: ' + trs._id);
+              console.log(trs);
+              trs.audioFile = respT.audioFile;
+              trs.processedAudio = respT.processedAudio;
+              trs.text = respT.text;
               trs.status = true;
-            // }
-            
-            // saving current transcription
-            trs.save(function(err) { 
-              console.warn("does the transcription contain the metadata");
-               console.warn(trs.metadata);
-               console.log(trs);
-               model.set(trs);
+             }//else no error in transcription callback
+              // saving current transcription
+              trs.save(function(err) { 
+                console.warn("does the transcription contain the metadata");
+                 console.warn(trs.metadata);
+                 console.log(trs);
+                 model.set(trs);
 
-              if (err) console.error(err); });
+                if (err) console.error(err); 
+              });
+           
           });
         },
         cbVideo: function(respV) {
