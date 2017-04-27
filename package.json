@@ -14,7 +14,7 @@
     "show_in_taskbar": true,
     "transparent": false,
     "icon": "assets/nw.icns",
-    "width": 800,
+    "width": 856,
     "height": 670,
     "position": "mouse",
     "min_width": 770,
