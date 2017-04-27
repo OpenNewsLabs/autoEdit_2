@@ -153,7 +153,12 @@ DB.create = function(model, success, error){
             trs.audioFile = respT.audioFile;
             trs.processedAudio = respT.processedAudio;
             trs.text = respT.text;
-            trs.status = true;
+            // if(respErr){
+            //   trs.status = null;
+            // }else{
+              trs.status = true;
+            // }
+            
             // saving current transcription
             trs.save(function(err) { 
               console.warn("does the transcription contain the metadata");
