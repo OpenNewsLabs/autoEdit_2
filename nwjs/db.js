@@ -123,7 +123,7 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
-        keys: window.IBMWatsonKeys,
+        keys: window.IBMWatsonKeys(),
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
         cbMetadata: function(respM) {

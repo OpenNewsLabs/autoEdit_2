@@ -14,10 +14,10 @@
     "show_in_taskbar": true,
     "transparent": false,
     "icon": "assets/nw.icns",
-    "width": 856,
+    "width": 1000,
     "height": 670,
     "position": "mouse",
-    "min_width": 770,
+    "min_width": 1000,
     "min_height": 500
   },
   "platformOverrides": {

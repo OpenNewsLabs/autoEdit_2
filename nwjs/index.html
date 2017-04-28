@@ -38,10 +38,12 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
           <li ><a href="#transcriptions">Transcriptions</a></li>
-          <li > <a href="#transcriptions/new">New Transcription</a> </li>
+          <li ><a href="#transcriptions/new">New Transcription</a> </li>
           <li ><a href="#paperedits">Paperedits</a></li>
           <li ><a href="#paperedits/new">New Paperedit</a></li>
-          <li> <a href="https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true" class="custom-dbox-popup"  target="_blank">Donate </a> </li>
+          <!-- settings -->
+          <li ><a href="#settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
+          <li><a href="https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true" class="custom-dbox-popup"  target="_blank"><span class="glyphicon glyphicon-gift" aria-hidden="true"> Donate</a></li>
 
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Help
@@ -49,7 +51,7 @@
         <ul class="dropdown-menu">
           <li><a href="https://opennewslabs.github.io/autoEdit_2"
                  target="_blank">Help</a></li>
-          <li> <a href="http://eepurl.com/cMzwSX " target="_blank">Mailing list</a>
+          <li><a href="http://eepurl.com/cMzwSX " target="_blank">Mailing list</a>
           <li><a href="https://twitter.com/autoEdit2" target="_blank">Twitter</a></li>
           <li><a href="https://www.facebook.com/autoEdit.io/" target="_blank">Facebook</a></li>
           <li><a href="mailto:info@autoEdit.io?Subject=autoEdit%202" target="_blank">Email</a></li>
@@ -70,9 +72,11 @@
     window.frontEndEnviromentNWJS = true;
     window.nw = require('nw.gui');
     window.DB = require('./db.js');
-    require('./watson_keys.js')(function(keys) {
-      window.IBMWatsonKeys = keys;
-    })
+ 
+    window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
+    window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
+    window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
+ 
   } else {
     console.debug("In Browser Enviroment");
     window.frontEndEnviromentNWJS = false;
