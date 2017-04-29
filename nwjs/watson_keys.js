@@ -10,7 +10,7 @@ window.document.addEventListener('DOMContentLoaded', function() {
   } 
 });
 
-//helper funciton 
+//helper funciton to check/validate the keys
 function keysAreValid(tempKeys){
   //if hte object has the required attributes
     if (tempKeys.username.length > 0 && tempKeys.password.length > 0) {
@@ -31,7 +31,6 @@ function getWatsonAPIkeys(){
 }
 
 //set
-//TODO: add some validation/checks.
 function setWatsonAPIkeys(keys){
   if(keysAreValid(keys)){
      fs.writeFileSync(watsonKeysPath, JSON.stringify(keys));

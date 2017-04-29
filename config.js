@@ -5,6 +5,6 @@ var path               = require("path");
 module.exports = {
   serverUrl: '',
   appName: 'autoEdit 2',
-  ffmpegPath: path.join(process.cwd(),"bin","ffmpeg"),
-  ffprobePath: path.join(process.cwd(),"bin","ffprobe"),
+  ffmpegPath: path.join(process.cwd(),"lib/bin","ffmpeg"),
+  ffprobePath: path.join(process.cwd(),"lib/bin","ffprobe"),
 };
