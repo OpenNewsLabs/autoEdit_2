@@ -1,7 +1,7 @@
 # Site title and subtitle. This is used in _includes/header.html
 title: 'autoEdit 2'
 subtitle: 'Fast text based video editing'
-email: 'info@autoEdit.io'
+email: 'pietro@autoEdit.io'
 
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''

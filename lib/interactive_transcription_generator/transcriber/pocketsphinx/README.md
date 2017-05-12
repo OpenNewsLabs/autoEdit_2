@@ -28,4 +28,19 @@ endTime <--
 text
 
 
-Running test on a 5 min clip, in autoEdit with pocketsphinx took: 
+Running test on a 5 min clip, in autoEdit with pocketsphinx took:?
+
+
+
+--- 
+
+## General transcriber module 
+
+- Convert to audio (stt specs)
+- split // into 5 min chunks 
+- send // to STT 
+- parse // convert results into autoEdit json spec
+- write out  // reconnect results into one json 
+
+
+

@@ -46,7 +46,7 @@ See the [user manual for]({{ site.baseurl }}/user_manual/usage.html) for a walkt
 ### Open source 
 
 This is an [open source project]({{site.github}}){:target="_blank"} 
-created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/){:target="_blank"} by [Pietro Passarelli](http://pietropassarelli.com){:target="_blank"} with the [Vox Media product team](http://product.voxmedia.com){:target="_blank"}. You can [contribute]({{site.github}}){:target="_blank"} and/or <a href="mailto:{{site.email}}?Subject=autoEdit%202%20question">propose ideas</a> you have for this project.
+originally created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/){:target="_blank"} by [Pietro Passarelli](http://pietropassarelli.com){:target="_blank"} with the [Vox Media product team](http://product.voxmedia.com){:target="_blank"}. You can [contribute]({{site.github}}){:target="_blank"} and/or <a href="mailto:{{site.email}}?Subject=autoEdit%202%20question">propose ideas</a> you have for this project.
 
 This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues){:target="_blank"} or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
 

@@ -1,5 +1,12 @@
 var fs = require('fs');
-var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+
+if (typeof window.nw !== 'undefined') {
+  var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+}else{
+  //not in nwjs 
+  var watsonKeysPath = "/";
+}
+
 var watsonKeys = {username: "", password: ""};
 var watsonKeysSet = false;
 

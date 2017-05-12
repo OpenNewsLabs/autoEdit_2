@@ -1,19 +1,20 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (process){
-var path               = require("path");
+var path = require("path");
 // var ffmpegPath        = require('ffmpeg-static').path;
 // var ffprobePath       = require('ffprobe-static').path;
 
 module.exports = {
   serverUrl: '',
   appName: 'autoEdit 2',
-  ffmpegPath: path.join(process.cwd(),"bin","ffmpeg"),
-  ffprobePath: path.join(process.cwd(),"bin","ffprobe"),
+  ffmpegPath: path.join(process.cwd(), "lib/bin", "ffmpeg"),
+  ffprobePath: path.join(process.cwd(), "lib/bin", "ffprobe")
 };
 
 }).call(this,require('_process'))
-},{"_process":45,"path":44}],2:[function(require,module,exports){
+},{"_process":47,"path":46}],2:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 
@@ -21,9 +22,6 @@ var Backbone = require('backbone');
 // and have nothing to export directly.
 require('bootstrap');
 require('backbone.mousetrap');
-
-
-
 
 // Connect up the backend for backbone
 if (typeof window.DB !== 'undefined') {
@@ -39,7 +37,7 @@ var TranscriptionRouter = require('./router');
 var PapereditRouter = require('./router_paperedit');
 
 // This starts the application
-$(document).ready(function() {
+$(document).ready(function () {
   // name in navbar brand element
   $('#brandAppName').text(config.appName);
 
@@ -59,17 +57,8 @@ $(document).ready(function() {
 
   if (typeof window.nw !== 'undefined') {
     var gui = window.nw;
-
-    //listen for open event if user drops file onto dock 
-    //https://github.com/nwjs/nw.js/wiki/Handling-files-and-arguments
-    //TODO: check if it actually works.
-    // gui.App.on('open', function(path) {
-    //   console.log('Opening file: ' + path);
-    // });
-
     // Create menu
     var menu = new gui.Menu({ type: 'menubar' });
-
     // Default mac menu bar comands + copy, cut, paste
     // TODO: replace with variable for app name, centralize from package.json name.
     menu.createMacBuiltin(config.appName);
@@ -84,11 +73,11 @@ $(document).ready(function() {
      */
     var option = {
       key: 'Ctrl+Alt+J',
-      active: function() {
+      active: function () {
         console.log('Global desktop keyboard shortcut:', this.key, 'active.');
         window.nw.Window.get().showDevTools();
       },
-      failed: function(msg) {
+      failed: function (msg) {
         // :(, fail to register the |key| or couldn't parse the |key|.
         console.error(msg);
       }
@@ -99,19 +88,17 @@ $(document).ready(function() {
     // Register global desktop shortcut, which can work without focus.
     gui.App.registerGlobalHotKey(shortcut);
     // end of console keyboard shortcut
-    
+
     // Override all external link clicks:
-    $('body').on('click', '[target=_blank]', function(eve) {
+    $('body').on('click', '[target=_blank]', function (eve) {
       eve.preventDefault();
       gui.Shell.openExternal($(this).attr('href'));
     });
   } else {
     console.debug('NOT USING NWJS ');
-
     // Chrome as both safari and chrome in the user agent
-    if (navigator.userAgent.indexOf('Safari') != -1 &&
-        navigator.userAgent.indexOf('Chrome') == -1) {
-      window.userAgentSafari = true ;
+    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
+      window.userAgentSafari = true;
     }
   }
 
@@ -120,12 +107,19 @@ $(document).ready(function() {
   window.appPaperedit = new PapereditRouter();
   Backbone.history.start();
 
-  // TODO: not sure if this is the right thing to do
-  window.location = 'index.html#transcriptions';
+  //if in nwjs mode check if the watson keys are set. 
+  if (typeof window.nw !== 'undefined') {
+    if (!window.areWatsonAPIkeysSet()) {
+      window.location = 'index.html#settings';
+    } else {
+      window.location = 'index.html#transcriptions';
+    }
+  }
 });
 
-},{"../../config":1,"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":34,"backbone.mousetrap":119,"bootstrap":35,"jquery":37}],3:[function(require,module,exports){
+},{"../../config":1,"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":36,"backbone.mousetrap":121,"bootstrap":37,"jquery":39}],3:[function(require,module,exports){
 'use strict';
+
 var Backbone = require('backbone');
 var config = require('../../../config');
 var Paperedit = require('../models/paperedit');
@@ -136,39 +130,15 @@ var Paperedit = require('../models/paperedit');
  */
 module.exports = Backbone.Collection.extend({
   model: Paperedit,
-  url: config.serverUrl + '/paperedit',
-  // Filter down the list of all transcription models that are completed.
-  // completed: function() {
-  //   return this.filter(function(paperedit) {
-  //     return paperedit.get('status');
-  //   });
-  // },
-  // Filter down the list to only todo items that are still not finished.
-  // remaining: function() {
-  //   // returns transcription models that are complete, eg status == true
-  //   return this.without.apply(this, this.completed());
-  // },
-  // A nextOrder() method implements a sequence generator while a comparator()
-  // sorts items by their insertion order.
-  // We keep the Todos in sequential order, despite being saved by unordered
-  // GUID in the database. This generates the next order number for new items.
-  // nextOrder: function() {
-  //   if (!this.length) {
-  //     return 1;
-  //   }
-  //   return this.last().get('order') + 1;
-  // },
-  // Todos are sorted by their original insertion order.
-  // comparator: function(todo) {
-  //   return todo.get('order');
-  // }
+  url: config.serverUrl + '/paperedit'
 }, {
   // sets type for autoEditAPI to know if we are retrieving model or collection
   modelType: 'paperedits'
 });
 
-},{"../../../config":1,"../models/paperedit":7,"backbone":34}],4:[function(require,module,exports){
+},{"../../../config":1,"../models/paperedit":7,"backbone":36}],4:[function(require,module,exports){
 'use strict';
+
 var Backbone = require('backbone');
 var config = require('../../../config');
 var Transcription = require('../models/transcription');
@@ -181,13 +151,13 @@ module.exports = Backbone.Collection.extend({
   model: Transcription,
   url: config.serverUrl + '/transcription',
   // Filter down the list of all transcription models that are completed.
-  completed: function() {
-    return this.filter(function(transcription) {
+  completed: function () {
+    return this.filter(function (transcription) {
       return transcription.get('status');
     });
   },
   // Filter down the list to only todo items that are still not finished.
-  remaining: function() {
+  remaining: function () {
     // returns transcription models that are complete, eg status == true
     return this.without.apply(this, this.completed());
   },
@@ -195,14 +165,14 @@ module.exports = Backbone.Collection.extend({
   // sorts items by their insertion order.
   // We keep the Todos in sequential order, despite being saved by unordered
   // GUID in the database. This generates the next order number for new items.
-  nextOrder: function() {
+  nextOrder: function () {
     if (!this.length) {
       return 1;
     }
     return this.last().get('order') + 1;
   },
   // Todos are sorted by their original insertion order.
-  comparator: function(todo) {
+  comparator: function (todo) {
     return todo.get('order');
   }
 }, {
@@ -210,14 +180,15 @@ module.exports = Backbone.Collection.extend({
   modelType: 'transcriptions'
 });
 
-},{"../../../config":1,"../models/transcription":8,"backbone":34}],5:[function(require,module,exports){
+},{"../../../config":1,"../models/transcription":8,"backbone":36}],5:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var _ = require('underscore');
 
 var DB = {};
 
-DB.create = DB.update = DB.patch = DB.delete = function(model, success, error) {
+DB.create = DB.update = DB.patch = DB.delete = function (model, success, error) {
   error("Can't make changes in demo mode");
 };
 
@@ -231,10 +202,8 @@ var data = {};
  * @param {object} options - Sucess or failure callback.
  * @returns {object} sucess callback with backbone model
  */
-DB.read = function(model, success, error) {
+DB.read = function (model, success, error) {
   var type;
-
-  console.debug(model);
 
   // If a colleciton
   if (model.models) {
@@ -243,7 +212,7 @@ DB.read = function(model, success, error) {
     type = model.constructor.modelType;
   }
 
-  var handleSuccess = function(ret) {
+  var handleSuccess = function (ret) {
     if (model.models) {
       success(ret);
     } else {
@@ -253,12 +222,10 @@ DB.read = function(model, success, error) {
 
   if (!data[type]) {
     // load json
-    $.getJSON('demo_' + type + '.json')
-      .done(function(newData) {
-        data[type] = newData;
-        handleSuccess(data[type]);
-      })
-      .fail(error);
+    $.getJSON('demo_' + type + '.json').done(function (newData) {
+      data[type] = newData;
+      handleSuccess(data[type]);
+    }).fail(error);
   } else {
     handleSuccess(data[type]);
   }
@@ -271,11 +238,11 @@ DB.read = function(model, success, error) {
  * @param {object} model - Backbone model being handled.
  * @param {object} options - Sucess or failure callback.
  */
-module.exports = function(method, model, options) {
+module.exports = function (method, model, options) {
   DB[method](model, options.success, options.error);
 };
 
-},{"jquery":37,"underscore":117}],6:[function(require,module,exports){
+},{"jquery":39,"underscore":119}],6:[function(require,module,exports){
 /**
  * Here we define or require functions that will be made availabe to templates
  */
@@ -283,11 +250,12 @@ module.exports = {
   fromSeconds: require('node-timecodes').fromSeconds
 };
 
-},{"node-timecodes":42}],7:[function(require,module,exports){
+},{"node-timecodes":44}],7:[function(require,module,exports){
 'use strict';
+
 var path = require("path");
 var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
-var fromSeconds =  require('node-timecodes').fromSeconds;
+var fromSeconds = require('node-timecodes').fromSeconds;
 var createSrtContent = require('../../srt').createSrtContent;
 var Backbone = require('backbone');
 var config = require('../../../config');
@@ -313,7 +281,7 @@ module.exports = Backbone.Model.extend({
   //  or
   // https://github.com/thedersen/backbone.validation
   // example https://jsfiddle.net/thedersen/udXL5/
-  validate: function(attributes) {
+  validate: function (attributes) {
     if (!attributes.title) {
       return 'Remember to set a title for your section.';
       // }else if(!attributes.videoUrl){
@@ -322,47 +290,38 @@ module.exports = Backbone.Model.extend({
   },
 
   // initializer
-  initialize: function() {
+  initialize: function () {
     // catch error if invalid initialization.
-    // console.log('This model has been initialized.');
     // this.id = this._id;
-    
+
     this.transcriptionsList = new Transcriptions();
-    console.log("this.transcriptionsList",this.transcriptionsList);
+    // console.log("this.transcriptionsList",this.transcriptionsList);
 
 
-    this.on('invalid', function(model, error) {
+    this.on('invalid', function (model, error) {
       console.info(error);
     });
 
-    this.on('change', function() {
+    this.on('change', function () {
       // console.info('- Values for this model have changed.');
     });
 
-    this.on('change:events', function() {
-      console.log('text value for this model has changed.');
+    this.on('change:events', function () {
+      // console.log('text value for this model has changed.');
     });
-    this.on('destroy', function() {
-    });
+    this.on('destroy', function () {});
   }
-
-  // app.TranscriptionsList.get(1).constructor.returnSrtJson()
-  // https://stackoverflow.com/questions/9686001/get-a-backbone-model-instances-model-class-name
 }, {
 
-  modelType: 'paperedit',
-
-  // TODO: change this to returnSrt coz that's what it is doing
-  // and make rturns srtJson in helper function in model
-
-
+  modelType: 'paperedit'
 });
 
-},{"../../../config":1,"../../srt":33,"../collections/transcriptions":4,"backbone":34,"node-timecodes":42,"path":44}],8:[function(require,module,exports){
+},{"../../../config":1,"../../srt":35,"../collections/transcriptions":4,"backbone":36,"node-timecodes":44,"path":46}],8:[function(require,module,exports){
 'use strict';
+
 var path = require("path");
 var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
-var fromSeconds =  require('node-timecodes').fromSeconds;
+var fromSeconds = require('node-timecodes').fromSeconds;
 var createSrtContent = require('../../srt').createSrtContent;
 var Backbone = require('backbone');
 var config = require('../../../config');
@@ -384,13 +343,17 @@ module.exports = Backbone.Model.extend({
     processedAudio: false,
     processedVideo: false,
     // status is marked as false by default and turned to true when transcription has been processed
+    // could changed as status marked as null if there's an issue
+    // so that can have 3 options. not set yet, gone wrong, success.
     status: false,
     highlights: [],
     // orderedPaperCuts:[],
     videoOgg: undefined,
     //TODO: get date from metadata of video
     metadata: undefined,
-    text: undefined
+    text: undefined,
+    //used for error handling when processing transcription
+    error: undefined
   },
 
   // validate
@@ -398,7 +361,7 @@ module.exports = Backbone.Model.extend({
   //  or
   // https://github.com/thedersen/backbone.validation
   // example https://jsfiddle.net/thedersen/udXL5/
-  validate: function(attributes) {
+  validate: function (attributes) {
     if (!attributes.title) {
       return 'Remember to set a title for your section.';
       // }else if(!attributes.videoUrl){
@@ -407,24 +370,21 @@ module.exports = Backbone.Model.extend({
   },
 
   // initializer
-  initialize: function() {
+  initialize: function () {
     // catch error if invalid initialization.
-    // console.log('This model has been initialized.');
-    // this.id = this._id;
 
-    this.on('invalid', function(model, error) {
+    this.on('invalid', function (model, error) {
       console.info(error);
     });
 
-    this.on('change', function() {
+    this.on('change', function () {
       // console.info('- Values for this model have changed.');
     });
 
-    this.on('change:text', function() {
-      console.log('text value for this model has changed.');
+    this.on('change:text', function () {
+      // console.log('text value for this model has changed.');
     });
-    this.on('destroy', function() {
-    });
+    this.on('destroy', function () {});
   }
 
   // app.TranscriptionsList.get(1).constructor.returnSrtJson()
@@ -436,7 +396,7 @@ module.exports = Backbone.Model.extend({
   // TODO: change this to returnSrt coz that's what it is doing
   // and make rturns srtJson in helper function in model
 
-  returnSrtContent: function(text) {
+  returnSrtContent: function (text) {
     var result;
     // helper function to split array in equal parts
     // from http://stackoverflow.com/questions/8188548/splitting-a-js-array-into-n-arrays
@@ -453,26 +413,18 @@ module.exports = Backbone.Model.extend({
       var newLinesAr = [];
       var newLine = {};
       var counter = 1;
-      text.forEach(function(paragraphs) {
-        paragraphs.paragraph.forEach(function(paragraph) {
+      text.forEach(function (paragraphs) {
+        paragraphs.paragraph.forEach(function (paragraph) {
           if (paragraph.line.length > 8) {
-            // console.log(JSON.stringify(paragraph));
-            // console.log(JSON.stringify(paragraph.line.length));
-            // console.log('---');
             var regroupLines = split(paragraph.line, 8);
-            // console.log(regroupLines);
             // make srt lines
-            regroupLines.forEach(function(l) {
-              console.log(JSON.stringify(l));
-              console.log('---');
+            regroupLines.forEach(function (l) {
               newLine.id = counter;
               counter += 1;
               newLine.startTime = fromSecondsForSrt(l[0].startTime);
               newLine.endTime = fromSecondsForSrt(l[l.length - 1].endTime);
               newLine.text = '';
-              l.forEach(function(w) {
-                // console.log('---');
-                // console.log(JSON.stringify(w));
+              l.forEach(function (w) {
                 newLine.text += w.text + ' ';
               }); // words
               newLinesAr.push(newLine);
@@ -484,8 +436,7 @@ module.exports = Backbone.Model.extend({
             newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime);
             newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime);
             newLine.text = '';
-            paragraph.line.forEach(function(word) {
-              // console.log(word)
+            paragraph.line.forEach(function (word) {
               newLine.text += word.text + ' ';
             }); // line
             newLinesAr.push(newLine);
@@ -496,59 +447,54 @@ module.exports = Backbone.Model.extend({
       cb(newLinesAr);
     }
 
-    loopThroughStuff(text, function(res) {
+    loopThroughStuff(text, function (res) {
       result = createSrtContent(res);
     });
 
     return result;
   },
 
-
-  returnPlainTextTimecoded: function(attr) {
+  returnPlainTextTimecoded: function (attr) {
     var result;
-    console.log(attr)
 
     function loopThroughStuff(text, cb) {
 
-      var newLinesAr = []
-      var newLine = {}
-      var counter = 1
+      var newLinesAr = [];
+      var newLine = {};
+      var counter = 1;
 
-      _.each(text, function(paragraphs) {
-          _.each(paragraphs.paragraph, function(paragraph) {
-              newLine.id = counter;
-              counter += 1
+      _.each(text, function (paragraphs) {
+        _.each(paragraphs.paragraph, function (paragraph) {
+          newLine.id = counter;
+          counter += 1;
 
-              newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
-              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime)
-              newLine.speaker = paragraphs.speaker;
-              newLine.text = ''
-              _.each(paragraph.line, function(word) {
-                  // console.log(word)
-                  newLine.text += word.text + ' '
-                }) //line
-              newLinesAr.push(newLine)
-              newLine = {}
-            }) //paragraph
-        }) //paragraphs
+          newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime);
+          newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime);
+          newLine.speaker = paragraphs.speaker;
+          newLine.text = '';
+          _.each(paragraph.line, function (word) {
+            newLine.text += word.text + ' ';
+          }); //line
+          newLinesAr.push(newLine);
+          newLine = {};
+        }); //paragraph
+      }); //paragraphs
 
-      cb(newLinesAr)
+      cb(newLinesAr);
     }
-
 
     function createPlainTextTimecoded(srtJsonContent, cb) {
       var lines = '';
 
-
-      var head = 'Transcription: ' + attr.title + '\n\n'
-      head += 'Description: ' + attr.description + '\n\n'
-      head += 'File name: ' + attr.metadata.fileName + '\n\n'
-      head += 'File path: ' + attr.metadata.filePathName + '\n\n'
-      head += 'Reel: ' + attr.metadata.reelName + '\n'
-      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n'
-      head += 'fps: ' + attr.metadata.fps + '\n'
-      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n'
-        // 
+      var head = 'Transcription: ' + attr.title + '\n\n';
+      head += 'Description: ' + attr.description + '\n\n';
+      head += 'File name: ' + attr.metadata.fileName + '\n\n';
+      head += 'File path: ' + attr.metadata.filePathName + '\n\n';
+      head += 'Reel: ' + attr.metadata.reelName + '\n';
+      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n';
+      head += 'fps: ' + attr.metadata.fps + '\n';
+      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n';
+      // 
       for (var i = 0; i < srtJsonContent.length; i++) {
 
         var srtLineO = srtJsonContent[i];
@@ -556,71 +502,64 @@ module.exports = Backbone.Model.extend({
         lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
         //removing IBM hesitation marks if present
         lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
-
       }
 
       if (cb) {
-        cb(lines)
+        cb(lines);
       } else {
-        return head + '\n\n' + lines
+        return head + '\n\n' + lines;
       };
     }
 
-    loopThroughStuff(attr.text, function(res) {
-       result = createPlainTextTimecoded(res)
-    })
-
+    loopThroughStuff(attr.text, function (res) {
+      result = createPlainTextTimecoded(res);
+    });
 
     return result;
-
   },
- 
-    //TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
-    returnPlainText: function(attr) {
+
+  //TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
+  returnPlainText: function (attr) {
     var result;
-    console.log(attr)
 
     function loopThroughStuff(text, cb) {
 
-      var newLinesAr = []
-      var newLine = {}
-      var counter = 1
+      var newLinesAr = [];
+      var newLine = {};
+      var counter = 1;
 
-      _.each(text, function(paragraphs) {
-          _.each(paragraphs.paragraph, function(paragraph) {
-              newLine.id = counter;
-              counter += 1
+      _.each(text, function (paragraphs) {
+        _.each(paragraphs.paragraph, function (paragraph) {
+          newLine.id = counter;
+          counter += 1;
 
-              newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime)
-              newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime)
-              newLine.speaker = paragraphs.speaker;
-              newLine.text = ''
-              _.each(paragraph.line, function(word) {
-                  // console.log(word)
-                  newLine.text += word.text + ' '
-                }) //line
-              newLinesAr.push(newLine)
-              newLine = {}
-            }) //paragraph
-        }) //paragraphs
+          newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime);
+          newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime);
+          newLine.speaker = paragraphs.speaker;
+          newLine.text = '';
+          _.each(paragraph.line, function (word) {
+            newLine.text += word.text + ' ';
+          }); //line
+          newLinesAr.push(newLine);
+          newLine = {};
+        }); //paragraph
+      }); //paragraphs
 
-      cb(newLinesAr)
+      cb(newLinesAr);
     }
-
 
     function createPlainTextTimecoded(srtJsonContent, cb) {
       var lines = '';
 
-
-      var head = 'Transcription: ' + attr.title + '\n\n'
-      head += 'Description: ' + attr.description + '\n\n'
-      head += 'File name: ' + attr.metadata.fileName + '\n\n'
-      head += 'File path: ' + attr.metadata.filePathName + '\n\n'
-      head += 'Reel: ' + attr.metadata.reelName + '\n'
-      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n'
-      head += 'fps: ' + attr.metadata.fps + '\n'
-      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n'
-        // 
+      var head = 'Transcription: ' + attr.title + '\n\n';
+      head += 'Description: ' + attr.description + '\n\n';
+      head += 'File name: ' + attr.metadata.fileName + '\n\n';
+      head += 'File path: ' + attr.metadata.filePathName + '\n\n';
+      head += 'Reel: ' + attr.metadata.reelName + '\n';
+      head += 'Camera Timecode: ' + attr.metadata.timecode + '\n';
+      head += 'fps: ' + attr.metadata.fps + '\n';
+      head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n';
+      // 
       for (var i = 0; i < srtJsonContent.length; i++) {
 
         var srtLineO = srtJsonContent[i];
@@ -628,36 +567,32 @@ module.exports = Backbone.Model.extend({
         // lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
         //  //removing IBM hesitation marks if present
         lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
-
       }
 
       if (cb) {
-        cb(lines)
+        cb(lines);
       } else {
-        return head + '\n\n' + lines
+        return head + '\n\n' + lines;
       };
     }
 
-    loopThroughStuff(attr.text, function(res) {
-       result = createPlainTextTimecoded(res)
-    })
-
+    loopThroughStuff(attr.text, function (res) {
+      result = createPlainTextTimecoded(res);
+    });
 
     return result;
-
   },
 
-
-  returnEDLSrtJson: function(text) {
+  returnEDLSrtJson: function (text) {
 
     return createSrtContent(text);
-
   }
 
 });
 
-},{"../../../config":1,"../../srt":33,"backbone":34,"node-timecodes":42,"path":44}],9:[function(require,module,exports){
+},{"../../../config":1,"../../srt":35,"backbone":36,"node-timecodes":44,"path":46}],9:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var TranscriptionListView = require('./views/transcription_list_view');
@@ -666,6 +601,16 @@ var TranscriptionView = require('./views/transcription_view');
 var Transcription = require('./models/transcription');
 var Transcriptions = require('./collections/transcriptions');
 var render = require('./views/utils').render;
+
+var SettingsView = require('./views/settings_view');
+
+// var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+if (typeof window.nw !== 'undefined') {
+  var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+} else {
+  //not in nwjs 
+  var watsonKeysPath = "/";
+}
 
 /**
  * Render a string or view to the main container on the page
@@ -692,64 +637,72 @@ module.exports = Backbone.Router.extend({
     'transcriptions/new': 'newTranscription',
     'transcription/:id': 'showTranscription',
     'transcription/:id/edit': 'editTranscription',
+    'settings': 'settingsPanel',
     '*path': 'notFound'
   },
 
-  initialize: function() {
-    console.debug('TRANSCRIPTION Router: INITIALIZED ROUTER');
+  initialize: function () {
     // Setup canonical transcriptions collection
     this.transcriptionsList = new Transcriptions();
   },
 
   // TODO: router not going to default page
-  index: function() {
+  index: function () {
     displayMain(render('welcome'));
   },
 
-  transcriptionsList: function() {
+  transcriptionsList: function () {
     var self = this;
     console.debug('Router: Transcriptions list');
-    if ( typeof this.transcriptionsListView === 'undefined' ) {
-      this.transcriptionsListView = new TranscriptionListView({collection: this.transcriptionsList});
+    if (typeof this.transcriptionsListView === 'undefined') {
+      this.transcriptionsListView = new TranscriptionListView({ collection: this.transcriptionsList });
     }
-    this.transcriptionsList.fetch({success: function() {
-      displayMain(self.transcriptionsListView);
-    }});
+    this.transcriptionsList.fetch({ success: function () {
+        displayMain(self.transcriptionsListView);
+      } });
   },
 
-  newTranscription: function() {
+  newTranscription: function () {
     console.debug('Router: new transcription');
     // creating a transcription object, here could add default values such as
     // {title: "Video Interview "+getTimeNow(), description: getTimeNow()}
-    var newTranscription          = new Transcription({title: '', description: ''});
-    var newTranscriptionFormView  = new TranscriptionFormView({model: newTranscription});
+    var newTranscription = new Transcription({ title: '', description: '' });
+    var newTranscriptionFormView = new TranscriptionFormView({ model: newTranscription });
     // rendering in view
     displayMain(newTranscriptionFormView);
   },
 
-  showTranscription: function(cid) {
-    var tmpTranscription = this.transcriptionsList.get({'cid': cid});
+  showTranscription: function (cid) {
+    var tmpTranscription = this.transcriptionsList.get({ 'cid': cid });
     console.debug('Router: showTranscription', cid, tmpTranscription.attributes.title);
-    var tmpTranscriptionView = new TranscriptionView({model: tmpTranscription});
+    var tmpTranscriptionView = new TranscriptionView({ model: tmpTranscription });
     displayMain(tmpTranscriptionView);
   },
-
-  editTranscription: function(id) {
+  //TODO: not currently implements. eg nothing links to it.
+  editTranscription: function (id) {
     console.debug('Router: editTranscription: ' + id);
-    var tmpEditTranscription = this.transcriptionsList.get({'cid': id});
-    var editTranscriptionFormView = new TranscriptionFormView({model: tmpEditTranscription});
+    var tmpEditTranscription = this.transcriptionsList.get({ 'cid': id });
+    var editTranscriptionFormView = new TranscriptionFormView({ model: tmpEditTranscription });
     displayMain(editTranscriptionFormView);
   },
 
-  notFound: function() {
+  settingsPanel: function () {
+    console.debug('Router: settings panel: ');
+    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys() } };
+    var settingsView = new SettingsView({ settings: tmpSettings });
+    displayMain(settingsView);
+  },
+
+  notFound: function () {
     console.error('Not found');
     displayMain(render('404'));
     alert('Not found');
   }
 });
 
-},{"./collections/transcriptions":4,"./models/transcription":8,"./views/transcription_form_view":27,"./views/transcription_list_view":29,"./views/transcription_view":30,"./views/utils":31,"backbone":34,"jquery":37}],10:[function(require,module,exports){
+},{"./collections/transcriptions":4,"./models/transcription":8,"./views/settings_view":28,"./views/transcription_form_view":29,"./views/transcription_list_view":31,"./views/transcription_view":32,"./views/utils":33,"backbone":36,"jquery":39}],10:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var PapereditListView = require('./views/paperedit_list_view');
@@ -789,7 +742,7 @@ module.exports = Backbone.Router.extend({
     'paperedit/:id/edit': 'editPaperedit'
   },
 
-  initialize: function() {
+  initialize: function () {
     console.debug('PAPEREDIT Router: INITIALIZED ROUTER');
     // Setup canonical paperedits collection
     this.papereditsList = new Paperedits();
@@ -800,61 +753,53 @@ module.exports = Backbone.Router.extend({
   //   displayMain(render('welcome'));
   // },
 
-  papereditsList: function() {
+  papereditsList: function () {
     var self = this;
     console.debug('Router: Paperedits list');
-    if ( typeof this.papereditsListView === 'undefined' ) {
-      this.papereditsListView = new PapereditListView({collection: this.papereditsList});
+    if (typeof this.papereditsListView === 'undefined') {
+      this.papereditsListView = new PapereditListView({ collection: this.papereditsList });
     }
-    this.papereditsList.fetch({success: function() {
-      displayMain(self.papereditsListView);
-    }});
+    this.papereditsList.fetch({ success: function () {
+        displayMain(self.papereditsListView);
+      } });
   },
 
-  newPaperedit: function() {
+  newPaperedit: function () {
     console.debug('Router: new paperedit');
     // creating a paperedit object, here could add default values such as
     // {title: "Video Interview "+getTimeNow(), description: getTimeNow()}
-    var newPaperedit          = new Paperedit({title: '', description: ''});
-    var newPapereditFormView  = new PapereditFormView({model: newPaperedit});
+    var newPaperedit = new Paperedit({ title: '', description: '' });
+    var newPapereditFormView = new PapereditFormView({ model: newPaperedit });
     // rendering in view
     displayMain(newPapereditFormView);
   },
 
-  showPaperedit: function(cid) {
-    var tmpPaperedit = this.papereditsList.get({'cid': cid});
+  showPaperedit: function (cid) {
+    var tmpPaperedit = this.papereditsList.get({ 'cid': cid });
     console.debug('Router: showPaperedit', cid, tmpPaperedit.attributes.title);
-
-  
-
     this.transcriptionsList = new Transcriptions();
-    this.transcriptionsList.fetch({success: function(collection, transciptions, errors) {
-      // displayMain(self.transcriptionsListView);
-      console.log("transciptions", transciptions);
-       // console.log("Router this.transcriptionsList", this.transcriptionsList);
-
-      var tmpPapereditView = new PapereditView({model: tmpPaperedit, transciptions: transciptions , transcriptionCollection: collection });
-      displayMain(tmpPapereditView);    
-    }});
-   
+    this.transcriptionsList.fetch({ success: function (collection, transciptions, errors) {
+        var tmpPapereditView = new PapereditView({ model: tmpPaperedit, transciptions: transciptions, transcriptionCollection: collection });
+        displayMain(tmpPapereditView);
+      } });
   },
 
-  editPaperedit: function(id) {
+  //TODO: not currently implements. eg nothing links to it.
+  editPaperedit: function (id) {
     console.debug('Router: editPaperedit: ' + id);
-    var tmpEditPaperedit = this.papereditsList.get({'cid': id});
-    var editPapereditFormView = new PapereditFormView({model: tmpEditPaperedit});
+    var tmpEditPaperedit = this.papereditsList.get({ 'cid': id });
+    var editPapereditFormView = new PapereditFormView({ model: tmpEditPaperedit });
     displayMain(editPapereditFormView);
   },
 
-
-  notFound: function() {
+  notFound: function () {
     console.error('Not found');
     displayMain(render('404'));
     alert('Not found');
   }
 });
 
-},{"./collections/paperedits":3,"./collections/transcriptions":4,"./models/paperedit":7,"./views/paperedit_form_view":23,"./views/paperedit_list_view":25,"./views/paperedit_view":26,"./views/utils":31,"backbone":34,"jquery":37}],11:[function(require,module,exports){
+},{"./collections/paperedits":3,"./collections/transcriptions":4,"./models/paperedit":7,"./views/paperedit_form_view":24,"./views/paperedit_list_view":26,"./views/paperedit_view":27,"./views/utils":33,"backbone":36,"jquery":39}],11:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -864,7 +809,7 @@ __p+='<div class="container-fluid">Not found</div>\n';
 return __p;
 };
 
-},{"underscore":117}],12:[function(require,module,exports){
+},{"underscore":119}],12:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -874,12 +819,12 @@ __p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center te
 return __p;
 };
 
-},{"underscore":117}],13:[function(require,module,exports){
+},{"underscore":119}],13:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='          <div id="transcript-n" class="transcription">\n            <!-- <h2><small>Transcript 1</small></h2> -->\n            <!-- <img class="img-responsive hidden-print video"  src="demoVideoPlaceholder.png" > -->\n            <!-- video -->\n            <div class="row">\n              <div class="embed-responsive embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                <!--  Media -->\n\t\t\t    <!--  if audio has been processed but video has not -->\n\t\t\t    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n\t\t\t    <!-- also check media type if audio only then use audio  -->\n\t\t\t    ';
+__p+='          <div id="transcript-n" class="transcription">\n            <!-- <h2><small>Transcript 1</small></h2> -->\n            <!-- <img class="img-responsive hidden-print video"  src="demoVideoPlaceholder.png" > -->\n            <!-- video -->\n            <div class="row videoPlayer">\n              <div class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                <!--  Media -->\n\t\t\t    <!--  if audio has been processed but video has not -->\n\t\t\t    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n\t\t\t    <!-- also check media type if audio only then use audio  -->\n\t\t\t    ';
  if(processedAudio && !processedVideo) { 
 __p+='\n\t\t\t   \n\t\t\t     <div class="alert alert-success alert-dismissible" role="alert">\n\t\t\t        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t\t         Video is being processed  \n\t\t\t         <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate text-muted" aria-hidden="true"></span>    \n\t\t\t      </div>\n\n\t\t\t      <!-- progress circle line if type of media is video -->\n\t\t\t      <audio id="'+
 ((__t=( 'videoId_'+ _id ))==null?'':__t)+
@@ -911,7 +856,7 @@ __p+=' <!-- if using safari  -->\n\t\t\t<!-- ///////////////////////// -->\n\t\t
  }else { 
 __p+='\n\t\t\t    <p>Media preview not ready </p>\n\t\t\t  ';
  } 
-__p+='\n                  </div><!--  col -->\n                </div><!--  row -->\n                <!-- end video -->\n                <!-- <hr> -->\n\n\n                <!-- search -->\n                <!-- TODO: in transcript search you can search current transcript or across transcripts, you can also set filters on current transcript or across transcripts for tags, and speaker names.  -->\n                <div class="input-group hidden-print">\n                  <input type="text" class="form-control" placeholder="Search transcript">\n                  <span class="input-group-btn">\n                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"\n                      data-toggle="popover"title="set Filter options for search"  data-placement="bottom"  data-content="allows to set search or filter, across current transcript or all transcripts in proejct. filter by tag/s speaker/s. filters also work with searches.">\n                    </span><span class="caret"></span></button>\n                    <button class="btn btn-default"  data-toggle="popover"title="set options such as quick add"  data-placement="bottom"  data-content="aquick add, maybe a checkbox? that allows user to select, and when done with selection, eg mouse up, or with keyboard shortcut eg cmd left arrow it moves the text at the end of the paperedit.">\n                      <span class="glyphicon glyphicon-cog">\n                      </button>\n                    </span>\n                  </div><!-- /input-group -->\n                  <!--end search  -->\n\n\n                  <div class="transcript-n-text row" id="sampleTranscript">\n\n                   <!-- that that text exists -->\n                  ';
+__p+='\n                  </div><!--  col -->\n                </div><!--  row -->\n                <!-- end video -->\n                <!-- <hr> -->\n\n<br>\n            \n\t\t\t\t  <div class="panel panel-default">\n\t\t\t\t    <div class="panel-heading">\n\n\n                <!-- search -->\n             \t<div class="input-group">\n\t\t\t        <span class="input-group-addon">\n\t\t\t          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>\n\t\t\t        </span>\n\t\t\t        <input type="text" class="form-control" id="searchCurrentTranscription" placeholder="Find in transcript">\n\t\t\t      </div>\n                <!--end search  -->\n                </div><!-- container panel -->\n    \t\t\t<div class="panel-body">\n\n\n                  <div class="transcript-n-text row" id="sampleTranscript">\n\n                   <!-- that that text exists -->\n                  ';
  if(text){
 __p+='\n\n\t\t\t          <!-- Paragaph module -->\n\t\t\t          ';
  _.each(text, function(paragraph) { 
@@ -929,31 +874,33 @@ __p+='\n\t\t\t              ';
  _.each(lines, function(line) { 
 __p+='\n\t\t\t            <dd >\n\t\t\t              <!--  <p class="lines" contenteditable="false"> -->\n\t\t\t                ';
  _.each(line, function(word) { 
-__p+='\n\t\t\t                  <span contenteditable="false" \n\t\t\t                        class="words text-muted transcriptionsWords" data-transcription-id="'+
+__p+='\n\t\t\t                  <span contenteditable="false" \n\t\t\t                        class="words text-muted transcriptionsWords" \n\t\t\t                        data-transcription-id="'+
 ((__t=( _id ))==null?'':__t)+
 '" \n\t\t\t                        data-paragaph-id="'+
 ((__t=( paragraph.id ))==null?'':__t)+
-'"  data-word-id="'+
+'"  \n\t\t\t                        data-word-id="'+
 ((__t=( word.id ))==null?'':__t)+
 '" \n\t\t\t                        data-line-id="'+
 ((__t=( line.id ))==null?'':__t)+
-'" data-reel-name="'+
+'" \n\t\t\t                        data-reel-name="'+
 ((__t=( metadata.reelName ))==null?'':__t)+
+'"\n\t\t\t                        data-fps="'+
+((__t=( metadata.fps ))==null?'':__t)+
 '"\n\t\t\t                        data-clip-name="'+
 ((__t=( metadata.fileName ))==null?'':__t)+
-'" data-video-id="'+
+'" \n\t\t\t                        data-video-id="'+
 ((__t=( 'videoId_'+ _id ))==null?'':__t)+
 '"\n\t\t\t                        data-speaker="'+
 ((__t=( paragraph.speaker ))==null?'':__t)+
-'" data-src="'+
+'" \n\t\t\t                        data-src="'+
 ((__t=( videoOgg ))==null?'':__t)+
 '"\n\t\t\t                        data-audio-file="'+
 ((__t=( audioFile ))==null?'':__t)+
-'" data-start-time="'+
+'" \n\t\t\t                        data-start-time="'+
 ((__t=( word.startTime ))==null?'':__t)+
 '"\n\t\t\t                        data-text="'+
 ((__t=( word.text ))==null?'':__t)+
-'" data-end-time="'+
+'" \n\t\t\t                        data-end-time="'+
 ((__t=( word.endTime ))==null?'':__t)+
 '"\n\t\t\t                        data-offset="'+
 ((__t=( metadata.timecode ))==null?'':__t)+
@@ -971,37 +918,39 @@ __p+='\n\t\t\t          <!-- ./paragraph module -->\n\n                  \t';
  }else{ 
 __p+='\n                  \t\t<p>Transcription is currently not avaible for this media, check again later</p>\n                  ';
 }
-__p+='\n\n\n\n\n                    </div>   <!--transcript-n-text -->\n                  </div>   <!--transcript-n -->';
+__p+='\n\n\n\n\n                    </div>   <!--transcript-n-text -->\n                  </div>   <!--transcript-n -->\n\n\t</div><!-- container panel -->\n  </div><!-- container panel -->\n\n';
 }
 return __p;
 };
 
-},{"underscore":117}],14:[function(require,module,exports){
+},{"underscore":119}],14:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='\n<div class="row papercut" draggable="true" \ndata-start-time="'+
+__p+='\n<div class="row papercut" draggable="true" \ndata-start-time\t\t\t="'+
 ((__t=( papercut[0].startTime ))==null?'':__t)+
-'"  \ndata-end-time="'+
+'"  \ndata-end-time\t\t\t="'+
 ((__t=( papercut[papercut.length -1].endTime ))==null?'':__t)+
-'" \ndata-transcription-id="'+
+'" \ndata-transcription-id\t="'+
 ((__t=( papercut[0].transcriptionId ))==null?'':__t)+
-'" \ndata-reel-name="'+
+'" \ndata-reel-name\t\t\t="'+
 ((__t=( papercut[0].reelName ))==null?'':__t)+
-'" \ndata-clip-name="'+
+'" \ndata-fps\t\t\t\t="'+
+((__t=( papercut[0].fps ))==null?'':__t)+
+'" \ndata-clip-name\t\t\t="'+
 ((__t=( papercut[0].clipName ))==null?'':__t)+
-'" \ndata-video-id="'+
+'" \ndata-video-id\t\t\t="'+
 ((__t=( papercut[0].videoId ))==null?'':__t)+
-'" \ndata-speaker="'+
+'" \ndata-speaker\t\t\t="'+
 ((__t=( papercut[0].speaker ))==null?'':__t)+
-'" \ndata-src="'+
+'" \ndata-src\t\t\t\t="'+
 ((__t=( papercut[0].src ))==null?'':__t)+
-'" \ndata-audio-file="'+
+'" \ndata-audio-file\t\t\t="'+
 ((__t=( papercut[0].audioFile ))==null?'':__t)+
-'" \ndata-offset="'+
+'" \ndata-offset\t\t\t\t="'+
 ((__t=( papercut[0].offset ))==null?'':__t)+
-'" \n>\n\t<dl class="dl-horizontal">\n\t\t<dt>'+
+'" \n>\n\t<dl class="dl-horizontal">\n\t<!-- TODO: once added speaker diarization this needs to be changes. cannot hardcode the paragraph-->\n\t\t<dt class="speaker">'+
 ((__t=( papercut[0].speaker ))==null?'':__t)+
 '</dt> \n\t\t<dt>\n\t  \t\t<a data-start-time="'+
 ((__t=( papercut[0].startTime ))==null?'':__t)+
@@ -1011,27 +960,29 @@ __p+='\n<div class="row papercut" draggable="true" \ndata-start-time="'+
 ((__t=( fromSeconds(papercut[0].startTime) ))==null?'':__t)+
 '</a>\n\t\t</dt>\n\t\t<dd>\n\t\t\t';
  for(var i=0; i<papercut.length; i++){
-__p+='\n\t\t\t \t<span contenteditable="false" class="words text-muted papereditWords" \n\t\t\t \tdata-transcription-id="'+
+__p+='\n\t\t\t \t<span contenteditable ="false" class="words text-muted papereditWords" \n\t\t\t \tdata-transcription-id\t="'+
 ((__t=( papercut[i].transcriptionId ))==null?'':__t)+
-'" \n\t\t\t \tdata-reel-name="'+
+'" \n\t\t\t \tdata-reel-name\t\t\t="'+
 ((__t=( papercut[i].reelName ))==null?'':__t)+
-'" \n\t\t\t \tdata-clip-name="'+
+'" \n\t\t\t \tdata-fps\t\t\t\t="'+
+((__t=( papercut[i].fps ))==null?'':__t)+
+'" \n\t\t\t \tdata-clip-name\t\t\t="'+
 ((__t=( papercut[i].clipName ))==null?'':__t)+
-'" \n\t\t\t \tdata-video-id="'+
+'" \n\t\t\t \tdata-video-id\t\t\t="'+
 ((__t=( papercut[i].videoId ))==null?'':__t)+
-'" \n\t\t\t \tdata-speaker="'+
+'" \n\t\t\t \tdata-speaker\t\t\t="'+
 ((__t=( papercut[i].speaker ))==null?'':__t)+
-'" \n\t\t\t \tdata-src="'+
+'" \n\t\t\t \tdata-src\t\t\t\t="'+
 ((__t=( papercut[i].src ))==null?'':__t)+
-'" \n\t\t\t \tdata-audio-file="'+
+'" \n\t\t\t \tdata-audio-file\t\t\t="'+
 ((__t=( papercut[i].audioFile ))==null?'':__t)+
-'" \n\t\t\t \tdata-start-time="'+
+'" \n\t\t\t \tdata-start-time\t\t\t="'+
 ((__t=( papercut[i].startTime ))==null?'':__t)+
-'" \n\t\t\t \tdata-text="'+
+'" \n\t\t\t \tdata-text\t\t\t\t="'+
 ((__t=( papercut[i].text ))==null?'':__t)+
-'" \n\t\t\t \tdata-end-time="'+
+'" \n\t\t\t \tdata-end-time\t\t\t="'+
 ((__t=( papercut[i].endTime ))==null?'':__t)+
-'">'+
+'">\n\t\t\t \t'+
 ((__t=( papercut[i].text ))==null?'':__t)+
 ' </span>\n\t \t\t';
  } 
@@ -1040,7 +991,7 @@ __p+='\n\t \t</dd>\n\t</dl>\n</div>';
 return __p;
 };
 
-},{"underscore":117}],15:[function(require,module,exports){
+},{"underscore":119}],15:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -1052,7 +1003,21 @@ __p+=' <li class="row papercut" data-title="Introduction" draggable="true">\n  <
 return __p;
 };
 
-},{"underscore":117}],16:[function(require,module,exports){
+},{"underscore":119}],16:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='    <div class="row">\n          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="papereditCard">\n          <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
+((__t=( title ))==null?'':__t)+
+'</button>\n          <p>'+
+((__t=( description ))==null?'':__t)+
+'</p>\n          </div>\n          <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <!-- edit btn -->\n         <!--    <button type="button"  class="btn  btn-default btn-xs editBtn" disabled>\n              <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">\n            </button> -->\n            <!-- delete btn -->\n            <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n            </button>\n          </div>\n    </div>\n    <hr>\n';
+}
+return __p;
+};
+
+},{"underscore":119}],17:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -1070,41 +1035,91 @@ __p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol 
 return __p;
 };
 
-},{"underscore":117}],17:[function(require,module,exports){
+},{"underscore":119}],18:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='    <div class="row">\n          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="papereditCard">\n          <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
+__p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n<style media="screen">\n.highlighted {\n  background-color: yellow;\n\n}\n\n.highlighted-used {\n  background-color: #FFFF99;\n  /*FFFFCC*/\n}\n\n.transcript-n-text.row {\n  height: 70vh;\n  overflow: scroll;\n}\n\n.transcriptionsTabs{\n height: 90vh;\n overflow: scroll;\n}\n\n/*.video {\nheight: 20vh;\n}*/\n\n.embed-responsive-16by9 {\n  padding-bottom: 30%!important;\n}\n\n.syncPlayTest {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n\n/*Dragula style*/\n\n.gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n  -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n  width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n  height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, .5);\n  border-radius: 10px;\n  border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #ffffff;\n}\n\n</style>\n\n\n<div class="container-fluid">\n  <div class="row">\n    <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n      <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#paperedits">Paperedits</a></li>\n        <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</button>\n          <p>'+
-((__t=( description ))==null?'':__t)+
-'</p>\n          </div>\n          <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <!-- edit btn -->\n         <!--    <button type="button"  class="btn  btn-default btn-xs editBtn" disabled>\n              <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">\n            </button> -->\n            <!-- delete btn -->\n            <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n            </button>\n          </div>\n    </div>\n    <hr>\n';
-}
-return __p;
-};
-
-},{"underscore":117}],18:[function(require,module,exports){
-var _ = require("underscore");
-module.exports = function(obj){
-var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-with(obj||{}){
-__p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n  <style media="screen">\n  .highlighted {\n    background-color: yellow;\n\n  }\n\n  .highlighted-used {\n    background-color: #FFFF99;\n    /*FFFFCC*/\n  }\n\n  .transcript-n-text.row {\n    height: 70vh;\n    overflow: scroll;\n  }\n\n  .transcriptionsTabs{\n     height: 90vh;\n    overflow: scroll;\n  }\n\n  /*.video {\n  height: 20vh;\n  }*/\n\n  .embed-responsive-16by9 {\n    padding-bottom: 30%!important;\n  }\n\n  .syncPlayTest {\n    background-color: lightgreen;\n    cursor: pointer;\n  }\n\n  /*Dragula style*/\n\n  .gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n    -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n    width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n    height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n    background-color: rgba(0, 0, 0, .5);\n    border-radius: 10px;\n    border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n    border-radius: 10px;\n    background-color: #ffffff;\n}\n\n  </style>\n\n\n  <div class="container-fluid">\n    <div class="row">\n      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#paperedits">Paperedits</a></li>\n          <li class="active">'+
-((__t=( title ))==null?'':__t)+
-'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n<!-- Export modal + button -->\n\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdl" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL \n        </a>\n\n         <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL JSON \n        </a>\n\n        <a id="exportEdlJSONWithTitles" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  JSON with titles\n        </a>\n\n        \n\n       <!-- End export option -->\n      </div>\n      <div class="modal-footer" >\n        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- Export end modal + button -->   \n  \n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n\n\n \n\n<!-- Paperedit  -->\n\n\n    <div class="row">\n      <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n        <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n        <!-- Transcripts list  -->\n        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n\n         <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
+'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice.   <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n\n            <a id="exportEdlJSONWithTitles" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL  JSON with titles\n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
  for(var i =0; i<transcriptions.length;i++){ 
-__p+='\n          <!-- class="active"-->\n            <li class="liTranscriptionTabLink"><a  id="'+
+__p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLink"><a  id="'+
 ((__t=( transcriptions[i]._id ))==null?'':__t)+
-'" class="transcriptionTabLink" \n           >'+
+'" class="transcriptionTabLink" \n          >'+
 ((__t=( transcriptions[i].title ))==null?'':__t)+
 ' </a></li>\n          ';
  }
-__p+='\n          </ul>\n\n            <!-- Tab panes -->\n   <!--  https://getbootstrap.com/javascript/#markup -->\n   <!--    <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="home">...</div>\n    <div role="tabpanel" class="tab-pane" id="profile">...</div>\n    <div role="tabpanel" class="tab-pane" id="messages">...</div>\n    <div role="tabpanel" class="tab-pane" id="settings">...</div>\n  </div>\n -->\n\n        </div>\n        <!-- end transcript list end -->\n\n        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n\n <!-- Tab panes -->\n\n  <div class="transcription-tab-content" >\n  \n<!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- <h2><small>Transcript 1</small></h2> -->\n            <!-- <img class="img-responsive hidden-print video"  src="demoVideoPlaceholder.png" > -->\n            <!-- video -->\n            <div class="row">\n              <div class="embed-responsive embed-responsive-16by9 videoPlayer hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                <video id="videoId"  controls>\n                  <source src="video/Thomas_Drake.mp4" type="video/mp4">\n                    <source src="movie.ogg" type="video/ogg">\n                      Your browser does not support the video tag.\n                    </video>\n                  </div><!--  col -->\n                </div><!--  row -->\n                <!-- end video -->\n                <!-- <hr> -->\n                <!-- search -->\n                <!-- TODO: in transcript search you can search current transcript or across transcripts, you can also set filters on current transcript or across transcripts for tags, and speaker names.  -->\n                <div class="input-group hidden-print">\n                  <input type="text" class="form-control" placeholder="Search transcript">\n                  <span class="input-group-btn">\n                    <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-filter" aria-hidden="true"\n                      data-toggle="popover"title="set Filter options for search"  data-placement="bottom"  data-content="allows to set search or filter, across current transcript or all transcripts in proejct. filter by tag/s speaker/s. filters also work with searches.">\n                    </span><span class="caret"></span></button>\n                    <button class="btn btn-default"  data-toggle="popover"title="set options such as quick add"  data-placement="bottom"  data-content="aquick add, maybe a checkbox? that allows user to select, and when done with selection, eg mouse up, or with keyboard shortcut eg cmd left arrow it moves the text at the end of the paperedit.">\n                      <span class="glyphicon glyphicon-cog">\n                      </button>\n                    </span>\n                  </div><!-- /input-group -->\n                  \n                  <!--end search  -->\n                  <div class="transcript-n-text row" id="sampleTranscript">\n                    <!-- speaker section -->\n                    <div class="row">\n                      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">\n                        <strong>speaker 1</strong>\n                        <!-- <code  class="timecode-for-print visible-print-inline"><small>00:00:00:00 - 00:00:00:00</small></code> -->\n                      </div>\n                      <div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">\n                        <p>Lorem ipsum dolor sit amet, <span class="highlighted-used"  type="button" data-toggle="popover"title="Tag name and Tag description here"  data-placement="bottom"  data-content="any comment on this hilight and the use of this tag in this specific goes here ">consectetur adipiscing elit, sed do eiusmod tempor incididunt</span> ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi<p> \n                      </div>\n                    </div>\n                    </div>   <!--transcript-n-text -->\n                  </div>   <!--transcript-n -->\n<!-- End hypertranscript -->\n</div><!-- Tab paenl End  -->\n\n\n                </div>\n              </div>\n\n              <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n                <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n\n                <div class="row">\n                  <div class="embed-responsive embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                    <canvas id="vc-canvas"></canvas>\n\n                        <!-- Add poster image black screen? -->\n                    <video id="videoPreview" class="videoPlayer" width="400" >\n                    <!--   <source src="" type="video/mp4"> -->\n                    <!--   <source src="" type="video/ogg"> -->\n                      Your browser does not support HTML5 video.\n                    </video>\n\n\n\n\n                  </div>\n                  <!--  col -->\n                </div>\n                <!--  row -->\n\n           \n       \n\n              <!-- <hr> -->\n\n              <div class="btn-group" role="group" aria-label="...">\n                <button type="button" class="btn btn-xs btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  </button>\n                <!-- <button type="button" class="btn btn-xs btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> -->\n                <button type="button" class="btn btn-xs btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n\n                <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-xs btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n                <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-xs btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button>\n              </div>\n\n              <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-xs btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n\n            \n\n              <!-- Single button -->\n             <!--   <div class="btn-group">\n                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">\n                  Export <span class="caret"></span>\n                </button>\n                <ul class="dropdown-menu">\n                  <li><a href="#">edl</a></li>\n                  <li><a href="#">docx</a></li>\n                <li><a href="#">Something else here</a></li>\n                  <li role="separator" class="divider"></li>\n                  <li><a href="#">Separated link</a></li> \n                </ul>\n              </div>-->\n\n              <div id="sortable" class="transcript-n-text row paperedit">\n              <!-- \n                <li class="row papercut" data-title="Introduction" draggable="true">\n                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                    <h4><span class="glyphicon glyphicon-pencil" ></span>   <span contenteditable="true">Introduction</span></h4>\n                  </div> \n                </li> row -->\n                \n                <!-- speaker section -->\n                 <!--<div class="row">\n                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n                  <dl class="dl-horizontal">\n                    <dt>Unnamed Speaker</dt> \n                    <dt>\n                        <a data-start-time="0.06" data-video-id="videoId_24dcd88b" class="timecodes">00:00:00:01</a>\n                    </dt>\n                    <dd>\n                    <span contenteditable="false" class="words text-muted" data-transcription-id="24dcd88b" data-paragaph-id="0" data-word-id="18" data-line-id="" data-reel-name="NA" data-clip-name="Ian Perkin-Mobile.mp4" data-video-id="videoId_24dcd88b" data-speaker="Unnamed Speaker" data-src="/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.webm" data-audio-file="/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.ogg" data-start-time="19.07" data-text="sales" data-end-time="19.38">sales </span>\n\n                    ....\n                   </dd>\n                  </dl>-->\n                </div><!--.col-->\n                </div><!--.row-->\n\n            </div>   <!--transcript-n-text -->\n          </div>   <!--transcript-n -->\n\n\n        </div>\n\n      </div> <!-- end row -->\n\n<script src=\'./node_modules/jquery-sortable/source/js/jquery-sortable.js\'></script>\n\n\n';
+__p+='\n        </ul>\n        <!-- Tab paenl End  -->\n      </div>\n      <!-- end transcript list end -->\n      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n        <div class="transcription-tab-content" >\n          <!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- uses hypertranscript.html.ejs template to populate transcription -->\n          </div>   <!--transcript-n -->\n          <!-- End hypertranscript -->\n        </div>\n      </div>\n    </div>\n\n    <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n      <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n      <div class="row">\n        <div id="videoContainer" class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n          <video id="videoPreview" class="videoPlayer" width="400" >\n            <!--   <source src="" type="video/mp4"> -->\n            <!--   <source src="" type="video/ogg"> -->\n            Your browser does not support HTML5 video.\n          </video>\n        </div>\n        <!--  col -->\n      </div>\n      <!--  row -->\n      <!-- <hr> -->\n\n<br>\n    <div class="panel panel-default">\n    <div class="panel-heading">\n\n\n      <div class="btn-group" role="group" aria-label="...">\n      <button type="button" class="btn btn-sm btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  Beta   </button>\n      <button type="button" class="btn btn-sm btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> \n      <button type="button" class="btn btn-sm btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n      <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-sm btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n      <!-- <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-sm btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button> -->\n      <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-sm btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n      </div>\n\n\n    </div><!-- container panel -->\n    <div class="panel-body">\n\n      <div id="sortable" class="transcript-n-text row paperedit">\n        <!-- Paperedit is added here using template papercut.html.ejs -->\n      </div> <!--transcript-n-text -->\n\n    </div><!-- container panel -->\n  </div><!-- container panel -->\n\n\n    </div><!--.row-->\n  </div>  \n</div>   \n</div><!-- end row -->\n</div> <!-- container -->\n\n';
 }
 return __p;
 };
 
-},{"underscore":117}],19:[function(require,module,exports){
+},{"underscore":119}],19:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='<div class="container">\n\n\t<!-- Demo notice  -->\n\t';
+ if(!window.frontEndEnviromentNWJS ){
+__p+='\n\t<div class="alert alert-warning alert-dismissible" role="alert">\n\t\t<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t<strong>You are viewing the app in demo mode</strong>.<br>\n\t\t<strong>Which means you cannot change settings</strong>.<br>\n\t\t<br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n\t\tTo view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>\n\t\tTo view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n\t</div>  \n\t';
+ }
+__p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n\t\t<div class="alert alert-info alert-dismissable">\n\t\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t\t<p><a href="http://www.autoedit.io/user_manual/setup.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t\t</div>\n\t\n\n\t<form id="form">\n\t\t<!-- File "upload" -->\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username" value="'+
+((__t=( credentials.ibm.username ))==null?'':__t)+
+'" class="form-control" id="username" placeholder="e.g. PMYs8ZexZ7qKGkFgFJhGMYhqzEC4aNzRAv9H">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">IBM STT Password</label>\n\t\t\t\t\t<input type="title" name="password" value="'+
+((__t=( credentials.ibm.password  ))==null?'':__t)+
+'" class="form-control" id="password" placeholder="e.g. 2QKJ79uRsD2a">\n\t\t\t\t</div>\n\n\t\t\t\t<!-- Save  -->\n\t\t\t\t<!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n\t\t\t\t<a id="submitBtn" class="btn btn-primary">Save Credentials</a>\n\t\t\t\t<!-- <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a> -->\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div>';
+}
+return __p;
+};
+
+},{"underscore":119}],20:[function(require,module,exports){
+var _ = require("underscore");
+module.exports = function(obj){
+var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
+with(obj||{}){
+__p+='    <div class="row">\n      ';
+ if(status == false) { 
+__p+='\n\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n        <!--  not ready -->\n        <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
+((__t=( title ))==null?'':__t)+
+' </button>\n        <button type="button" class="btn btn-lg btn-link"  disabled>\n          <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>&nbsp;&nbsp;\n        </button>\n        <p>'+
+((__t=( description ))==null?'':__t)+
+'</p>\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"     class="btn btn-danger btn-xs deleteBtn" disabled>\n          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n        </button>\n      </div>\n\n      ';
+ }else if(status == true){ 
+__p+='\n\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">\n        <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
+((__t=( title ))==null?'':__t)+
+'</button>\n        <p>'+
+((__t=( description ))==null?'':__t)+
+'</p>\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n        </button>\n      </div>\n\n      ';
+ }else if(status == null){ 
+__p+='\n\n\n<!--  not succesfull ready -->\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n        <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
+((__t=( title ))==null?'':__t)+
+' </button>\n     <!--    <button type="button" class="btn btn-lg btn-link"  disabled>\n          <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>&nbsp;&nbsp;\n        </button> -->\n        <p>'+
+((__t=( description ))==null?'':__t)+
+'</p>\n\n        ';
+ if(error){ 
+__p+='\n          <div class="alert alert-danger" role="alert">\n          <h5>Error message <code>'+
+((__t=( sttEngine.toUpperCase() ))==null?'':__t)+
+'</code>: </h5>\n          <p><strong><code>'+
+((__t=( error.code ))==null?'':__t)+
+' </code>\n          '+
+((__t=( error.error ))==null?'':__t)+
+'</strong></p> \n          <p>'+
+((__t=( error.description ))==null?'':__t)+
+'</p> \n          </div>\n\n          ';
+ if(sttEngine === "ibm"){ 
+__p+='\n            <div class="alert alert-warning" role="alert"><p>Most likely if this is the first time setting up and using the app, and you have chosen IBM watson as STT enginge, you might have added the wrong credentials for IBM Watson STT service. </p>\n            <p><a class="alert-link" href="http://www.autoedit.io/user_manual/uninstalling.html"  target="_blank">To uninstall the app and start fresh use app cleaner</a></p> \n            <p>Make sure you have created and are adding the credentials for the <a class="alert-link" href="http://www.autoedit.io/user_manual/setup.html"  target="_blank">IBM Watson STT service</a> and not the IBM bluemix once.</p>\n            <p>If you have used the app for about a month and it was all good and now it has stopped working, your IBM Watson STT service account might have run out of the free trial allowance, check their dashboard to make sure.</p>\n            <br>\n            <p>If this is not your first time using the app check the speed of your internet connection, slow connection might cause delay in transferign the file and resulting errors.</p> \n             </div>\n          ';
+ } 
+__p+='\n            <div class="alert alert-warning" role="alert">\n              <p>If you still need help figuring this our reach out at <a class="alert-link" href="mailto:info@autoEdit.io?Subject=autoEdit%202_uploading_file_bug">info@autoEdit.io</a> copy and pasting the text from the error in red.</p>\n            </div>\n        ';
+ } 
+__p+='\n\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"     class="btn btn-danger btn-xs deleteBtn" >\n          <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>\n        </button>\n      </div>\n\n\n      ';
+ } 
+__p+='\n    </div>\n    <hr>\n';
+}
+return __p;
+};
+
+},{"underscore":119}],21:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -1113,47 +1128,23 @@ __p+='   <div class="container">\n\n    <!-- Demo notice  -->\n  ';
  if(!window.frontEndEnviromentNWJS ){
 __p+='\n   <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n     To view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>\n     To view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n  </div>  \n ';
  }
-__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n        <div class="form-group">\n          <label for="fileUpload">Choose an audio or video file to transcribe</label>\n          <input  name="file" type="file" id="inputMediaFile">\n        </div>\n        <!-- Online/offline -->\n      <div class="form-group">\n        <label for="radioSTT">Speech To Text Transcription System</label><br>\n        <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label>\n        <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline)</label>\n        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Follow the link for more info on setting it up\n     <a href="http://www.autoedit.io/user_manual/setup.html#gentle-stt-open-source-free-and-offline" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        </p>\n      </div>\n        <!-- languages -->\n      <div class="form-group">\n        <label for="languageModel">IBM Language:</label>\n        <select class="form-control" id="languageModel">\n          <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n          <!-- <option disabled>_________</option> -->\n          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n          <!-- <option disabled>_________</option>          -->\n          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n      </div>\n<p> </p>\n        </p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Transcription</label>\n          <input type="text" name="title" value="'+
+__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n        <div class="form-group">\n          <label for="fileUpload">Choose an audio or video file to transcribe</label>\n          <input  name="file" type="file" id="inputMediaFile">\n        </div>\n        <!-- Online/offline -->\n      <div class="form-group">\n        <label for="radioSTT">Speech To Text Transcription System</label><br>\n        <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label><br>\n        <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline/experimental)</label><br>\n        <label class="radio-inline"><input type="radio" id="pocketSphinxOption" name="optradio" value="pocketSphinx">pocketsphinx (offline/experimental) </label><br>\n        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Integration with Gentle is a bit more experimental at this stage. Follow the link for more info on setting it up\n        <a href="http://www.autoedit.io/user_manual/setup.html#gentle-stt-open-source-free-and-offline" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        </p>\n         <p class="help-block">With IBM chose <code>narrowband</code> for telephone recordings, everything else is broadband.\n        </p>\n         <p class="help-block">The IBM option always takes 5 minutes to generate a transcription regardless of the length of the media(audio or video file). In the current version Pocketsphinx and Gentle take slightly more then the duration of the media(audio or video) to do a full transcription <i>(eg 27min will take 30min to transcribe)</i>.</p>\n      </div>\n        <!-- languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModel">IBM Languages:</label>\n        <select class="form-control" id="languageModel">\n          <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n          <!-- <option disabled>_________</option> -->\n          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n          <!-- <option disabled>_________</option>          -->\n          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n\n           <option value="ar-AR_BroadbandModel">Modern Standard Arabic - Broadband</option>\n         \n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n      </div>\n    </div>\n<p> </p>\n        </p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Transcription</label>\n          <input type="text" name="title" value="'+
 ((__t=( title ))==null?'':__t)+
-'" class="form-control" id="title" placeholder="e.g. Interview with Mark Zuckerberg">\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Facebook CEO about Facebook Live">'+
+'" class="form-control" id="title" placeholder="e.g. Interview with Elon Musk" required>\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Space X and Tesla CEO about the simulation theory">'+
 ((__t=( description ))==null?'':__t)+
 '</textarea>\n        </div>\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n    <div class="row">\n        <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Transcription</a>\n          <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>\n      </div><!-- ./col -->\n      </div><!-- ./row -->\n  </form>\n  </div>\n\n';
 }
 return __p;
 };
 
-},{"underscore":117}],20:[function(require,module,exports){
-var _ = require("underscore");
-module.exports = function(obj){
-var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
-with(obj||{}){
-__p+='    <div class="row">\n        ';
- if(!status) { 
-__p+='\n          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n          <!--  not ready -->\n          <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
-((__t=( title ))==null?'':__t)+
-' </button>\n          <button type="button" class="btn btn-lg btn-link"  disabled>\n            <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>\n            &nbsp;\n            &nbsp;\n          </button>\n          \n          <p>'+
-((__t=( description ))==null?'':__t)+
-'</p>\n\n            </div>\n            <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n            <!-- edit btn -->\n             <!--  <button type="button"  class="btn btn-default btn-xs editBtn" disabled>\n                <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">\n              </button> -->\n              <!-- delete button -->\n              <button type="button"     class="btn btn-danger btn-xs deleteBtn" disabled>\n                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n              </button>\n            </div>\n        ';
- }else{ 
-__p+='\n          <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">\n          <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
-((__t=( title ))==null?'':__t)+
-'</button>\n          <p>'+
-((__t=( description ))==null?'':__t)+
-'</p>\n          </div>\n          <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <!-- edit btn -->\n         <!--    <button type="button"  class="btn  btn-default btn-xs editBtn" disabled>\n              <span class="glyphicon glyphicon-pencil text-muted" aria-hidden="true">\n            </button> -->\n            <!-- delete btn -->\n            <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n              <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n            </button>\n          </div>\n        ';
- } 
-__p+='\n    </div>\n    <hr>\n';
-}
-return __p;
-};
-
-},{"underscore":117}],21:[function(require,module,exports){
+},{"underscore":119}],22:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
 __p+='  <div class="container">\n    <div class="row">\n      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n<!-- Export modal + button -->\n<!-- Button trigger modal -->\n<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n  Export <span class="glyphicon glyphicon-save"></span>\n</button>\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order or in the order in which you selected them.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  - Chronological order\n        </a>\n\n        <!-- Btn EDL - selection order  -->\n        <a id="exportEdlSelectionOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL - selection order \n        </a></p>\n\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological or selection order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL Chronological \n        </a>\n        <!-- Btn Plain Text Selection Order -->\n        <a id="exportPlainTextEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL Selection Order\n        </a>\n        <br> <br>\n         <p> You can get your text selections as plain text in chronological or selection order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL Chronological\n        </a>\n\n        <!-- Btn Timecoded Plain Text Selection Order -->\n        <a id="exportPlainTimecodedTextEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL Selection Order\n        </a></p>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL Chronological order.</p>\n\n        <!-- Btn Json  EDL Chronological -->\n        <p><a id="exportJsonEDLSelOrder" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json  EDL Chronological \n        </a>\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL Selection order\n        </a></p>\n\n        <p>You can export a JSON of selections in order they where selected. This is equivalent to EDL selection order.</p>\n\n\n        ';
+'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n<!-- Export modal + button -->\n<!-- Button trigger modal -->\n<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n  Export <span class="glyphicon glyphicon-save"></span>\n</button>\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  \n        </a>\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL  \n        </a>\n      \n        <br> <br>\n         <p> You can get your text selections as plain text in chronological order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL \n        </a>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL option above.</p>\n\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL of Selections\n        </a></p>\n\n        <p>You can export a JSON of the selections, equivalent to the EDL selection option above.</p>\n\n\n        ';
  if (!window.userAgentSafari) { /* Safari and IE no support for the download attribute */ 
 __p+='\n        <h3><small>HTML5 Media</small></h3>\n\n        <p>You can export HTML5 audio and video previews generated by the app. </p>\n\n        <p>\n          <!-- Btn HTML5 Webm video -->\n          <a id="exporthtml5Video" class="btn btn-primary btn-sm"\n            ';
  if (processedVideo) { 
@@ -1227,7 +1218,7 @@ __p+='\n\n<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tab
 ((__t=( description ))==null?'':__t)+
 '</dd>\n    </dl>\n</div> <!--end metadada info well-->\n</div>\n<!--end metadada info -->\n\n\n\n</div><!-- ./col -->\n  \n    <!-- Transcription -->\n    <div class="col-xs-12 col-sm-9 col-lg-9 col-xl-9">\n      <div class="panel panel-default">\n        <div class="panel-heading hidden-print">\n          <div class="row">\n          <div class="col-xs-12 col-sm-7 col-lg-7 col-xl-7">\n            <div class="btn-group" role="group" aria-label="...">\n              <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>\n        <!--       <button type="button" class="btn btn-default">Read</button> -->\n              <button type="button"  id="editWords" class="btn btn-default" >Edit </button>\n            \n            </div>\n\n<a type="button" id="clearHighlights" class="btn btn-default" >\n<!-- hilighter icon -->\n<!-- end hilighter icon -->\n Clear highlights\n </a>\n          </div>\n          <!-- search box -->\n          <div class="col-xs-12 col-sm-5 col-lg-5 col-xl-5">\n            <div class="input-group">\n             <span class="input-group-addon">\n               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>\n             </span>\n             <input type="text" class="form-control" id="searchCurrentTranscription" placeholder="Find in transcript">\n            </div>\n          </div>\n          <!-- end search box -->\n          </div>\n        </div>\n        <div class="panel-body transcription">\n          <!-- Paragaph module -->\n          ';
  _.each(text, function(paragraph) { 
-__p+='\n          <dl class="dl-horizontal">\n            <dt>'+
+__p+='\n          <dl class="dl-horizontal">\n            <dt class="speaker" contenteditable="true">'+
 ((__t=( paragraph.speaker ))==null?'':__t)+
 '\n               </dt> <dt>\n              <!-- fir is the first  -->\n              <a data-start-time="'+
 ((__t=( paragraph.paragraph[0].line[0].startTime ))==null?'':__t)+
@@ -1245,23 +1236,25 @@ __p+='\n                  <span contenteditable="false" \n                      
 ((__t=( id ))==null?'':__t)+
 '" \n                        data-paragaph-id="'+
 ((__t=( paragraph.id ))==null?'':__t)+
-'"  data-word-id="'+
+'"  \n                        data-word-id="'+
 ((__t=( word.id ))==null?'':__t)+
 '" \n                        data-line-id="'+
 ((__t=( line.id ))==null?'':__t)+
-'" data-reel-name="'+
+'" \n                        data-reel-name="'+
 ((__t=( metadata.reelName ))==null?'':__t)+
 '"\n                        data-clip-name="'+
 ((__t=( metadata.fileName ))==null?'':__t)+
-'" data-video-id="'+
+'" \n                        data-video-id="'+
 ((__t=( 'videoId_'+ id ))==null?'':__t)+
+'"\n                        data-fps="'+
+((__t=( metadata.fps ))==null?'':__t)+
 '"\n                        data-speaker="'+
 ((__t=( paragraph.speaker ))==null?'':__t)+
-'" data-src="'+
+'" \n                        data-src="'+
 ((__t=( videoOgg ))==null?'':__t)+
 '"\n                        data-audio-file="'+
 ((__t=( audioFile ))==null?'':__t)+
-'" data-start-time="'+
+'" \n                        data-start-time="'+
 ((__t=( word.startTime ))==null?'':__t)+
 '"\n                        data-text="'+
 ((__t=( word.text ))==null?'':__t)+
@@ -1282,7 +1275,7 @@ __p+='\n          <!-- ./paragraph module -->\n      </div>\n    </div>\n    </d
 return __p;
 };
 
-},{"underscore":117}],22:[function(require,module,exports){
+},{"underscore":119}],23:[function(require,module,exports){
 var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -1292,8 +1285,9 @@ __p+='<br><br><br><br>\n<div class="container">\n  <p class="lead text-center te
 return __p;
 };
 
-},{"underscore":117}],23:[function(require,module,exports){
+},{"underscore":119}],24:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var render = require('./utils').render;
@@ -1305,41 +1299,48 @@ var render = require('./utils').render;
 * @extends Backbone.View
 */
 module.exports = Backbone.View.extend({
-   initialize: function() {
-      console.log("PAPEREDIT NEW FORM");
-   },
+  initialize: function () {},
 
-  events :{
-  	'click #submitBtn': 'save'
+  events: {
+    'click #submitBtn': 'save',
+    "keypress .form-control": "onEnterListener"
   },
 
-  save: function(e){
-  	e.preventDefault();
+  onEnterListener: function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) {
+      // 13 is enter
+      // code for enter
+      e.preventDefault();
+    }
+  },
+  save: function (e) {
+    e.preventDefault();
 
     //reading values from form 
-    var newTitle        = this.$('input[name=title]').val();
-    var newDescription  = this.$('textarea[name=description]').val();;
+    var newTitle = this.$('input[name=title]').val();
+    var newDescription = this.$('textarea[name=description]').val();;
 
-  	this.model.save({title: newTitle, description: newDescription},{
-      success: function(mode, response, option){      
-           Backbone.history.navigate("paperedits", {trigger:true}); 
+    this.model.save({ title: newTitle, description: newDescription }, {
+      success: function (mode, response, option) {
+        Backbone.history.navigate("paperedits", { trigger: true });
       },
-      error: function(model, xhr,options){
+      error: function (model, xhr, options) {
         var errors = JSON.parse(xhr.responseText).errors;
-        alert("ops, something when wrong with saving the paperedit:" + errors)
+        alert("ops, something when wrong with saving the paperedit:" + errors);
       }
     });
   },
 
-
-  render: function(){
+  render: function () {
     this.$el.html(render('papereditFormTemplate', this.model.attributes));
     return this;
   }
 });
 
-},{"./utils":31,"backbone":34,"jquery":37}],24:[function(require,module,exports){
+},{"./utils":33,"backbone":36,"jquery":39}],25:[function(require,module,exports){
 'use strict';
+
 var Backbone = require('backbone');
 var render = require('./utils').render;
 
@@ -1353,49 +1354,41 @@ var render = require('./utils').render;
 module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'media',
-  initialize: function() {
-    console.warn("paperedit list element");
-    console.warn(this);
+  initialize: function () {
 
     this.listenTo(this.model, 'change', this.render);
-
   },
-  events:{
+  events: {
     "click #papereditCard": "showPaperedit",
     "click button.editBtn": "editPaperedit",
     "click button.deleteBtn": "deletePaperedit"
   },
-  showPaperedit: function(){
+  showPaperedit: function () {
     //navigate to paperedit page
-    //TODO: is this the right way to do this?
-    Backbone.history.navigate("paperedit/"+this.model.cid, {trigger:true});
+    Backbone.history.navigate("paperedit/" + this.model.cid, { trigger: true });
   },
-
-  //TODO: delete is not working properly 
-  deletePaperedit: function(){
+  deletePaperedit: function () {
     if (confirm("You sure you want to delete this paperedit?")) {
-      this.model.destroy({success: function(model, response) {
-        // app.papereditRouter.papereditsList.fetch({reset: true}); 
-        // Backbone.history.navigate("paperedits", {trigger:true}); 
-      }})
+      this.model.destroy({ success: function (model, response) {} });
     } else {
-      alert("Paperedit was not deleted")
+      alert("Paperedit was not deleted");
     }
   },
 
-  editPaperedit: function(){
-    alert("Edit paperedit")
+  editPaperedit: function () {
+    alert("Edit paperedit");
   },
 
-  render: function(){
-    var sectionTemplate = render('papereditIndex', this.model.attributes);
+  render: function () {
+    var sectionTemplate = render('papereditElementIndex', this.model.attributes);
     this.$el.html(sectionTemplate);
     return this;
   }
 });
 
-},{"./utils":31,"backbone":34}],25:[function(require,module,exports){
+},{"./utils":33,"backbone":36}],26:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var PapereditListElementView = require('./paperedit_list_element_view');
@@ -1410,48 +1403,44 @@ var render = require('./utils').render;
 module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'container',
-  initialize: function() {
+  initialize: function () {
     var paperedits = this.collection;
     // this.listenTo(paperedits, 'sync',   this.render);
-    // this.listenTo(paperedits, 'destroy', this.render);
+    this.listenTo(paperedits, 'destroy', this.render);
     // this.listenTo(paperedits, 'add',     this.render);
   },
 
-  render: function() {
-    console.debug('Render paperedit list view');
-    // if there are  paperedits it shows
+  render: function () {
+    this.$el.empty();
+    this.$el.append("<ol class='breadcrumb'><li class='active'>Paperedits</li></ol>");
     if (!this.collection.isEmpty()) {
-      this.$el.empty();
-      console.debug("build PapereditsList");
+      // if there are  paperedits it shows
       this.collection.each(this.addOne, this);
       return this;
-      // if there are no paperedits it shows helpfull message to create a new one
     } else {
-      // this.$el.append
-      // TODO: there seems to be a bug on this line, object is not a function.
+      // else, if there are no paperedits it shows helpfull message to create a new one
       this.$el.html(render('homePage'));
       return this;
     }
   },
 
-  addOne: function(papereditItem) {
-    console.debug(papereditItem.attributes);
-    var papereditView = new PapereditListElementView({model: papereditItem});
+  addOne: function (papereditItem) {
+    var papereditView = new PapereditListElementView({ model: papereditItem });
     this.$el.append(papereditView.render().el);
   }
 });
 
-},{"./paperedit_list_element_view":24,"./utils":31,"backbone":34,"jquery":37}],26:[function(require,module,exports){
+},{"./paperedit_list_element_view":25,"./utils":33,"backbone":36,"jquery":39}],27:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var render = require('./utils').render;
 var FileSaver = require('file-saver');
 var moment = require('moment');
-var fromSeconds =  require('node-timecodes').fromSeconds;
+var fromSeconds = require('node-timecodes').fromSeconds;
 var EDL = require('../../edl_composer/index');
-
 
 /**
 * Backbone view for transcription view for individual transcriptions 
@@ -1463,359 +1452,285 @@ module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'container-fluid',
   //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
-  id: "paperedit-n",//+this.model.id+"",
+  id: "paperedit-n",
 
-  initialize: function(options) {
-    // console.log("this", this, this.el, this.$el);
-    // console.log(" this.$('.transcriptionsTabs')", this.$(".transcriptionsTabs"));
-    // console.log("options.transcriptions",options);
-    // console.log("options.transcriptions",options.transciptions);
+  initialize: function (options) {
     // set transcriptions, maybe get it from the router
-    this.transcriptions = options.transciptions; 
+    this.transcriptions = options.transciptions;
     this.transcriptionsCollection = options.transcriptionCollection;
-
-    // console.log("this.model", this.model);
-    // this.paperedit = this.model;
-    // 
-    // 
     // List of transcriptions on the left side. 
-    // 
     this.transcriotionsListElements = this.$(".transcriptionsTabs");
     //  <li class="active"><a href="#">Transcript 1</a></li>
     //  
-     var node = document.createElement("LI");
-     var textnode = document.createTextNode("Transcription 111");   
-     node.appendChild(textnode);      
-     // this.transcriotionsListElements.appendChild(textnode); 
-     // this.$(".transcriptionsTabs").append( "<li class='active'><a href='#'>Transcript 11111</a></li>");
-     // console.log(" this.transcriotionsListElements", this.transcriotionsListElements);
-     // this.$(".transcription-tab-content").innerHTML= render('hypertranscript', this.transcriptionsCollection.attributes);
-     // 
-    // document.addEventListener("selectionchange", function(event) {
-    //   console.log('Selection changed.',event); 
-    // });
-    
+    var node = document.createElement("LI");
+    var textnode = document.createTextNode("Transcription 111");
+    node.appendChild(textnode);
     // Needed for drag and dop 
     // https://www.html5rocks.com/en/tutorials/dnd/basics/
     this.dragSrcEl = null;
     this.dragSrcElInnerHTML = "";
-
     this.edlJson = null;
+    this.previewCounter = 0;
+    var self = this;
+    window.app.papereditPreview = {};
+    window.app.papereditPreview.counter = 0;
+    window.app.papereditPreview.pausedState = {};
+    window.app.papereditPreview.pausedState.paused = false;
+    this.removePapercutInsertPointers();
+  },
 
-
-    this.previewCounter = 0; 
-    // console.log("YO",this.model.get("events"),this.$(".paperedit"));
-    // this.$(".transcription-tab-content").html( render('hypertranscript', transcriptionAttributes));
-    //this.createHTMLDomElementFromString()
-    // document.querySelector(".paperedit").innerHTML = "yo"
-    // console.log(this.$(".paperedit").innerHTML );
-    
-    ////
-    // var papercut = this.model.get("events");
-    // console.log("papercuts",papercut);
-    // // console.log("papercuts",papercuts.length>0);
-    // var papercutsElements;
-    // var papercutElement;
-    // if(papercut.length >0 ){
-    //   for(var i =0; i< papercut.length; i++){
-    //     if( papercut[i].title){
-    //       console.log("with title papercut[i]",papercut[i]);
-    //           papercutElement = render('papercutTitle', papercut[i]); 
-    //           // // papercutsElements+=papercutElement;
-    //           // this.addElementToPaperEditElement(papercutElement);
-    //           console.log("papercutElement",papercutElement);
-    //     }else{
-    //        console.log("without title papercuts[i]",papercut,papercut[i],this.model.get("events"));
-    //           // var papercut = papercut[i];
-    //           // papercutElement = render('papercut',papercut[i]); 
-    //           // console.log("papercutElement",papercutElement);
-    //           // // papercutsElements+=papercutElement;
-    //           // this.addElementToPaperEditElement(papercutElement);
-              
-    //     }
-       
-    //   }
-    //   // this.addElementToPaperEditElement(papercutsElements);
-    // }
-    ////
-
-   },
- 
-  events:{
-    "click .transcriptionTabLink" : "transcriptionTabLink",
-    "click .transcriptionsWords"  : "playWord",
-    "click .timecodes"            : "playWord",
-    "mouseup .transcription"      : "selectingWords",
-    "click .addStoryPointBtn"     : "addStoryPointBtn",
-
+  events: {
+    "click .transcriptionTabLink": "transcriptionTabLink",
+    "click .transcriptionsWords": "playWord",
+    "click .timecodes": "playWord",
+    "mouseup .transcription": "selectingWords",
+    "click .addStoryPointBtn": "addStoryPointBtn",
+    "focusout .storyOutlineHeading": "savePapereditOutlineHeading",
     // D&D
-    "dragstart .papercut" : "dragStartPapercut",
-    'dragenter .papercut' : 'sortablePapercut',
-    'dragleave .papercut' : 'sortablePapercut',
-    'drop .papercut'      : 'dropPapercut',
-    'dragover .papercut': function(ev) {
-        ev.preventDefault();
+    "dragstart .papercut": "dragStartPapercut",
+    'dragenter .papercut': 'sortablePapercut',
+    'dragleave .papercut': 'sortablePapercut',
+    'drop .papercut': 'dropPapercut',
+    'dragover .papercut': function (ev) {
+      ev.preventDefault();
     },
-
-    'dragover .deletePapercut': function(ev) {
-        ev.preventDefault();
+    'dragover .deletePapercut': function (ev) {
+      ev.preventDefault();
     },
-
     'drop .deletePapercut': "deletePapercut",
-
     'click .deletePapercut': "deleteAllPapercuts",
-
-    "click #exportEdlJSON" : "exportEdlJSON",
+    "click #exportEdlJSON": "exportEdlJSON",
     "click #exportEdlJSONWithTitles": "exportEdlJSONWithTitles",
-    "click #exportEdl" : "exportEdl",
-
+    "click #exportEdl": "exportEdl",
     "click .savePapercutsBtn": "savePapercuts",
-
     "click .playPapercutsBtn": "playPapercuts",
-    "click .stopPapercutsBtn": "stopPapercuts"
-    // "click .storyPointHeading" : "newStoryPointHeading",
-    // "click .papereditWords" : "previevPaperedit"
+    "click .stopPapercutsBtn": "stopPapercuts",
+    "click .pausePapercutsBtn": "pausePapercuts",
+    "click .papercut": "listenerTosetCurrentPapercutForInsert",
+    "keyup #searchCurrentTranscription": "search"
   },
 
   //keyboard event using mouse trap backbone version 
-  keyboardEvents: {
+  keyboardEvents: {},
 
+  savePapereditOutlineHeading: function () {
+    this.savePapercuts();
   },
 
-  //transform JSON EDL of papercuts/paperedit into a video sequence that can be previewed.
-  // videoSequenceForPreview: function(){
-  //   var papercuts = this.getEDLJsonDataFromDom();
-  //   console.log(JSON.stringify(papercuts, null, 4))
-  //   var videoSequence = [{"src": "http://dl1.webmfiles.org/big-buck-bunny_trailer.webm", "inPoint":3.2 , "outPoint":6},{"src": "http://dl1.webmfiles.org/elephants-dream.webm", "inPoint": 1, "outPoint":3},{"src": "http://dl1.webmfiles.org/big-buck-bunny_trailer.webm", "inPoint": 10, "outPoint":15}]
-  //    console.log(JSON.stringify(videoSequence, null, 4))
-  //  return videoSequence;
-  // },
-  // 
-  stopPapercuts: function(){
-    var video = document.getElementById("videoPreview");
-    video.pause();
+  removePapercutInsertPointers: function () {
+    var elems = document.querySelectorAll(".currentPapercutElement");
+    [].forEach.call(elems, function (el) {
+      el.classList.remove("currentPapercutElement");
+    });
   },
 
-  playPapercuts: function(){
-   var videoSequence = this.getEDLJsonDataFromDom();
-   //Video instance
-    var video = document.getElementById("videoPreview");
-    var counter = 0;
+  //sets element and adds css
+  setElementAsCurrentPapercutForInsert: function (element) {
+    this.currentPapercutForInsert = element;
+    //reset by removing class.
+    this.removePapercutInsertPointers();
 
-    function playVideoSegments(videoSequence){
-      // initialised counter to play video segments in the array    
-      /*******************base case, first video ****************/
-      //base case, playing first video segment in sequence
-      var videoSrc  = videoSequence[counter]['src'];
-      var inPoint   = videoSequence[counter]['startTime'];
-      var outPoint  = videoSequence[counter]['endTime'];
-      // helper function to play one video segment
-      video.src = videoSrc + "#t="+inPoint+","+outPoint;
-      console.log(video.src);
-      video.load;
-      video.play();
-      counter += 1;
-      
-      video.addEventListener("timeupdate", function() {
-        if (video.currentTime >= outPoint) {
-          videoSrc  = videoSequence[counter]['src'];
-          inPoint   = videoSequence[counter]['startTime'];
-          outPoint  = videoSequence[counter]['endTime'];
-          //    counter += 1;
-          playVideoSegments(videoSequence);
-        }
-       }, false);
+    if (element != null) {
+      this.currentPapercutForInsert.classList.add("currentPapercutElement");
     }
-
-    playVideoSegments(videoSequence);
-
   },
 
-
-  savePapercuts : function(){
-     // TODO: figure out a better way to serialize data, at th emoment just converting the whole HTML of papereidt into string
-    // // and saving it in events attribute of paperedit. 
-    // // on inizialization rendering repopulating that field. 
-      this.model.set({events: document.querySelector(".paperedit").innerHTML });
-      // console.log("inside save",document.querySelector(".paperedit").innerHTML , this.model.get("events"));
-      //save the model
-      this.model.save({wait: false});
-      // console.log( this.getPapercutsJsonDataFromDomToSaveInDb() );
-      // console.log("SAVED?");
-      alert("Saved");
+  listenerTosetCurrentPapercutForInsert: function (e) {
+    this.setElementAsCurrentPapercutForInsert(e.currentTarget);
   },
 
-  // getPapercutsJsonDataFromDomToSaveInDb: function(){
-  //   var papercuts =[];
-  //   var papercutsElements= document.querySelectorAll(".papercut");
-  //   for(var i =0; i< papercutsElements.length; i++){
-  //     var papercut={};
-  //     if(papercutsElements[i].dataset.title){
-  //       papercut.title = papercutsElements[i].dataset.title;
-  //       papercuts.push(papercut);
-  //     }else{
-  //       // papercut = [];
-  //       var wordsElements = papercutsElements[i].querySelectorAll("span");
-  //       papercut = [];
-  //       for(var j=0; j<wordsElements.length; j++){
-  //         var word = {};
-  //         word = JSON.parse(JSON.stringify(wordsElements[j].dataset));
-  //         papercut.push(word);
-  //       }
-  //       // papercut.push(words);
-  //       // console.log(words,papercut);
-  //       papercuts.push(papercut);
-  //     }
-  //   }
-  //   // console.log(papercut);
-  //   return papercuts;
-  // },
+  pausePapercuts: function () {
+    var video = document.getElementById("videoPreview");
+    //complicated to implement.
+    video.pause();
+    window.app.papereditPreview.pausedState.paused = true;
+    window.app.papereditPreview.pausedState.resumedTime = video.currentTime;
+    clearTimeout(window.app.papereditPreview.timer);
+  },
 
-  //TODO: refactor EDL export helper in backbone views utils/helpers.
+  stopPapercuts: function () {
+    var video = document.getElementById("videoPreview");
+    //complicated to implement.
+    video.pause();
+    //counter = counter;
+    clearTimeout(window.app.papereditPreview.timer);
+    window.app.papereditPreview.counter = 0;
+  },
+
+  //see it abstracted in isolation at 
+  //https://jsfiddle.net/pietrops/u5usa10f/
+  playPapercuts: function () {
+    var videoSequence = this.getEDLJsonDataFromDom();
+    if (videoSequence == 0) {
+      alert("There are no papercut to generate a preview. Select some on the transcription side and try again.");
+    } else {
+      this.playVideoPreview(videoSequence);
+    }
+  },
+
+  playVideoPreview: function (playlist) {
+    var video = document.getElementById("videoPreview");
+    window.app.papereditPreview.numberOfClips = playlist.length - 1;
+
+    function playSequence(playlist) {
+      var segment = playlist[window.app.papereditPreview.counter];
+      if (segment.src == "") {
+        video.setAttribute("src", segment.audioFile + "#t=" + segment.startTime + "," + segment.endTime);
+      } else {
+        video.setAttribute("src", segment.src + "#t=" + segment.startTime + "," + segment.endTime);
+      }
+
+      video.load();
+      if (window.app.papereditPreview.pausedState.paused) {
+        video.currentTime = parseFloat(window.app.papereditPreview.pausedState.resumedTime);
+        window.app.papereditPreview.pausedState.paused = false;
+      }
+      video.play();
+      // * 1000, because Timer is in ms
+      var stopVideoAfter = (segment.endTime - segment.startTime) * 1000;
+      // call function to stop player after given intervall
+      // https://stackoverflow.com/questions/9845565/in-html5-video-how-to-play-a-small-clip-from-a-long-video
+      window.app.papereditPreview.timer = setTimeout(function () {
+        video.pause();
+        if (window.app.papereditPreview.counter < window.app.papereditPreview.numberOfClips) {
+          window.app.papereditPreview.counter += 1;
+          playSequence(playlist);
+        } else {
+          //reset counter
+          window.app.papereditPreview.counter = 0;
+        }
+      }, stopVideoAfter);
+    }
+    // calling function 
+    // TODO: perhaps function declaration of playSequence() can be viewed in view namespace eg so can call as this.playSequence()
+    playSequence(playlist);
+  },
+
+  savePapercuts: function () {
+    // TODO: figure out a better way to serialize data, at th emoment just converting the whole HTML of papereidt into string
+    // and saving it in events attribute of paperedit. 
+    // on inizialization rendering repopulating that field. 
+    this.model.set({ events: document.querySelector(".paperedit").innerHTML.replace("currentPapercutElement", "") });
+    //save the model
+    this.model.save({ wait: false });
+  },
+
+  //TODO: refactor EDL export, move it as an helper in backbone views utils/helpers. as used both by transcription and paperedit.
   /**
   * @function exportEdl
   * @description EDL - Chronological
   */
-  exportEdl: function(e){
-    console.log("EXPORT EDL");
-    var papereditJson=  this.makeEDLJSON(false);
-    console.log(JSON.stringify(papereditJson, null, 2));
+  exportEdl: function (e) {
+    var papereditJson = this.makeEDLJSON(false);
     //end move in model
     var edl = new EDL(papereditJson);
-    console.log(edl.compose());
-    var edlFileName = this.nameFileHelper(papereditJson.title +"_chronological","edl"); 
-    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdl"});
+    var edlFileName = this.nameFileHelper(papereditJson.title, "edl");
+    this.exportHelper({ fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdl" });
   },
-
 
   //titlesBol boolean to decide whether to add titles as array in the EDL JSON or not.
-  makeEDLJSON: function(titlesBol){
-     var papereditJson ={};
-        papereditJson.title = this.model.get("title");
-        papereditJson.events = this.getEDLJsonDataFromDom(titlesBol); 
-     return papereditJson;
+  makeEDLJSON: function (titlesBol) {
+    var papereditJson = {};
+    papereditJson.title = this.model.get("title");
+    papereditJson.events = this.getEDLJsonDataFromDom(titlesBol);
+    return papereditJson;
   },
 
-   exportEdlJSONWithTitles: function(){
-    var papereditJson=  this.makeEDLJSON(true);
-
-    var tmpPaperedit = JSON.stringify(papereditJson,null,"\t");
-    var jsonFileName = this.nameFileHelper(papereditJson.title+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperedit, urlId: "#exportJsonEDL"});
-
-    // console.log(papereditJson,tmpPaperedit);
+  exportEdlJSONWithTitles: function () {
+    var papereditJson = this.makeEDLJSON(true);
+    var tmpPaperedit = JSON.stringify(papereditJson, null, "\t");
+    var jsonFileName = this.nameFileHelper(papereditJson.title + "_EDL", "json");
+    this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperedit, urlId: "#exportJsonEDL" });
   },
 
-  exportEdlJSON: function(){
-    var papereditJson=  this.makeEDLJSON();
-
-    var tmpPaperedit = JSON.stringify(papereditJson,null,"\t");
-    var jsonFileName = this.nameFileHelper(papereditJson.title+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperedit, urlId: "#exportJsonEDL"});
-
-    // console.log(papereditJson,tmpPaperedit);
+  exportEdlJSON: function () {
+    var papereditJson = this.makeEDLJSON();
+    var tmpPaperedit = JSON.stringify(papereditJson, null, "\t");
+    var jsonFileName = this.nameFileHelper(papereditJson.title + "_EDL", "json");
+    this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperedit, urlId: "#exportJsonEDL" });
   },
-
 
   //TODO: both make file helper and exportHelper should be moved in shared util and refactored out of transcription view as well
   /**
   * @function exportHelper
   */
-  nameFileHelper(name, ext){
+  nameFileHelper(name, ext) {
     var timeStr = moment().format('DD_MM_YYYY_HH-mm-ss');
-    return ""+name.replace(" ", "_") +"_"+ timeStr +"."+ext;
+    return "" + name.replace(" ", "_") + "_" + timeStr + "." + ext;
   },
-
 
   /**
   * @function exportHelper
   */
-  exportHelper(config){
-    if(config.fileContent === ""){
+  exportHelper(config) {
+    if (config.fileContent === "") {
       alert("File " + config.fileName + " seems to be empty");
     }
-
     var fileName = config.fileName; //this.title _ + append time of day to name
     var fileContent = config.fileContent;
     var urlId = config.urlId;
-
     var formBlob = new Blob([fileContent], { type: 'text/plain' });
     FileSaver.saveAs(formBlob, config.fileName);
   },
 
-
-
-  deleteAllPapercuts: function(e){
-    var r = confirm("Click ok to delete all papercuts in the paperedit, cancel to abort");
+  deleteAllPapercuts: function (e) {
+    var r = confirm("Click ok to delete all papercuts in the paperedit, cancel to abort. Drag individual papercuts on delete button to delete them one at a time.");
     if (r == true) {
-      document.querySelector(".paperedit").innerHTML="";
+      document.querySelector(".paperedit").innerHTML = "";
       // update EDL
       this.getEDLJsonDataFromDom();
       this.savePapercuts();
+      this.setElementAsCurrentPapercutForInsert(null);
     } else {
-        alert("Relax, nothing was deleted");
+      alert("Relax, nothing was deleted");
     }
-    //SAVE/Update
-   
   },
 
-  deletePapercut: function(e){
+  deletePapercut: function (e) {
     e.preventDefault();
-    // console.log("deletePapercut",e);
     this.dragSrcEl.remove();
     this.dragSrcEl = null;
     //update EDL
     this.getEDLJsonDataFromDom();
     this.savePapercuts();
-
   },
 
-  dragStartPapercut: function(e){
+  dragStartPapercut: function (e) {
     this.dragSrcEl = e.currentTarget;
-    // console.log(e.currentTarget, e);
     // TODO: sortout horribel patch. instead of innerHTML get all element as HTML. 
     // in theory should use data transfer object from the drag and drop event but couldn't get it to work. might be confusion between jquery and plain js methods to set and get.
     this.dragSrcElInnerHTML = e.currentTarget.outerHTML;
   },
 
-  dropPapercut: function(e){
-    console.log("DROP!1");
-      //it's not a swaps the elements on drop. 
-     // on drop it needs to append the draged element after the drop element.
-     //  e.currentTarget is current target element.
-      if (e.stopPropagation) {
-        // Stops some browsers from redirecting.
-        e.stopPropagation(); 
-      }
-      //  Don't do anything if dropping the same element/raw/papercut we're dragging.
-      if (this.dragSrcEl !=  e.currentTarget) {
-        // TODO: could be abstracted as own function. that makes dom element from string.
-        // https://stackoverflow.com/questions/3103962/converting-html-string-into-dom-elements
-        var tmpDiv = this.createHTMLDomElementFromString(this.dragSrcElInnerHTML);
-        // https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
-        e.currentTarget.insertAdjacentHTML('beforebegin', this.dragSrcElInnerHTML);
-        // Remove this.dragSrcEl element, remove the element that was initially dragged from it's original place.
-        this.dragSrcEl.remove();
-      }
-
-    //   return false;
-
-    // //TODO: save EDL 
+  dropPapercut: function (e) {
+    // it does not swaps the elements on drop. 
+    // on drop it needs to append the draged element after the drop element.
+    // `e.currentTarget` is current target element.
+    if (e.stopPropagation) {
+      // Stops some browsers from redirecting.
+      e.stopPropagation();
+    }
+    //  Don't do anything if dropping the same element/raw/papercut we're dragging.
+    if (this.dragSrcEl != e.currentTarget) {
+      // Helper function. that makes dom element from string.
+      // https://stackoverflow.com/questions/3103962/converting-html-string-into-dom-elements
+      var tmpDiv = this.createHTMLDomElementFromString(this.dragSrcElInnerHTML);
+      // https://developer.mozilla.org/en-US/docs/Web/API/Element/insertAdjacentHTML
+      e.currentTarget.insertAdjacentHTML('beforebegin', this.dragSrcElInnerHTML);
+      // Remove this.dragSrcEl element, remove the element that was initially dragged from it's original place.
+      this.dragSrcEl.remove();
+    }
     // create EDL 
     this.getEDLJsonDataFromDom();
-    // // Save paperedit EDL.  save in internal state.
-    console.log("DROP!2");
+    // Save paperedit EDL.  save in internal state.
     this.savePapercuts();
-    // // add a this.paperEdit in initialise
-    // // also add a save model for paperedit when EDL is updated.
   },
 
-
-  getEDLJsonDataFromDom: function(keepTitlesBool){
+  getEDLJsonDataFromDom: function (keepTitlesBool) {
     //default don't keep titles, if no arg provided
-    var keepTitles = false; 
+    var keepTitles = false;
     //else use what the user has requested
-    if(arguments.length != 0){
+    if (arguments.length != 0) {
       keepTitles = keepTitlesBool;
     }
     // {"startTime":"21.97",
@@ -1827,161 +1742,165 @@ module.exports = Backbone.View.extend({
     // "speaker":"Unnamed Speaker",
     // "src":"/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.webm",
     // "audioFile":"/Users/pietropassarelli/Library/Application Support/autoEdit2/media/Ian_Perkin-Mobile.mp4.1486169904445.ogg"}"
-    var papercutsElements = document.querySelectorAll('.papercut'); 
+    var papercutsElements = document.querySelectorAll('.papercut');
     var papercuts = [];
-    for (var i=0; i< papercutsElements.length; i++){
-      var papercut  = JSON.parse(JSON.stringify(papercutsElements[i].dataset));
-          //so that it starts from 1 and not from zero.
-          papercut.id = i+1;
+    for (var i = 0; i < papercutsElements.length; i++) {
+      var papercut = JSON.parse(JSON.stringify(papercutsElements[i].dataset));
+      //so that it starts from 1 and not from zero.
+      papercut.id = i + 1;
       //exclude titles from EDL
       //if keep title true add all papercuts to the array
-      if(keepTitles){
-          papercuts.push(papercut); 
-      //otherwise only add the paper cut when there isn't a title in it.
-      }else{
-         if(!papercut.title){
-          papercuts.push(papercut); 
+      if (keepTitles) {
+        papercuts.push(papercut);
+        //otherwise only add the paper cut when there isn't a title in it.
+      } else {
+        if (!papercut.title) {
+          papercuts.push(papercut);
         }
       }
-     
-        
     }
-  
-    this.edlJson = papercuts; 
-    //SAVE/UPDATE
-    // this.savePapercuts(true);
-    console.log(papercuts);
-    return papercuts; 
+    this.edlJson = papercuts;
+
+    return papercuts;
+  },
+  //TODO: check if this is needed?
+  sortablePapercut: function () {
+    //
   },
 
-  sortablePapercut: function(){
-    // console.log("drag start");
-  },
-
-  createHTMLDomElementFromString: function(string){
+  createHTMLDomElementFromString: function (string) {
     var parser = new DOMParser();
     var tmpDiv = parser.parseFromString(string, "text/xml");
     return tmpDiv;
   },
 
-  addStoryPointBtn: function (){
-    var storyPointHeading = prompt("Had a heading for your story point", "Section A: ");
+  addStoryPointBtn: function () {
+    var storyPointHeading = prompt("Had a heading for your story point", "Sequence : ");
     if (storyPointHeading != null) {
-      // var papercutElement = document.createElement('h4');
       // TODO: replace with ejs template
-      var papercutHeadingStringTemplate ="<div data-title='"+storyPointHeading+"' class='row papercut' draggable='true'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
-          papercutHeadingStringTemplate +="<h4><span class='glyphicon glyphicon-pencil' ></span> <span contenteditable='true'>"+storyPointHeading+"</span></h4></div></li> ";
-      // var papercutElement.innerHTML = papercutHeadingStringTemplate;
+      var papercutHeadingStringTemplate = "<div data-title='" + storyPointHeading + "' class='row papercut' draggable='true'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
+      papercutHeadingStringTemplate += "<h4><span class='glyphicon glyphicon-pencil' ></span> <span class='storyOutlineHeading' contenteditable='true'>" + storyPointHeading + "</span></h4></div></li> ";
       this.addElementToPaperEditElement(papercutHeadingStringTemplate);
     }
   },
-   
-  selectingWords: function(e){
+
+  selectingWords: function (e) {
     // https://stackoverflow.com/questions/11300590/how-to-captured-selected-text-range-in-ios-after-text-selection-expansion 
     // https://jsfiddle.net/JasonMore/gWZfb/
     var selectedRange = null;
-   if (window.getSelection) {
-     selectedRange = window.getSelection().getRangeAt(0).cloneContents();
-     // console.log("window")
+    if (window.getSelection) {
+      selectedRange = window.getSelection().getRangeAt(0).cloneContents();
     } else {
       selectedRange = document.getSelection().getRangeAt(0).cloneContents();
-      // console.log("document")
     }
 
     var selectedElements = $(selectedRange).find('span');
     //first element of selection
     var firstElement = $(selectedRange).find('span')[0];
-    var elemCount = $(selectedRange).find('span').length ;
+    var elemCount = $(selectedRange).find('span').length;
     //last element
-    var lastElIndex =elemCount - 1;
+    var lastElIndex = elemCount - 1;
     //last element of selection
     var lastElement = $(selectedRange).find('span')[lastElIndex];
-    // var tmpCounter = this.model.get("counterForPaperCuts");
-    
     var papercut = this.extractEDLJSONPapercutFromElement(selectedElements);
-        console.log("HERE",papercut);
-    var papercutElement = render('papercut', papercut); 
-    // console.log(papercutElement);
-
+    var papercutElement = render('papercut', papercut);
     this.addElementToPaperEditElement(papercutElement);
-
     this.getEDLJsonDataFromDom();
+    this.savePapercuts();
   },
 
-  addElementToPaperEditElement: function(stringElement){
+  insertAfter: function (el, referenceNode) {
+    referenceNode.parentNode.insertBefore(el, referenceNode.nextSibling);
+  },
+
+  addElementToPaperEditElement: function (stringElement) {
     //get paperedit element 
-    if(typeof stringElement == "string"){
-      var papereditElement = document.querySelector(".paperedit");
-      var papercutElement = document.createElement('div');
-      papercutElement.innerHTML = stringElement;
+    var papercutElement;
+    var papereditElement = document.querySelector(".paperedit");
+    if (typeof stringElement == "string") {
+      if (this.currentPapercutForInsert == null) {
+        //Add at the end of the .paperedit
+        papereditElement = document.querySelector(".paperedit");
+        papercutElement = document.createElement('div');
+        papercutElement.innerHTML = stringElement;
+        papereditElement.appendChild(papercutElement);
+        this.getEDLJsonDataFromDom();
+        this.savePapercuts();
+      } else {
+        //
+        var currentPapercutForInsert = this.currentPapercutForInsert;
+        papercutElement = document.createElement('div');
+        papercutElement.innerHTML = stringElement;
+        // currentPapercutForInsert.appendChild(papercutElement);
+        this.insertAfter(papercutElement, currentPapercutForInsert);
+        //update currentPapercutForInsert to latest element added. 
+        this.setElementAsCurrentPapercutForInsert(papercutElement);
+        this.getEDLJsonDataFromDom();
+        this.savePapercuts();
+      }
       //add papercut at end of paperedit element
-      papereditElement.appendChild(papercutElement);
-    }else{
+    } else {
       var papereditElement = document.querySelector(".paperedit");
       // var papercutElement = document.createElement('div');
       // papercutElement.innerHTML = stringElement;
       // //add papercut at end of paperedit element
       papereditElement.appendChild(stringElement);
+      this.getEDLJsonDataFromDom();
+      this.savePapercuts();
     }
-  
   },
 
-  extractEDLJSONPapercutFromElement: function(elements){
-    // console.log("elements", elements);
-
+  extractEDLJSONPapercutFromElement: function (elements) {
     var papercutAr = [];
-      for(var i = 0; i< elements.length; i++){
-        var word = {};
-            word.text             = elements[i].innerHTML;
-            word.clipName         = elements[i].dataset.clipName;
-            word.reelName         = elements[i].dataset.reelName;
-            word.startTime        = elements[i].dataset.startTime;
-            word.endTime          = elements[i].dataset.endTime;
-            word.speaker          = elements[i].dataset.speaker; 
-            word.audioFile        = elements[i].dataset.audioFile;
-            word.src              = elements[i].dataset.src;
-            word.transcriptionId  = elements[i].dataset.transcriptionId;
-            word.videoId          = elements[i].dataset.videoId;
-            //HARDCODED!!
-            word.offset           = elements[i].dataset.offset;
-        papercutAr.push(word);
-      }
-      var papercut= {};
-      papercut.papercut = papercutAr; 
-        // return papercut;
-      return papercut;
-
+    for (var i = 0; i < elements.length; i++) {
+      var word = {};
+      word.text = elements[i].innerHTML;
+      word.clipName = elements[i].dataset.clipName;
+      word.reelName = elements[i].dataset.reelName;
+      word.fps = elements[i].dataset.fps;
+      word.startTime = elements[i].dataset.startTime;
+      word.endTime = elements[i].dataset.endTime;
+      word.speaker = elements[i].dataset.speaker;
+      word.audioFile = elements[i].dataset.audioFile;
+      word.src = elements[i].dataset.src;
+      word.transcriptionId = elements[i].dataset.transcriptionId;
+      word.videoId = elements[i].dataset.videoId;
+      word.offset = elements[i].dataset.offset;
+      papercutAr.push(word);
+    }
+    var papercut = {};
+    papercut.papercut = papercutAr;
+    return papercut;
   },
 
   //param JSON Of transcription model.attributes
   //helper function to Show Highlights selections in hypertranscripts
-  renderHighlights: function(transcriptionAttributes,self){
-   var tmpHighlights =  transcriptionAttributes.highlights;
+  renderHighlights: function (transcriptionAttributes, self) {
+    var tmpHighlights = transcriptionAttributes.highlights;
 
-    for (var i =0; i < tmpHighlights.length; i++ ){
-      var min =  tmpHighlights[i].startTime;
+    for (var i = 0; i < tmpHighlights.length; i++) {
+      var min = tmpHighlights[i].startTime;
       var max = tmpHighlights[i].endTime;
       //needs to grab the words of the element of the view not in the dom  
       //TODO: move loop out of a function?      
-      self.$(".words").filter(function(){
+      self.$(".transcription .words").filter(function () {
         return $(this).data('start-time') >= min && $(this).data('end-time') <= max;
       }).addClass("highlight");
     }
   },
 
-  showTranscriptionComponent: function(transcriptionAttributes){
-     document.querySelector(".transcription-tab-content").innerHTML= render('hypertranscript', transcriptionAttributes);
+  showTranscriptionComponent: function (transcriptionAttributes) {
+    document.querySelector(".transcription-tab-content").innerHTML = render('hypertranscript', transcriptionAttributes);
     //Show Highlights selections in hypertranscripts
-    this.renderHighlights(transcriptionAttributes,this);
-  }, 
+    this.renderHighlights(transcriptionAttributes, this);
+  },
 
-  transcriptionTabLink: function(event){
+  transcriptionTabLink: function (event) {
     event.preventDefault();
-    
+
     var transcriptionId = event.target.attributes.id.value;
     // get transcription from id 
-    var transcriptionTmp =this.transcriptionsCollection.get(transcriptionId );
-    // console.log("transcriptionTmp",transcriptionTmp, transcriptionTmp.attributes);
+    var transcriptionTmp = this.transcriptionsCollection.get(transcriptionId);
     var currentElement = event.currentTarget.parentElement;
     // make css blue of current element in tab inactive. 
     // not knowing which one is active, roll through all of them and remove class.
@@ -1991,40 +1910,54 @@ module.exports = Backbone.View.extend({
     //make current element active. active property is in li that containe link, so adding class to parent.
     $(currentElement).addClass("active");
     //update hypertranscript component with current transcript selection.
-   
     this.showTranscriptionComponent(transcriptionTmp.attributes);
-
   },
-
 
   /**
   * @function playWord
-  */ 
-  playWord: function(e){
+  */
+  playWord: function (e) {
     var wordStartTime = e.currentTarget.dataset.startTime;
-    var videoIdElem="#"+e.currentTarget.dataset.videoId;
+    var videoIdElem = "#" + e.currentTarget.dataset.videoId;
     var videoElem = $(videoIdElem)[0];
     videoElem.currentTime = wordStartTime;
     videoElem.play();
     var vid = document.getElementById(e.currentTarget.dataset.videoId);
 
-    vid.ontimeupdate = function() {
-      $("span.words").filter(function() {
-        if($(this).data("start-time") < $(videoIdElem)[0].currentTime){
-          $(this).removeClass( "text-muted" );
-        }else{
+    vid.ontimeupdate = function () {
+      $("span.words").filter(function () {
+        if ($(this).data("start-time") < $(videoIdElem)[0].currentTime) {
+          $(this).removeClass("text-muted");
+        } else {
           $(this).addClass("text-muted");
         }
       });
     };
   },
 
+  /**
+  * @function search
+  */
+  search: function (e) {
+    // alert("searching")
+    var searchedText = $(e.currentTarget).val();
+    var searchTextArray = searchedText.split(" ");
+    //TODO: need to resest the search
+    //make search as a
+    $(".words").removeClass("searched");
+    // $( 'p:contains('+searchedText+')' ).css( "text-decoration", "underline" );
+    if (searchTextArray.length > 0) {
+      for (var i = 0; i < searchTextArray.length; i++) {
+        $('.words[data-text=' + searchTextArray[i] + ']').addClass("searched");
+      }
+    }
+  },
+
   // some kind of view listner to make hyper transcript eg click on word, it moves to correspondind part of video. 
- 
   /**
   * @function render
   */
-  render: function(){    
+  render: function () {
     this.model.attributes.id = this.model.attributes._id;
     // Not sure if this is the right way to add this to the view.
     // probably it be better to compose view elements
@@ -2035,12 +1968,13 @@ module.exports = Backbone.View.extend({
     ///end of modify compiled template to update hilights. 
     // set default hypertranscript 
     var transcriptionAttributes = this.transcriptionsCollection.models[0].attributes;
-    
+
     // Add default hypertranstript first one of transcription collection. 
-    this.$(".transcription-tab-content").html( render('hypertranscript', transcriptionAttributes));
+    this.$(".transcription-tab-content").html(render('hypertranscript', transcriptionAttributes));
     //Show Highlights selections in hypertranscripts
     // call show hilights on first transcription. 
-    this.renderHighlights(transcriptionAttributes,this);
+    this.renderHighlights(transcriptionAttributes, this);
+
     // TODO: mark first LI element of transcription tab as active 
     // TODO: figure out a better way to serialize data, at th emoment just converting the whole HTML of papereidt into string
     // // and saving it in events attribute of paperedit. 
@@ -2048,11 +1982,78 @@ module.exports = Backbone.View.extend({
     this.$(".paperedit").html(this.model.get('events'));
     return this;
   }
-  
 });
 
-},{"../../edl_composer/index":32,"./utils":31,"backbone":34,"file-saver":36,"jquery":37,"moment":38,"node-timecodes":42,"underscore":117}],27:[function(require,module,exports){
+},{"../../edl_composer/index":34,"./utils":33,"backbone":36,"file-saver":38,"jquery":39,"moment":40,"node-timecodes":44,"underscore":119}],28:[function(require,module,exports){
 'use strict';
+
+var $ = require('jquery');
+var Backbone = require('backbone');
+var render = require('./utils').render;
+
+// var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+
+if (typeof window.nw !== 'undefined') {
+  var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+} else {
+  //not in nwjs 
+  var watsonKeysPath = "/";
+}
+
+/**
+* Backbone view for transcription form for creating a new transcription
+* @class TranscriptionFormView
+* @constructor
+* @extends Backbone.View
+*/
+module.exports = Backbone.View.extend({
+  tagName: 'div',
+  className: 'container',
+
+  initialize: function (options) {
+    this.options = options;
+    this.settings = options.settings;
+    _.bindAll(this, 'render');
+  },
+
+  events: {
+    'click #submitBtn': 'save',
+    "keypress .form-control": "onEnterListener"
+  },
+
+  onEnterListener: function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) {
+      // 13 is enter
+      // code for enter
+      e.preventDefault();
+    }
+  },
+
+  save: function (e) {
+    e.preventDefault();
+    var ibmCredentials = {};
+    ibmCredentials.username = this.$('input[name=username]').val().trim();
+    ibmCredentials.password = this.$('input[name=password]').val().trim();
+    //TODO: double check this
+    if (ibmCredentials.username != "" && ibmCredentials.password != "") {
+      //save 
+      window.setWatsonAPIkeys(ibmCredentials);
+      window.alert("Thank you! Saved the keys so you don't have to enter them again.");
+    } else {
+      alert("Please add valid credentials to save");
+    }
+  },
+
+  render: function () {
+    this.$el.html(render('settingsTemplate', this.settings));
+    return this;
+  }
+});
+
+},{"./utils":33,"backbone":36,"jquery":39}],29:[function(require,module,exports){
+'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var render = require('./utils').render;
@@ -2064,49 +2065,82 @@ var render = require('./utils').render;
 * @extends Backbone.View
 */
 module.exports = Backbone.View.extend({
-  events :{
-  	'click #submitBtn': 'save'
+  // initialize: function() {
+  // TODO: load json with transcriptions languages, from IBM watson, and make choice menu with those.
+  // },
+  events: {
+    'click #submitBtn': 'save',
+    "keypress .form-control": "onEnterListener"
+
   },
 
-  save: function(e){
-  	e.preventDefault();
+  onEnterListener: function (e) {
+    var key = e.which || e.keyCode;
+    if (key === 13) {
+      // 13 is enter
+      // code for enter
+      e.preventDefault();
+    }
+  },
 
-    var sttEngine; 
-
+  save: function (e) {
+    //TODO: there might be a better way to get values from a form in backbone? 
+    //as well as setup user validation?
+    e.preventDefault();
+    var sttEngine;
     //reading values from form 
-    var newTitle        = this.$('input[name=title]').val();
-    var newDescription  = this.$('textarea[name=description]').val();;
-    var newFilePath     = this.$('input[name=file]').val();
-    var newLanguage     = $('#languageModel').find(":selected")[0].value;
+    var newTitle = this.$('input[name=title]').val();
+    var newDescription = this.$('textarea[name=description]').val();;
+    //removing # carachter coz it breaks file path as it gets converted to %23
+    //TODO: there might be other symbols that have effect. figure proper way to sanitise input
+    var newFilePath = this.$('input[name=file]').val();
+    var newLanguage = $('#languageModel').find(":selected")[0].value;
 
-    if($('#IBMoption')[0].checked){
-      sttEngine         = "ibm";
-    }else if($('#genelteOption')[0].checked){
-       sttEngine        = "gentle";
-    };
-    
-    var newSTTLanguage  = $('#IBMoption')[0].checked;
+    //Listener on checkbox, that adds and removes IBM options if IBM is unclicked. 
+    //Need to have IBM Options as element here in form view that can be appended or removed
+    //TODO: There has to be a better way to get the value of radio buttons check boxes eg document.querySelector(".options");
+    if ($('#IBMoption')[0].checked) {
+      sttEngine = "ibm";
+    } else if ($('#genelteOption')[0].checked) {
+      sttEngine = "gentle";
+    } else if ($('#pocketSphinxOption')[0].checked) {
+      sttEngine = "pocketsphinx";
+    }
 
-  	this.model.save({title: newTitle, description: newDescription,videoUrl:newFilePath, languageModel: newLanguage, sttEngine: sttEngine},{
-      success: function(mode, response, option){      
-           Backbone.history.navigate("transcriptions", {trigger:true}); 
-      },
-      error: function(model, xhr,options){
-        var errors = JSON.parse(xhr.responseText).errors;
-        alert("ops, something when wrong with saving the transcription:" + errors)
-      }
-    });
+    var newSTTLanguage = $('#IBMoption')[0].checked;
+
+    if (newFilePath == "") {
+      alert("please select a file to transcribe");
+      //TODO: set, select in focus 
+    } else if (newTitle == "") {
+      alert("please give this transcriptiona title");
+      //TODO: Set description in focus 
+    } else {
+
+      this.model.save({ title: newTitle,
+        description: newDescription,
+        videoUrl: newFilePath,
+        languageModel: newLanguage,
+        sttEngine: sttEngine }, { success: function (mode, response, option) {
+          Backbone.history.navigate("transcriptions", { trigger: true });
+        },
+        error: function (model, xhr, options) {
+          var errors = JSON.parse(xhr.responseText).errors;
+          alert("ops, something when wrong with saving the transcription:" + errors);
+        }
+      });
+    }
   },
 
-
-  render: function(){
+  render: function () {
     this.$el.html(render('transcriptionFormTemplate', this.model.attributes));
     return this;
   }
 });
 
-},{"./utils":31,"backbone":34,"jquery":37}],28:[function(require,module,exports){
+},{"./utils":33,"backbone":36,"jquery":39}],30:[function(require,module,exports){
 'use strict';
+
 var Backbone = require('backbone');
 var render = require('./utils').render;
 
@@ -2120,49 +2154,43 @@ var render = require('./utils').render;
 module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'media',
-  initialize: function() {
-    // console.warn("transcription list element");
-    // console.warn(this);
-
+  initialize: function () {
     this.listenTo(this.model, 'change', this.render);
-
   },
-  events:{
+  events: {
     "click #transcriptionCard": "showTranscription",
     "click button.editBtn": "editTranscription",
     "click button.deleteBtn": "deleteTranscription"
   },
-  showTranscription: function(){
+  showTranscription: function () {
     //navigate to transcription page
     //TODO: is this the right way to do this?
-    Backbone.history.navigate("transcription/"+this.model.cid, {trigger:true});
+    Backbone.history.navigate("transcription/" + this.model.cid, { trigger: true });
   },
 
   //TODO: delete is not working properly 
-  deleteTranscription: function(){
+  deleteTranscription: function () {
     if (confirm("You sure you want to delete this transcription?")) {
-      this.model.destroy({success: function(model, response) {
-        // app.transcriptionRouter.transcriptionsList.fetch({reset: true}); 
-        // Backbone.history.navigate("transcriptions", {trigger:true}); 
-      }})
+      this.model.destroy({ success: function (model, response) {} });
     } else {
-      alert("Transcription was not deleted")
+      alert("Transcription was not deleted");
     }
   },
 
-  editTranscription: function(){
-    alert("Edit transcription")
+  editTranscription: function () {
+    alert("Edit transcription");
   },
 
-  render: function(){
-    var sectionTemplate = render('transcriptionIndex', this.model.attributes);
+  render: function () {
+    var sectionTemplate = render('transcriptionElementIndex', this.model.attributes);
     this.$el.html(sectionTemplate);
     return this;
   }
 });
 
-},{"./utils":31,"backbone":34}],29:[function(require,module,exports){
+},{"./utils":33,"backbone":36}],31:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var Backbone = require('backbone');
 var TranscriptionListElementView = require('./transcription_list_element_view');
@@ -2177,63 +2205,55 @@ var render = require('./utils').render;
 module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'container',
-  initialize: function() {
+  initialize: function () {
     var transcriptions = this.collection;
-    this.listenTo(transcriptions, 'sync',   this.render);
+    this.listenTo(transcriptions, 'sync', this.render);
     this.listenTo(transcriptions, 'destroy', this.render);
-    this.listenTo(transcriptions, 'add',     this.render);
+    this.listenTo(transcriptions, 'add', this.render);
 
     // Temporary way to auto update on transcription status change. unit in
     // milliseconds, checking for transcriptions update every 1/2 minute.
-    
-    setInterval(function() {
-      // console.log("in interval");
-      // console.log(transcriptions);
+    setInterval(function () {
       if (transcriptions.remaining().length > 0) {
-        transcriptions.fetch({reset: true});
-        // console.warn("after fetch");
-        // console.log(transcriptions);
+        transcriptions.fetch({ reset: true });
       }
     }, 30000);
-    
-    // transcriptions.fetch({reset: true});
   },
 
-  render: function() {
-    console.debug('Render transcription list view');
+  render: function () {
     // if there are  transcriptions it shows
+    this.$el.empty();
+    this.$el.append("<ol class='breadcrumb'><li class='active'>Transcriptions</li></ol>");
     if (!this.collection.isEmpty()) {
-      this.$el.empty();
-      console.debug("build TranscriptionsList");
       this.collection.each(this.addOne, this);
       return this;
       // if there are no transcriptions it shows helpfull message to create a new one
     } else {
-      // this.$el.append
-      // TODO: there seems to be a bug on this line, object is not a function.
       this.$el.html(render('homePage'));
       return this;
     }
   },
 
-  addOne: function(transcriptionItem) {
-    // console.debug(transcriptionItem.attributes);
-    var transcriptionView = new TranscriptionListElementView({model: transcriptionItem});
+  addOne: function (transcriptionItem) {
+    var transcriptionView = new TranscriptionListElementView({ model: transcriptionItem });
     this.$el.append(transcriptionView.render().el);
   }
 });
 
-},{"./transcription_list_element_view":28,"./utils":31,"backbone":34,"jquery":37}],30:[function(require,module,exports){
+},{"./transcription_list_element_view":30,"./utils":33,"backbone":36,"jquery":39}],32:[function(require,module,exports){
 'use strict';
+
 var $ = require('jquery');
 var _ = require('underscore');
 var Backbone = require('backbone');
 var render = require('./utils').render;
 var FileSaver = require('file-saver');
 var moment = require('moment');
-var fromSeconds =  require('node-timecodes').fromSeconds;
+var fromSeconds = require('node-timecodes').fromSeconds;
 var EDL = require('../../edl_composer/index');
 
+//TODO remove all functions not used such as seletion orders one,
+//remove commented out code.
 
 /**
 * Backbone view for transcription view for individual transcriptions 
@@ -2245,93 +2265,117 @@ module.exports = Backbone.View.extend({
   tagName: 'div',
   className: 'container-fluid',
   //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
-  id: "transcription-n",//+this.model.id+"",
+  id: "transcription-n", //+this.model.id+"",
 
-  initialize: function() {
+  initialize: function () {
     this.editable = false;
-    
-    var tmpHighlights =  this.model.get("highlights");
 
-    for (var i =0; i < tmpHighlights.length; i++ ){
-      var min =  tmpHighlights[i].startTime;
+    var tmpHighlights = this.model.get("highlights");
+
+    for (var i = 0; i < tmpHighlights.length; i++) {
+      var min = tmpHighlights[i].startTime;
       var max = tmpHighlights[i].endTime;
       //needs to grab the words of the element of the view not in the dom        
-      this.$(".words").filter(function(){
+      this.$(".words").filter(function () {
         return $(this).data('start-time') >= min && $(this).data('end-time') <= max;
       }).addClass("highlight");
     }
-   },
- 
-  events:{
+  },
+
+  events: {
     //playback keyboard shortcuts
-    "click #pausePlayVideo"   : "pausePlayVideo",
-    "click #slowVideo"        : "slowVideo",
-    "click #fastVideo"        : "fastVideo",
-    "click #fastForwardVideo" : "fastForwardVideo",
-    "click #volumeDown"       : "volumeDown",
-    "click #volumeUp"         : "volumeUp",
-    "click #rewindVideo"      : "rewindVideo",
+    "click #pausePlayVideo": "pausePlayVideo",
+    "click #slowVideo": "slowVideo",
+    "click #fastVideo": "fastVideo",
+    "click #fastForwardVideo": "fastForwardVideo",
+    "click #volumeDown": "volumeDown",
+    "click #volumeUp": "volumeUp",
+    "click #rewindVideo": "rewindVideo",
 
     //interactive transcript click word plays video
-    "click span.words"                  : "playWord",
-    "click .timecodes"                  : "playWord",
+    "click span.words": "playWord",
+    "click .timecodes": "playWord",
     //search field 
-    "keyup #searchCurrentTranscription" :"search",
+    "keyup #searchCurrentTranscription": "search",
     //text selection in transcription 
-    "mouseup .transcription"            : "selectingWords",
-    "click #clearHighlights"            : "clearHighlights",
+    "mouseup .transcription": "selectingWords",
+    "click #clearHighlights": "clearHighlights",
     //edit text in transcription mode
-    "click #editWords"      : "makeEditable",
+    "click #editWords": "makeEditable",
     //hilight text in transcription mode
     "click #highlightWords": "makeHilightable",
     //TODO: sequence preview not in use 
     //TODO: remove associated functions 
-    "click #playPreviewChrono"  : "playPreviewChrono",
-    "click #playPreviewSelOrd"  : "playPreviewSelOrd",
+    // "click #playPreviewChrono"  : "playPreviewChrono",
+    // "click #playPreviewSelOrd"  : "playPreviewSelOrd",
     //EDL Export
-    "click #exportEdlChronological"   : "exportEdlChronological",
-    "click #exportEdlSelectionOrder"  : "exportEdlSelectionOrder",
+    "click #exportEdlChronological": "exportEdlChronological",
+    // "click #exportEdlSelectionOrder"  : "exportEdlSelectionOrder",
     //Text export 
-    "click #exportPlainText"              : "exportPlainText",
-    "click #exportTimecodedTranscription" : "exportTimecodedTranscription",
+    "click #exportPlainText": "exportPlainText",
+    "click #exportTimecodedTranscription": "exportTimecodedTranscription",
     //Export Text EDL
-    "click #exportPlainTextEDL"                 : "exportPlainTextEDL",
-    "click #exportPlainTextEDLSelOrder"         : "exportPlainTextEDLSelOrder",
-    "click #exportPlainTimecodedTextEDL"        : "exportPlainTimecodedTextEDL",
-    "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
+    "click #exportPlainTextEDL": "exportPlainTextEDL",
+    // "click #exportPlainTextEDLSelOrder"         : "exportPlainTextEDLSelOrder",
+    "click #exportPlainTimecodedTextEDL": "exportPlainTimecodedTextEDL",
+    // "click #exportPlainTimecodedTextEDLSelOrder": "exportPlainTimecodedTextEDLSelOrder",
     //JSON Export
-    "click #exportJsonEDL"            : "exportJsonEDL",
-    "click #exportJsonEDLSelOrder"    : "exportJsonEDLSelOrder",
-    "click #exportJsonTranscription"  : "exportJsonTranscription",
+    "click #exportJsonEDL": "exportJsonEDL",
+    // "click #exportJsonEDLSelOrder"    : "exportJsonEDLSelOrder",
+    "click #exportJsonTranscription": "exportJsonTranscription",
     //Export Captions 
-    "click #expoertCaptionsSrt"     : "expoertCaptionsSrt",
+    "click #expoertCaptionsSrt": "expoertCaptionsSrt",
     //TODO: currently not in use 
-    "click #expoertCaptionsSrtEDL"  : "expoertCaptionsSrtEDL",
+    // "click #expoertCaptionsSrtEDL"  : "expoertCaptionsSrtEDL",
     //link to user manual 
-    "click #edlUserManualInfo"  : "edlUserManualInfo"
+    "click #edlUserManualInfo": "edlUserManualInfo",
+
+    "focusout .speaker": "updateSpeakerName"
+  },
+
+  updateSpeakerName: function (e) {
+    //get transcription text from model 
+    var transcription = this.model.attributes.text;
+    //get edited speaker name 
+    var newSpeakerNAme = document.querySelector(".speaker").innerHTML;
+    // get new speaker name 
+    // var escapedNewSpeakerNAme = $("<div>").text(newSpeakerNAme).text();
+    transcription[0].speaker = stripHTML(newSpeakerNAme);
+    //set updated transcription to current transcritpion model 
+    this.model.set({ text: transcription });
+    //save the updated transcription model
+    this.model.save({ wait: false });
+
+    // helper function to remove html from input
+    // TODO: move in utilities
+    function stripHTML(html) {
+      var tmp = document.createElement("DIV");
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || "";
+    }
   },
 
   /**
   * @function makeHilightable
   * @description function to disable words contet ediable to allow to select text of transcription
   */
-  makeHilightable: function(){
-    var modeNotice =  document.getElementById("hilightModeNoticeContainer");
+  makeHilightable: function () {
+    var modeNotice = document.getElementById("hilightModeNoticeContainer");
 
     var hilightNotice = "<div class='alert alert-info alert-dismissible hidden-print' role='alert' id='hilightModeNotice'>";
-    hilightNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+    hilightNotice += "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
     hilightNotice += "<strong>You are in hilight mode.</strong>";
-    hilightNotice +="<p>Select words to include in your Edit Decision List (EDL) video sequence.</p>";
-    hilightNotice +="</div>";
+    hilightNotice += "<p>Select words to include in your Edit Decision List (EDL) video sequence.</p>";
+    hilightNotice += "</div>";
 
     var status = false;
-    if( $("#highlightWords").hasClass("btn-primary")){
+    if ($("#highlightWords").hasClass("btn-primary")) {
       status = true;
-    }else{
+    } else {
       status = false;
     }
 
-    if(status){
+    if (status) {
       //disable editing
       //TODO: check if you can remove more thne one class at once with JQuery comand?
       $("#highlightWords").removeClass("active btn-primary");
@@ -2340,8 +2384,8 @@ module.exports = Backbone.View.extend({
       $("#editWords").removeClass("btn-default");
       $("#editWords").addClass("active btn-primary");
       //enable content editable
-      $('.words').attr('contenteditable','true');
-    }else{
+      $('.words').attr('contenteditable', 'true');
+    } else {
       //Editing active 
       $("#editWords").removeClass("active btn-primary");
       $("#editWords").addClass("btn-default");
@@ -2349,9 +2393,9 @@ module.exports = Backbone.View.extend({
       $("#highlightWords").removeClass("btn-default");
       $("#highlightWords").addClass("active btn-primary");
       //disable editable on words 
-      $('.words').attr('contenteditable','false');
+      $('.words').attr('contenteditable', 'false');
       //add hilight notice 
-       modeNotice.innerHTML = hilightNotice;
+      modeNotice.innerHTML = hilightNotice;
     }
   },
 
@@ -2359,37 +2403,37 @@ module.exports = Backbone.View.extend({
   * @function makeEditable
   * @description function to make words contet ediable to allow to edit the text of transcription
   */
-  makeEditable: function(){
-    var modeNotice =  document.getElementById("hilightModeNoticeContainer");
+  makeEditable: function () {
+    var modeNotice = document.getElementById("hilightModeNoticeContainer");
     //remove hilight mode notice 
     // add text editing notice 
-    var editNotice= "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> ";
-      editNotice +="<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
-      editNotice +="<strong>You are in text edit mode.</strong>";
-      editNotice +="<p>Click on a word to edit. Tab or click to move to the next word.</p>";
-      editNotice +="</div>";
+    var editNotice = "<div class='alert alert-warning alert-dismissible hidden-print' role='alert' id='editModeNotice'> ";
+    editNotice += "<button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>";
+    editNotice += "<strong>You are in text edit mode.</strong>";
+    editNotice += "<p>Click on a word to edit. Tab or click to move to the next word.</p>";
+    editNotice += "</div>";
 
     var status = false;
-    if( $("#editWords").hasClass("btn-primary")){
+    if ($("#editWords").hasClass("btn-primary")) {
       status = true;
-    }else{
-      status = false;  
+    } else {
+      status = false;
     }
 
-    if(status){
-    //Editing active 
-     $("#editWords").removeClass("active");
-     $("#editWords").removeClass("btn-primary");
-     $("#editWords").addClass("btn-default");
-     //highlightWords
-     $("#highlightWords").removeClass("btn-default");
-     $("#highlightWords").addClass("btn-primary");
-     $("#highlightWords").addClass("active");
-     //disable editable on words 
-     $('.words').attr('contenteditable','false');
+    if (status) {
+      //Editing active 
+      $("#editWords").removeClass("active");
+      $("#editWords").removeClass("btn-primary");
+      $("#editWords").addClass("btn-default");
+      //highlightWords
+      $("#highlightWords").removeClass("btn-default");
+      $("#highlightWords").addClass("btn-primary");
+      $("#highlightWords").addClass("active");
+      //disable editable on words 
+      $('.words').attr('contenteditable', 'false');
       //remove edit notice 
       // modeNotice.removeChild(document.getElementById("editModeNotice")) ;
-    }else{
+    } else {
       //disable editing
       $("#highlightWords").removeClass("active");
       $("#highlightWords").removeClass("btn-primary");
@@ -2399,7 +2443,7 @@ module.exports = Backbone.View.extend({
       $("#editWords").addClass("btn-primary");
       $("#editWords").addClass("active");
       //enable content editable
-      $('.words').attr('contenteditable','true');
+      $('.words').attr('contenteditable', 'true');
 
       //remove hilight notice 
       //add edit notice 
@@ -2410,33 +2454,32 @@ module.exports = Backbone.View.extend({
 
       //when using click for moving between words in edit mode, this auto selects the current word in content editbale. 
       //users have requested this feature to make it faster to, delete/replace word with correct one. they currently do cmd+a
-      $(".words").on("click", function(event){
+      $(".words").on("click", function (event) {
         //select all text in content edibale 
-        document.execCommand('selectAll',false,null);
+        document.execCommand('selectAll', false, null);
       });
       //same as above but when using tab to move between words
-      $('.words').on( 'keyup', function( e ) {
-          if( e.which == 9 ) {
-            //select all text in content edibale 
-            document.execCommand('selectAll',false,null);
-          }
-      } );
+      $('.words').on('keyup', function (e) {
+        if (e.which == 9) {
+          //select all text in content edibale 
+          document.execCommand('selectAll', false, null);
+        }
+      });
 
-
-      $( ".words" ).on( "focusout", { model: this.model }, function(event) {
+      $(".words").on("focusout", { model: this.model }, function (event) {
         //pause word 
-        var model       = event.data.model;
-        var tmpWordId   =  $( this )[0].dataset.wordId;
-        var tmpWordText = $( this ).text();
+        var model = event.data.model;
+        var tmpWordId = $(this)[0].dataset.wordId;
+        var tmpWordText = $(this).text();
         //find word to update in transcription text attribute to replace/update and save 
-        _.each(model.attributes.text, function(paragraphs){
-          _.each(paragraphs, function(paragraph){
-            _.each(paragraph, function(lines){
-              _.each(lines.line, function(word){
-                if(word.id == tmpWordId){
+        _.each(model.attributes.text, function (paragraphs) {
+          _.each(paragraphs, function (paragraph) {
+            _.each(paragraph, function (lines) {
+              _.each(lines.line, function (word) {
+                if (word.id == tmpWordId) {
                   word.text = tmpWordText;
-                    model.save({wait: false});
-                }        
+                  model.save({ wait: false });
+                }
               });
             });
           });
@@ -2448,8 +2491,8 @@ module.exports = Backbone.View.extend({
   /**
   * @function exportHelper
   */
-  exportHelper(config){
-    if(config.fileContent === ""){
+  exportHelper(config) {
+    if (config.fileContent === "") {
       alert("File " + config.fileName + " seems to be empty");
     }
 
@@ -2464,64 +2507,63 @@ module.exports = Backbone.View.extend({
   /**
   * @function exportHelper
   */
-  nameFileHelper(name, ext){
+  nameFileHelper(name, ext) {
     var timeStr = moment().format('DD_MM_YYYY_HH-mm-ss');
-    return ""+name.replace(" ", "_") +"_"+ timeStr +"."+ext;
+    return "" + name.replace(" ", "_") + "_" + timeStr + "." + ext;
   },
 
   /**
   * @function exportEdlChronological
   * @description EDL - Chronological
   */
-  exportEdlChronological: function(e){
-    console.log("EXPORT EDL")
-    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode};
+  exportEdlChronological: function (e) {
+    var edlSq = { "title": this.model.get("title") };
     edlSq.events = [];
     //ad line number to paper-cuts
     //NOTE: here you can decide to sort them chronologically(ie by startTime)
-     //TODO: this could probably be moved in the model . eg return chrone order hiligths 
-    for(var k = 0; k<  this.model.attributes.highlights.length; k++){
-      var event =  this.model.attributes.highlights[k];
-      event.id = k+1;
+    //TODO: this could probably be moved in the model . eg return chrone order hiligths 
+    for (var k = 0; k < this.model.attributes.highlights.length; k++) {
+      var event = this.model.attributes.highlights[k];
+      event.id = k + 1;
       edlSq.events.push(event);
     }
     //end move in model
-    var edl = new EDL(edlSq)
-    var edlFileName = this.nameFileHelper(this.model.get("title")+"_chronological","edl"); 
-    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlChronological"});
+    var edl = new EDL(edlSq);
+    var edlFileName = this.nameFileHelper(this.model.get("title") + "_chronological", "edl");
+    this.exportHelper({ fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlChronological" });
   },
 
   /**
   * @function exportEdlSelectionOrder
   * @description EDL - election order
   */
-  exportEdlSelectionOrder: function(e){
-    var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode};
-    edlSq.events = [];
-    //TODO: this could probably be moved in the model . eg return selection order hiligths 
-    var selections = this.model.get("highlights");
-    var   selectionsSorted =  _.sortBy(selections, function(o) { return o.paperCutOrder; });
-    for(var k = 0; k<  selectionsSorted.length; k++){
-      var event =  selectionsSorted[k];
-      event.id = k+1;
-      edlSq.events.push(event);
-    }
-    // end of move in the model 
-    var edl = new EDL(edlSq);
-    var edlFileName = this.nameFileHelper(this.model.get("title")+"_selection_order","edl"); 
-    //if client side running inside NWJS then do this 
-    this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlSelectionOrder"});
-  },
+  // exportEdlSelectionOrder: function(e){
+  //   var edlSq = {  "title": this.model.get("title"), offset: this.model.get("metadata").timecode};
+  //   edlSq.events = [];
+  //   //TODO: this could probably be moved in the model . eg return selection order hiligths 
+  //   var selections = this.model.get("highlights");
+  //   var   selectionsSorted =  _.sortBy(selections, function(o) { return o.paperCutOrder; });
+  //   for(var k = 0; k<  selectionsSorted.length; k++){
+  //     var event =  selectionsSorted[k];
+  //     event.id = k+1;
+  //     edlSq.events.push(event);
+  //   }
+  //   // end of move in the model 
+  //   var edl = new EDL(edlSq);
+  //   var edlFileName = this.nameFileHelper(this.model.get("title")+"_selection_order","edl"); 
+  //   //if client side running inside NWJS then do this 
+  //   this.exportHelper({fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlSelectionOrder"});
+  // },
 
   /**
   * @function expoertCaptionsSrt
   * @description Captions
   */
-  expoertCaptionsSrt: function(){
+  expoertCaptionsSrt: function () {
     //ISSUE: not working client side only.
-    var fileName = this.nameFileHelper(this.model.get("title"),"srt"); 
-    var srtFileContent =  this.model.constructor.returnSrtContent(this.model.get("text"));
-    this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt"});
+    var fileName = this.nameFileHelper(this.model.get("title"), "srt");
+    var srtFileContent = this.model.constructor.returnSrtContent(this.model.get("text"));
+    this.exportHelper({ fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt" });
   },
 
   /**
@@ -2529,22 +2571,22 @@ module.exports = Backbone.View.extend({
   * @todo not in use, turn it back on by adding export options under captions
   * @description Captions
   */
-  expoertCaptionsSrtEDL: function(){
-    //ISSUE: not working client side only.
-    //ISSUE: papercuts selections, ammount of text per seelection might not be the optimal ammount for srt displaying on screen.
-    var srtFileContent =  this.model.constructor.returnEDLSrtJson(this.model.get("highlights"));
+  // expoertCaptionsSrtEDL: function(){
+  //   //ISSUE: not working client side only.
+  //   //ISSUE: papercuts selections, ammount of text per seelection might not be the optimal ammount for srt displaying on screen.
+  //   var srtFileContent =  this.model.constructor.returnEDLSrtJson(this.model.get("highlights"));
 
-    var fileName = this.nameFileHelper(this.model.get("title")+"_EDL","srt"); 
+  //   var fileName = this.nameFileHelper(this.model.get("title")+"_EDL","srt"); 
 
-    this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrtEDL"});
+  //   this.exportHelper({fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrtEDL"});
 
-  },
+  // },
 
   /**
   * @function exportPlainText
   * @description Plain Text - Transcription
-  */ 
-  exportPlainText: function(){
+  */
+  exportPlainText: function () {
     //NOTE: temporary patch 
     //Better implementation is to fetch this from db, or have model function that 
     //organises and formats the text properly 
@@ -2552,157 +2594,129 @@ module.exports = Backbone.View.extend({
     //TODO: if want to add speaker names, before paragraph, get this from backend.
 
     // var tmp = $(".words").text().replace(/%HESITATION /g, "\n\n");
-    var plainText =  this.model.constructor.returnPlainText(this.model.attributes);
+    var plainText = this.model.constructor.returnPlainText(this.model.attributes);
 
-    var plainTextFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: plainTextFileName, fileContent: plainText, urlId: "#exportPlainText"});
+    var plainTextFileName = this.nameFileHelper(this.model.get("title"), "txt");
+    this.exportHelper({ fileName: plainTextFileName, fileContent: plainText, urlId: "#exportPlainText" });
   },
 
   /**
   * @function exportTimecodedTranscription
   * @description Timecoded - Transcription
-  */ 
-  exportTimecodedTranscription: function(){
+  */
+  exportTimecodedTranscription: function () {
     //TODO in model, make timecoded plain text demo
-    var tmp =  "Timecoded text demo";
-    var plainTextTimecoded =  this.model.constructor.returnPlainTextTimecoded(this.model.attributes);
-    var textFileName = this.nameFileHelper(this.model.get("title"),"txt"); 
-    this.exportHelper({fileName: textFileName, fileContent: plainTextTimecoded, urlId: "#exportTimecodedTranscription"});
+    var tmp = "Timecoded text demo";
+    var plainTextTimecoded = this.model.constructor.returnPlainTextTimecoded(this.model.attributes);
+    var textFileName = this.nameFileHelper(this.model.get("title"), "txt");
+    this.exportHelper({ fileName: textFileName, fileContent: plainTextTimecoded, urlId: "#exportTimecodedTranscription" });
   },
 
   /**
   * @function exportPlainTextEDL
   * @description EDL - Plain Text 
-  */ 
-  exportPlainTextEDL: function(){
+  */
+  exportPlainTextEDL: function () {
     // ISSUE: it doesn't work in client side browser only mode
-     var paperCuts = this.model.get("highlights");
-     var tmp =makePlainText(paperCuts);
-     var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-     this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTextEDL"});
+    var paperCuts = this.model.get("highlights");
+    var tmp = makePlainText(paperCuts);
+    var textFileName = this.nameFileHelper(this.model.get("title") + "_EDL", "txt");
+    this.exportHelper({ fileName: textFileName, fileContent: tmp, urlId: "#exportPlainTextEDL" });
 
-        function makePlainText(paperCuts){
-          var result ="";
-          for(var i =0; i< paperCuts.length; i++){
-            result += "["+paperCuts[i].speaker+"]" +"\n";
-            result += paperCuts[i].text +"\n\n";
-          }
-          return result;
-        }
+    function makePlainText(paperCuts) {
+      var result = "";
+      for (var i = 0; i < paperCuts.length; i++) {
+        result += "[" + paperCuts[i].speaker + "]" + "\n";
+        result += paperCuts[i].text + "\n\n";
+      }
+      return result;
+    }
   },
 
   /**
   * @function exportPlainTextEDLSelOrder
   * 
-  */ 
-  exportPlainTextEDLSelOrder: function(){
-    var paperCuts = this.model.get("highlights");
-    var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
-    var selections = makePlainText(selectionsSorted);
-    var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: selections, urlId: "#exportPlainTextEDLSelOrder"});
+  */
+  // exportPlainTextEDLSelOrder: function(){
+  //   var paperCuts = this.model.get("highlights");
+  //   var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
+  //   var selections = makePlainText(selectionsSorted);
+  //   var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
+  //   this.exportHelper({fileName: textFileName,fileContent: selections, urlId: "#exportPlainTextEDLSelOrder"});
 
-      function makePlainText(paperCuts){
-        var result ="";
-        for(var i =0; i< paperCuts.length; i++){
-           result += "["+paperCuts[i].speaker+"]" +"\n";
-          result += paperCuts[i].text +"\n\n";
-        }
-        return result;
-      }
-  },
+  //     function makePlainText(paperCuts){
+  //       var result ="";
+  //       for(var i =0; i< paperCuts.length; i++){
+  //          result += "["+paperCuts[i].speaker+"]" +"\n";
+  //         result += paperCuts[i].text +"\n\n";
+  //       }
+  //       return result;
+  //     }
+  // },
 
   /**
   * @function exportPlainTimecodedTextEDL
-  */ 
-  exportPlainTimecodedTextEDL: function(){
+  */
+  exportPlainTimecodedTextEDL: function () {
     //ISSUE: in browser client side mode, doesn't seem to be making the paper-cuts it just returns the words, why?
-    function makeTimecodedPlainText(paperCuts){
-        var result ="";
-        for(var i =0; i< paperCuts.length; i++){
-          //convert with timecode function
-          result += "["+fromSeconds(paperCuts[i].startTime) +"\t";
-          result += fromSeconds(paperCuts[i].endTime) +"\t";
-          result += paperCuts[i].speaker+"]" +"\n";
-          result += paperCuts[i].text +"\n\n";
-        }
-        return result;
+    function makeTimecodedPlainText(paperCuts) {
+      var result = "";
+      for (var i = 0; i < paperCuts.length; i++) {
+        //convert with timecode function
+        result += "[" + fromSeconds(paperCuts[i].startTime) + "\t";
+        result += fromSeconds(paperCuts[i].endTime) + "\t";
+        result += paperCuts[i].speaker + "]" + "\n";
+        result += paperCuts[i].text + "\n\n";
       }
+      return result;
+    }
 
     var paperCuts = this.model.get("highlights");
-    var tmp =makeTimecodedPlainText(paperCuts);
-    var textFileName = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"});
+    var tmp = makeTimecodedPlainText(paperCuts);
+    var textFileName = this.nameFileHelper(this.model.get("title") + "_EDL", "txt");
+    this.exportHelper({ fileName: textFileName, fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL" });
   },
-
-
-  /**
-  * @function exportPlainTimecodedTextEDLSelOrder
-  */ 
-  exportPlainTimecodedTextEDLSelOrder: function(){
-
-      function makeTimecodedPlainText(paperCuts){
-          var result ="";
-          for(var i =0; i< paperCuts.length; i++){
-            //convert with timecode function
-            result += "["+fromSeconds(paperCuts[i].startTime) +"\t";
-            result += fromSeconds(paperCuts[i].endTime) +"\t";
-            result += paperCuts[i].speaker+"]" +"\n";
-            result += paperCuts[i].text +"\n\n";
-          }
-          return result;
-        }
-
-    var paperCuts        = this.model.get("highlights");
-    console.log("paperCuts",paperCuts);
-    var selectionsSorted = _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
-    console.log("selectionsSorted",selectionsSorted);
-    var tmp             = makeTimecodedPlainText(selectionsSorted);
-    var textFileName    = this.nameFileHelper(this.model.get("title")+"_EDL","txt"); 
-    this.exportHelper({fileName: textFileName,fileContent: tmp, urlId: "#exportPlainTimecodedTextEDL"});
-  },
-
 
   /**
   * @function exportPlainTimecodedTextEDLSelOrder
   * @description /JSON - Transcription 
-  */ 
-  exportJsonTranscription: function(){
+  */
+  exportJsonTranscription: function () {
     var transcription = this.model.attributes;
-    var tmpTranscription = JSON.stringify(transcription,null,"\t");
-    var jsonFileName = this.nameFileHelper(this.model.get("title"),"json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpTranscription, urlId: "#exportJsonTranscription"});
+    var tmpTranscription = JSON.stringify(transcription, null, "\t");
+    var jsonFileName = this.nameFileHelper(this.model.get("title"), "json");
+    this.exportHelper({ fileName: jsonFileName, fileContent: tmpTranscription, urlId: "#exportJsonTranscription" });
   },
 
   /**
   * @function exportJsonEDL
   * @description JSON - EDL 
-  */ 
-  exportJsonEDL: function(){
+  */
+  exportJsonEDL: function () {
     var paperCuts = this.model.get("highlights");
-    var tmpPaperCuts = JSON.stringify(paperCuts,null,"\t");
-    var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDL"});
-   },
+    var tmpPaperCuts = JSON.stringify(paperCuts, null, "\t");
+    var jsonFileName = this.nameFileHelper(this.model.get("title") + "_EDL", "json");
+    this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperCuts, urlId: "#exportJsonEDL" });
+  },
 
   /**
   * @function exportJsonEDL
   * @description JSON - EDL
   */
-  exportJsonEDLSelOrder: function(){
-    var paperCuts = this.model.get("highlights");
-    var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
-    var tmpPaperCuts = JSON.stringify(selectionsSorted,null,"\t");
-    var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
-    this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDLSelOrder"});
-   },
+  // exportJsonEDLSelOrder: function(){
+  //   var paperCuts = this.model.get("highlights");
+  //   var selectionsSorted =  _.sortBy(paperCuts, function(o) { return o.paperCutOrder; });
+  //   var tmpPaperCuts = JSON.stringify(selectionsSorted,null,"\t");
+  //   var jsonFileName = this.nameFileHelper(this.model.get("title")+"_EDL","json");  
+  //   this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperCuts, urlId: "#exportJsonEDLSelOrder"});
+  //  },
 
   /**
   * @function edlUserManualInfo
   */
-  edlUserManualInfo: function(){
+  edlUserManualInfo: function () {
     var url = 'https://opennewslabs.github.io/autoEdit_2/user_manual/usage.html#exporting-a-video-sequenceedl';
-    if( window.nw ){
+    if (window.nw) {
       window.nw.Shell.openExternal(url);
     } else {
       window.open(url);
@@ -2712,58 +2726,56 @@ module.exports = Backbone.View.extend({
   /**
   * @function selectingWords
   */
-  selectingWords: function(e){
+  selectingWords: function (e) {
     // https://stackoverflow.com/questions/11300590/how-to-captured-selected-text-range-in-ios-after-text-selection-expansion 
     // https://jsfiddle.net/JasonMore/gWZfb/
     var selectedRange = null;
-   if (window.getSelection) {
-     selectedRange = window.getSelection().getRangeAt(0).cloneContents();
-     // console.log("window")
+    if (window.getSelection) {
+      selectedRange = window.getSelection().getRangeAt(0).cloneContents();
     } else {
       selectedRange = document.getSelection().getRangeAt(0).cloneContents();
-      // console.log("document")
     }
 
     var selectedElements = $(selectedRange).find('span');
     //first element of selection
     var firstElement = $(selectedRange).find('span')[0];
-    var elemCount = $(selectedRange).find('span').length ;
+    var elemCount = $(selectedRange).find('span').length;
     //last element
-    var lastElIndex =elemCount - 1;
+    var lastElIndex = elemCount - 1;
     //last element of selection
     var lastElement = $(selectedRange).find('span')[lastElIndex];
     var tmpCounter = this.model.get("counterForPaperCuts");
 
-    for(var i = 0; i < elemCount; i++){
-      var element = $(".words[data-start-time='"+selectedElements[i].dataset.startTime.toString()+"']");
+    for (var i = 0; i < elemCount; i++) {
+      var element = $(".words[data-start-time='" + selectedElements[i].dataset.startTime.toString() + "']");
 
-      if(element.hasClass( "highlight" )){
+      if (element.hasClass("highlight")) {
         element.removeClass("highlight");
         //remove addedCounter from element
         //decrease counter of addedCounter in transcription
         //TODO: check if var `tmpCounter` needs to be redifined. with var or can remove var.
         var tmpCounter = this.model.get("counterForPaperCuts");
         // this.model.set({counterForPaperCuts: tmpCounter-1 })
-        element.removeData( "counterForPaperCuts" );
-      }else {
+        element.removeData("counterForPaperCuts");
+      } else {
         element.addClass("highlight");
         //increment added counter in transcription
-        this.model.set({counterForPaperCuts: tmpCounter+1 });
-        element.data( "paper-cut-order", tmpCounter+1 );
+        this.model.set({ counterForPaperCuts: tmpCounter + 1 });
+        element.data("paper-cut-order", tmpCounter + 1);
       }
     }
 
-   var m =  this.model;
-      //overwright/set the highlights
-      this.model.set({highlights:  this.makePaperEdit($(".words").filter(".highlight"), m) });
-      //save the model
-      this.model.save({wait: false});
+    var m = this.model;
+    //overwright/set the highlights
+    this.model.set({ highlights: this.makePaperEdit($(".words").filter(".highlight"), m) });
+    //save the model
+    this.model.save({ wait: false });
   },
 
   /**
   * @function search
-  */ 
-  search:function(e){
+  */
+  search: function (e) {
     // alert("searching")
     var searchedText = $(e.currentTarget).val();
     var searchTextArray = searchedText.split(" ");
@@ -2771,29 +2783,29 @@ module.exports = Backbone.View.extend({
     //make search as a
     $(".words").removeClass("searched");
     // $( 'p:contains('+searchedText+')' ).css( "text-decoration", "underline" );
-    if(searchTextArray.length > 0){
-      for(var i = 0; i < searchTextArray.length; i++){
-        $('.words[data-text='+searchTextArray[i]+']').addClass("searched");
+    if (searchTextArray.length > 0) {
+      for (var i = 0; i < searchTextArray.length; i++) {
+        $('.words[data-text=' + searchTextArray[i] + ']').addClass("searched");
       }
     }
   },
 
   /**
   * @function playWord
-  */ 
-  playWord: function(e){
+  */
+  playWord: function (e) {
     var wordStartTime = e.currentTarget.dataset.startTime;
-    var videoIdElem="#"+e.currentTarget.dataset.videoId;
+    var videoIdElem = "#" + e.currentTarget.dataset.videoId;
     var videoElem = $(videoIdElem)[0];
     videoElem.currentTime = wordStartTime;
     videoElem.play();
     var vid = document.getElementById(e.currentTarget.dataset.videoId);
 
-    vid.ontimeupdate = function() {
-      $("span.words").filter(function() {
-        if($(this).data("start-time") < $(videoIdElem)[0].currentTime){
-          $(this).removeClass( "text-muted" );
-        }else{
+    vid.ontimeupdate = function () {
+      $("span.words").filter(function () {
+        if ($(this).data("start-time") < $(videoIdElem)[0].currentTime) {
+          $(this).removeClass("text-muted");
+        } else {
           $(this).addClass("text-muted");
         }
       });
@@ -2802,16 +2814,17 @@ module.exports = Backbone.View.extend({
 
   /**
   * @function clearHighlights
-  */ 
-  clearHighlights: function(){
+  */
+  clearHighlights: function () {
+    var model = this.model;
     var r = confirm("You are about to clear all of the highlighted selections from this transcription. Press Ok to continue or Cancel to abort");
     if (r === true) {
       // txt = "You pressed OK!";
       $(".words").filter(".highlight").removeClass("highlight");
       // .removeData( "counterForPaperCuts" );
       //  this.model.set({counterForPaperCuts: 0 })
-      this.model.set({highlights:  [] });
-      // this.model.save({wait: false});
+      model.set({ highlights: [] });
+      model.save({ wait: false });
     } else {
       // txt = "You pressed Cancel!";
       alert("Relax, nothing was cleared");
@@ -2822,19 +2835,24 @@ module.exports = Backbone.View.extend({
   * @function makePaperEdit
   * @description gets a a papercut sequence from hilighted words
   */
-  makePaperEdit: function (selection, model){
+  makePaperEdit: function (selection, model) {
+    //needed for EDL
+    var modelTimecodeOffset = this.model.get("metadata").timecode;
     /**
     * @function groupContiguosWordsInPapercuts
     * Groups words from selection into array of contiguos words
     * uuses modified version of this code to divide contiguos numbers 
     https://stackoverflow.com/questions/22627125/grouping-consecutive-elements-together-using-javascript
     */
-    function groupContiguosWordsInPapercuts(selectedWords){
-      var result = [], temp = [], difference;
+    function groupContiguosWordsInPapercuts(selectedWords) {
+      var result = [],
+          temp = [],
+          difference;
+
       for (var i = 0; i < selectedWords.length; i += 1) {
         $($(".words")[1]);
-        var wordId = $($(selectedWords[i]) ).data("word-id");   
-        if (difference !== ( wordId- i)) {
+        var wordId = $($(selectedWords[i])).data("word-id");
+        if (difference !== wordId - i) {
           if (difference !== undefined) {
             result.push(temp);
             temp = [];
@@ -2853,36 +2871,36 @@ module.exports = Backbone.View.extend({
     * @description Makes papercuts of group of words.
     * by taking start of first word and end of last word.
     */
-    function makeSection(arrayOfPapercuts){
-      var result=[];
-      for(var i = 0; i< arrayOfPapercuts.length; i++){
+    function makeSection(arrayOfPapercuts) {
+      var result = [];
+      for (var i = 0; i < arrayOfPapercuts.length; i++) {
         var firstWord = arrayOfPapercuts[i][0];
-        var lastWord = arrayOfPapercuts[i][arrayOfPapercuts[i].length -1];
+        var lastWord = arrayOfPapercuts[i][arrayOfPapercuts[i].length - 1];
         //TODO: iterate from first word to last word 
         //use  0 as starting point 
         //arrayOfPapercuts[i].length -1 as end point 
         //iterate over arrayOfPapercuts[i] 
         var words = [];
         var selectionText = "";
-        for(var j =0; j< (arrayOfPapercuts[i].length -1 ); j++){
+        for (var j = 0; j < arrayOfPapercuts[i].length - 1; j++) {
           var wordText = $(arrayOfPapercuts[i][j]).data("text");
           //TODO:recreate word from data attributes
           var word = {
             "id": $(arrayOfPapercuts[i][j]).data("word-id"),
-            "text":  $(arrayOfPapercuts[i][j]).data("text"),
-            "startTime":  $(arrayOfPapercuts[i][j]).data("start-time"),
+            "text": $(arrayOfPapercuts[i][j]).data("text"),
+            "startTime": $(arrayOfPapercuts[i][j]).data("start-time"),
             "endTime": $(arrayOfPapercuts[i][j]).data("end-time")
           };
           //TODO: add the word to the words array 
           words.push(word);
-          selectionText+=wordText+" ";
+          selectionText += wordText + " ";
         }
-        model.attributes.counterForPaperCuts +=1;
+        model.attributes.counterForPaperCuts += 1;
         var paperCut = {
           id: i,
           paperCutOrder: model.attributes.counterForPaperCuts,
           startTime: $(firstWord).data("start-time"),
-          endTime:  $(lastWord).data("end-time"),
+          endTime: $(lastWord).data("end-time"),
           reelName: $(firstWord).data("reel-name"),
           clipName: $(firstWord).data("clip-name"),
           speaker: $(firstWord).data("speaker"),
@@ -2894,6 +2912,8 @@ module.exports = Backbone.View.extend({
           videoOgg: $(firstWord).data("src"),
           audioFile: $(firstWord).data("audioFile"),
           text: selectionText,
+          offset: modelTimecodeOffset,
+          fps: $(firstWord).data("fps"),
           words: words
           //TODO: Add the word array of selection to the papercut
         };
@@ -2902,79 +2922,77 @@ module.exports = Backbone.View.extend({
       return result;
     }
 
-  return makeSection(groupContiguosWordsInPapercuts(selection));
+    return makeSection(groupContiguosWordsInPapercuts(selection));
   },
 
   //keyboard event using mouse trap backbone version 
   keyboardEvents: {
-    'command+k'           : 'pausePlayVideo',
-    'ctrl+k'              : 'pausePlayVideo',
-    'command+shift+k'     : 'pausePlayVideo',
-    'ctrl+shift+k'        : 'pausePlayVideo',
-    'command+j'           : 'slowVideo',
-    'ctrl+j'              : 'slowVideo',
-    'command+l'           : 'fastVideo',
-    'ctrl+l'              : 'fastVideo',
-    'command+shift+l'     : 'fastForwardVideo',
-    'ctrl+shift+l'        : 'fastForwardVideo',
-    'command+shift+right' : 'fastForwardVideo',
-    'ctrl+shift+right'    : 'fastForwardVideo',
-    'command+shift+j'     : 'rewindVideo',
-    'ctrl+shift+j'        : 'rewindVideo',
-    'command+shift+left'  : 'rewindVideo',
-    'ctrl+shift+left'     : 'rewindVideo',
-    'command+shift+up'    : 'volumeUp',
-    'ctrl+shift+up'       : 'volumeUp',
-    'command+shift+down'  : 'volumeDown',
-    'ctrl+shift+down'     : 'volumeDown',
-    'shift+/'             : 'showHideShortcuts'
+    'command+k': 'pausePlayVideo',
+    'ctrl+k': 'pausePlayVideo',
+    'command+shift+k': 'pausePlayVideo',
+    'ctrl+shift+k': 'pausePlayVideo',
+    'command+j': 'slowVideo',
+    'ctrl+j': 'slowVideo',
+    'command+l': 'fastVideo',
+    'ctrl+l': 'fastVideo',
+    'command+shift+l': 'fastForwardVideo',
+    'ctrl+shift+l': 'fastForwardVideo',
+    'command+shift+right': 'fastForwardVideo',
+    'ctrl+shift+right': 'fastForwardVideo',
+    'command+shift+j': 'rewindVideo',
+    'ctrl+shift+j': 'rewindVideo',
+    'command+shift+left': 'rewindVideo',
+    'ctrl+shift+left': 'rewindVideo',
+    'command+shift+up': 'volumeUp',
+    'ctrl+shift+up': 'volumeUp',
+    'command+shift+down': 'volumeDown',
+    'ctrl+shift+down': 'volumeDown',
+    'shift+/': 'showHideShortcuts'
   },
 
   /**
   * @function Shortcuts
   */
-  showHideShortcuts: function(){
-    console.log("show shorcuts");
+  showHideShortcuts: function () {
     document.getElementById("shortcuts").click();
   },
 
   /**
   * @function Keyboard shortcuts for playback - 
   */
-  slowVideo: function(ev){
+  slowVideo: function (ev) {
     ev.preventDefault();
-    var videoIdElem="#videoId_"+this.model.get("id");
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
 
-    if(videoElem.playbackRate <= 0.5){
-      videoElem.playbackRate =  0.5 ;
-    }else{
-      videoElem.playbackRate = videoElem.playbackRate - 0.5 ;
+    if (videoElem.playbackRate <= 0.5) {
+      videoElem.playbackRate = 0.5;
+    } else {
+      videoElem.playbackRate = videoElem.playbackRate - 0.5;
     }
 
     if (videoElem.paused) {
       videoElem.play();
-    } 
-    
+    }
     this.updateSpeedDisplay(videoElem.playbackRate);
   },
 
   /**
   * @function Keyboard shortcuts for playback -
   */
-  fastVideo: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  fastVideo: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
 
-    if(videoElem.playbackRate >= 4){
-      videoElem.playbackRate = 4 ;
-    }else{
-      videoElem.playbackRate = videoElem.playbackRate + 0.5 ;
+    if (videoElem.playbackRate >= 4) {
+      videoElem.playbackRate = 4;
+    } else {
+      videoElem.playbackRate = videoElem.playbackRate + 0.5;
     }
 
     if (videoElem.paused) {
       videoElem.play();
-    } 
+    }
 
     this.updateSpeedDisplay(videoElem.playbackRate);
   },
@@ -2982,10 +3000,10 @@ module.exports = Backbone.View.extend({
   /**
   * @function Keyboard shortcuts for playback - play/pause
   */
-  pausePlayVideo: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  pausePlayVideo: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
-    
+
     if (videoElem.paused) {
       videoElem.play();
     } else {
@@ -2996,13 +3014,13 @@ module.exports = Backbone.View.extend({
   /**
   * @function Keyboard shortcuts for volume - decrease
   */
-  volumeDown: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  volumeDown: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
-   
-    if (videoElem.volume <= 0){
+
+    if (videoElem.volume <= 0) {
       videoElem.volume = 0;
-    }else{
+    } else {
       videoElem.volume -= 0.2;
     }
   },
@@ -3010,8 +3028,8 @@ module.exports = Backbone.View.extend({
   /**
   * @function Keyboard shortcuts for volume - increase
   */
-  volumeUp: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  volumeUp: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
     videoElem.volume += 0.2;
   },
@@ -3019,8 +3037,8 @@ module.exports = Backbone.View.extend({
   /**
   * @function Keyboard shortcuts for playback - fastforward
   */
-  fastForwardVideo: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  fastForwardVideo: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
     videoElem.currentTime += 5;
   },
@@ -3028,8 +3046,8 @@ module.exports = Backbone.View.extend({
   /**
   * @function Keyboard shortcuts for playback - rewind
   */
-  rewindVideo: function(ev){
-    var videoIdElem="#videoId_"+this.model.get("id");
+  rewindVideo: function (ev) {
+    var videoIdElem = "#videoId_" + this.model.get("id");
     var videoElem = $(videoIdElem)[0];
     videoElem.currentTime -= 5;
   },
@@ -3037,43 +3055,43 @@ module.exports = Backbone.View.extend({
   /**
   * @function helper function to update diplay speed
   */
-  updateSpeedDisplay: function(speed){
-  //subtracting 1 because playback rate default / nromal is 1. but for display to user makes more sense to have zero as default
-    document.getElementById("speedInput").value = speed-1;
+  updateSpeedDisplay: function (speed) {
+    //subtracting 1 because playback rate default / nromal is 1. but for display to user makes more sense to have zero as default
+    document.getElementById("speedInput").value = speed - 1;
   },
   //end of playback volume control
 
   /**
   * @function render
   */
-  render: function(){    
+  render: function () {
     this.model.attributes.id = this.model.attributes._id;
     var sectionTemplate = render('transcriptionShow', this.model.attributes);
     this.$el.html(sectionTemplate);
     //modify compiled template to update hilights. 
-    var tmpHighlights =  this.model.get("highlights");
-      for(var i = 0; i < tmpHighlights.length; i++ ){
-        var min =  tmpHighlights[i].startTime ;
-        var max = tmpHighlights[i].endTime ;
-        //needs to grab the words of the element of the view not in the dom        
-        this.$(".words").filter(function(){
-          return $(this).data('start-time') >= min && $(this).data('end-time') <= max;
-        }).addClass("highlight");
-      } 
+    var tmpHighlights = this.model.get("highlights");
+    for (var i = 0; i < tmpHighlights.length; i++) {
+      var min = tmpHighlights[i].startTime;
+      var max = tmpHighlights[i].endTime;
+      //needs to grab the words of the element of the view not in the dom        
+      this.$(".words").filter(function () {
+        return $(this).data('start-time') >= min && $(this).data('end-time') <= max;
+      }).addClass("highlight");
+    }
     ///end of modify compiled template to update hilights. 
     return this;
   }
-  
+
 });
 
-},{"../../edl_composer/index":32,"./utils":31,"backbone":34,"file-saver":36,"jquery":37,"moment":38,"node-timecodes":42,"underscore":117}],31:[function(require,module,exports){
+},{"../../edl_composer/index":34,"./utils":33,"backbone":36,"file-saver":38,"jquery":39,"moment":40,"node-timecodes":44,"underscore":119}],33:[function(require,module,exports){
 var $ = require('jquery');
 var _ = require('underscore');
 var helpers = require('../helpers');
 var underscored = require('underscore.string').underscored;
 
 // Preload all templates from lib/apps/templates (using require-globify)
-var templates = {'404': require('../templates/404.html.ejs'),'home_page': require('../templates/home_page.html.ejs'),'hypertranscript': require('../templates/hypertranscript.html.ejs'),'papercut': require('../templates/papercut.html.ejs'),'papercut_title': require('../templates/papercut_title.html.ejs'),'paperedit_form_template': require('../templates/paperedit_form_template.html.ejs'),'paperedit_index': require('../templates/paperedit_index.html.ejs'),'paperedit_show': require('../templates/paperedit_show.html.ejs'),'transcription_form_template': require('../templates/transcription_form_template.html.ejs'),'transcription_index': require('../templates/transcription_index.html.ejs'),'transcription_show': require('../templates/transcription_show.html.ejs'),'welcome': require('../templates/welcome.html.ejs')};
+var templates = { '404': require('../templates/404.html.ejs'), 'home_page': require('../templates/home_page.html.ejs'), 'hypertranscript': require('../templates/hypertranscript.html.ejs'), 'papercut': require('../templates/papercut.html.ejs'), 'papercut_title': require('../templates/papercut_title.html.ejs'), 'paperedit_element_index': require('../templates/paperedit_element_index.html.ejs'), 'paperedit_form_template': require('../templates/paperedit_form_template.html.ejs'), 'paperedit_show': require('../templates/paperedit_show.html.ejs'), 'settings_template': require('../templates/settings_template.html.ejs'), 'transcription_element_index': require('../templates/transcription_element_index.html.ejs'), 'transcription_form_template': require('../templates/transcription_form_template.html.ejs'), 'transcription_show': require('../templates/transcription_show.html.ejs'), 'welcome': require('../templates/welcome.html.ejs') };
 
 /**
  * Find a template
@@ -3097,8 +3115,6 @@ function getTemplate(templateName) {
  * @return {String} html tasty html
  */
 function render(templateName, templateData) {
-  // console.log("called Render",templateName,templateData);
-  // console.log("templateData",templateData);
   templateData = _.clone(templateData || {}); // templateData is optional
   // Get the template function, pass the provided data and extra helper functions
   return getTemplate(templateName)(_.defaults(templateData, helpers, {
@@ -3110,7 +3126,7 @@ function render(templateName, templateData) {
 module.exports.getTemplate = getTemplate;
 module.exports.render = render;
 
-},{"../helpers":6,"../templates/404.html.ejs":11,"../templates/home_page.html.ejs":12,"../templates/hypertranscript.html.ejs":13,"../templates/papercut.html.ejs":14,"../templates/papercut_title.html.ejs":15,"../templates/paperedit_form_template.html.ejs":16,"../templates/paperedit_index.html.ejs":17,"../templates/paperedit_show.html.ejs":18,"../templates/transcription_form_template.html.ejs":19,"../templates/transcription_index.html.ejs":20,"../templates/transcription_show.html.ejs":21,"../templates/welcome.html.ejs":22,"jquery":37,"underscore":117,"underscore.string":71}],32:[function(require,module,exports){
+},{"../helpers":6,"../templates/404.html.ejs":11,"../templates/home_page.html.ejs":12,"../templates/hypertranscript.html.ejs":13,"../templates/papercut.html.ejs":14,"../templates/papercut_title.html.ejs":15,"../templates/paperedit_element_index.html.ejs":16,"../templates/paperedit_form_template.html.ejs":17,"../templates/paperedit_show.html.ejs":18,"../templates/settings_template.html.ejs":19,"../templates/transcription_element_index.html.ejs":20,"../templates/transcription_form_template.html.ejs":21,"../templates/transcription_show.html.ejs":22,"../templates/welcome.html.ejs":23,"jquery":39,"underscore":119,"underscore.string":73}],34:[function(require,module,exports){
 'use strict';
 /**
 * @module edl_composer
@@ -3136,21 +3152,24 @@ var edlSqDemo = {
         "endTime": 20,
         "reelName":"SomeReelName",
         "clipName":"Something.mov"
-        "offset": "00:00:28:08"
+        "offset": "00:00:28:08",
+        "fps": 25
       },
       { "id":2,
         "startTime": 45,
         "endTime": 55,
         "reelName":"SomeOtherReelName",
         "clipName":"SomethingElse.mov",
-        "offset": "00:00:28:08"
+        "offset": "00:00:28:08",
+        "fps": 29.97
       },
         { "id":2,
         "startTime": 45,
         "endTime": 55,
         "reelName":"NA",
         "clipName":"SomethingElse.mov"
-        "offset": "00:00:28:08"
+        "offset": "00:00:28:08",
+        "fps": 24
       }
     ]
 }
@@ -3184,6 +3203,7 @@ FINAL CUT PRO REEL: SomeOtherReelName REPLACED BY: SomeOthe
 * @todo Write documentation.
 * @todo add error handling and error callbacks
 */
+
 var timecodes = require('node-timecodes');
 
 /**
@@ -3201,8 +3221,7 @@ var timecodes = require('node-timecodes');
 * @param {string} config.events[].offset - The camera timecode, eg free run, rec run, time of day, repsent a time offset from the time relative to the beginning of the video file timeline. in format of timecode eg "00:00:28:08" such as "hh:mm:ss:ms" because that's how cameras write it in the metadata of the file. if it is  "NA" then it uses default 0.
 * @returns {stirng} EDL - and EDL string that can written to file to import EDL into video editing software.
 */
-var EDL = function(config) {
-  console.log("EDL",config);
+var EDL = function (config) {
   // creating head of EDL with project title.
   this.head = 'TITLE: ' + config.title + '\nFCM: NON-DROP FRAME\n\n';
   // by default setting offset to zero, equivalent to as if it was "00:00:00:00"
@@ -3210,14 +3229,14 @@ var EDL = function(config) {
   // if offset exists
 
   // creating body of the EDL
-  this.body = function() {
+  this.body = function () {
     // startime relative to EDL sequence always starts from zero, equivvalent to "00:00:00:00"
-    var startTimecode = 0 ;
+    var startTimecode = 0;
     // story EDL sequence segments in array
     var edlBody = [];
     // iterate over sequence events segments to make the edl body
     for (var j = 0; j < config.events.length; j++) {
-      var event =  config.events[j];
+      var event = config.events[j];
       // creating EDL Lines, startTimecode passed as second param so that it can increment for every line
       var edlLine = new EDLline(event, startTimecode);
       // set startTimecode to increment for next line by keeping value of current.
@@ -3228,7 +3247,7 @@ var EDL = function(config) {
     return edlBody.join('');
   };
   // putting the EDL togethere by joining head and body
-  this.compose = function() {
+  this.compose = function () {
     return this.head + this.body();
   };
 };
@@ -3245,26 +3264,36 @@ var EDL = function(config) {
 * @param {string} config.events[].offet - Camera timecode offset. 
 * @function {string} EDL - and EDL string  for an EDL line.
 */
-var EDLline = function(event, tapeIn) {
+var EDLline = function (event, tapeIn) {
+  //making fps option to keep bakcward compatibility,
+  //default as PAL 25 fps
+  if (event.fps) {
+    //to keep backward compatibility with 1/50 motation. in that caseset as default PAL.
+    if (typeof event.fps == "string") {
+      this.fps = 25;
+    } else {
+      this.fps = parseFloat(event.fps).toFixed(2);
+    }
+  } else {
+    this.fps = 25;
+  }
 
-console.log("event",event,event.offset);
   if (event.offset != 'NA') {
     // converting offset to seconds
     // if event.offset is not defined.
     // TODO: make offset optional 
-    if(event.offset){
-      this.offset = timecodes.toSeconds(event.offset) ;
-    }else{
-      this.offset = 0 ;
+    if (event.offset) {
+      this.offset = timecodes.toSeconds(event.offset, { frameRate: this.fps });
+    } else {
+      this.offset = 0;
     }
-  }else{
+  } else {
     this.offset = 0;
   }
-   console.log("this.offset",this.offset);
 
   this.counter = event.id;
 
-  this.n = function() {
+  this.n = function () {
     //TODO FIX THIS it says it's undefined!!!!! coz event.it doesn't have a number. 
     // if undefined should make it's own counter. c
     // return this.counter; 
@@ -3282,42 +3311,44 @@ console.log("event",event,event.offset);
   this.startTime = event.startTime;
   this.endTime = event.endTime;
 
-  this.clipInPoint = function() {
+  this.clipInPoint = function () {
     // return convert  this.endTime to TC
-    // console.log("parseFloat(this.startTime) ", parseFloat(this.startTime) );
-    return parseFloat(this.startTime) ;
+    return parseFloat(this.startTime);
   };
-  this.clipOutPoint = function() {
+  this.clipOutPoint = function () {
     // return convert  this.endTime to TC
-    return  parseFloat(this.endTime);
+    return parseFloat(this.endTime);
   };
 
   this.reelName = event.reelName;
-  this.reelName7digit = function() {
-    return this.reelName.split('').slice(0,7).join('');
+  this.reelName7digit = function () {
+    //EDL does not handle spaces so also removing spaces.
+    //EDL only handles uppercar case and numbers A-Z 0-9 
+    //TODO: it be good to have a chat for illegal char and to replace/remove. 
+    return this.reelName.replace(/ /g, "").split('').slice(0, 7).join('').toUpperCase();
   };
 
   this.clipName = event.clipName;
 
   this.tapeIn = tapeIn;
 
-  this.tapeOut = function() {
-    var result = (this.tapeIn + (this.clipOutPoint() - this.clipInPoint()));
+  this.tapeOut = function () {
+    var result = this.tapeIn + (this.clipOutPoint() - this.clipInPoint());
     return result;
     // return 890;
   };
 
-  this.compose = function() {
+  this.compose = function () {
     var res = '';
     // Handling lack of reel name in clip.
     if (this.reelName != 'NA') {
-      res =  '' + this.n() + '   ' + this.reelName7digit() + '  AA/V  C  ';
+      res = '' + this.n() + '   ' + this.reelName7digit() + '  AA/V  C  ';
     } else {
-      res =  '' + this.n() + '   ' + ' AX  AA/V  C  ';
+      res = '' + this.n() + '   ' + ' AX  AA/V  C  ';
     }
     //TODO Figure out why it is giving error with timecode: perhaps console.log the timecodes and see what's
-    res += timecodes.fromSeconds(this.clipInPoint() + this.offset) + ' ' + timecodes.fromSeconds(this.clipOutPoint() + this.offset) + ' ';
-    res += timecodes.fromSeconds(this.tapeIn) + ' ' + timecodes.fromSeconds(this.tapeOut()) + '\n';
+    res += timecodes.fromSeconds(this.clipInPoint() + this.offset, { frameRate: this.fps }) + ' ' + timecodes.fromSeconds(this.clipOutPoint() + this.offset, { frameRate: this.fps }) + " ";
+    res += timecodes.fromSeconds(this.tapeIn, { frameRate: this.fps }) + ' ' + timecodes.fromSeconds(this.tapeOut(), { frameRate: this.fps }) + '\n';
     // res += this.clipInPoint() + this.offset + ' ' + this.clipOutPoint() + this.offset + ' ';
     // res += this.tapeIn + ' ' + this.tapeOut() + '\n';
     res += '* FROM CLIP NAME: ' + this.clipName + '\n';
@@ -3327,15 +3358,13 @@ console.log("event",event,event.offset);
     } else {
       res += '\n';
     }
-    // console.log("EDL Compose", res);
     return res;
   };
-
 };
 
 module.exports = EDL;
 
-},{"node-timecodes":42}],33:[function(require,module,exports){
+},{"node-timecodes":44}],35:[function(require,module,exports){
 /**
 * @module srt
 * @description provides a function to convert srt line object json to srt file content as string
@@ -3405,20 +3434,24 @@ All the time. Every day. Constantly.
  * @param {cb} callback
  * @todo add error handling and error.
  */
+
 function createSrtContent(srtData, cb) {
   var lines = '';
-  for(var i = 0; i < srtData.length; i++) {
+  for (var i = 0; i < srtData.length; i++) {
     var srtLineO = srtData[i];
     lines += srtLineO.id + '\n';
     lines += srtLineO.startTime + ' --> ' + srtLineO.endTime + '\n';
     lines += srtLineO.text + '\n\n';
   }
   // TODO figure out if callback here is redundant and could just return
-  if(cb) { cb(lines); } else { return lines; }
+  if (cb) {
+    cb(lines);
+  } else {
+    return lines;
+  }
 }
 
 module.exports.createSrtContent = createSrtContent;
-
 
 //NOTE: node-timecodes npm lib ( https://github.com/synchronized-tv/node-timecodes) does not support exporting timecodes in format suitable for srt file. which requires a comma instead of a dot for millisercons. Hence adding it here as a helper. Ideally it should be integrated in node timecode library.
 
@@ -3436,6 +3469,8 @@ var padNumber = function (nb) {
   return nb;
 };
 
+//TODO: use node timecode module, require, instead of this function, and then `.replace(".",",")`
+// perhaps add in util 
 /**
 * @function fromSecondsForSrt
 * @description converts time in seconds to timecode for srt file 
@@ -3461,12 +3496,12 @@ var fromSecondsForSrt = function (seconds) {
 
   var suffix = ms && padNumber(parseInt(milliseconds, 10), 3) || padNumber(frame, 2);
 
-  return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ',' + suffix+"0";
+  return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ',' + suffix + "0";
 };
 
 module.exports.fromSecondsForSrt = fromSecondsForSrt;
 
-},{}],34:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 (function (global){
 //     Backbone.js 1.3.3
 
@@ -5390,2393 +5425,2183 @@ module.exports.fromSecondsForSrt = fromSecondsForSrt;
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":37,"underscore":117}],35:[function(require,module,exports){
+},{"jquery":39,"underscore":119}],37:[function(require,module,exports){
 (function (global){
 
-; jQuery = global.jQuery = require("jquery");
-; var __browserify_shim_require__=require;(function browserifyShim(module, define, require) {
-/*!
- * Bootstrap v3.3.7 (http://getbootstrap.com)
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under the MIT license
- */
+;jQuery = global.jQuery = require("jquery");
+;var __browserify_shim_require__ = require;(function browserifyShim(module, define, require) {
+  /*!
+   * Bootstrap v3.3.7 (http://getbootstrap.com)
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under the MIT license
+   */
 
-if (typeof jQuery === 'undefined') {
-  throw new Error('Bootstrap\'s JavaScript requires jQuery')
-}
-
-+function ($) {
-  'use strict';
-  var version = $.fn.jquery.split(' ')[0].split('.')
-  if ((version[0] < 2 && version[1] < 9) || (version[0] == 1 && version[1] == 9 && version[2] < 1) || (version[0] > 3)) {
-    throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4')
+  if (typeof jQuery === 'undefined') {
+    throw new Error('Bootstrap\'s JavaScript requires jQuery');
   }
-}(jQuery);
 
-/* ========================================================================
- * Bootstrap: transition.js v3.3.7
- * http://getbootstrap.com/javascript/#transitions
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+  +function ($) {
+    'use strict';
 
-
-+function ($) {
-  'use strict';
-
-  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
-  // ============================================================
-
-  function transitionEnd() {
-    var el = document.createElement('bootstrap')
-
-    var transEndEventNames = {
-      WebkitTransition : 'webkitTransitionEnd',
-      MozTransition    : 'transitionend',
-      OTransition      : 'oTransitionEnd otransitionend',
-      transition       : 'transitionend'
+    var version = $.fn.jquery.split(' ')[0].split('.');
+    if (version[0] < 2 && version[1] < 9 || version[0] == 1 && version[1] == 9 && version[2] < 1 || version[0] > 3) {
+      throw new Error('Bootstrap\'s JavaScript requires jQuery version 1.9.1 or higher, but lower than version 4');
     }
+  }(jQuery);
 
-    for (var name in transEndEventNames) {
-      if (el.style[name] !== undefined) {
-        return { end: transEndEventNames[name] }
+  /* ========================================================================
+   * Bootstrap: transition.js v3.3.7
+   * http://getbootstrap.com/javascript/#transitions
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  +function ($) {
+    'use strict';
+
+    // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+    // ============================================================
+
+    function transitionEnd() {
+      var el = document.createElement('bootstrap');
+
+      var transEndEventNames = {
+        WebkitTransition: 'webkitTransitionEnd',
+        MozTransition: 'transitionend',
+        OTransition: 'oTransitionEnd otransitionend',
+        transition: 'transitionend'
+      };
+
+      for (var name in transEndEventNames) {
+        if (el.style[name] !== undefined) {
+          return { end: transEndEventNames[name] };
+        }
       }
+
+      return false; // explicit for ie8 (  ._.)
     }
 
-    return false // explicit for ie8 (  ._.)
-  }
+    // http://blog.alexmaccaw.com/css-transitions
+    $.fn.emulateTransitionEnd = function (duration) {
+      var called = false;
+      var $el = this;
+      $(this).one('bsTransitionEnd', function () {
+        called = true;
+      });
+      var callback = function () {
+        if (!called) $($el).trigger($.support.transition.end);
+      };
+      setTimeout(callback, duration);
+      return this;
+    };
 
-  // http://blog.alexmaccaw.com/css-transitions
-  $.fn.emulateTransitionEnd = function (duration) {
-    var called = false
-    var $el = this
-    $(this).one('bsTransitionEnd', function () { called = true })
-    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
-    setTimeout(callback, duration)
-    return this
-  }
+    $(function () {
+      $.support.transition = transitionEnd();
 
-  $(function () {
-    $.support.transition = transitionEnd()
+      if (!$.support.transition) return;
 
-    if (!$.support.transition) return
+      $.event.special.bsTransitionEnd = {
+        bindType: $.support.transition.end,
+        delegateType: $.support.transition.end,
+        handle: function (e) {
+          if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments);
+        }
+      };
+    });
+  }(jQuery);
 
-    $.event.special.bsTransitionEnd = {
-      bindType: $.support.transition.end,
-      delegateType: $.support.transition.end,
-      handle: function (e) {
-        if ($(e.target).is(this)) return e.handleObj.handler.apply(this, arguments)
+  /* ========================================================================
+   * Bootstrap: alert.js v3.3.7
+   * http://getbootstrap.com/javascript/#alerts
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  +function ($) {
+    'use strict';
+
+    // ALERT CLASS DEFINITION
+    // ======================
+
+    var dismiss = '[data-dismiss="alert"]';
+    var Alert = function (el) {
+      $(el).on('click', dismiss, this.close);
+    };
+
+    Alert.VERSION = '3.3.7';
+
+    Alert.TRANSITION_DURATION = 150;
+
+    Alert.prototype.close = function (e) {
+      var $this = $(this);
+      var selector = $this.attr('data-target');
+
+      if (!selector) {
+        selector = $this.attr('href');
+        selector = selector && selector.replace(/.*(?=#[^\s]*$)/, ''); // strip for ie7
       }
-    }
-  })
 
-}(jQuery);
+      var $parent = $(selector === '#' ? [] : selector);
 
-/* ========================================================================
- * Bootstrap: alert.js v3.3.7
- * http://getbootstrap.com/javascript/#alerts
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+      if (e) e.preventDefault();
 
-
-+function ($) {
-  'use strict';
-
-  // ALERT CLASS DEFINITION
-  // ======================
-
-  var dismiss = '[data-dismiss="alert"]'
-  var Alert   = function (el) {
-    $(el).on('click', dismiss, this.close)
-  }
-
-  Alert.VERSION = '3.3.7'
-
-  Alert.TRANSITION_DURATION = 150
-
-  Alert.prototype.close = function (e) {
-    var $this    = $(this)
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = $(selector === '#' ? [] : selector)
-
-    if (e) e.preventDefault()
-
-    if (!$parent.length) {
-      $parent = $this.closest('.alert')
-    }
-
-    $parent.trigger(e = $.Event('close.bs.alert'))
-
-    if (e.isDefaultPrevented()) return
-
-    $parent.removeClass('in')
-
-    function removeElement() {
-      // detach from parent, fire event then clean up data
-      $parent.detach().trigger('closed.bs.alert').remove()
-    }
-
-    $.support.transition && $parent.hasClass('fade') ?
-      $parent
-        .one('bsTransitionEnd', removeElement)
-        .emulateTransitionEnd(Alert.TRANSITION_DURATION) :
-      removeElement()
-  }
-
-
-  // ALERT PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.alert')
-
-      if (!data) $this.data('bs.alert', (data = new Alert(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.alert
-
-  $.fn.alert             = Plugin
-  $.fn.alert.Constructor = Alert
-
-
-  // ALERT NO CONFLICT
-  // =================
-
-  $.fn.alert.noConflict = function () {
-    $.fn.alert = old
-    return this
-  }
-
-
-  // ALERT DATA-API
-  // ==============
-
-  $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: button.js v3.3.7
- * http://getbootstrap.com/javascript/#buttons
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // BUTTON PUBLIC CLASS DEFINITION
-  // ==============================
-
-  var Button = function (element, options) {
-    this.$element  = $(element)
-    this.options   = $.extend({}, Button.DEFAULTS, options)
-    this.isLoading = false
-  }
-
-  Button.VERSION  = '3.3.7'
-
-  Button.DEFAULTS = {
-    loadingText: 'loading...'
-  }
-
-  Button.prototype.setState = function (state) {
-    var d    = 'disabled'
-    var $el  = this.$element
-    var val  = $el.is('input') ? 'val' : 'html'
-    var data = $el.data()
-
-    state += 'Text'
-
-    if (data.resetText == null) $el.data('resetText', $el[val]())
-
-    // push to event loop to allow forms to submit
-    setTimeout($.proxy(function () {
-      $el[val](data[state] == null ? this.options[state] : data[state])
-
-      if (state == 'loadingText') {
-        this.isLoading = true
-        $el.addClass(d).attr(d, d).prop(d, true)
-      } else if (this.isLoading) {
-        this.isLoading = false
-        $el.removeClass(d).removeAttr(d).prop(d, false)
+      if (!$parent.length) {
+        $parent = $this.closest('.alert');
       }
-    }, this), 0)
-  }
 
-  Button.prototype.toggle = function () {
-    var changed = true
-    var $parent = this.$element.closest('[data-toggle="buttons"]')
+      $parent.trigger(e = $.Event('close.bs.alert'));
 
-    if ($parent.length) {
-      var $input = this.$element.find('input')
-      if ($input.prop('type') == 'radio') {
-        if ($input.prop('checked')) changed = false
-        $parent.find('.active').removeClass('active')
-        this.$element.addClass('active')
-      } else if ($input.prop('type') == 'checkbox') {
-        if (($input.prop('checked')) !== this.$element.hasClass('active')) changed = false
-        this.$element.toggleClass('active')
+      if (e.isDefaultPrevented()) return;
+
+      $parent.removeClass('in');
+
+      function removeElement() {
+        // detach from parent, fire event then clean up data
+        $parent.detach().trigger('closed.bs.alert').remove();
       }
-      $input.prop('checked', this.$element.hasClass('active'))
-      if (changed) $input.trigger('change')
-    } else {
-      this.$element.attr('aria-pressed', !this.$element.hasClass('active'))
-      this.$element.toggleClass('active')
+
+      $.support.transition && $parent.hasClass('fade') ? $parent.one('bsTransitionEnd', removeElement).emulateTransitionEnd(Alert.TRANSITION_DURATION) : removeElement();
+    };
+
+    // ALERT PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.alert');
+
+        if (!data) $this.data('bs.alert', data = new Alert(this));
+        if (typeof option == 'string') data[option].call($this);
+      });
     }
-  }
 
+    var old = $.fn.alert;
 
-  // BUTTON PLUGIN DEFINITION
-  // ========================
+    $.fn.alert = Plugin;
+    $.fn.alert.Constructor = Alert;
 
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.button')
-      var options = typeof option == 'object' && option
+    // ALERT NO CONFLICT
+    // =================
 
-      if (!data) $this.data('bs.button', (data = new Button(this, options)))
+    $.fn.alert.noConflict = function () {
+      $.fn.alert = old;
+      return this;
+    };
 
-      if (option == 'toggle') data.toggle()
-      else if (option) data.setState(option)
-    })
-  }
+    // ALERT DATA-API
+    // ==============
 
-  var old = $.fn.button
+    $(document).on('click.bs.alert.data-api', dismiss, Alert.prototype.close);
+  }(jQuery);
 
-  $.fn.button             = Plugin
-  $.fn.button.Constructor = Button
+  /* ========================================================================
+   * Bootstrap: button.js v3.3.7
+   * http://getbootstrap.com/javascript/#buttons
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
+  +function ($) {
+    'use strict';
 
-  // BUTTON NO CONFLICT
-  // ==================
+    // BUTTON PUBLIC CLASS DEFINITION
+    // ==============================
 
-  $.fn.button.noConflict = function () {
-    $.fn.button = old
-    return this
-  }
+    var Button = function (element, options) {
+      this.$element = $(element);
+      this.options = $.extend({}, Button.DEFAULTS, options);
+      this.isLoading = false;
+    };
 
+    Button.VERSION = '3.3.7';
 
-  // BUTTON DATA-API
-  // ===============
+    Button.DEFAULTS = {
+      loadingText: 'loading...'
+    };
 
-  $(document)
-    .on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      var $btn = $(e.target).closest('.btn')
-      Plugin.call($btn, 'toggle')
-      if (!($(e.target).is('input[type="radio"], input[type="checkbox"]'))) {
+    Button.prototype.setState = function (state) {
+      var d = 'disabled';
+      var $el = this.$element;
+      var val = $el.is('input') ? 'val' : 'html';
+      var data = $el.data();
+
+      state += 'Text';
+
+      if (data.resetText == null) $el.data('resetText', $el[val]());
+
+      // push to event loop to allow forms to submit
+      setTimeout($.proxy(function () {
+        $el[val](data[state] == null ? this.options[state] : data[state]);
+
+        if (state == 'loadingText') {
+          this.isLoading = true;
+          $el.addClass(d).attr(d, d).prop(d, true);
+        } else if (this.isLoading) {
+          this.isLoading = false;
+          $el.removeClass(d).removeAttr(d).prop(d, false);
+        }
+      }, this), 0);
+    };
+
+    Button.prototype.toggle = function () {
+      var changed = true;
+      var $parent = this.$element.closest('[data-toggle="buttons"]');
+
+      if ($parent.length) {
+        var $input = this.$element.find('input');
+        if ($input.prop('type') == 'radio') {
+          if ($input.prop('checked')) changed = false;
+          $parent.find('.active').removeClass('active');
+          this.$element.addClass('active');
+        } else if ($input.prop('type') == 'checkbox') {
+          if ($input.prop('checked') !== this.$element.hasClass('active')) changed = false;
+          this.$element.toggleClass('active');
+        }
+        $input.prop('checked', this.$element.hasClass('active'));
+        if (changed) $input.trigger('change');
+      } else {
+        this.$element.attr('aria-pressed', !this.$element.hasClass('active'));
+        this.$element.toggleClass('active');
+      }
+    };
+
+    // BUTTON PLUGIN DEFINITION
+    // ========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.button');
+        var options = typeof option == 'object' && option;
+
+        if (!data) $this.data('bs.button', data = new Button(this, options));
+
+        if (option == 'toggle') data.toggle();else if (option) data.setState(option);
+      });
+    }
+
+    var old = $.fn.button;
+
+    $.fn.button = Plugin;
+    $.fn.button.Constructor = Button;
+
+    // BUTTON NO CONFLICT
+    // ==================
+
+    $.fn.button.noConflict = function () {
+      $.fn.button = old;
+      return this;
+    };
+
+    // BUTTON DATA-API
+    // ===============
+
+    $(document).on('click.bs.button.data-api', '[data-toggle^="button"]', function (e) {
+      var $btn = $(e.target).closest('.btn');
+      Plugin.call($btn, 'toggle');
+      if (!$(e.target).is('input[type="radio"], input[type="checkbox"]')) {
         // Prevent double click on radios, and the double selections (so cancellation) on checkboxes
-        e.preventDefault()
+        e.preventDefault();
         // The target component still receive the focus
-        if ($btn.is('input,button')) $btn.trigger('focus')
-        else $btn.find('input:visible,button:visible').first().trigger('focus')
+        if ($btn.is('input,button')) $btn.trigger('focus');else $btn.find('input:visible,button:visible').first().trigger('focus');
       }
-    })
-    .on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
-      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type))
-    })
+    }).on('focus.bs.button.data-api blur.bs.button.data-api', '[data-toggle^="button"]', function (e) {
+      $(e.target).closest('.btn').toggleClass('focus', /^focus(in)?$/.test(e.type));
+    });
+  }(jQuery);
 
-}(jQuery);
+  /* ========================================================================
+   * Bootstrap: carousel.js v3.3.7
+   * http://getbootstrap.com/javascript/#carousel
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
-/* ========================================================================
- * Bootstrap: carousel.js v3.3.7
- * http://getbootstrap.com/javascript/#carousel
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+  +function ($) {
+    'use strict';
 
+    // CAROUSEL CLASS DEFINITION
+    // =========================
 
-+function ($) {
-  'use strict';
+    var Carousel = function (element, options) {
+      this.$element = $(element);
+      this.$indicators = this.$element.find('.carousel-indicators');
+      this.options = options;
+      this.paused = null;
+      this.sliding = null;
+      this.interval = null;
+      this.$active = null;
+      this.$items = null;
 
-  // CAROUSEL CLASS DEFINITION
-  // =========================
+      this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this));
 
-  var Carousel = function (element, options) {
-    this.$element    = $(element)
-    this.$indicators = this.$element.find('.carousel-indicators')
-    this.options     = options
-    this.paused      = null
-    this.sliding     = null
-    this.interval    = null
-    this.$active     = null
-    this.$items      = null
+      this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element.on('mouseenter.bs.carousel', $.proxy(this.pause, this)).on('mouseleave.bs.carousel', $.proxy(this.cycle, this));
+    };
 
-    this.options.keyboard && this.$element.on('keydown.bs.carousel', $.proxy(this.keydown, this))
+    Carousel.VERSION = '3.3.7';
 
-    this.options.pause == 'hover' && !('ontouchstart' in document.documentElement) && this.$element
-      .on('mouseenter.bs.carousel', $.proxy(this.pause, this))
-      .on('mouseleave.bs.carousel', $.proxy(this.cycle, this))
-  }
+    Carousel.TRANSITION_DURATION = 600;
 
-  Carousel.VERSION  = '3.3.7'
+    Carousel.DEFAULTS = {
+      interval: 5000,
+      pause: 'hover',
+      wrap: true,
+      keyboard: true
+    };
 
-  Carousel.TRANSITION_DURATION = 600
+    Carousel.prototype.keydown = function (e) {
+      if (/input|textarea/i.test(e.target.tagName)) return;
+      switch (e.which) {
+        case 37:
+          this.prev();break;
+        case 39:
+          this.next();break;
+        default:
+          return;
+      }
 
-  Carousel.DEFAULTS = {
-    interval: 5000,
-    pause: 'hover',
-    wrap: true,
-    keyboard: true
-  }
+      e.preventDefault();
+    };
 
-  Carousel.prototype.keydown = function (e) {
-    if (/input|textarea/i.test(e.target.tagName)) return
-    switch (e.which) {
-      case 37: this.prev(); break
-      case 39: this.next(); break
-      default: return
-    }
+    Carousel.prototype.cycle = function (e) {
+      e || (this.paused = false);
 
-    e.preventDefault()
-  }
+      this.interval && clearInterval(this.interval);
 
-  Carousel.prototype.cycle = function (e) {
-    e || (this.paused = false)
+      this.options.interval && !this.paused && (this.interval = setInterval($.proxy(this.next, this), this.options.interval));
 
-    this.interval && clearInterval(this.interval)
+      return this;
+    };
 
-    this.options.interval
-      && !this.paused
-      && (this.interval = setInterval($.proxy(this.next, this), this.options.interval))
+    Carousel.prototype.getItemIndex = function (item) {
+      this.$items = item.parent().children('.item');
+      return this.$items.index(item || this.$active);
+    };
 
-    return this
-  }
+    Carousel.prototype.getItemForDirection = function (direction, active) {
+      var activeIndex = this.getItemIndex(active);
+      var willWrap = direction == 'prev' && activeIndex === 0 || direction == 'next' && activeIndex == this.$items.length - 1;
+      if (willWrap && !this.options.wrap) return active;
+      var delta = direction == 'prev' ? -1 : 1;
+      var itemIndex = (activeIndex + delta) % this.$items.length;
+      return this.$items.eq(itemIndex);
+    };
 
-  Carousel.prototype.getItemIndex = function (item) {
-    this.$items = item.parent().children('.item')
-    return this.$items.index(item || this.$active)
-  }
+    Carousel.prototype.to = function (pos) {
+      var that = this;
+      var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'));
 
-  Carousel.prototype.getItemForDirection = function (direction, active) {
-    var activeIndex = this.getItemIndex(active)
-    var willWrap = (direction == 'prev' && activeIndex === 0)
-                || (direction == 'next' && activeIndex == (this.$items.length - 1))
-    if (willWrap && !this.options.wrap) return active
-    var delta = direction == 'prev' ? -1 : 1
-    var itemIndex = (activeIndex + delta) % this.$items.length
-    return this.$items.eq(itemIndex)
-  }
+      if (pos > this.$items.length - 1 || pos < 0) return;
 
-  Carousel.prototype.to = function (pos) {
-    var that        = this
-    var activeIndex = this.getItemIndex(this.$active = this.$element.find('.item.active'))
+      if (this.sliding) return this.$element.one('slid.bs.carousel', function () {
+        that.to(pos);
+      }); // yes, "slid"
+      if (activeIndex == pos) return this.pause().cycle();
 
-    if (pos > (this.$items.length - 1) || pos < 0) return
+      return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos));
+    };
 
-    if (this.sliding)       return this.$element.one('slid.bs.carousel', function () { that.to(pos) }) // yes, "slid"
-    if (activeIndex == pos) return this.pause().cycle()
+    Carousel.prototype.pause = function (e) {
+      e || (this.paused = true);
 
-    return this.slide(pos > activeIndex ? 'next' : 'prev', this.$items.eq(pos))
-  }
+      if (this.$element.find('.next, .prev').length && $.support.transition) {
+        this.$element.trigger($.support.transition.end);
+        this.cycle(true);
+      }
 
-  Carousel.prototype.pause = function (e) {
-    e || (this.paused = true)
+      this.interval = clearInterval(this.interval);
 
-    if (this.$element.find('.next, .prev').length && $.support.transition) {
-      this.$element.trigger($.support.transition.end)
-      this.cycle(true)
-    }
+      return this;
+    };
 
-    this.interval = clearInterval(this.interval)
+    Carousel.prototype.next = function () {
+      if (this.sliding) return;
+      return this.slide('next');
+    };
 
-    return this
-  }
+    Carousel.prototype.prev = function () {
+      if (this.sliding) return;
+      return this.slide('prev');
+    };
 
-  Carousel.prototype.next = function () {
-    if (this.sliding) return
-    return this.slide('next')
-  }
+    Carousel.prototype.slide = function (type, next) {
+      var $active = this.$element.find('.item.active');
+      var $next = next || this.getItemForDirection(type, $active);
+      var isCycling = this.interval;
+      var direction = type == 'next' ? 'left' : 'right';
+      var that = this;
 
-  Carousel.prototype.prev = function () {
-    if (this.sliding) return
-    return this.slide('prev')
-  }
+      if ($next.hasClass('active')) return this.sliding = false;
 
-  Carousel.prototype.slide = function (type, next) {
-    var $active   = this.$element.find('.item.active')
-    var $next     = next || this.getItemForDirection(type, $active)
-    var isCycling = this.interval
-    var direction = type == 'next' ? 'left' : 'right'
-    var that      = this
+      var relatedTarget = $next[0];
+      var slideEvent = $.Event('slide.bs.carousel', {
+        relatedTarget: relatedTarget,
+        direction: direction
+      });
+      this.$element.trigger(slideEvent);
+      if (slideEvent.isDefaultPrevented()) return;
 
-    if ($next.hasClass('active')) return (this.sliding = false)
+      this.sliding = true;
 
-    var relatedTarget = $next[0]
-    var slideEvent = $.Event('slide.bs.carousel', {
-      relatedTarget: relatedTarget,
-      direction: direction
-    })
-    this.$element.trigger(slideEvent)
-    if (slideEvent.isDefaultPrevented()) return
+      isCycling && this.pause();
 
-    this.sliding = true
+      if (this.$indicators.length) {
+        this.$indicators.find('.active').removeClass('active');
+        var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)]);
+        $nextIndicator && $nextIndicator.addClass('active');
+      }
 
-    isCycling && this.pause()
-
-    if (this.$indicators.length) {
-      this.$indicators.find('.active').removeClass('active')
-      var $nextIndicator = $(this.$indicators.children()[this.getItemIndex($next)])
-      $nextIndicator && $nextIndicator.addClass('active')
-    }
-
-    var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }) // yes, "slid"
-    if ($.support.transition && this.$element.hasClass('slide')) {
-      $next.addClass(type)
-      $next[0].offsetWidth // force reflow
-      $active.addClass(direction)
-      $next.addClass(direction)
-      $active
-        .one('bsTransitionEnd', function () {
-          $next.removeClass([type, direction].join(' ')).addClass('active')
-          $active.removeClass(['active', direction].join(' '))
-          that.sliding = false
+      var slidEvent = $.Event('slid.bs.carousel', { relatedTarget: relatedTarget, direction: direction }); // yes, "slid"
+      if ($.support.transition && this.$element.hasClass('slide')) {
+        $next.addClass(type);
+        $next[0].offsetWidth; // force reflow
+        $active.addClass(direction);
+        $next.addClass(direction);
+        $active.one('bsTransitionEnd', function () {
+          $next.removeClass([type, direction].join(' ')).addClass('active');
+          $active.removeClass(['active', direction].join(' '));
+          that.sliding = false;
           setTimeout(function () {
-            that.$element.trigger(slidEvent)
-          }, 0)
-        })
-        .emulateTransitionEnd(Carousel.TRANSITION_DURATION)
-    } else {
-      $active.removeClass('active')
-      $next.addClass('active')
-      this.sliding = false
-      this.$element.trigger(slidEvent)
-    }
-
-    isCycling && this.cycle()
-
-    return this
-  }
-
-
-  // CAROUSEL PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.carousel')
-      var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option)
-      var action  = typeof option == 'string' ? option : options.slide
-
-      if (!data) $this.data('bs.carousel', (data = new Carousel(this, options)))
-      if (typeof option == 'number') data.to(option)
-      else if (action) data[action]()
-      else if (options.interval) data.pause().cycle()
-    })
-  }
-
-  var old = $.fn.carousel
-
-  $.fn.carousel             = Plugin
-  $.fn.carousel.Constructor = Carousel
-
-
-  // CAROUSEL NO CONFLICT
-  // ====================
-
-  $.fn.carousel.noConflict = function () {
-    $.fn.carousel = old
-    return this
-  }
-
-
-  // CAROUSEL DATA-API
-  // =================
-
-  var clickHandler = function (e) {
-    var href
-    var $this   = $(this)
-    var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')) // strip for ie7
-    if (!$target.hasClass('carousel')) return
-    var options = $.extend({}, $target.data(), $this.data())
-    var slideIndex = $this.attr('data-slide-to')
-    if (slideIndex) options.interval = false
-
-    Plugin.call($target, options)
-
-    if (slideIndex) {
-      $target.data('bs.carousel').to(slideIndex)
-    }
-
-    e.preventDefault()
-  }
-
-  $(document)
-    .on('click.bs.carousel.data-api', '[data-slide]', clickHandler)
-    .on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler)
-
-  $(window).on('load', function () {
-    $('[data-ride="carousel"]').each(function () {
-      var $carousel = $(this)
-      Plugin.call($carousel, $carousel.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: collapse.js v3.3.7
- * http://getbootstrap.com/javascript/#collapse
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-/* jshint latedef: false */
-
-+function ($) {
-  'use strict';
-
-  // COLLAPSE PUBLIC CLASS DEFINITION
-  // ================================
-
-  var Collapse = function (element, options) {
-    this.$element      = $(element)
-    this.options       = $.extend({}, Collapse.DEFAULTS, options)
-    this.$trigger      = $('[data-toggle="collapse"][href="#' + element.id + '"],' +
-                           '[data-toggle="collapse"][data-target="#' + element.id + '"]')
-    this.transitioning = null
-
-    if (this.options.parent) {
-      this.$parent = this.getParent()
-    } else {
-      this.addAriaAndCollapsedClass(this.$element, this.$trigger)
-    }
-
-    if (this.options.toggle) this.toggle()
-  }
-
-  Collapse.VERSION  = '3.3.7'
-
-  Collapse.TRANSITION_DURATION = 350
-
-  Collapse.DEFAULTS = {
-    toggle: true
-  }
-
-  Collapse.prototype.dimension = function () {
-    var hasWidth = this.$element.hasClass('width')
-    return hasWidth ? 'width' : 'height'
-  }
-
-  Collapse.prototype.show = function () {
-    if (this.transitioning || this.$element.hasClass('in')) return
-
-    var activesData
-    var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing')
-
-    if (actives && actives.length) {
-      activesData = actives.data('bs.collapse')
-      if (activesData && activesData.transitioning) return
-    }
-
-    var startEvent = $.Event('show.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    if (actives && actives.length) {
-      Plugin.call(actives, 'hide')
-      activesData || actives.data('bs.collapse', null)
-    }
-
-    var dimension = this.dimension()
-
-    this.$element
-      .removeClass('collapse')
-      .addClass('collapsing')[dimension](0)
-      .attr('aria-expanded', true)
-
-    this.$trigger
-      .removeClass('collapsed')
-      .attr('aria-expanded', true)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse in')[dimension]('')
-      this.transitioning = 0
-      this.$element
-        .trigger('shown.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    var scrollSize = $.camelCase(['scroll', dimension].join('-'))
-
-    this.$element
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize])
-  }
-
-  Collapse.prototype.hide = function () {
-    if (this.transitioning || !this.$element.hasClass('in')) return
-
-    var startEvent = $.Event('hide.bs.collapse')
-    this.$element.trigger(startEvent)
-    if (startEvent.isDefaultPrevented()) return
-
-    var dimension = this.dimension()
-
-    this.$element[dimension](this.$element[dimension]())[0].offsetHeight
-
-    this.$element
-      .addClass('collapsing')
-      .removeClass('collapse in')
-      .attr('aria-expanded', false)
-
-    this.$trigger
-      .addClass('collapsed')
-      .attr('aria-expanded', false)
-
-    this.transitioning = 1
-
-    var complete = function () {
-      this.transitioning = 0
-      this.$element
-        .removeClass('collapsing')
-        .addClass('collapse')
-        .trigger('hidden.bs.collapse')
-    }
-
-    if (!$.support.transition) return complete.call(this)
-
-    this.$element
-      [dimension](0)
-      .one('bsTransitionEnd', $.proxy(complete, this))
-      .emulateTransitionEnd(Collapse.TRANSITION_DURATION)
-  }
-
-  Collapse.prototype.toggle = function () {
-    this[this.$element.hasClass('in') ? 'hide' : 'show']()
-  }
-
-  Collapse.prototype.getParent = function () {
-    return $(this.options.parent)
-      .find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]')
-      .each($.proxy(function (i, element) {
-        var $element = $(element)
-        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element)
-      }, this))
-      .end()
-  }
-
-  Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
-    var isOpen = $element.hasClass('in')
-
-    $element.attr('aria-expanded', isOpen)
-    $trigger
-      .toggleClass('collapsed', !isOpen)
-      .attr('aria-expanded', isOpen)
-  }
-
-  function getTargetFromTrigger($trigger) {
-    var href
-    var target = $trigger.attr('data-target')
-      || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') // strip for ie7
-
-    return $(target)
-  }
-
-
-  // COLLAPSE PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.collapse')
-      var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false
-      if (!data) $this.data('bs.collapse', (data = new Collapse(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.collapse
-
-  $.fn.collapse             = Plugin
-  $.fn.collapse.Constructor = Collapse
-
-
-  // COLLAPSE NO CONFLICT
-  // ====================
-
-  $.fn.collapse.noConflict = function () {
-    $.fn.collapse = old
-    return this
-  }
-
-
-  // COLLAPSE DATA-API
-  // =================
-
-  $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
-    var $this   = $(this)
-
-    if (!$this.attr('data-target')) e.preventDefault()
-
-    var $target = getTargetFromTrigger($this)
-    var data    = $target.data('bs.collapse')
-    var option  = data ? 'toggle' : $this.data()
-
-    Plugin.call($target, option)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: dropdown.js v3.3.7
- * http://getbootstrap.com/javascript/#dropdowns
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // DROPDOWN CLASS DEFINITION
-  // =========================
-
-  var backdrop = '.dropdown-backdrop'
-  var toggle   = '[data-toggle="dropdown"]'
-  var Dropdown = function (element) {
-    $(element).on('click.bs.dropdown', this.toggle)
-  }
-
-  Dropdown.VERSION = '3.3.7'
-
-  function getParent($this) {
-    var selector = $this.attr('data-target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    var $parent = selector && $(selector)
-
-    return $parent && $parent.length ? $parent : $this.parent()
-  }
-
-  function clearMenus(e) {
-    if (e && e.which === 3) return
-    $(backdrop).remove()
-    $(toggle).each(function () {
-      var $this         = $(this)
-      var $parent       = getParent($this)
-      var relatedTarget = { relatedTarget: this }
-
-      if (!$parent.hasClass('open')) return
-
-      if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return
-
-      $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget))
-
-      if (e.isDefaultPrevented()) return
-
-      $this.attr('aria-expanded', 'false')
-      $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget))
-    })
-  }
-
-  Dropdown.prototype.toggle = function (e) {
-    var $this = $(this)
-
-    if ($this.is('.disabled, :disabled')) return
-
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
-
-    clearMenus()
-
-    if (!isActive) {
-      if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
-        // if mobile we use a backdrop because click events don't delegate
-        $(document.createElement('div'))
-          .addClass('dropdown-backdrop')
-          .insertAfter($(this))
-          .on('click', clearMenus)
+            that.$element.trigger(slidEvent);
+          }, 0);
+        }).emulateTransitionEnd(Carousel.TRANSITION_DURATION);
+      } else {
+        $active.removeClass('active');
+        $next.addClass('active');
+        this.sliding = false;
+        this.$element.trigger(slidEvent);
       }
 
-      var relatedTarget = { relatedTarget: this }
-      $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget))
+      isCycling && this.cycle();
 
-      if (e.isDefaultPrevented()) return
+      return this;
+    };
 
-      $this
-        .trigger('focus')
-        .attr('aria-expanded', 'true')
+    // CAROUSEL PLUGIN DEFINITION
+    // ==========================
 
-      $parent
-        .toggleClass('open')
-        .trigger($.Event('shown.bs.dropdown', relatedTarget))
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.carousel');
+        var options = $.extend({}, Carousel.DEFAULTS, $this.data(), typeof option == 'object' && option);
+        var action = typeof option == 'string' ? option : options.slide;
+
+        if (!data) $this.data('bs.carousel', data = new Carousel(this, options));
+        if (typeof option == 'number') data.to(option);else if (action) data[action]();else if (options.interval) data.pause().cycle();
+      });
     }
 
-    return false
-  }
+    var old = $.fn.carousel;
 
-  Dropdown.prototype.keydown = function (e) {
-    if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return
+    $.fn.carousel = Plugin;
+    $.fn.carousel.Constructor = Carousel;
 
-    var $this = $(this)
+    // CAROUSEL NO CONFLICT
+    // ====================
 
-    e.preventDefault()
-    e.stopPropagation()
+    $.fn.carousel.noConflict = function () {
+      $.fn.carousel = old;
+      return this;
+    };
 
-    if ($this.is('.disabled, :disabled')) return
+    // CAROUSEL DATA-API
+    // =================
 
-    var $parent  = getParent($this)
-    var isActive = $parent.hasClass('open')
+    var clickHandler = function (e) {
+      var href;
+      var $this = $(this);
+      var $target = $($this.attr('data-target') || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '')); // strip for ie7
+      if (!$target.hasClass('carousel')) return;
+      var options = $.extend({}, $target.data(), $this.data());
+      var slideIndex = $this.attr('data-slide-to');
+      if (slideIndex) options.interval = false;
 
-    if (!isActive && e.which != 27 || isActive && e.which == 27) {
-      if (e.which == 27) $parent.find(toggle).trigger('focus')
-      return $this.trigger('click')
-    }
+      Plugin.call($target, options);
 
-    var desc = ' li:not(.disabled):visible a'
-    var $items = $parent.find('.dropdown-menu' + desc)
-
-    if (!$items.length) return
-
-    var index = $items.index(e.target)
-
-    if (e.which == 38 && index > 0)                 index--         // up
-    if (e.which == 40 && index < $items.length - 1) index++         // down
-    if (!~index)                                    index = 0
-
-    $items.eq(index).trigger('focus')
-  }
-
-
-  // DROPDOWN PLUGIN DEFINITION
-  // ==========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.dropdown')
-
-      if (!data) $this.data('bs.dropdown', (data = new Dropdown(this)))
-      if (typeof option == 'string') data[option].call($this)
-    })
-  }
-
-  var old = $.fn.dropdown
-
-  $.fn.dropdown             = Plugin
-  $.fn.dropdown.Constructor = Dropdown
-
-
-  // DROPDOWN NO CONFLICT
-  // ====================
-
-  $.fn.dropdown.noConflict = function () {
-    $.fn.dropdown = old
-    return this
-  }
-
-
-  // APPLY TO STANDARD DROPDOWN ELEMENTS
-  // ===================================
-
-  $(document)
-    .on('click.bs.dropdown.data-api', clearMenus)
-    .on('click.bs.dropdown.data-api', '.dropdown form', function (e) { e.stopPropagation() })
-    .on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle)
-    .on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown)
-    .on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown)
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: modal.js v3.3.7
- * http://getbootstrap.com/javascript/#modals
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // MODAL CLASS DEFINITION
-  // ======================
-
-  var Modal = function (element, options) {
-    this.options             = options
-    this.$body               = $(document.body)
-    this.$element            = $(element)
-    this.$dialog             = this.$element.find('.modal-dialog')
-    this.$backdrop           = null
-    this.isShown             = null
-    this.originalBodyPad     = null
-    this.scrollbarWidth      = 0
-    this.ignoreBackdropClick = false
-
-    if (this.options.remote) {
-      this.$element
-        .find('.modal-content')
-        .load(this.options.remote, $.proxy(function () {
-          this.$element.trigger('loaded.bs.modal')
-        }, this))
-    }
-  }
-
-  Modal.VERSION  = '3.3.7'
-
-  Modal.TRANSITION_DURATION = 300
-  Modal.BACKDROP_TRANSITION_DURATION = 150
-
-  Modal.DEFAULTS = {
-    backdrop: true,
-    keyboard: true,
-    show: true
-  }
-
-  Modal.prototype.toggle = function (_relatedTarget) {
-    return this.isShown ? this.hide() : this.show(_relatedTarget)
-  }
-
-  Modal.prototype.show = function (_relatedTarget) {
-    var that = this
-    var e    = $.Event('show.bs.modal', { relatedTarget: _relatedTarget })
-
-    this.$element.trigger(e)
-
-    if (this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = true
-
-    this.checkScrollbar()
-    this.setScrollbar()
-    this.$body.addClass('modal-open')
-
-    this.escape()
-    this.resize()
-
-    this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this))
-
-    this.$dialog.on('mousedown.dismiss.bs.modal', function () {
-      that.$element.one('mouseup.dismiss.bs.modal', function (e) {
-        if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true
-      })
-    })
-
-    this.backdrop(function () {
-      var transition = $.support.transition && that.$element.hasClass('fade')
-
-      if (!that.$element.parent().length) {
-        that.$element.appendTo(that.$body) // don't move modals dom position
+      if (slideIndex) {
+        $target.data('bs.carousel').to(slideIndex);
       }
 
-      that.$element
-        .show()
-        .scrollTop(0)
+      e.preventDefault();
+    };
 
-      that.adjustDialog()
+    $(document).on('click.bs.carousel.data-api', '[data-slide]', clickHandler).on('click.bs.carousel.data-api', '[data-slide-to]', clickHandler);
 
-      if (transition) {
-        that.$element[0].offsetWidth // force reflow
+    $(window).on('load', function () {
+      $('[data-ride="carousel"]').each(function () {
+        var $carousel = $(this);
+        Plugin.call($carousel, $carousel.data());
+      });
+    });
+  }(jQuery);
+
+  /* ========================================================================
+   * Bootstrap: collapse.js v3.3.7
+   * http://getbootstrap.com/javascript/#collapse
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  /* jshint latedef: false */
+
+  +function ($) {
+    'use strict';
+
+    // COLLAPSE PUBLIC CLASS DEFINITION
+    // ================================
+
+    var Collapse = function (element, options) {
+      this.$element = $(element);
+      this.options = $.extend({}, Collapse.DEFAULTS, options);
+      this.$trigger = $('[data-toggle="collapse"][href="#' + element.id + '"],' + '[data-toggle="collapse"][data-target="#' + element.id + '"]');
+      this.transitioning = null;
+
+      if (this.options.parent) {
+        this.$parent = this.getParent();
+      } else {
+        this.addAriaAndCollapsedClass(this.$element, this.$trigger);
       }
 
-      that.$element.addClass('in')
+      if (this.options.toggle) this.toggle();
+    };
 
-      that.enforceFocus()
+    Collapse.VERSION = '3.3.7';
 
-      var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget })
+    Collapse.TRANSITION_DURATION = 350;
 
-      transition ?
-        that.$dialog // wait for modal to slide in
-          .one('bsTransitionEnd', function () {
-            that.$element.trigger('focus').trigger(e)
-          })
-          .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-        that.$element.trigger('focus').trigger(e)
-    })
-  }
+    Collapse.DEFAULTS = {
+      toggle: true
+    };
 
-  Modal.prototype.hide = function (e) {
-    if (e) e.preventDefault()
+    Collapse.prototype.dimension = function () {
+      var hasWidth = this.$element.hasClass('width');
+      return hasWidth ? 'width' : 'height';
+    };
 
-    e = $.Event('hide.bs.modal')
+    Collapse.prototype.show = function () {
+      if (this.transitioning || this.$element.hasClass('in')) return;
 
-    this.$element.trigger(e)
+      var activesData;
+      var actives = this.$parent && this.$parent.children('.panel').children('.in, .collapsing');
 
-    if (!this.isShown || e.isDefaultPrevented()) return
-
-    this.isShown = false
-
-    this.escape()
-    this.resize()
-
-    $(document).off('focusin.bs.modal')
-
-    this.$element
-      .removeClass('in')
-      .off('click.dismiss.bs.modal')
-      .off('mouseup.dismiss.bs.modal')
-
-    this.$dialog.off('mousedown.dismiss.bs.modal')
-
-    $.support.transition && this.$element.hasClass('fade') ?
-      this.$element
-        .one('bsTransitionEnd', $.proxy(this.hideModal, this))
-        .emulateTransitionEnd(Modal.TRANSITION_DURATION) :
-      this.hideModal()
-  }
-
-  Modal.prototype.enforceFocus = function () {
-    $(document)
-      .off('focusin.bs.modal') // guard against infinite focus loop
-      .on('focusin.bs.modal', $.proxy(function (e) {
-        if (document !== e.target &&
-            this.$element[0] !== e.target &&
-            !this.$element.has(e.target).length) {
-          this.$element.trigger('focus')
-        }
-      }, this))
-  }
-
-  Modal.prototype.escape = function () {
-    if (this.isShown && this.options.keyboard) {
-      this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
-        e.which == 27 && this.hide()
-      }, this))
-    } else if (!this.isShown) {
-      this.$element.off('keydown.dismiss.bs.modal')
-    }
-  }
-
-  Modal.prototype.resize = function () {
-    if (this.isShown) {
-      $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this))
-    } else {
-      $(window).off('resize.bs.modal')
-    }
-  }
-
-  Modal.prototype.hideModal = function () {
-    var that = this
-    this.$element.hide()
-    this.backdrop(function () {
-      that.$body.removeClass('modal-open')
-      that.resetAdjustments()
-      that.resetScrollbar()
-      that.$element.trigger('hidden.bs.modal')
-    })
-  }
-
-  Modal.prototype.removeBackdrop = function () {
-    this.$backdrop && this.$backdrop.remove()
-    this.$backdrop = null
-  }
-
-  Modal.prototype.backdrop = function (callback) {
-    var that = this
-    var animate = this.$element.hasClass('fade') ? 'fade' : ''
-
-    if (this.isShown && this.options.backdrop) {
-      var doAnimate = $.support.transition && animate
-
-      this.$backdrop = $(document.createElement('div'))
-        .addClass('modal-backdrop ' + animate)
-        .appendTo(this.$body)
-
-      this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
-        if (this.ignoreBackdropClick) {
-          this.ignoreBackdropClick = false
-          return
-        }
-        if (e.target !== e.currentTarget) return
-        this.options.backdrop == 'static'
-          ? this.$element[0].focus()
-          : this.hide()
-      }, this))
-
-      if (doAnimate) this.$backdrop[0].offsetWidth // force reflow
-
-      this.$backdrop.addClass('in')
-
-      if (!callback) return
-
-      doAnimate ?
-        this.$backdrop
-          .one('bsTransitionEnd', callback)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callback()
-
-    } else if (!this.isShown && this.$backdrop) {
-      this.$backdrop.removeClass('in')
-
-      var callbackRemove = function () {
-        that.removeBackdrop()
-        callback && callback()
-      }
-      $.support.transition && this.$element.hasClass('fade') ?
-        this.$backdrop
-          .one('bsTransitionEnd', callbackRemove)
-          .emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) :
-        callbackRemove()
-
-    } else if (callback) {
-      callback()
-    }
-  }
-
-  // these following methods are used to handle overflowing modals
-
-  Modal.prototype.handleUpdate = function () {
-    this.adjustDialog()
-  }
-
-  Modal.prototype.adjustDialog = function () {
-    var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight
-
-    this.$element.css({
-      paddingLeft:  !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
-      paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
-    })
-  }
-
-  Modal.prototype.resetAdjustments = function () {
-    this.$element.css({
-      paddingLeft: '',
-      paddingRight: ''
-    })
-  }
-
-  Modal.prototype.checkScrollbar = function () {
-    var fullWindowWidth = window.innerWidth
-    if (!fullWindowWidth) { // workaround for missing window.innerWidth in IE8
-      var documentElementRect = document.documentElement.getBoundingClientRect()
-      fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left)
-    }
-    this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth
-    this.scrollbarWidth = this.measureScrollbar()
-  }
-
-  Modal.prototype.setScrollbar = function () {
-    var bodyPad = parseInt((this.$body.css('padding-right') || 0), 10)
-    this.originalBodyPad = document.body.style.paddingRight || ''
-    if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth)
-  }
-
-  Modal.prototype.resetScrollbar = function () {
-    this.$body.css('padding-right', this.originalBodyPad)
-  }
-
-  Modal.prototype.measureScrollbar = function () { // thx walsh
-    var scrollDiv = document.createElement('div')
-    scrollDiv.className = 'modal-scrollbar-measure'
-    this.$body.append(scrollDiv)
-    var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth
-    this.$body[0].removeChild(scrollDiv)
-    return scrollbarWidth
-  }
-
-
-  // MODAL PLUGIN DEFINITION
-  // =======================
-
-  function Plugin(option, _relatedTarget) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.modal')
-      var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option)
-
-      if (!data) $this.data('bs.modal', (data = new Modal(this, options)))
-      if (typeof option == 'string') data[option](_relatedTarget)
-      else if (options.show) data.show(_relatedTarget)
-    })
-  }
-
-  var old = $.fn.modal
-
-  $.fn.modal             = Plugin
-  $.fn.modal.Constructor = Modal
-
-
-  // MODAL NO CONFLICT
-  // =================
-
-  $.fn.modal.noConflict = function () {
-    $.fn.modal = old
-    return this
-  }
-
-
-  // MODAL DATA-API
-  // ==============
-
-  $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
-    var $this   = $(this)
-    var href    = $this.attr('href')
-    var $target = $($this.attr('data-target') || (href && href.replace(/.*(?=#[^\s]+$)/, ''))) // strip for ie7
-    var option  = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data())
-
-    if ($this.is('a')) e.preventDefault()
-
-    $target.one('show.bs.modal', function (showEvent) {
-      if (showEvent.isDefaultPrevented()) return // only register focus restorer if modal will actually get shown
-      $target.one('hidden.bs.modal', function () {
-        $this.is(':visible') && $this.trigger('focus')
-      })
-    })
-    Plugin.call($target, option, this)
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tooltip.js v3.3.7
- * http://getbootstrap.com/javascript/#tooltip
- * Inspired by the original jQuery.tipsy by Jason Frame
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TOOLTIP PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Tooltip = function (element, options) {
-    this.type       = null
-    this.options    = null
-    this.enabled    = null
-    this.timeout    = null
-    this.hoverState = null
-    this.$element   = null
-    this.inState    = null
-
-    this.init('tooltip', element, options)
-  }
-
-  Tooltip.VERSION  = '3.3.7'
-
-  Tooltip.TRANSITION_DURATION = 150
-
-  Tooltip.DEFAULTS = {
-    animation: true,
-    placement: 'top',
-    selector: false,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: 'hover focus',
-    title: '',
-    delay: 0,
-    html: false,
-    container: false,
-    viewport: {
-      selector: 'body',
-      padding: 0
-    }
-  }
-
-  Tooltip.prototype.init = function (type, element, options) {
-    this.enabled   = true
-    this.type      = type
-    this.$element  = $(element)
-    this.options   = this.getOptions(options)
-    this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
-    this.inState   = { click: false, hover: false, focus: false }
-
-    if (this.$element[0] instanceof document.constructor && !this.options.selector) {
-      throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!')
-    }
-
-    var triggers = this.options.trigger.split(' ')
-
-    for (var i = triggers.length; i--;) {
-      var trigger = triggers[i]
-
-      if (trigger == 'click') {
-        this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this))
-      } else if (trigger != 'manual') {
-        var eventIn  = trigger == 'hover' ? 'mouseenter' : 'focusin'
-        var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout'
-
-        this.$element.on(eventIn  + '.' + this.type, this.options.selector, $.proxy(this.enter, this))
-        this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this))
-      }
-    }
-
-    this.options.selector ?
-      (this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' })) :
-      this.fixTitle()
-  }
-
-  Tooltip.prototype.getDefaults = function () {
-    return Tooltip.DEFAULTS
-  }
-
-  Tooltip.prototype.getOptions = function (options) {
-    options = $.extend({}, this.getDefaults(), this.$element.data(), options)
-
-    if (options.delay && typeof options.delay == 'number') {
-      options.delay = {
-        show: options.delay,
-        hide: options.delay
-      }
-    }
-
-    return options
-  }
-
-  Tooltip.prototype.getDelegateOptions = function () {
-    var options  = {}
-    var defaults = this.getDefaults()
-
-    this._options && $.each(this._options, function (key, value) {
-      if (defaults[key] != value) options[key] = value
-    })
-
-    return options
-  }
-
-  Tooltip.prototype.enter = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    if (obj instanceof $.Event) {
-      self.inState[obj.type == 'focusin' ? 'focus' : 'hover'] = true
-    }
-
-    if (self.tip().hasClass('in') || self.hoverState == 'in') {
-      self.hoverState = 'in'
-      return
-    }
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'in'
-
-    if (!self.options.delay || !self.options.delay.show) return self.show()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'in') self.show()
-    }, self.options.delay.show)
-  }
-
-  Tooltip.prototype.isInStateTrue = function () {
-    for (var key in this.inState) {
-      if (this.inState[key]) return true
-    }
-
-    return false
-  }
-
-  Tooltip.prototype.leave = function (obj) {
-    var self = obj instanceof this.constructor ?
-      obj : $(obj.currentTarget).data('bs.' + this.type)
-
-    if (!self) {
-      self = new this.constructor(obj.currentTarget, this.getDelegateOptions())
-      $(obj.currentTarget).data('bs.' + this.type, self)
-    }
-
-    if (obj instanceof $.Event) {
-      self.inState[obj.type == 'focusout' ? 'focus' : 'hover'] = false
-    }
-
-    if (self.isInStateTrue()) return
-
-    clearTimeout(self.timeout)
-
-    self.hoverState = 'out'
-
-    if (!self.options.delay || !self.options.delay.hide) return self.hide()
-
-    self.timeout = setTimeout(function () {
-      if (self.hoverState == 'out') self.hide()
-    }, self.options.delay.hide)
-  }
-
-  Tooltip.prototype.show = function () {
-    var e = $.Event('show.bs.' + this.type)
-
-    if (this.hasContent() && this.enabled) {
-      this.$element.trigger(e)
-
-      var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0])
-      if (e.isDefaultPrevented() || !inDom) return
-      var that = this
-
-      var $tip = this.tip()
-
-      var tipId = this.getUID(this.type)
-
-      this.setContent()
-      $tip.attr('id', tipId)
-      this.$element.attr('aria-describedby', tipId)
-
-      if (this.options.animation) $tip.addClass('fade')
-
-      var placement = typeof this.options.placement == 'function' ?
-        this.options.placement.call(this, $tip[0], this.$element[0]) :
-        this.options.placement
-
-      var autoToken = /\s?auto?\s?/i
-      var autoPlace = autoToken.test(placement)
-      if (autoPlace) placement = placement.replace(autoToken, '') || 'top'
-
-      $tip
-        .detach()
-        .css({ top: 0, left: 0, display: 'block' })
-        .addClass(placement)
-        .data('bs.' + this.type, this)
-
-      this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
-      this.$element.trigger('inserted.bs.' + this.type)
-
-      var pos          = this.getPosition()
-      var actualWidth  = $tip[0].offsetWidth
-      var actualHeight = $tip[0].offsetHeight
-
-      if (autoPlace) {
-        var orgPlacement = placement
-        var viewportDim = this.getPosition(this.$viewport)
-
-        placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top'    :
-                    placement == 'top'    && pos.top    - actualHeight < viewportDim.top    ? 'bottom' :
-                    placement == 'right'  && pos.right  + actualWidth  > viewportDim.width  ? 'left'   :
-                    placement == 'left'   && pos.left   - actualWidth  < viewportDim.left   ? 'right'  :
-                    placement
-
-        $tip
-          .removeClass(orgPlacement)
-          .addClass(placement)
+      if (actives && actives.length) {
+        activesData = actives.data('bs.collapse');
+        if (activesData && activesData.transitioning) return;
       }
 
-      var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight)
+      var startEvent = $.Event('show.bs.collapse');
+      this.$element.trigger(startEvent);
+      if (startEvent.isDefaultPrevented()) return;
 
-      this.applyPlacement(calculatedOffset, placement)
+      if (actives && actives.length) {
+        Plugin.call(actives, 'hide');
+        activesData || actives.data('bs.collapse', null);
+      }
+
+      var dimension = this.dimension();
+
+      this.$element.removeClass('collapse').addClass('collapsing')[dimension](0).attr('aria-expanded', true);
+
+      this.$trigger.removeClass('collapsed').attr('aria-expanded', true);
+
+      this.transitioning = 1;
 
       var complete = function () {
-        var prevHoverState = that.hoverState
-        that.$element.trigger('shown.bs.' + that.type)
-        that.hoverState = null
+        this.$element.removeClass('collapsing').addClass('collapse in')[dimension]('');
+        this.transitioning = 0;
+        this.$element.trigger('shown.bs.collapse');
+      };
 
-        if (prevHoverState == 'out') that.leave(that)
+      if (!$.support.transition) return complete.call(this);
+
+      var scrollSize = $.camelCase(['scroll', dimension].join('-'));
+
+      this.$element.one('bsTransitionEnd', $.proxy(complete, this)).emulateTransitionEnd(Collapse.TRANSITION_DURATION)[dimension](this.$element[0][scrollSize]);
+    };
+
+    Collapse.prototype.hide = function () {
+      if (this.transitioning || !this.$element.hasClass('in')) return;
+
+      var startEvent = $.Event('hide.bs.collapse');
+      this.$element.trigger(startEvent);
+      if (startEvent.isDefaultPrevented()) return;
+
+      var dimension = this.dimension();
+
+      this.$element[dimension](this.$element[dimension]())[0].offsetHeight;
+
+      this.$element.addClass('collapsing').removeClass('collapse in').attr('aria-expanded', false);
+
+      this.$trigger.addClass('collapsed').attr('aria-expanded', false);
+
+      this.transitioning = 1;
+
+      var complete = function () {
+        this.transitioning = 0;
+        this.$element.removeClass('collapsing').addClass('collapse').trigger('hidden.bs.collapse');
+      };
+
+      if (!$.support.transition) return complete.call(this);
+
+      this.$element[dimension](0).one('bsTransitionEnd', $.proxy(complete, this)).emulateTransitionEnd(Collapse.TRANSITION_DURATION);
+    };
+
+    Collapse.prototype.toggle = function () {
+      this[this.$element.hasClass('in') ? 'hide' : 'show']();
+    };
+
+    Collapse.prototype.getParent = function () {
+      return $(this.options.parent).find('[data-toggle="collapse"][data-parent="' + this.options.parent + '"]').each($.proxy(function (i, element) {
+        var $element = $(element);
+        this.addAriaAndCollapsedClass(getTargetFromTrigger($element), $element);
+      }, this)).end();
+    };
+
+    Collapse.prototype.addAriaAndCollapsedClass = function ($element, $trigger) {
+      var isOpen = $element.hasClass('in');
+
+      $element.attr('aria-expanded', isOpen);
+      $trigger.toggleClass('collapsed', !isOpen).attr('aria-expanded', isOpen);
+    };
+
+    function getTargetFromTrigger($trigger) {
+      var href;
+      var target = $trigger.attr('data-target') || (href = $trigger.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''); // strip for ie7
+
+      return $(target);
+    }
+
+    // COLLAPSE PLUGIN DEFINITION
+    // ==========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.collapse');
+        var options = $.extend({}, Collapse.DEFAULTS, $this.data(), typeof option == 'object' && option);
+
+        if (!data && options.toggle && /show|hide/.test(option)) options.toggle = false;
+        if (!data) $this.data('bs.collapse', data = new Collapse(this, options));
+        if (typeof option == 'string') data[option]();
+      });
+    }
+
+    var old = $.fn.collapse;
+
+    $.fn.collapse = Plugin;
+    $.fn.collapse.Constructor = Collapse;
+
+    // COLLAPSE NO CONFLICT
+    // ====================
+
+    $.fn.collapse.noConflict = function () {
+      $.fn.collapse = old;
+      return this;
+    };
+
+    // COLLAPSE DATA-API
+    // =================
+
+    $(document).on('click.bs.collapse.data-api', '[data-toggle="collapse"]', function (e) {
+      var $this = $(this);
+
+      if (!$this.attr('data-target')) e.preventDefault();
+
+      var $target = getTargetFromTrigger($this);
+      var data = $target.data('bs.collapse');
+      var option = data ? 'toggle' : $this.data();
+
+      Plugin.call($target, option);
+    });
+  }(jQuery);
+
+  /* ========================================================================
+   * Bootstrap: dropdown.js v3.3.7
+   * http://getbootstrap.com/javascript/#dropdowns
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  +function ($) {
+    'use strict';
+
+    // DROPDOWN CLASS DEFINITION
+    // =========================
+
+    var backdrop = '.dropdown-backdrop';
+    var toggle = '[data-toggle="dropdown"]';
+    var Dropdown = function (element) {
+      $(element).on('click.bs.dropdown', this.toggle);
+    };
+
+    Dropdown.VERSION = '3.3.7';
+
+    function getParent($this) {
+      var selector = $this.attr('data-target');
+
+      if (!selector) {
+        selector = $this.attr('href');
+        selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, ''); // strip for ie7
       }
 
-      $.support.transition && this.$tip.hasClass('fade') ?
-        $tip
-          .one('bsTransitionEnd', complete)
-          .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-        complete()
+      var $parent = selector && $(selector);
+
+      return $parent && $parent.length ? $parent : $this.parent();
     }
-  }
 
-  Tooltip.prototype.applyPlacement = function (offset, placement) {
-    var $tip   = this.tip()
-    var width  = $tip[0].offsetWidth
-    var height = $tip[0].offsetHeight
+    function clearMenus(e) {
+      if (e && e.which === 3) return;
+      $(backdrop).remove();
+      $(toggle).each(function () {
+        var $this = $(this);
+        var $parent = getParent($this);
+        var relatedTarget = { relatedTarget: this };
 
-    // manually read margins because getBoundingClientRect includes difference
-    var marginTop = parseInt($tip.css('margin-top'), 10)
-    var marginLeft = parseInt($tip.css('margin-left'), 10)
+        if (!$parent.hasClass('open')) return;
 
-    // we must check for NaN for ie 8/9
-    if (isNaN(marginTop))  marginTop  = 0
-    if (isNaN(marginLeft)) marginLeft = 0
+        if (e && e.type == 'click' && /input|textarea/i.test(e.target.tagName) && $.contains($parent[0], e.target)) return;
 
-    offset.top  += marginTop
-    offset.left += marginLeft
+        $parent.trigger(e = $.Event('hide.bs.dropdown', relatedTarget));
 
-    // $.fn.offset doesn't round pixel values
-    // so we use setOffset directly with our own function B-0
-    $.offset.setOffset($tip[0], $.extend({
-      using: function (props) {
-        $tip.css({
-          top: Math.round(props.top),
-          left: Math.round(props.left)
-        })
+        if (e.isDefaultPrevented()) return;
+
+        $this.attr('aria-expanded', 'false');
+        $parent.removeClass('open').trigger($.Event('hidden.bs.dropdown', relatedTarget));
+      });
+    }
+
+    Dropdown.prototype.toggle = function (e) {
+      var $this = $(this);
+
+      if ($this.is('.disabled, :disabled')) return;
+
+      var $parent = getParent($this);
+      var isActive = $parent.hasClass('open');
+
+      clearMenus();
+
+      if (!isActive) {
+        if ('ontouchstart' in document.documentElement && !$parent.closest('.navbar-nav').length) {
+          // if mobile we use a backdrop because click events don't delegate
+          $(document.createElement('div')).addClass('dropdown-backdrop').insertAfter($(this)).on('click', clearMenus);
+        }
+
+        var relatedTarget = { relatedTarget: this };
+        $parent.trigger(e = $.Event('show.bs.dropdown', relatedTarget));
+
+        if (e.isDefaultPrevented()) return;
+
+        $this.trigger('focus').attr('aria-expanded', 'true');
+
+        $parent.toggleClass('open').trigger($.Event('shown.bs.dropdown', relatedTarget));
       }
-    }, offset), 0)
 
-    $tip.addClass('in')
+      return false;
+    };
 
-    // check to see if placing tip in new offset caused the tip to resize itself
-    var actualWidth  = $tip[0].offsetWidth
-    var actualHeight = $tip[0].offsetHeight
+    Dropdown.prototype.keydown = function (e) {
+      if (!/(38|40|27|32)/.test(e.which) || /input|textarea/i.test(e.target.tagName)) return;
 
-    if (placement == 'top' && actualHeight != height) {
-      offset.top = offset.top + height - actualHeight
-    }
+      var $this = $(this);
 
-    var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight)
+      e.preventDefault();
+      e.stopPropagation();
 
-    if (delta.left) offset.left += delta.left
-    else offset.top += delta.top
+      if ($this.is('.disabled, :disabled')) return;
 
-    var isVertical          = /top|bottom/.test(placement)
-    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
+      var $parent = getParent($this);
+      var isActive = $parent.hasClass('open');
 
-    $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
-  }
-
-  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
-    this.arrow()
-      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
-      .css(isVertical ? 'top' : 'left', '')
-  }
-
-  Tooltip.prototype.setContent = function () {
-    var $tip  = this.tip()
-    var title = this.getTitle()
-
-    $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title)
-    $tip.removeClass('fade in top bottom left right')
-  }
-
-  Tooltip.prototype.hide = function (callback) {
-    var that = this
-    var $tip = $(this.$tip)
-    var e    = $.Event('hide.bs.' + this.type)
-
-    function complete() {
-      if (that.hoverState != 'in') $tip.detach()
-      if (that.$element) { // TODO: Check whether guarding this code with this `if` is really necessary.
-        that.$element
-          .removeAttr('aria-describedby')
-          .trigger('hidden.bs.' + that.type)
+      if (!isActive && e.which != 27 || isActive && e.which == 27) {
+        if (e.which == 27) $parent.find(toggle).trigger('focus');
+        return $this.trigger('click');
       }
-      callback && callback()
+
+      var desc = ' li:not(.disabled):visible a';
+      var $items = $parent.find('.dropdown-menu' + desc);
+
+      if (!$items.length) return;
+
+      var index = $items.index(e.target);
+
+      if (e.which == 38 && index > 0) index--; // up
+      if (e.which == 40 && index < $items.length - 1) index++; // down
+      if (!~index) index = 0;
+
+      $items.eq(index).trigger('focus');
+    };
+
+    // DROPDOWN PLUGIN DEFINITION
+    // ==========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.dropdown');
+
+        if (!data) $this.data('bs.dropdown', data = new Dropdown(this));
+        if (typeof option == 'string') data[option].call($this);
+      });
     }
 
-    this.$element.trigger(e)
+    var old = $.fn.dropdown;
 
-    if (e.isDefaultPrevented()) return
+    $.fn.dropdown = Plugin;
+    $.fn.dropdown.Constructor = Dropdown;
 
-    $tip.removeClass('in')
+    // DROPDOWN NO CONFLICT
+    // ====================
 
-    $.support.transition && $tip.hasClass('fade') ?
-      $tip
-        .one('bsTransitionEnd', complete)
-        .emulateTransitionEnd(Tooltip.TRANSITION_DURATION) :
-      complete()
+    $.fn.dropdown.noConflict = function () {
+      $.fn.dropdown = old;
+      return this;
+    };
 
-    this.hoverState = null
+    // APPLY TO STANDARD DROPDOWN ELEMENTS
+    // ===================================
 
-    return this
-  }
+    $(document).on('click.bs.dropdown.data-api', clearMenus).on('click.bs.dropdown.data-api', '.dropdown form', function (e) {
+      e.stopPropagation();
+    }).on('click.bs.dropdown.data-api', toggle, Dropdown.prototype.toggle).on('keydown.bs.dropdown.data-api', toggle, Dropdown.prototype.keydown).on('keydown.bs.dropdown.data-api', '.dropdown-menu', Dropdown.prototype.keydown);
+  }(jQuery);
 
-  Tooltip.prototype.fixTitle = function () {
-    var $e = this.$element
-    if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
-      $e.attr('data-original-title', $e.attr('title') || '').attr('title', '')
-    }
-  }
+  /* ========================================================================
+   * Bootstrap: modal.js v3.3.7
+   * http://getbootstrap.com/javascript/#modals
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
-  Tooltip.prototype.hasContent = function () {
-    return this.getTitle()
-  }
+  +function ($) {
+    'use strict';
 
-  Tooltip.prototype.getPosition = function ($element) {
-    $element   = $element || this.$element
+    // MODAL CLASS DEFINITION
+    // ======================
 
-    var el     = $element[0]
-    var isBody = el.tagName == 'BODY'
+    var Modal = function (element, options) {
+      this.options = options;
+      this.$body = $(document.body);
+      this.$element = $(element);
+      this.$dialog = this.$element.find('.modal-dialog');
+      this.$backdrop = null;
+      this.isShown = null;
+      this.originalBodyPad = null;
+      this.scrollbarWidth = 0;
+      this.ignoreBackdropClick = false;
 
-    var elRect    = el.getBoundingClientRect()
-    if (elRect.width == null) {
-      // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
-      elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top })
-    }
-    var isSvg = window.SVGElement && el instanceof window.SVGElement
-    // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
-    // See https://github.com/twbs/bootstrap/issues/20280
-    var elOffset  = isBody ? { top: 0, left: 0 } : (isSvg ? null : $element.offset())
-    var scroll    = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() }
-    var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null
-
-    return $.extend({}, elRect, scroll, outerDims, elOffset)
-  }
-
-  Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-    return placement == 'bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
-           placement == 'left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
-        /* placement == 'right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
-
-  }
-
-  Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
-    var delta = { top: 0, left: 0 }
-    if (!this.$viewport) return delta
-
-    var viewportPadding = this.options.viewport && this.options.viewport.padding || 0
-    var viewportDimensions = this.getPosition(this.$viewport)
-
-    if (/right|left/.test(placement)) {
-      var topEdgeOffset    = pos.top - viewportPadding - viewportDimensions.scroll
-      var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight
-      if (topEdgeOffset < viewportDimensions.top) { // top overflow
-        delta.top = viewportDimensions.top - topEdgeOffset
-      } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) { // bottom overflow
-        delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset
+      if (this.options.remote) {
+        this.$element.find('.modal-content').load(this.options.remote, $.proxy(function () {
+          this.$element.trigger('loaded.bs.modal');
+        }, this));
       }
-    } else {
-      var leftEdgeOffset  = pos.left - viewportPadding
-      var rightEdgeOffset = pos.left + viewportPadding + actualWidth
-      if (leftEdgeOffset < viewportDimensions.left) { // left overflow
-        delta.left = viewportDimensions.left - leftEdgeOffset
-      } else if (rightEdgeOffset > viewportDimensions.right) { // right overflow
-        delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset
+    };
+
+    Modal.VERSION = '3.3.7';
+
+    Modal.TRANSITION_DURATION = 300;
+    Modal.BACKDROP_TRANSITION_DURATION = 150;
+
+    Modal.DEFAULTS = {
+      backdrop: true,
+      keyboard: true,
+      show: true
+    };
+
+    Modal.prototype.toggle = function (_relatedTarget) {
+      return this.isShown ? this.hide() : this.show(_relatedTarget);
+    };
+
+    Modal.prototype.show = function (_relatedTarget) {
+      var that = this;
+      var e = $.Event('show.bs.modal', { relatedTarget: _relatedTarget });
+
+      this.$element.trigger(e);
+
+      if (this.isShown || e.isDefaultPrevented()) return;
+
+      this.isShown = true;
+
+      this.checkScrollbar();
+      this.setScrollbar();
+      this.$body.addClass('modal-open');
+
+      this.escape();
+      this.resize();
+
+      this.$element.on('click.dismiss.bs.modal', '[data-dismiss="modal"]', $.proxy(this.hide, this));
+
+      this.$dialog.on('mousedown.dismiss.bs.modal', function () {
+        that.$element.one('mouseup.dismiss.bs.modal', function (e) {
+          if ($(e.target).is(that.$element)) that.ignoreBackdropClick = true;
+        });
+      });
+
+      this.backdrop(function () {
+        var transition = $.support.transition && that.$element.hasClass('fade');
+
+        if (!that.$element.parent().length) {
+          that.$element.appendTo(that.$body); // don't move modals dom position
+        }
+
+        that.$element.show().scrollTop(0);
+
+        that.adjustDialog();
+
+        if (transition) {
+          that.$element[0].offsetWidth; // force reflow
+        }
+
+        that.$element.addClass('in');
+
+        that.enforceFocus();
+
+        var e = $.Event('shown.bs.modal', { relatedTarget: _relatedTarget });
+
+        transition ? that.$dialog // wait for modal to slide in
+        .one('bsTransitionEnd', function () {
+          that.$element.trigger('focus').trigger(e);
+        }).emulateTransitionEnd(Modal.TRANSITION_DURATION) : that.$element.trigger('focus').trigger(e);
+      });
+    };
+
+    Modal.prototype.hide = function (e) {
+      if (e) e.preventDefault();
+
+      e = $.Event('hide.bs.modal');
+
+      this.$element.trigger(e);
+
+      if (!this.isShown || e.isDefaultPrevented()) return;
+
+      this.isShown = false;
+
+      this.escape();
+      this.resize();
+
+      $(document).off('focusin.bs.modal');
+
+      this.$element.removeClass('in').off('click.dismiss.bs.modal').off('mouseup.dismiss.bs.modal');
+
+      this.$dialog.off('mousedown.dismiss.bs.modal');
+
+      $.support.transition && this.$element.hasClass('fade') ? this.$element.one('bsTransitionEnd', $.proxy(this.hideModal, this)).emulateTransitionEnd(Modal.TRANSITION_DURATION) : this.hideModal();
+    };
+
+    Modal.prototype.enforceFocus = function () {
+      $(document).off('focusin.bs.modal') // guard against infinite focus loop
+      .on('focusin.bs.modal', $.proxy(function (e) {
+        if (document !== e.target && this.$element[0] !== e.target && !this.$element.has(e.target).length) {
+          this.$element.trigger('focus');
+        }
+      }, this));
+    };
+
+    Modal.prototype.escape = function () {
+      if (this.isShown && this.options.keyboard) {
+        this.$element.on('keydown.dismiss.bs.modal', $.proxy(function (e) {
+          e.which == 27 && this.hide();
+        }, this));
+      } else if (!this.isShown) {
+        this.$element.off('keydown.dismiss.bs.modal');
       }
-    }
-
-    return delta
-  }
-
-  Tooltip.prototype.getTitle = function () {
-    var title
-    var $e = this.$element
-    var o  = this.options
-
-    title = $e.attr('data-original-title')
-      || (typeof o.title == 'function' ? o.title.call($e[0]) :  o.title)
-
-    return title
-  }
-
-  Tooltip.prototype.getUID = function (prefix) {
-    do prefix += ~~(Math.random() * 1000000)
-    while (document.getElementById(prefix))
-    return prefix
-  }
-
-  Tooltip.prototype.tip = function () {
-    if (!this.$tip) {
-      this.$tip = $(this.options.template)
-      if (this.$tip.length != 1) {
-        throw new Error(this.type + ' `template` option must consist of exactly 1 top-level element!')
-      }
-    }
-    return this.$tip
-  }
-
-  Tooltip.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow'))
-  }
-
-  Tooltip.prototype.enable = function () {
-    this.enabled = true
-  }
-
-  Tooltip.prototype.disable = function () {
-    this.enabled = false
-  }
-
-  Tooltip.prototype.toggleEnabled = function () {
-    this.enabled = !this.enabled
-  }
-
-  Tooltip.prototype.toggle = function (e) {
-    var self = this
-    if (e) {
-      self = $(e.currentTarget).data('bs.' + this.type)
-      if (!self) {
-        self = new this.constructor(e.currentTarget, this.getDelegateOptions())
-        $(e.currentTarget).data('bs.' + this.type, self)
-      }
-    }
-
-    if (e) {
-      self.inState.click = !self.inState.click
-      if (self.isInStateTrue()) self.enter(self)
-      else self.leave(self)
-    } else {
-      self.tip().hasClass('in') ? self.leave(self) : self.enter(self)
-    }
-  }
-
-  Tooltip.prototype.destroy = function () {
-    var that = this
-    clearTimeout(this.timeout)
-    this.hide(function () {
-      that.$element.off('.' + that.type).removeData('bs.' + that.type)
-      if (that.$tip) {
-        that.$tip.detach()
-      }
-      that.$tip = null
-      that.$arrow = null
-      that.$viewport = null
-      that.$element = null
-    })
-  }
-
-
-  // TOOLTIP PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.tooltip')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.tooltip', (data = new Tooltip(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.tooltip
-
-  $.fn.tooltip             = Plugin
-  $.fn.tooltip.Constructor = Tooltip
-
-
-  // TOOLTIP NO CONFLICT
-  // ===================
-
-  $.fn.tooltip.noConflict = function () {
-    $.fn.tooltip = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: popover.js v3.3.7
- * http://getbootstrap.com/javascript/#popovers
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // POPOVER PUBLIC CLASS DEFINITION
-  // ===============================
-
-  var Popover = function (element, options) {
-    this.init('popover', element, options)
-  }
-
-  if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js')
-
-  Popover.VERSION  = '3.3.7'
-
-  Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
-    placement: 'right',
-    trigger: 'click',
-    content: '',
-    template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
-  })
-
-
-  // NOTE: POPOVER EXTENDS tooltip.js
-  // ================================
-
-  Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype)
-
-  Popover.prototype.constructor = Popover
-
-  Popover.prototype.getDefaults = function () {
-    return Popover.DEFAULTS
-  }
-
-  Popover.prototype.setContent = function () {
-    var $tip    = this.tip()
-    var title   = this.getTitle()
-    var content = this.getContent()
-
-    $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title)
-    $tip.find('.popover-content').children().detach().end()[ // we use append for html objects to maintain js events
-      this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-    ](content)
-
-    $tip.removeClass('fade top bottom left right in')
-
-    // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
-    // this manually by checking the contents.
-    if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide()
-  }
-
-  Popover.prototype.hasContent = function () {
-    return this.getTitle() || this.getContent()
-  }
-
-  Popover.prototype.getContent = function () {
-    var $e = this.$element
-    var o  = this.options
-
-    return $e.attr('data-content')
-      || (typeof o.content == 'function' ?
-            o.content.call($e[0]) :
-            o.content)
-  }
-
-  Popover.prototype.arrow = function () {
-    return (this.$arrow = this.$arrow || this.tip().find('.arrow'))
-  }
-
-
-  // POPOVER PLUGIN DEFINITION
-  // =========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.popover')
-      var options = typeof option == 'object' && option
-
-      if (!data && /destroy|hide/.test(option)) return
-      if (!data) $this.data('bs.popover', (data = new Popover(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.popover
-
-  $.fn.popover             = Plugin
-  $.fn.popover.Constructor = Popover
-
-
-  // POPOVER NO CONFLICT
-  // ===================
-
-  $.fn.popover.noConflict = function () {
-    $.fn.popover = old
-    return this
-  }
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: scrollspy.js v3.3.7
- * http://getbootstrap.com/javascript/#scrollspy
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // SCROLLSPY CLASS DEFINITION
-  // ==========================
-
-  function ScrollSpy(element, options) {
-    this.$body          = $(document.body)
-    this.$scrollElement = $(element).is(document.body) ? $(window) : $(element)
-    this.options        = $.extend({}, ScrollSpy.DEFAULTS, options)
-    this.selector       = (this.options.target || '') + ' .nav li > a'
-    this.offsets        = []
-    this.targets        = []
-    this.activeTarget   = null
-    this.scrollHeight   = 0
-
-    this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this))
-    this.refresh()
-    this.process()
-  }
-
-  ScrollSpy.VERSION  = '3.3.7'
-
-  ScrollSpy.DEFAULTS = {
-    offset: 10
-  }
-
-  ScrollSpy.prototype.getScrollHeight = function () {
-    return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight)
-  }
-
-  ScrollSpy.prototype.refresh = function () {
-    var that          = this
-    var offsetMethod  = 'offset'
-    var offsetBase    = 0
-
-    this.offsets      = []
-    this.targets      = []
-    this.scrollHeight = this.getScrollHeight()
-
-    if (!$.isWindow(this.$scrollElement[0])) {
-      offsetMethod = 'position'
-      offsetBase   = this.$scrollElement.scrollTop()
-    }
-
-    this.$body
-      .find(this.selector)
-      .map(function () {
-        var $el   = $(this)
-        var href  = $el.data('target') || $el.attr('href')
-        var $href = /^#./.test(href) && $(href)
-
-        return ($href
-          && $href.length
-          && $href.is(':visible')
-          && [[$href[offsetMethod]().top + offsetBase, href]]) || null
-      })
-      .sort(function (a, b) { return a[0] - b[0] })
-      .each(function () {
-        that.offsets.push(this[0])
-        that.targets.push(this[1])
-      })
-  }
-
-  ScrollSpy.prototype.process = function () {
-    var scrollTop    = this.$scrollElement.scrollTop() + this.options.offset
-    var scrollHeight = this.getScrollHeight()
-    var maxScroll    = this.options.offset + scrollHeight - this.$scrollElement.height()
-    var offsets      = this.offsets
-    var targets      = this.targets
-    var activeTarget = this.activeTarget
-    var i
-
-    if (this.scrollHeight != scrollHeight) {
-      this.refresh()
-    }
-
-    if (scrollTop >= maxScroll) {
-      return activeTarget != (i = targets[targets.length - 1]) && this.activate(i)
-    }
-
-    if (activeTarget && scrollTop < offsets[0]) {
-      this.activeTarget = null
-      return this.clear()
-    }
-
-    for (i = offsets.length; i--;) {
-      activeTarget != targets[i]
-        && scrollTop >= offsets[i]
-        && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1])
-        && this.activate(targets[i])
-    }
-  }
-
-  ScrollSpy.prototype.activate = function (target) {
-    this.activeTarget = target
-
-    this.clear()
-
-    var selector = this.selector +
-      '[data-target="' + target + '"],' +
-      this.selector + '[href="' + target + '"]'
-
-    var active = $(selector)
-      .parents('li')
-      .addClass('active')
-
-    if (active.parent('.dropdown-menu').length) {
-      active = active
-        .closest('li.dropdown')
-        .addClass('active')
-    }
-
-    active.trigger('activate.bs.scrollspy')
-  }
-
-  ScrollSpy.prototype.clear = function () {
-    $(this.selector)
-      .parentsUntil(this.options.target, '.active')
-      .removeClass('active')
-  }
-
-
-  // SCROLLSPY PLUGIN DEFINITION
-  // ===========================
-
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.scrollspy')
-      var options = typeof option == 'object' && option
-
-      if (!data) $this.data('bs.scrollspy', (data = new ScrollSpy(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
-
-  var old = $.fn.scrollspy
-
-  $.fn.scrollspy             = Plugin
-  $.fn.scrollspy.Constructor = ScrollSpy
-
-
-  // SCROLLSPY NO CONFLICT
-  // =====================
-
-  $.fn.scrollspy.noConflict = function () {
-    $.fn.scrollspy = old
-    return this
-  }
-
-
-  // SCROLLSPY DATA-API
-  // ==================
-
-  $(window).on('load.bs.scrollspy.data-api', function () {
-    $('[data-spy="scroll"]').each(function () {
-      var $spy = $(this)
-      Plugin.call($spy, $spy.data())
-    })
-  })
-
-}(jQuery);
-
-/* ========================================================================
- * Bootstrap: tab.js v3.3.7
- * http://getbootstrap.com/javascript/#tabs
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
-
-
-+function ($) {
-  'use strict';
-
-  // TAB CLASS DEFINITION
-  // ====================
-
-  var Tab = function (element) {
-    // jscs:disable requireDollarBeforejQueryAssignment
-    this.element = $(element)
-    // jscs:enable requireDollarBeforejQueryAssignment
-  }
-
-  Tab.VERSION = '3.3.7'
-
-  Tab.TRANSITION_DURATION = 150
-
-  Tab.prototype.show = function () {
-    var $this    = this.element
-    var $ul      = $this.closest('ul:not(.dropdown-menu)')
-    var selector = $this.data('target')
-
-    if (!selector) {
-      selector = $this.attr('href')
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
-    }
-
-    if ($this.parent('li').hasClass('active')) return
-
-    var $previous = $ul.find('.active:last a')
-    var hideEvent = $.Event('hide.bs.tab', {
-      relatedTarget: $this[0]
-    })
-    var showEvent = $.Event('show.bs.tab', {
-      relatedTarget: $previous[0]
-    })
-
-    $previous.trigger(hideEvent)
-    $this.trigger(showEvent)
-
-    if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return
-
-    var $target = $(selector)
-
-    this.activate($this.closest('li'), $ul)
-    this.activate($target, $target.parent(), function () {
-      $previous.trigger({
-        type: 'hidden.bs.tab',
-        relatedTarget: $this[0]
-      })
-      $this.trigger({
-        type: 'shown.bs.tab',
-        relatedTarget: $previous[0]
-      })
-    })
-  }
-
-  Tab.prototype.activate = function (element, container, callback) {
-    var $active    = container.find('> .active')
-    var transition = callback
-      && $.support.transition
-      && ($active.length && $active.hasClass('fade') || !!container.find('> .fade').length)
-
-    function next() {
-      $active
-        .removeClass('active')
-        .find('> .dropdown-menu > .active')
-          .removeClass('active')
-        .end()
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', false)
-
-      element
-        .addClass('active')
-        .find('[data-toggle="tab"]')
-          .attr('aria-expanded', true)
-
-      if (transition) {
-        element[0].offsetWidth // reflow for transition
-        element.addClass('in')
+    };
+
+    Modal.prototype.resize = function () {
+      if (this.isShown) {
+        $(window).on('resize.bs.modal', $.proxy(this.handleUpdate, this));
       } else {
-        element.removeClass('fade')
+        $(window).off('resize.bs.modal');
+      }
+    };
+
+    Modal.prototype.hideModal = function () {
+      var that = this;
+      this.$element.hide();
+      this.backdrop(function () {
+        that.$body.removeClass('modal-open');
+        that.resetAdjustments();
+        that.resetScrollbar();
+        that.$element.trigger('hidden.bs.modal');
+      });
+    };
+
+    Modal.prototype.removeBackdrop = function () {
+      this.$backdrop && this.$backdrop.remove();
+      this.$backdrop = null;
+    };
+
+    Modal.prototype.backdrop = function (callback) {
+      var that = this;
+      var animate = this.$element.hasClass('fade') ? 'fade' : '';
+
+      if (this.isShown && this.options.backdrop) {
+        var doAnimate = $.support.transition && animate;
+
+        this.$backdrop = $(document.createElement('div')).addClass('modal-backdrop ' + animate).appendTo(this.$body);
+
+        this.$element.on('click.dismiss.bs.modal', $.proxy(function (e) {
+          if (this.ignoreBackdropClick) {
+            this.ignoreBackdropClick = false;
+            return;
+          }
+          if (e.target !== e.currentTarget) return;
+          this.options.backdrop == 'static' ? this.$element[0].focus() : this.hide();
+        }, this));
+
+        if (doAnimate) this.$backdrop[0].offsetWidth; // force reflow
+
+        this.$backdrop.addClass('in');
+
+        if (!callback) return;
+
+        doAnimate ? this.$backdrop.one('bsTransitionEnd', callback).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) : callback();
+      } else if (!this.isShown && this.$backdrop) {
+        this.$backdrop.removeClass('in');
+
+        var callbackRemove = function () {
+          that.removeBackdrop();
+          callback && callback();
+        };
+        $.support.transition && this.$element.hasClass('fade') ? this.$backdrop.one('bsTransitionEnd', callbackRemove).emulateTransitionEnd(Modal.BACKDROP_TRANSITION_DURATION) : callbackRemove();
+      } else if (callback) {
+        callback();
+      }
+    };
+
+    // these following methods are used to handle overflowing modals
+
+    Modal.prototype.handleUpdate = function () {
+      this.adjustDialog();
+    };
+
+    Modal.prototype.adjustDialog = function () {
+      var modalIsOverflowing = this.$element[0].scrollHeight > document.documentElement.clientHeight;
+
+      this.$element.css({
+        paddingLeft: !this.bodyIsOverflowing && modalIsOverflowing ? this.scrollbarWidth : '',
+        paddingRight: this.bodyIsOverflowing && !modalIsOverflowing ? this.scrollbarWidth : ''
+      });
+    };
+
+    Modal.prototype.resetAdjustments = function () {
+      this.$element.css({
+        paddingLeft: '',
+        paddingRight: ''
+      });
+    };
+
+    Modal.prototype.checkScrollbar = function () {
+      var fullWindowWidth = window.innerWidth;
+      if (!fullWindowWidth) {
+        // workaround for missing window.innerWidth in IE8
+        var documentElementRect = document.documentElement.getBoundingClientRect();
+        fullWindowWidth = documentElementRect.right - Math.abs(documentElementRect.left);
+      }
+      this.bodyIsOverflowing = document.body.clientWidth < fullWindowWidth;
+      this.scrollbarWidth = this.measureScrollbar();
+    };
+
+    Modal.prototype.setScrollbar = function () {
+      var bodyPad = parseInt(this.$body.css('padding-right') || 0, 10);
+      this.originalBodyPad = document.body.style.paddingRight || '';
+      if (this.bodyIsOverflowing) this.$body.css('padding-right', bodyPad + this.scrollbarWidth);
+    };
+
+    Modal.prototype.resetScrollbar = function () {
+      this.$body.css('padding-right', this.originalBodyPad);
+    };
+
+    Modal.prototype.measureScrollbar = function () {
+      // thx walsh
+      var scrollDiv = document.createElement('div');
+      scrollDiv.className = 'modal-scrollbar-measure';
+      this.$body.append(scrollDiv);
+      var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+      this.$body[0].removeChild(scrollDiv);
+      return scrollbarWidth;
+    };
+
+    // MODAL PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option, _relatedTarget) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.modal');
+        var options = $.extend({}, Modal.DEFAULTS, $this.data(), typeof option == 'object' && option);
+
+        if (!data) $this.data('bs.modal', data = new Modal(this, options));
+        if (typeof option == 'string') data[option](_relatedTarget);else if (options.show) data.show(_relatedTarget);
+      });
+    }
+
+    var old = $.fn.modal;
+
+    $.fn.modal = Plugin;
+    $.fn.modal.Constructor = Modal;
+
+    // MODAL NO CONFLICT
+    // =================
+
+    $.fn.modal.noConflict = function () {
+      $.fn.modal = old;
+      return this;
+    };
+
+    // MODAL DATA-API
+    // ==============
+
+    $(document).on('click.bs.modal.data-api', '[data-toggle="modal"]', function (e) {
+      var $this = $(this);
+      var href = $this.attr('href');
+      var $target = $($this.attr('data-target') || href && href.replace(/.*(?=#[^\s]+$)/, '')); // strip for ie7
+      var option = $target.data('bs.modal') ? 'toggle' : $.extend({ remote: !/#/.test(href) && href }, $target.data(), $this.data());
+
+      if ($this.is('a')) e.preventDefault();
+
+      $target.one('show.bs.modal', function (showEvent) {
+        if (showEvent.isDefaultPrevented()) return; // only register focus restorer if modal will actually get shown
+        $target.one('hidden.bs.modal', function () {
+          $this.is(':visible') && $this.trigger('focus');
+        });
+      });
+      Plugin.call($target, option, this);
+    });
+  }(jQuery);
+
+  /* ========================================================================
+   * Bootstrap: tooltip.js v3.3.7
+   * http://getbootstrap.com/javascript/#tooltip
+   * Inspired by the original jQuery.tipsy by Jason Frame
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  +function ($) {
+    'use strict';
+
+    // TOOLTIP PUBLIC CLASS DEFINITION
+    // ===============================
+
+    var Tooltip = function (element, options) {
+      this.type = null;
+      this.options = null;
+      this.enabled = null;
+      this.timeout = null;
+      this.hoverState = null;
+      this.$element = null;
+      this.inState = null;
+
+      this.init('tooltip', element, options);
+    };
+
+    Tooltip.VERSION = '3.3.7';
+
+    Tooltip.TRANSITION_DURATION = 150;
+
+    Tooltip.DEFAULTS = {
+      animation: true,
+      placement: 'top',
+      selector: false,
+      template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+      trigger: 'hover focus',
+      title: '',
+      delay: 0,
+      html: false,
+      container: false,
+      viewport: {
+        selector: 'body',
+        padding: 0
+      }
+    };
+
+    Tooltip.prototype.init = function (type, element, options) {
+      this.enabled = true;
+      this.type = type;
+      this.$element = $(element);
+      this.options = this.getOptions(options);
+      this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : this.options.viewport.selector || this.options.viewport);
+      this.inState = { click: false, hover: false, focus: false };
+
+      if (this.$element[0] instanceof document.constructor && !this.options.selector) {
+        throw new Error('`selector` option must be specified when initializing ' + this.type + ' on the window.document object!');
       }
 
-      if (element.parent('.dropdown-menu').length) {
-        element
-          .closest('li.dropdown')
-            .addClass('active')
-          .end()
-          .find('[data-toggle="tab"]')
-            .attr('aria-expanded', true)
+      var triggers = this.options.trigger.split(' ');
+
+      for (var i = triggers.length; i--;) {
+        var trigger = triggers[i];
+
+        if (trigger == 'click') {
+          this.$element.on('click.' + this.type, this.options.selector, $.proxy(this.toggle, this));
+        } else if (trigger != 'manual') {
+          var eventIn = trigger == 'hover' ? 'mouseenter' : 'focusin';
+          var eventOut = trigger == 'hover' ? 'mouseleave' : 'focusout';
+
+          this.$element.on(eventIn + '.' + this.type, this.options.selector, $.proxy(this.enter, this));
+          this.$element.on(eventOut + '.' + this.type, this.options.selector, $.proxy(this.leave, this));
+        }
       }
 
-      callback && callback()
+      this.options.selector ? this._options = $.extend({}, this.options, { trigger: 'manual', selector: '' }) : this.fixTitle();
+    };
+
+    Tooltip.prototype.getDefaults = function () {
+      return Tooltip.DEFAULTS;
+    };
+
+    Tooltip.prototype.getOptions = function (options) {
+      options = $.extend({}, this.getDefaults(), this.$element.data(), options);
+
+      if (options.delay && typeof options.delay == 'number') {
+        options.delay = {
+          show: options.delay,
+          hide: options.delay
+        };
+      }
+
+      return options;
+    };
+
+    Tooltip.prototype.getDelegateOptions = function () {
+      var options = {};
+      var defaults = this.getDefaults();
+
+      this._options && $.each(this._options, function (key, value) {
+        if (defaults[key] != value) options[key] = value;
+      });
+
+      return options;
+    };
+
+    Tooltip.prototype.enter = function (obj) {
+      var self = obj instanceof this.constructor ? obj : $(obj.currentTarget).data('bs.' + this.type);
+
+      if (!self) {
+        self = new this.constructor(obj.currentTarget, this.getDelegateOptions());
+        $(obj.currentTarget).data('bs.' + this.type, self);
+      }
+
+      if (obj instanceof $.Event) {
+        self.inState[obj.type == 'focusin' ? 'focus' : 'hover'] = true;
+      }
+
+      if (self.tip().hasClass('in') || self.hoverState == 'in') {
+        self.hoverState = 'in';
+        return;
+      }
+
+      clearTimeout(self.timeout);
+
+      self.hoverState = 'in';
+
+      if (!self.options.delay || !self.options.delay.show) return self.show();
+
+      self.timeout = setTimeout(function () {
+        if (self.hoverState == 'in') self.show();
+      }, self.options.delay.show);
+    };
+
+    Tooltip.prototype.isInStateTrue = function () {
+      for (var key in this.inState) {
+        if (this.inState[key]) return true;
+      }
+
+      return false;
+    };
+
+    Tooltip.prototype.leave = function (obj) {
+      var self = obj instanceof this.constructor ? obj : $(obj.currentTarget).data('bs.' + this.type);
+
+      if (!self) {
+        self = new this.constructor(obj.currentTarget, this.getDelegateOptions());
+        $(obj.currentTarget).data('bs.' + this.type, self);
+      }
+
+      if (obj instanceof $.Event) {
+        self.inState[obj.type == 'focusout' ? 'focus' : 'hover'] = false;
+      }
+
+      if (self.isInStateTrue()) return;
+
+      clearTimeout(self.timeout);
+
+      self.hoverState = 'out';
+
+      if (!self.options.delay || !self.options.delay.hide) return self.hide();
+
+      self.timeout = setTimeout(function () {
+        if (self.hoverState == 'out') self.hide();
+      }, self.options.delay.hide);
+    };
+
+    Tooltip.prototype.show = function () {
+      var e = $.Event('show.bs.' + this.type);
+
+      if (this.hasContent() && this.enabled) {
+        this.$element.trigger(e);
+
+        var inDom = $.contains(this.$element[0].ownerDocument.documentElement, this.$element[0]);
+        if (e.isDefaultPrevented() || !inDom) return;
+        var that = this;
+
+        var $tip = this.tip();
+
+        var tipId = this.getUID(this.type);
+
+        this.setContent();
+        $tip.attr('id', tipId);
+        this.$element.attr('aria-describedby', tipId);
+
+        if (this.options.animation) $tip.addClass('fade');
+
+        var placement = typeof this.options.placement == 'function' ? this.options.placement.call(this, $tip[0], this.$element[0]) : this.options.placement;
+
+        var autoToken = /\s?auto?\s?/i;
+        var autoPlace = autoToken.test(placement);
+        if (autoPlace) placement = placement.replace(autoToken, '') || 'top';
+
+        $tip.detach().css({ top: 0, left: 0, display: 'block' }).addClass(placement).data('bs.' + this.type, this);
+
+        this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element);
+        this.$element.trigger('inserted.bs.' + this.type);
+
+        var pos = this.getPosition();
+        var actualWidth = $tip[0].offsetWidth;
+        var actualHeight = $tip[0].offsetHeight;
+
+        if (autoPlace) {
+          var orgPlacement = placement;
+          var viewportDim = this.getPosition(this.$viewport);
+
+          placement = placement == 'bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'top' : placement == 'top' && pos.top - actualHeight < viewportDim.top ? 'bottom' : placement == 'right' && pos.right + actualWidth > viewportDim.width ? 'left' : placement == 'left' && pos.left - actualWidth < viewportDim.left ? 'right' : placement;
+
+          $tip.removeClass(orgPlacement).addClass(placement);
+        }
+
+        var calculatedOffset = this.getCalculatedOffset(placement, pos, actualWidth, actualHeight);
+
+        this.applyPlacement(calculatedOffset, placement);
+
+        var complete = function () {
+          var prevHoverState = that.hoverState;
+          that.$element.trigger('shown.bs.' + that.type);
+          that.hoverState = null;
+
+          if (prevHoverState == 'out') that.leave(that);
+        };
+
+        $.support.transition && this.$tip.hasClass('fade') ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION) : complete();
+      }
+    };
+
+    Tooltip.prototype.applyPlacement = function (offset, placement) {
+      var $tip = this.tip();
+      var width = $tip[0].offsetWidth;
+      var height = $tip[0].offsetHeight;
+
+      // manually read margins because getBoundingClientRect includes difference
+      var marginTop = parseInt($tip.css('margin-top'), 10);
+      var marginLeft = parseInt($tip.css('margin-left'), 10);
+
+      // we must check for NaN for ie 8/9
+      if (isNaN(marginTop)) marginTop = 0;
+      if (isNaN(marginLeft)) marginLeft = 0;
+
+      offset.top += marginTop;
+      offset.left += marginLeft;
+
+      // $.fn.offset doesn't round pixel values
+      // so we use setOffset directly with our own function B-0
+      $.offset.setOffset($tip[0], $.extend({
+        using: function (props) {
+          $tip.css({
+            top: Math.round(props.top),
+            left: Math.round(props.left)
+          });
+        }
+      }, offset), 0);
+
+      $tip.addClass('in');
+
+      // check to see if placing tip in new offset caused the tip to resize itself
+      var actualWidth = $tip[0].offsetWidth;
+      var actualHeight = $tip[0].offsetHeight;
+
+      if (placement == 'top' && actualHeight != height) {
+        offset.top = offset.top + height - actualHeight;
+      }
+
+      var delta = this.getViewportAdjustedDelta(placement, offset, actualWidth, actualHeight);
+
+      if (delta.left) offset.left += delta.left;else offset.top += delta.top;
+
+      var isVertical = /top|bottom/.test(placement);
+      var arrowDelta = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight;
+      var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight';
+
+      $tip.offset(offset);
+      this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical);
+    };
+
+    Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
+      this.arrow().css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%').css(isVertical ? 'top' : 'left', '');
+    };
+
+    Tooltip.prototype.setContent = function () {
+      var $tip = this.tip();
+      var title = this.getTitle();
+
+      $tip.find('.tooltip-inner')[this.options.html ? 'html' : 'text'](title);
+      $tip.removeClass('fade in top bottom left right');
+    };
+
+    Tooltip.prototype.hide = function (callback) {
+      var that = this;
+      var $tip = $(this.$tip);
+      var e = $.Event('hide.bs.' + this.type);
+
+      function complete() {
+        if (that.hoverState != 'in') $tip.detach();
+        if (that.$element) {
+          // TODO: Check whether guarding this code with this `if` is really necessary.
+          that.$element.removeAttr('aria-describedby').trigger('hidden.bs.' + that.type);
+        }
+        callback && callback();
+      }
+
+      this.$element.trigger(e);
+
+      if (e.isDefaultPrevented()) return;
+
+      $tip.removeClass('in');
+
+      $.support.transition && $tip.hasClass('fade') ? $tip.one('bsTransitionEnd', complete).emulateTransitionEnd(Tooltip.TRANSITION_DURATION) : complete();
+
+      this.hoverState = null;
+
+      return this;
+    };
+
+    Tooltip.prototype.fixTitle = function () {
+      var $e = this.$element;
+      if ($e.attr('title') || typeof $e.attr('data-original-title') != 'string') {
+        $e.attr('data-original-title', $e.attr('title') || '').attr('title', '');
+      }
+    };
+
+    Tooltip.prototype.hasContent = function () {
+      return this.getTitle();
+    };
+
+    Tooltip.prototype.getPosition = function ($element) {
+      $element = $element || this.$element;
+
+      var el = $element[0];
+      var isBody = el.tagName == 'BODY';
+
+      var elRect = el.getBoundingClientRect();
+      if (elRect.width == null) {
+        // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
+        elRect = $.extend({}, elRect, { width: elRect.right - elRect.left, height: elRect.bottom - elRect.top });
+      }
+      var isSvg = window.SVGElement && el instanceof window.SVGElement;
+      // Avoid using $.offset() on SVGs since it gives incorrect results in jQuery 3.
+      // See https://github.com/twbs/bootstrap/issues/20280
+      var elOffset = isBody ? { top: 0, left: 0 } : isSvg ? null : $element.offset();
+      var scroll = { scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop() };
+      var outerDims = isBody ? { width: $(window).width(), height: $(window).height() } : null;
+
+      return $.extend({}, elRect, scroll, outerDims, elOffset);
+    };
+
+    Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
+      return placement == 'bottom' ? { top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2 } : placement == 'top' ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } : placement == 'left' ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
+      /* placement == 'right' */{ top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width };
+    };
+
+    Tooltip.prototype.getViewportAdjustedDelta = function (placement, pos, actualWidth, actualHeight) {
+      var delta = { top: 0, left: 0 };
+      if (!this.$viewport) return delta;
+
+      var viewportPadding = this.options.viewport && this.options.viewport.padding || 0;
+      var viewportDimensions = this.getPosition(this.$viewport);
+
+      if (/right|left/.test(placement)) {
+        var topEdgeOffset = pos.top - viewportPadding - viewportDimensions.scroll;
+        var bottomEdgeOffset = pos.top + viewportPadding - viewportDimensions.scroll + actualHeight;
+        if (topEdgeOffset < viewportDimensions.top) {
+          // top overflow
+          delta.top = viewportDimensions.top - topEdgeOffset;
+        } else if (bottomEdgeOffset > viewportDimensions.top + viewportDimensions.height) {
+          // bottom overflow
+          delta.top = viewportDimensions.top + viewportDimensions.height - bottomEdgeOffset;
+        }
+      } else {
+        var leftEdgeOffset = pos.left - viewportPadding;
+        var rightEdgeOffset = pos.left + viewportPadding + actualWidth;
+        if (leftEdgeOffset < viewportDimensions.left) {
+          // left overflow
+          delta.left = viewportDimensions.left - leftEdgeOffset;
+        } else if (rightEdgeOffset > viewportDimensions.right) {
+          // right overflow
+          delta.left = viewportDimensions.left + viewportDimensions.width - rightEdgeOffset;
+        }
+      }
+
+      return delta;
+    };
+
+    Tooltip.prototype.getTitle = function () {
+      var title;
+      var $e = this.$element;
+      var o = this.options;
+
+      title = $e.attr('data-original-title') || (typeof o.title == 'function' ? o.title.call($e[0]) : o.title);
+
+      return title;
+    };
+
+    Tooltip.prototype.getUID = function (prefix) {
+      do prefix += ~~(Math.random() * 1000000); while (document.getElementById(prefix));
+      return prefix;
+    };
+
+    Tooltip.prototype.tip = function () {
+      if (!this.$tip) {
+        this.$tip = $(this.options.template);
+        if (this.$tip.length != 1) {
+          throw new Error(this.type + ' `template` option must consist of exactly 1 top-level element!');
+        }
+      }
+      return this.$tip;
+    };
+
+    Tooltip.prototype.arrow = function () {
+      return this.$arrow = this.$arrow || this.tip().find('.tooltip-arrow');
+    };
+
+    Tooltip.prototype.enable = function () {
+      this.enabled = true;
+    };
+
+    Tooltip.prototype.disable = function () {
+      this.enabled = false;
+    };
+
+    Tooltip.prototype.toggleEnabled = function () {
+      this.enabled = !this.enabled;
+    };
+
+    Tooltip.prototype.toggle = function (e) {
+      var self = this;
+      if (e) {
+        self = $(e.currentTarget).data('bs.' + this.type);
+        if (!self) {
+          self = new this.constructor(e.currentTarget, this.getDelegateOptions());
+          $(e.currentTarget).data('bs.' + this.type, self);
+        }
+      }
+
+      if (e) {
+        self.inState.click = !self.inState.click;
+        if (self.isInStateTrue()) self.enter(self);else self.leave(self);
+      } else {
+        self.tip().hasClass('in') ? self.leave(self) : self.enter(self);
+      }
+    };
+
+    Tooltip.prototype.destroy = function () {
+      var that = this;
+      clearTimeout(this.timeout);
+      this.hide(function () {
+        that.$element.off('.' + that.type).removeData('bs.' + that.type);
+        if (that.$tip) {
+          that.$tip.detach();
+        }
+        that.$tip = null;
+        that.$arrow = null;
+        that.$viewport = null;
+        that.$element = null;
+      });
+    };
+
+    // TOOLTIP PLUGIN DEFINITION
+    // =========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.tooltip');
+        var options = typeof option == 'object' && option;
+
+        if (!data && /destroy|hide/.test(option)) return;
+        if (!data) $this.data('bs.tooltip', data = new Tooltip(this, options));
+        if (typeof option == 'string') data[option]();
+      });
     }
 
-    $active.length && transition ?
-      $active
-        .one('bsTransitionEnd', next)
-        .emulateTransitionEnd(Tab.TRANSITION_DURATION) :
-      next()
+    var old = $.fn.tooltip;
 
-    $active.removeClass('in')
-  }
+    $.fn.tooltip = Plugin;
+    $.fn.tooltip.Constructor = Tooltip;
 
+    // TOOLTIP NO CONFLICT
+    // ===================
 
-  // TAB PLUGIN DEFINITION
-  // =====================
+    $.fn.tooltip.noConflict = function () {
+      $.fn.tooltip = old;
+      return this;
+    };
+  }(jQuery);
 
-  function Plugin(option) {
-    return this.each(function () {
-      var $this = $(this)
-      var data  = $this.data('bs.tab')
+  /* ========================================================================
+   * Bootstrap: popover.js v3.3.7
+   * http://getbootstrap.com/javascript/#popovers
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
-      if (!data) $this.data('bs.tab', (data = new Tab(this)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
+  +function ($) {
+    'use strict';
 
-  var old = $.fn.tab
+    // POPOVER PUBLIC CLASS DEFINITION
+    // ===============================
 
-  $.fn.tab             = Plugin
-  $.fn.tab.Constructor = Tab
+    var Popover = function (element, options) {
+      this.init('popover', element, options);
+    };
 
+    if (!$.fn.tooltip) throw new Error('Popover requires tooltip.js');
 
-  // TAB NO CONFLICT
-  // ===============
+    Popover.VERSION = '3.3.7';
 
-  $.fn.tab.noConflict = function () {
-    $.fn.tab = old
-    return this
-  }
+    Popover.DEFAULTS = $.extend({}, $.fn.tooltip.Constructor.DEFAULTS, {
+      placement: 'right',
+      trigger: 'click',
+      content: '',
+      template: '<div class="popover" role="tooltip"><div class="arrow"></div><h3 class="popover-title"></h3><div class="popover-content"></div></div>'
+    });
 
+    // NOTE: POPOVER EXTENDS tooltip.js
+    // ================================
 
-  // TAB DATA-API
-  // ============
+    Popover.prototype = $.extend({}, $.fn.tooltip.Constructor.prototype);
 
-  var clickHandler = function (e) {
-    e.preventDefault()
-    Plugin.call($(this), 'show')
-  }
+    Popover.prototype.constructor = Popover;
 
-  $(document)
-    .on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler)
-    .on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler)
+    Popover.prototype.getDefaults = function () {
+      return Popover.DEFAULTS;
+    };
 
-}(jQuery);
+    Popover.prototype.setContent = function () {
+      var $tip = this.tip();
+      var title = this.getTitle();
+      var content = this.getContent();
 
-/* ========================================================================
- * Bootstrap: affix.js v3.3.7
- * http://getbootstrap.com/javascript/#affix
- * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
- * ======================================================================== */
+      $tip.find('.popover-title')[this.options.html ? 'html' : 'text'](title);
+      $tip.find('.popover-content').children().detach().end()[// we use append for html objects to maintain js events
+      this.options.html ? typeof content == 'string' ? 'html' : 'append' : 'text'](content);
 
+      $tip.removeClass('fade top bottom left right in');
 
-+function ($) {
-  'use strict';
+      // IE8 doesn't accept hiding via the `:empty` pseudo selector, we have to do
+      // this manually by checking the contents.
+      if (!$tip.find('.popover-title').html()) $tip.find('.popover-title').hide();
+    };
 
-  // AFFIX CLASS DEFINITION
-  // ======================
+    Popover.prototype.hasContent = function () {
+      return this.getTitle() || this.getContent();
+    };
 
-  var Affix = function (element, options) {
-    this.options = $.extend({}, Affix.DEFAULTS, options)
+    Popover.prototype.getContent = function () {
+      var $e = this.$element;
+      var o = this.options;
 
-    this.$target = $(this.options.target)
-      .on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this))
-      .on('click.bs.affix.data-api',  $.proxy(this.checkPositionWithEventLoop, this))
+      return $e.attr('data-content') || (typeof o.content == 'function' ? o.content.call($e[0]) : o.content);
+    };
 
-    this.$element     = $(element)
-    this.affixed      = null
-    this.unpin        = null
-    this.pinnedOffset = null
+    Popover.prototype.arrow = function () {
+      return this.$arrow = this.$arrow || this.tip().find('.arrow');
+    };
 
-    this.checkPosition()
-  }
+    // POPOVER PLUGIN DEFINITION
+    // =========================
 
-  Affix.VERSION  = '3.3.7'
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.popover');
+        var options = typeof option == 'object' && option;
 
-  Affix.RESET    = 'affix affix-top affix-bottom'
-
-  Affix.DEFAULTS = {
-    offset: 0,
-    target: window
-  }
-
-  Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
-    var scrollTop    = this.$target.scrollTop()
-    var position     = this.$element.offset()
-    var targetHeight = this.$target.height()
-
-    if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false
-
-    if (this.affixed == 'bottom') {
-      if (offsetTop != null) return (scrollTop + this.unpin <= position.top) ? false : 'bottom'
-      return (scrollTop + targetHeight <= scrollHeight - offsetBottom) ? false : 'bottom'
+        if (!data && /destroy|hide/.test(option)) return;
+        if (!data) $this.data('bs.popover', data = new Popover(this, options));
+        if (typeof option == 'string') data[option]();
+      });
     }
 
-    var initializing   = this.affixed == null
-    var colliderTop    = initializing ? scrollTop : position.top
-    var colliderHeight = initializing ? targetHeight : height
+    var old = $.fn.popover;
 
-    if (offsetTop != null && scrollTop <= offsetTop) return 'top'
-    if (offsetBottom != null && (colliderTop + colliderHeight >= scrollHeight - offsetBottom)) return 'bottom'
+    $.fn.popover = Plugin;
+    $.fn.popover.Constructor = Popover;
 
-    return false
-  }
+    // POPOVER NO CONFLICT
+    // ===================
 
-  Affix.prototype.getPinnedOffset = function () {
-    if (this.pinnedOffset) return this.pinnedOffset
-    this.$element.removeClass(Affix.RESET).addClass('affix')
-    var scrollTop = this.$target.scrollTop()
-    var position  = this.$element.offset()
-    return (this.pinnedOffset = position.top - scrollTop)
-  }
+    $.fn.popover.noConflict = function () {
+      $.fn.popover = old;
+      return this;
+    };
+  }(jQuery);
 
-  Affix.prototype.checkPositionWithEventLoop = function () {
-    setTimeout($.proxy(this.checkPosition, this), 1)
-  }
+  /* ========================================================================
+   * Bootstrap: scrollspy.js v3.3.7
+   * http://getbootstrap.com/javascript/#scrollspy
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
-  Affix.prototype.checkPosition = function () {
-    if (!this.$element.is(':visible')) return
+  +function ($) {
+    'use strict';
 
-    var height       = this.$element.height()
-    var offset       = this.options.offset
-    var offsetTop    = offset.top
-    var offsetBottom = offset.bottom
-    var scrollHeight = Math.max($(document).height(), $(document.body).height())
+    // SCROLLSPY CLASS DEFINITION
+    // ==========================
 
-    if (typeof offset != 'object')         offsetBottom = offsetTop = offset
-    if (typeof offsetTop == 'function')    offsetTop    = offset.top(this.$element)
-    if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element)
+    function ScrollSpy(element, options) {
+      this.$body = $(document.body);
+      this.$scrollElement = $(element).is(document.body) ? $(window) : $(element);
+      this.options = $.extend({}, ScrollSpy.DEFAULTS, options);
+      this.selector = (this.options.target || '') + ' .nav li > a';
+      this.offsets = [];
+      this.targets = [];
+      this.activeTarget = null;
+      this.scrollHeight = 0;
 
-    var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom)
-
-    if (this.affixed != affix) {
-      if (this.unpin != null) this.$element.css('top', '')
-
-      var affixType = 'affix' + (affix ? '-' + affix : '')
-      var e         = $.Event(affixType + '.bs.affix')
-
-      this.$element.trigger(e)
-
-      if (e.isDefaultPrevented()) return
-
-      this.affixed = affix
-      this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null
-
-      this.$element
-        .removeClass(Affix.RESET)
-        .addClass(affixType)
-        .trigger(affixType.replace('affix', 'affixed') + '.bs.affix')
+      this.$scrollElement.on('scroll.bs.scrollspy', $.proxy(this.process, this));
+      this.refresh();
+      this.process();
     }
 
-    if (affix == 'bottom') {
-      this.$element.offset({
-        top: scrollHeight - height - offsetBottom
-      })
+    ScrollSpy.VERSION = '3.3.7';
+
+    ScrollSpy.DEFAULTS = {
+      offset: 10
+    };
+
+    ScrollSpy.prototype.getScrollHeight = function () {
+      return this.$scrollElement[0].scrollHeight || Math.max(this.$body[0].scrollHeight, document.documentElement.scrollHeight);
+    };
+
+    ScrollSpy.prototype.refresh = function () {
+      var that = this;
+      var offsetMethod = 'offset';
+      var offsetBase = 0;
+
+      this.offsets = [];
+      this.targets = [];
+      this.scrollHeight = this.getScrollHeight();
+
+      if (!$.isWindow(this.$scrollElement[0])) {
+        offsetMethod = 'position';
+        offsetBase = this.$scrollElement.scrollTop();
+      }
+
+      this.$body.find(this.selector).map(function () {
+        var $el = $(this);
+        var href = $el.data('target') || $el.attr('href');
+        var $href = /^#./.test(href) && $(href);
+
+        return $href && $href.length && $href.is(':visible') && [[$href[offsetMethod]().top + offsetBase, href]] || null;
+      }).sort(function (a, b) {
+        return a[0] - b[0];
+      }).each(function () {
+        that.offsets.push(this[0]);
+        that.targets.push(this[1]);
+      });
+    };
+
+    ScrollSpy.prototype.process = function () {
+      var scrollTop = this.$scrollElement.scrollTop() + this.options.offset;
+      var scrollHeight = this.getScrollHeight();
+      var maxScroll = this.options.offset + scrollHeight - this.$scrollElement.height();
+      var offsets = this.offsets;
+      var targets = this.targets;
+      var activeTarget = this.activeTarget;
+      var i;
+
+      if (this.scrollHeight != scrollHeight) {
+        this.refresh();
+      }
+
+      if (scrollTop >= maxScroll) {
+        return activeTarget != (i = targets[targets.length - 1]) && this.activate(i);
+      }
+
+      if (activeTarget && scrollTop < offsets[0]) {
+        this.activeTarget = null;
+        return this.clear();
+      }
+
+      for (i = offsets.length; i--;) {
+        activeTarget != targets[i] && scrollTop >= offsets[i] && (offsets[i + 1] === undefined || scrollTop < offsets[i + 1]) && this.activate(targets[i]);
+      }
+    };
+
+    ScrollSpy.prototype.activate = function (target) {
+      this.activeTarget = target;
+
+      this.clear();
+
+      var selector = this.selector + '[data-target="' + target + '"],' + this.selector + '[href="' + target + '"]';
+
+      var active = $(selector).parents('li').addClass('active');
+
+      if (active.parent('.dropdown-menu').length) {
+        active = active.closest('li.dropdown').addClass('active');
+      }
+
+      active.trigger('activate.bs.scrollspy');
+    };
+
+    ScrollSpy.prototype.clear = function () {
+      $(this.selector).parentsUntil(this.options.target, '.active').removeClass('active');
+    };
+
+    // SCROLLSPY PLUGIN DEFINITION
+    // ===========================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.scrollspy');
+        var options = typeof option == 'object' && option;
+
+        if (!data) $this.data('bs.scrollspy', data = new ScrollSpy(this, options));
+        if (typeof option == 'string') data[option]();
+      });
     }
-  }
 
+    var old = $.fn.scrollspy;
 
-  // AFFIX PLUGIN DEFINITION
-  // =======================
+    $.fn.scrollspy = Plugin;
+    $.fn.scrollspy.Constructor = ScrollSpy;
 
-  function Plugin(option) {
-    return this.each(function () {
-      var $this   = $(this)
-      var data    = $this.data('bs.affix')
-      var options = typeof option == 'object' && option
+    // SCROLLSPY NO CONFLICT
+    // =====================
 
-      if (!data) $this.data('bs.affix', (data = new Affix(this, options)))
-      if (typeof option == 'string') data[option]()
-    })
-  }
+    $.fn.scrollspy.noConflict = function () {
+      $.fn.scrollspy = old;
+      return this;
+    };
 
-  var old = $.fn.affix
+    // SCROLLSPY DATA-API
+    // ==================
 
-  $.fn.affix             = Plugin
-  $.fn.affix.Constructor = Affix
+    $(window).on('load.bs.scrollspy.data-api', function () {
+      $('[data-spy="scroll"]').each(function () {
+        var $spy = $(this);
+        Plugin.call($spy, $spy.data());
+      });
+    });
+  }(jQuery);
 
+  /* ========================================================================
+   * Bootstrap: tab.js v3.3.7
+   * http://getbootstrap.com/javascript/#tabs
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
 
-  // AFFIX NO CONFLICT
-  // =================
+  +function ($) {
+    'use strict';
 
-  $.fn.affix.noConflict = function () {
-    $.fn.affix = old
-    return this
-  }
+    // TAB CLASS DEFINITION
+    // ====================
 
+    var Tab = function (element) {
+      // jscs:disable requireDollarBeforejQueryAssignment
+      this.element = $(element);
+      // jscs:enable requireDollarBeforejQueryAssignment
+    };
 
-  // AFFIX DATA-API
-  // ==============
+    Tab.VERSION = '3.3.7';
 
-  $(window).on('load', function () {
-    $('[data-spy="affix"]').each(function () {
-      var $spy = $(this)
-      var data = $spy.data()
+    Tab.TRANSITION_DURATION = 150;
 
-      data.offset = data.offset || {}
+    Tab.prototype.show = function () {
+      var $this = this.element;
+      var $ul = $this.closest('ul:not(.dropdown-menu)');
+      var selector = $this.data('target');
 
-      if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom
-      if (data.offsetTop    != null) data.offset.top    = data.offsetTop
+      if (!selector) {
+        selector = $this.attr('href');
+        selector = selector && selector.replace(/.*(?=#[^\s]*$)/, ''); // strip for ie7
+      }
 
-      Plugin.call($spy, data)
-    })
-  })
+      if ($this.parent('li').hasClass('active')) return;
 
-}(jQuery);
+      var $previous = $ul.find('.active:last a');
+      var hideEvent = $.Event('hide.bs.tab', {
+        relatedTarget: $this[0]
+      });
+      var showEvent = $.Event('show.bs.tab', {
+        relatedTarget: $previous[0]
+      });
 
+      $previous.trigger(hideEvent);
+      $this.trigger(showEvent);
+
+      if (showEvent.isDefaultPrevented() || hideEvent.isDefaultPrevented()) return;
+
+      var $target = $(selector);
+
+      this.activate($this.closest('li'), $ul);
+      this.activate($target, $target.parent(), function () {
+        $previous.trigger({
+          type: 'hidden.bs.tab',
+          relatedTarget: $this[0]
+        });
+        $this.trigger({
+          type: 'shown.bs.tab',
+          relatedTarget: $previous[0]
+        });
+      });
+    };
+
+    Tab.prototype.activate = function (element, container, callback) {
+      var $active = container.find('> .active');
+      var transition = callback && $.support.transition && ($active.length && $active.hasClass('fade') || !!container.find('> .fade').length);
+
+      function next() {
+        $active.removeClass('active').find('> .dropdown-menu > .active').removeClass('active').end().find('[data-toggle="tab"]').attr('aria-expanded', false);
+
+        element.addClass('active').find('[data-toggle="tab"]').attr('aria-expanded', true);
+
+        if (transition) {
+          element[0].offsetWidth; // reflow for transition
+          element.addClass('in');
+        } else {
+          element.removeClass('fade');
+        }
+
+        if (element.parent('.dropdown-menu').length) {
+          element.closest('li.dropdown').addClass('active').end().find('[data-toggle="tab"]').attr('aria-expanded', true);
+        }
+
+        callback && callback();
+      }
+
+      $active.length && transition ? $active.one('bsTransitionEnd', next).emulateTransitionEnd(Tab.TRANSITION_DURATION) : next();
+
+      $active.removeClass('in');
+    };
+
+    // TAB PLUGIN DEFINITION
+    // =====================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.tab');
+
+        if (!data) $this.data('bs.tab', data = new Tab(this));
+        if (typeof option == 'string') data[option]();
+      });
+    }
+
+    var old = $.fn.tab;
+
+    $.fn.tab = Plugin;
+    $.fn.tab.Constructor = Tab;
+
+    // TAB NO CONFLICT
+    // ===============
+
+    $.fn.tab.noConflict = function () {
+      $.fn.tab = old;
+      return this;
+    };
+
+    // TAB DATA-API
+    // ============
+
+    var clickHandler = function (e) {
+      e.preventDefault();
+      Plugin.call($(this), 'show');
+    };
+
+    $(document).on('click.bs.tab.data-api', '[data-toggle="tab"]', clickHandler).on('click.bs.tab.data-api', '[data-toggle="pill"]', clickHandler);
+  }(jQuery);
+
+  /* ========================================================================
+   * Bootstrap: affix.js v3.3.7
+   * http://getbootstrap.com/javascript/#affix
+   * ========================================================================
+   * Copyright 2011-2016 Twitter, Inc.
+   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+   * ======================================================================== */
+
+  +function ($) {
+    'use strict';
+
+    // AFFIX CLASS DEFINITION
+    // ======================
+
+    var Affix = function (element, options) {
+      this.options = $.extend({}, Affix.DEFAULTS, options);
+
+      this.$target = $(this.options.target).on('scroll.bs.affix.data-api', $.proxy(this.checkPosition, this)).on('click.bs.affix.data-api', $.proxy(this.checkPositionWithEventLoop, this));
+
+      this.$element = $(element);
+      this.affixed = null;
+      this.unpin = null;
+      this.pinnedOffset = null;
+
+      this.checkPosition();
+    };
+
+    Affix.VERSION = '3.3.7';
+
+    Affix.RESET = 'affix affix-top affix-bottom';
+
+    Affix.DEFAULTS = {
+      offset: 0,
+      target: window
+    };
+
+    Affix.prototype.getState = function (scrollHeight, height, offsetTop, offsetBottom) {
+      var scrollTop = this.$target.scrollTop();
+      var position = this.$element.offset();
+      var targetHeight = this.$target.height();
+
+      if (offsetTop != null && this.affixed == 'top') return scrollTop < offsetTop ? 'top' : false;
+
+      if (this.affixed == 'bottom') {
+        if (offsetTop != null) return scrollTop + this.unpin <= position.top ? false : 'bottom';
+        return scrollTop + targetHeight <= scrollHeight - offsetBottom ? false : 'bottom';
+      }
+
+      var initializing = this.affixed == null;
+      var colliderTop = initializing ? scrollTop : position.top;
+      var colliderHeight = initializing ? targetHeight : height;
+
+      if (offsetTop != null && scrollTop <= offsetTop) return 'top';
+      if (offsetBottom != null && colliderTop + colliderHeight >= scrollHeight - offsetBottom) return 'bottom';
+
+      return false;
+    };
+
+    Affix.prototype.getPinnedOffset = function () {
+      if (this.pinnedOffset) return this.pinnedOffset;
+      this.$element.removeClass(Affix.RESET).addClass('affix');
+      var scrollTop = this.$target.scrollTop();
+      var position = this.$element.offset();
+      return this.pinnedOffset = position.top - scrollTop;
+    };
+
+    Affix.prototype.checkPositionWithEventLoop = function () {
+      setTimeout($.proxy(this.checkPosition, this), 1);
+    };
+
+    Affix.prototype.checkPosition = function () {
+      if (!this.$element.is(':visible')) return;
+
+      var height = this.$element.height();
+      var offset = this.options.offset;
+      var offsetTop = offset.top;
+      var offsetBottom = offset.bottom;
+      var scrollHeight = Math.max($(document).height(), $(document.body).height());
+
+      if (typeof offset != 'object') offsetBottom = offsetTop = offset;
+      if (typeof offsetTop == 'function') offsetTop = offset.top(this.$element);
+      if (typeof offsetBottom == 'function') offsetBottom = offset.bottom(this.$element);
+
+      var affix = this.getState(scrollHeight, height, offsetTop, offsetBottom);
+
+      if (this.affixed != affix) {
+        if (this.unpin != null) this.$element.css('top', '');
+
+        var affixType = 'affix' + (affix ? '-' + affix : '');
+        var e = $.Event(affixType + '.bs.affix');
+
+        this.$element.trigger(e);
+
+        if (e.isDefaultPrevented()) return;
+
+        this.affixed = affix;
+        this.unpin = affix == 'bottom' ? this.getPinnedOffset() : null;
+
+        this.$element.removeClass(Affix.RESET).addClass(affixType).trigger(affixType.replace('affix', 'affixed') + '.bs.affix');
+      }
+
+      if (affix == 'bottom') {
+        this.$element.offset({
+          top: scrollHeight - height - offsetBottom
+        });
+      }
+    };
+
+    // AFFIX PLUGIN DEFINITION
+    // =======================
+
+    function Plugin(option) {
+      return this.each(function () {
+        var $this = $(this);
+        var data = $this.data('bs.affix');
+        var options = typeof option == 'object' && option;
+
+        if (!data) $this.data('bs.affix', data = new Affix(this, options));
+        if (typeof option == 'string') data[option]();
+      });
+    }
+
+    var old = $.fn.affix;
+
+    $.fn.affix = Plugin;
+    $.fn.affix.Constructor = Affix;
+
+    // AFFIX NO CONFLICT
+    // =================
+
+    $.fn.affix.noConflict = function () {
+      $.fn.affix = old;
+      return this;
+    };
+
+    // AFFIX DATA-API
+    // ==============
+
+    $(window).on('load', function () {
+      $('[data-spy="affix"]').each(function () {
+        var $spy = $(this);
+        var data = $spy.data();
+
+        data.offset = data.offset || {};
+
+        if (data.offsetBottom != null) data.offset.bottom = data.offsetBottom;
+        if (data.offsetTop != null) data.offset.top = data.offsetTop;
+
+        Plugin.call($spy, data);
+      });
+    });
+  }(jQuery);
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"jquery":37}],36:[function(require,module,exports){
+},{"jquery":39}],38:[function(require,module,exports){
 /* FileSaver.js
  * A saveAs() FileSaver implementation.
  * 1.3.2
@@ -7966,7 +7791,7 @@ if (typeof module !== "undefined" && module.exports) {
   });
 }
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v1.12.4
  * http://jquery.com/
@@ -18976,9 +18801,9 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 //! moment.js
-//! version : 2.16.0
+//! version : 2.18.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -19020,8 +18845,12 @@ function isObjectEmpty(obj) {
     return true;
 }
 
+function isUndefined(input) {
+    return input === void 0;
+}
+
 function isNumber(input) {
-    return typeof value === 'number' || Object.prototype.toString.call(input) === '[object Number]';
+    return typeof input === 'number' || Object.prototype.toString.call(input) === '[object Number]';
 }
 
 function isDate(input) {
@@ -19076,7 +18905,9 @@ function defaultParsingFlags() {
         userInvalidated : false,
         iso             : false,
         parsedDateParts : [],
-        meridiem        : null
+        meridiem        : null,
+        rfc2822         : false,
+        weekdayMismatch : false
     };
 }
 
@@ -19152,10 +18983,6 @@ function createInvalid (flags) {
     return m;
 }
 
-function isUndefined(input) {
-    return input === void 0;
-}
-
 // Plugins that add properties should also add the key here (null value),
 // so we can properly clone ourselves.
 var momentProperties = hooks.momentProperties = [];
@@ -19195,7 +19022,7 @@ function copyConfig(to, from) {
     }
 
     if (momentProperties.length > 0) {
-        for (i in momentProperties) {
+        for (i = 0; i < momentProperties.length; i++) {
             prop = momentProperties[i];
             val = from[prop];
             if (!isUndefined(val)) {
@@ -19213,6 +19040,9 @@ var updateInProgress = false;
 function Moment(config) {
     copyConfig(this, config);
     this._d = new Date(config._d != null ? config._d.getTime() : NaN);
+    if (!this.isValid()) {
+        this._d = new Date(NaN);
+    }
     // Prevent infinite loop in case updateOffset creates new moment
     // objects.
     if (updateInProgress === false) {
@@ -19329,8 +19159,11 @@ function set (config) {
     }
     this._config = config;
     // Lenient ordinal parsing accepts just a number in addition to
-    // number + (possibly) stuff coming from _ordinalParseLenient.
-    this._ordinalParseLenient = new RegExp(this._ordinalParse.source + '|' + (/\d{1,2}/).source);
+    // number + (possibly) stuff coming from _dayOfMonthOrdinalParse.
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    this._dayOfMonthOrdinalParseLenient = new RegExp(
+        (this._dayOfMonthOrdinalParse.source || this._ordinalParse.source) +
+            '|' + (/\d{1,2}/).source);
 }
 
 function mergeConfigs(parentConfig, childConfig) {
@@ -19428,7 +19261,7 @@ function invalidDate () {
 }
 
 var defaultOrdinal = '%d';
-var defaultOrdinalParse = /\d{1,2}/;
+var defaultDayOfMonthOrdinalParse = /\d{1,2}/;
 
 function ordinal (number) {
     return this._ordinal.replace('%d', number);
@@ -19438,6 +19271,7 @@ var defaultRelativeTime = {
     future : 'in %s',
     past   : '%s ago',
     s  : 'a few seconds',
+    ss : '%d seconds',
     m  : 'a minute',
     mm : '%d minutes',
     h  : 'an hour',
@@ -19620,7 +19454,7 @@ function makeFormatFunction(format) {
     return function (mom) {
         var output = '', i;
         for (i = 0; i < length; i++) {
-            output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
+            output += isFunction(array[i]) ? array[i].call(mom, format) : array[i];
         }
         return output;
     };
@@ -19823,7 +19657,8 @@ var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
 var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
 function localeMonths (m, format) {
     if (!m) {
-        return this._months;
+        return isArray(this._months) ? this._months :
+            this._months['standalone'];
     }
     return isArray(this._months) ? this._months[m.month()] :
         this._months[(this._months.isFormat || MONTHS_IN_FORMAT).test(format) ? 'format' : 'standalone'][m.month()];
@@ -19832,7 +19667,8 @@ function localeMonths (m, format) {
 var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
 function localeMonthsShort (m, format) {
     if (!m) {
-        return this._monthsShort;
+        return isArray(this._monthsShort) ? this._monthsShort :
+            this._monthsShort['standalone'];
     }
     return isArray(this._monthsShort) ? this._monthsShort[m.month()] :
         this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
@@ -20099,11 +19935,11 @@ function getIsLeapYear () {
 }
 
 function createDate (y, m, d, h, M, s, ms) {
-    //can't just apply() to create a date:
-    //http://stackoverflow.com/questions/181348/instantiating-a-javascript-object-by-calling-prototype-constructor-apply
+    // can't just apply() to create a date:
+    // https://stackoverflow.com/q/181348
     var date = new Date(y, m, d, h, M, s, ms);
 
-    //the date constructor remaps years 0-99 to 1900-1999
+    // the date constructor remaps years 0-99 to 1900-1999
     if (y < 100 && y >= 0 && isFinite(date.getFullYear())) {
         date.setFullYear(y);
     }
@@ -20113,7 +19949,7 @@ function createDate (y, m, d, h, M, s, ms) {
 function createUTCDate (y) {
     var date = new Date(Date.UTC.apply(null, arguments));
 
-    //the Date.UTC function remaps years 0-99 to 1900-1999
+    // the Date.UTC function remaps years 0-99 to 1900-1999
     if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
         date.setUTCFullYear(y);
     }
@@ -20130,7 +19966,7 @@ function firstWeekOffset(year, dow, doy) {
     return -fwdlw + fwd - 1;
 }
 
-//http://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+// https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
 function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
     var localWeekday = (7 + weekday - dow) % 7,
         weekOffset = firstWeekOffset(year, dow, doy),
@@ -20331,7 +20167,8 @@ function parseIsoWeekday(input, locale) {
 var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
 function localeWeekdays (m, format) {
     if (!m) {
-        return this._weekdays;
+        return isArray(this._weekdays) ? this._weekdays :
+            this._weekdays['standalone'];
     }
     return isArray(this._weekdays) ? this._weekdays[m.day()] :
         this._weekdays[this._weekdays.isFormat.test(format) ? 'format' : 'standalone'][m.day()];
@@ -20651,8 +20488,10 @@ addRegexToken('a',  matchMeridiem);
 addRegexToken('A',  matchMeridiem);
 addRegexToken('H',  match1to2);
 addRegexToken('h',  match1to2);
+addRegexToken('k',  match1to2);
 addRegexToken('HH', match1to2, match2);
 addRegexToken('hh', match1to2, match2);
+addRegexToken('kk', match1to2, match2);
 
 addRegexToken('hmm', match3to4);
 addRegexToken('hmmss', match5to6);
@@ -20660,6 +20499,10 @@ addRegexToken('Hmm', match3to4);
 addRegexToken('Hmmss', match5to6);
 
 addParseToken(['H', 'HH'], HOUR);
+addParseToken(['k', 'kk'], function (input, array, config) {
+    var kInput = toInt(input);
+    array[HOUR] = kInput === 24 ? 0 : kInput;
+});
 addParseToken(['a', 'A'], function (input, array, config) {
     config._isPm = config._locale.isPM(input);
     config._meridiem = input;
@@ -20730,7 +20573,7 @@ var baseConfig = {
     longDateFormat: defaultLongDateFormat,
     invalidDate: defaultInvalidDate,
     ordinal: defaultOrdinal,
-    ordinalParse: defaultOrdinalParse,
+    dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
     relativeTime: defaultRelativeTime,
 
     months: defaultLocaleMonths,
@@ -21041,6 +20884,77 @@ function configFromISO(config) {
     }
 }
 
+// RFC 2822 regex: For details see https://tools.ietf.org/html/rfc2822#section-3.3
+var basicRfcRegex = /^((?:Mon|Tue|Wed|Thu|Fri|Sat|Sun),?\s)?(\d?\d\s(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s(?:\d\d)?\d\d\s)(\d\d:\d\d)(\:\d\d)?(\s(?:UT|GMT|[ECMP][SD]T|[A-IK-Za-ik-z]|[+-]\d{4}))$/;
+
+// date and time from ref 2822 format
+function configFromRFC2822(config) {
+    var string, match, dayFormat,
+        dateFormat, timeFormat, tzFormat;
+    var timezones = {
+        ' GMT': ' +0000',
+        ' EDT': ' -0400',
+        ' EST': ' -0500',
+        ' CDT': ' -0500',
+        ' CST': ' -0600',
+        ' MDT': ' -0600',
+        ' MST': ' -0700',
+        ' PDT': ' -0700',
+        ' PST': ' -0800'
+    };
+    var military = 'YXWVUTSRQPONZABCDEFGHIKLM';
+    var timezone, timezoneIndex;
+
+    string = config._i
+        .replace(/\([^\)]*\)|[\n\t]/g, ' ') // Remove comments and folding whitespace
+        .replace(/(\s\s+)/g, ' ') // Replace multiple-spaces with a single space
+        .replace(/^\s|\s$/g, ''); // Remove leading and trailing spaces
+    match = basicRfcRegex.exec(string);
+
+    if (match) {
+        dayFormat = match[1] ? 'ddd' + ((match[1].length === 5) ? ', ' : ' ') : '';
+        dateFormat = 'D MMM ' + ((match[2].length > 10) ? 'YYYY ' : 'YY ');
+        timeFormat = 'HH:mm' + (match[4] ? ':ss' : '');
+
+        // TODO: Replace the vanilla JS Date object with an indepentent day-of-week check.
+        if (match[1]) { // day of week given
+            var momentDate = new Date(match[2]);
+            var momentDay = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][momentDate.getDay()];
+
+            if (match[1].substr(0,3) !== momentDay) {
+                getParsingFlags(config).weekdayMismatch = true;
+                config._isValid = false;
+                return;
+            }
+        }
+
+        switch (match[5].length) {
+            case 2: // military
+                if (timezoneIndex === 0) {
+                    timezone = ' +0000';
+                } else {
+                    timezoneIndex = military.indexOf(match[5][1].toUpperCase()) - 12;
+                    timezone = ((timezoneIndex < 0) ? ' -' : ' +') +
+                        (('' + timezoneIndex).replace(/^-?/, '0')).match(/..$/)[0] + '00';
+                }
+                break;
+            case 4: // Zone
+                timezone = timezones[match[5]];
+                break;
+            default: // UT or +/-9999
+                timezone = timezones[' GMT'];
+        }
+        match[5] = timezone;
+        config._i = match.splice(1).join('');
+        tzFormat = ' ZZ';
+        config._f = dayFormat + dateFormat + timeFormat + tzFormat;
+        configFromStringAndFormat(config);
+        getParsingFlags(config).rfc2822 = true;
+    } else {
+        config._isValid = false;
+    }
+}
+
 // date from iso format or fallback
 function configFromString(config) {
     var matched = aspNetJsonRegex.exec(config._i);
@@ -21053,13 +20967,24 @@ function configFromString(config) {
     configFromISO(config);
     if (config._isValid === false) {
         delete config._isValid;
-        hooks.createFromInputFallback(config);
+    } else {
+        return;
     }
+
+    configFromRFC2822(config);
+    if (config._isValid === false) {
+        delete config._isValid;
+    } else {
+        return;
+    }
+
+    // Final attempt, use Input Fallback
+    hooks.createFromInputFallback(config);
 }
 
 hooks.createFromInputFallback = deprecate(
-    'value provided is not in a recognized ISO format. moment construction falls back to js Date(), ' +
-    'which is not reliable across all browsers and versions. Non ISO date formats are ' +
+    'value provided is not in a recognized RFC2822 or ISO format. moment construction falls back to js Date(), ' +
+    'which is not reliable across all browsers and versions. Non RFC2822/ISO date formats are ' +
     'discouraged and will be removed in an upcoming major release. Please refer to ' +
     'http://momentjs.com/guides/#/warnings/js-date/ for more info.',
     function (config) {
@@ -21106,10 +21031,10 @@ function configFromArray (config) {
     }
 
     //if the day of the year is set, figure out what it is
-    if (config._dayOfYear) {
+    if (config._dayOfYear != null) {
         yearToUse = defaults(config._a[YEAR], currentDate[YEAR]);
 
-        if (config._dayOfYear > daysInYear(yearToUse)) {
+        if (config._dayOfYear > daysInYear(yearToUse) || config._dayOfYear === 0) {
             getParsingFlags(config)._overflowDayOfYear = true;
         }
 
@@ -21213,6 +21138,9 @@ function dayOfYearFromWeekInfo(config) {
 // constant that refers to the ISO standard
 hooks.ISO_8601 = function () {};
 
+// constant that refers to the RFC 2822 form
+hooks.RFC_2822 = function () {};
+
 // date from string and format string
 function configFromStringAndFormat(config) {
     // TODO: Move this to another part of the creation flow to prevent circular deps
@@ -21220,7 +21148,10 @@ function configFromStringAndFormat(config) {
         configFromISO(config);
         return;
     }
-
+    if (config._f === hooks.RFC_2822) {
+        configFromRFC2822(config);
+        return;
+    }
     config._a = [];
     getParsingFlags(config).empty = true;
 
@@ -21412,7 +21343,7 @@ function prepareConfig (config) {
 
 function configFromInput(config) {
     var input = config._i;
-    if (input === undefined) {
+    if (isUndefined(input)) {
         config._d = new Date(hooks.now());
     } else if (isDate(input)) {
         config._d = new Date(input.valueOf());
@@ -21423,7 +21354,7 @@ function configFromInput(config) {
             return parseInt(obj, 10);
         });
         configFromArray(config);
-    } else if (typeof(input) === 'object') {
+    } else if (isObject(input)) {
         configFromObject(config);
     } else if (isNumber(input)) {
         // from milliseconds
@@ -21524,6 +21455,38 @@ var now = function () {
     return Date.now ? Date.now() : +(new Date());
 };
 
+var ordering = ['year', 'quarter', 'month', 'week', 'day', 'hour', 'minute', 'second', 'millisecond'];
+
+function isDurationValid(m) {
+    for (var key in m) {
+        if (!(ordering.indexOf(key) !== -1 && (m[key] == null || !isNaN(m[key])))) {
+            return false;
+        }
+    }
+
+    var unitHasDecimal = false;
+    for (var i = 0; i < ordering.length; ++i) {
+        if (m[ordering[i]]) {
+            if (unitHasDecimal) {
+                return false; // only allow non-integers for smallest unit
+            }
+            if (parseFloat(m[ordering[i]]) !== toInt(m[ordering[i]])) {
+                unitHasDecimal = true;
+            }
+        }
+    }
+
+    return true;
+}
+
+function isValid$1() {
+    return this._isValid;
+}
+
+function createInvalid$1() {
+    return createDuration(NaN);
+}
+
 function Duration (duration) {
     var normalizedInput = normalizeObjectUnits(duration),
         years = normalizedInput.year || 0,
@@ -21535,6 +21498,8 @@ function Duration (duration) {
         minutes = normalizedInput.minute || 0,
         seconds = normalizedInput.second || 0,
         milliseconds = normalizedInput.millisecond || 0;
+
+    this._isValid = isDurationValid(normalizedInput);
 
     // representation for dateAddRemove
     this._milliseconds = +milliseconds +
@@ -21659,7 +21624,7 @@ hooks.updateOffset = function () {};
 // a second time. In case it wants us to change the offset again
 // _changeInProgress == true case, then we have to adjust, because
 // there is no such time in the given timezone.
-function getSetOffset (input, keepLocalTime) {
+function getSetOffset (input, keepLocalTime, keepMinutes) {
     var offset = this._offset || 0,
         localAdjust;
     if (!this.isValid()) {
@@ -21671,7 +21636,7 @@ function getSetOffset (input, keepLocalTime) {
             if (input === null) {
                 return this;
             }
-        } else if (Math.abs(input) < 16) {
+        } else if (Math.abs(input) < 16 && !keepMinutes) {
             input = input * 60;
         }
         if (!this._isUTC && keepLocalTime) {
@@ -21729,7 +21694,7 @@ function setOffsetToLocal (keepLocalTime) {
 
 function setOffsetToParsedOffset () {
     if (this._tzm != null) {
-        this.utcOffset(this._tzm);
+        this.utcOffset(this._tzm, false, true);
     } else if (typeof this._i === 'string') {
         var tZone = offsetFromString(matchOffset, this._i);
         if (tZone != null) {
@@ -21861,6 +21826,7 @@ function createDuration (input, key) {
 }
 
 createDuration.fn = Duration.prototype;
+createDuration.invalid = createInvalid$1;
 
 function parseIso (inp, sign) {
     // We'd normally use ~~inp for this, but unfortunately it also
@@ -22097,18 +22063,19 @@ function toString () {
     return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
 }
 
-function toISOString () {
+function toISOString() {
+    if (!this.isValid()) {
+        return null;
+    }
     var m = this.clone().utc();
-    if (0 < m.year() && m.year() <= 9999) {
-        if (isFunction(Date.prototype.toISOString)) {
-            // native implementation is ~50x faster, use it when we can
-            return this.toDate().toISOString();
-        } else {
-            return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
-        }
-    } else {
+    if (m.year() < 0 || m.year() > 9999) {
         return formatMoment(m, 'YYYYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
     }
+    if (isFunction(Date.prototype.toISOString)) {
+        // native implementation is ~50x faster, use it when we can
+        return this.toDate().toISOString();
+    }
+    return formatMoment(m, 'YYYY-MM-DD[T]HH:mm:ss.SSS[Z]');
 }
 
 /**
@@ -22128,7 +22095,7 @@ function inspect () {
         zone = 'Z';
     }
     var prefix = '[' + func + '("]';
-    var year = (0 < this.year() && this.year() <= 9999) ? 'YYYY' : 'YYYYYY';
+    var year = (0 <= this.year() && this.year() <= 9999) ? 'YYYY' : 'YYYYYY';
     var datetime = '-MM-DD[T]HH:mm:ss.SSS';
     var suffix = zone + '[")]';
 
@@ -22296,7 +22263,7 @@ function toJSON () {
     return this.isValid() ? this.toISOString() : null;
 }
 
-function isValid$1 () {
+function isValid$2 () {
     return isValid(this);
 }
 
@@ -22456,7 +22423,10 @@ addUnitPriority('date', 9);
 addRegexToken('D',  match1to2);
 addRegexToken('DD', match1to2, match2);
 addRegexToken('Do', function (isStrict, locale) {
-    return isStrict ? locale._ordinalParse : locale._ordinalParseLenient;
+    // TODO: Remove "ordinalParse" fallback in next major release.
+    return isStrict ?
+      (locale._dayOfMonthOrdinalParse || locale._ordinalParse) :
+      locale._dayOfMonthOrdinalParseLenient;
 });
 
 addParseToken(['D', 'DD'], DATE);
@@ -22636,7 +22606,7 @@ proto.isBetween         = isBetween;
 proto.isSame            = isSame;
 proto.isSameOrAfter     = isSameOrAfter;
 proto.isSameOrBefore    = isSameOrBefore;
-proto.isValid           = isValid$1;
+proto.isValid           = isValid$2;
 proto.lang              = lang;
 proto.locale            = locale;
 proto.localeData        = localeData;
@@ -22861,7 +22831,7 @@ function listWeekdaysMin (localeSorted, format, index) {
 }
 
 getSetGlobalLocale('en', {
-    ordinalParse: /\d{1,2}(th|st|nd|rd)/,
+    dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
     ordinal : function (number) {
         var b = number % 10,
             output = (toInt(number % 100 / 10) === 1) ? 'th' :
@@ -22982,6 +22952,9 @@ function monthsToDays (months) {
 }
 
 function as (units) {
+    if (!this.isValid()) {
+        return NaN;
+    }
     var days;
     var months;
     var milliseconds = this._milliseconds;
@@ -23010,6 +22983,9 @@ function as (units) {
 
 // TODO: Use this.as('ms')?
 function valueOf$1 () {
+    if (!this.isValid()) {
+        return NaN;
+    }
     return (
         this._milliseconds +
         this._days * 864e5 +
@@ -23035,12 +23011,12 @@ var asYears        = makeAs('y');
 
 function get$2 (units) {
     units = normalizeUnits(units);
-    return this[units + 's']();
+    return this.isValid() ? this[units + 's']() : NaN;
 }
 
 function makeGetter(name) {
     return function () {
-        return this._data[name];
+        return this.isValid() ? this._data[name] : NaN;
     };
 }
 
@@ -23058,11 +23034,12 @@ function weeks () {
 
 var round = Math.round;
 var thresholds = {
-    s: 45,  // seconds to minute
-    m: 45,  // minutes to hour
-    h: 22,  // hours to day
-    d: 26,  // days to month
-    M: 11   // months to year
+    ss: 44,         // a few seconds to seconds
+    s : 45,         // seconds to minute
+    m : 45,         // minutes to hour
+    h : 22,         // hours to day
+    d : 26,         // days to month
+    M : 11          // months to year
 };
 
 // helper function for moment.fn.from, moment.fn.fromNow, and moment.duration.fn.humanize
@@ -23079,16 +23056,17 @@ function relativeTime$1 (posNegDuration, withoutSuffix, locale) {
     var months   = round(duration.as('M'));
     var years    = round(duration.as('y'));
 
-    var a = seconds < thresholds.s && ['s', seconds]  ||
-            minutes <= 1           && ['m']           ||
-            minutes < thresholds.m && ['mm', minutes] ||
-            hours   <= 1           && ['h']           ||
-            hours   < thresholds.h && ['hh', hours]   ||
-            days    <= 1           && ['d']           ||
-            days    < thresholds.d && ['dd', days]    ||
-            months  <= 1           && ['M']           ||
-            months  < thresholds.M && ['MM', months]  ||
-            years   <= 1           && ['y']           || ['yy', years];
+    var a = seconds <= thresholds.ss && ['s', seconds]  ||
+            seconds < thresholds.s   && ['ss', seconds] ||
+            minutes <= 1             && ['m']           ||
+            minutes < thresholds.m   && ['mm', minutes] ||
+            hours   <= 1             && ['h']           ||
+            hours   < thresholds.h   && ['hh', hours]   ||
+            days    <= 1             && ['d']           ||
+            days    < thresholds.d   && ['dd', days]    ||
+            months  <= 1             && ['M']           ||
+            months  < thresholds.M   && ['MM', months]  ||
+            years   <= 1             && ['y']           || ['yy', years];
 
     a[2] = withoutSuffix;
     a[3] = +posNegDuration > 0;
@@ -23117,10 +23095,17 @@ function getSetRelativeTimeThreshold (threshold, limit) {
         return thresholds[threshold];
     }
     thresholds[threshold] = limit;
+    if (threshold === 's') {
+        thresholds.ss = limit - 1;
+    }
     return true;
 }
 
 function humanize (withSuffix) {
+    if (!this.isValid()) {
+        return this.localeData().invalidDate();
+    }
+
     var locale = this.localeData();
     var output = relativeTime$1(this, !withSuffix, locale);
 
@@ -23141,6 +23126,10 @@ function toISOString$1() {
     // This is because there is no context-free conversion between hours and days
     // (think of clock changes)
     // and also not between days and months (28-31 days per month)
+    if (!this.isValid()) {
+        return this.localeData().invalidDate();
+    }
+
     var seconds = abs$1(this._milliseconds) / 1000;
     var days         = abs$1(this._days);
     var months       = abs$1(this._months);
@@ -23185,6 +23174,7 @@ function toISOString$1() {
 
 var proto$2 = Duration.prototype;
 
+proto$2.isValid        = isValid$1;
 proto$2.abs            = abs;
 proto$2.add            = add$1;
 proto$2.subtract       = subtract$1;
@@ -23240,7 +23230,7 @@ addParseToken('x', function (input, array, config) {
 // Side effect imports
 
 
-hooks.version = '2.16.0';
+hooks.version = '2.18.1';
 
 setHookCallback(createLocal);
 
@@ -23276,10 +23266,10 @@ return hooks;
 
 })));
 
-},{}],39:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /*global define:false */
 /**
- * Copyright 2016 Craig Campbell
+ * Copyright 2012-2017 Craig Campbell
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23296,7 +23286,7 @@ return hooks;
  * Mousetrap is a simple keyboard shortcut library for Javascript with
  * no external dependencies
  *
- * @version 1.6.0
+ * @version 1.6.1
  * @url craig.is/killing/mice
  */
 (function(window, document, undefined) {
@@ -23435,7 +23425,13 @@ return hooks;
      * loop through to map numbers on the numeric keypad
      */
     for (i = 0; i <= 9; ++i) {
-        _MAP[i + 96] = i;
+
+        // This needs to use a string cause otherwise since 0 is falsey
+        // mousetrap will never fire for numpad 0 pressed as part of a keydown
+        // event.
+        //
+        // @see https://github.com/ccampbell/mousetrap/pull/258
+        _MAP[i + 96] = i.toString();
     }
 
     /**
@@ -24316,7 +24312,7 @@ return hooks;
     }
 }) (typeof window !== 'undefined' ? window : null, typeof  window !== 'undefined' ? document : null);
 
-},{}],40:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -24326,7 +24322,7 @@ exports['default'] = {
   defaultFramerate: 25
 };
 module.exports = exports['default'];
-},{}],41:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -24346,8 +24342,6 @@ function padNumber(nb) {
 
 /* converts time to timecode */
 function fromSeconds(seconds) {
-  console.log("TIMECODES");
-  console.log(seconds);
   var _ref = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
   var _ref$frameRate = _ref.frameRate;
@@ -24362,8 +24356,7 @@ function fromSeconds(seconds) {
       mins = Math.floor(_seconds / 60, 10) - hours * 60,
       secs = Math.floor(_seconds - hours * 3600 - mins * 60, 10),
       frame = Math.floor(Math.round(milliseconds / 1000 / (1 / frameRate) * 100) / 100);
-  console.log("FRAME")
-  console.log(frame, frameRate)
+
   var suffix = ms && padNumber(parseInt(milliseconds, 10), 3) || padNumber(frame, 2);
 
   return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ':' + suffix;
@@ -24371,7 +24364,7 @@ function fromSeconds(seconds) {
 
 exports['default'] = fromSeconds;
 module.exports = exports['default'];
-},{"./constants":40}],42:[function(require,module,exports){
+},{"./constants":42}],44:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -24397,7 +24390,7 @@ exports['default'] = {
   toSeconds: _toSeconds2['default']
 };
 module.exports = exports['default'];
-},{"./fromSeconds":41,"./toSeconds":43}],43:[function(require,module,exports){
+},{"./fromSeconds":43,"./toSeconds":45}],45:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, '__esModule', {
@@ -24425,7 +24418,7 @@ function toSeconds(timecode) {
 
 exports['default'] = toSeconds;
 module.exports = exports['default'];
-},{"./constants":40}],44:[function(require,module,exports){
+},{"./constants":42}],46:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -24653,7 +24646,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":45}],45:[function(require,module,exports){
+},{"_process":47}],47:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -24824,6 +24817,10 @@ process.off = noop;
 process.removeListener = noop;
 process.removeAllListeners = noop;
 process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
@@ -24835,7 +24832,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function(window) {
     var re = {
         not_string: /[^s]/,
@@ -25045,7 +25042,7 @@ process.umask = function() { return 0; };
     }
 })(typeof window === "undefined" ? this : window);
 
-},{}],47:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 var trim = require('./trim');
 var decap = require('./decapitalize');
 
@@ -25061,7 +25058,7 @@ module.exports = function camelize(str, decapitalize) {
   }
 };
 
-},{"./decapitalize":56,"./trim":109}],48:[function(require,module,exports){
+},{"./decapitalize":58,"./trim":111}],50:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function capitalize(str, lowercaseRest) {
@@ -25071,14 +25068,14 @@ module.exports = function capitalize(str, lowercaseRest) {
   return str.charAt(0).toUpperCase() + remainingChars;
 };
 
-},{"./helper/makeString":66}],49:[function(require,module,exports){
+},{"./helper/makeString":68}],51:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function chars(str) {
   return makeString(str).split('');
 };
 
-},{"./helper/makeString":66}],50:[function(require,module,exports){
+},{"./helper/makeString":68}],52:[function(require,module,exports){
 module.exports = function chop(str, step) {
   if (str == null) return [];
   str = String(str);
@@ -25086,7 +25083,7 @@ module.exports = function chop(str, step) {
   return step > 0 ? str.match(new RegExp('.{1,' + step + '}', 'g')) : [str];
 };
 
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var camelize = require('./camelize');
 var makeString = require('./helper/makeString');
@@ -25096,14 +25093,14 @@ module.exports = function classify(str) {
   return capitalize(camelize(str.replace(/[\W_]/g, ' ')).replace(/\s/g, ''));
 };
 
-},{"./camelize":47,"./capitalize":48,"./helper/makeString":66}],52:[function(require,module,exports){
+},{"./camelize":49,"./capitalize":50,"./helper/makeString":68}],54:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function clean(str) {
   return trim(str).replace(/\s\s+/g, ' ');
 };
 
-},{"./trim":109}],53:[function(require,module,exports){
+},{"./trim":111}],55:[function(require,module,exports){
 
 var makeString = require('./helper/makeString');
 
@@ -25127,7 +25124,7 @@ module.exports = function cleanDiacritics(str) {
   });
 };
 
-},{"./helper/makeString":66}],54:[function(require,module,exports){
+},{"./helper/makeString":68}],56:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, substr) {
@@ -25139,14 +25136,14 @@ module.exports = function(str, substr) {
   return str.split(substr).length - 1;
 };
 
-},{"./helper/makeString":66}],55:[function(require,module,exports){
+},{"./helper/makeString":68}],57:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function dasherize(str) {
   return trim(str).replace(/([A-Z])/g, '-$1').replace(/[-_\s]+/g, '-').toLowerCase();
 };
 
-},{"./trim":109}],56:[function(require,module,exports){
+},{"./trim":111}],58:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function decapitalize(str) {
@@ -25154,7 +25151,7 @@ module.exports = function decapitalize(str) {
   return str.charAt(0).toLowerCase() + str.slice(1);
 };
 
-},{"./helper/makeString":66}],57:[function(require,module,exports){
+},{"./helper/makeString":68}],59:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 function getIndent(str) {
@@ -25184,7 +25181,7 @@ module.exports = function dedent(str, pattern) {
   return str.replace(reg, '');
 };
 
-},{"./helper/makeString":66}],58:[function(require,module,exports){
+},{"./helper/makeString":68}],60:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -25199,7 +25196,7 @@ module.exports = function endsWith(str, ends, position) {
   return position >= 0 && str.indexOf(ends, position) === position;
 };
 
-},{"./helper/makeString":66,"./helper/toPositive":68}],59:[function(require,module,exports){
+},{"./helper/makeString":68,"./helper/toPositive":70}],61:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var escapeChars = require('./helper/escapeChars');
 
@@ -25218,7 +25215,7 @@ module.exports = function escapeHTML(str) {
   });
 };
 
-},{"./helper/escapeChars":63,"./helper/makeString":66}],60:[function(require,module,exports){
+},{"./helper/escapeChars":65,"./helper/makeString":68}],62:[function(require,module,exports){
 module.exports = function() {
   var result = {};
 
@@ -25230,7 +25227,7 @@ module.exports = function() {
   return result;
 };
 
-},{}],61:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function adjacent(str, direction) {
@@ -25241,7 +25238,7 @@ module.exports = function adjacent(str, direction) {
   return str.slice(0, -1) + String.fromCharCode(str.charCodeAt(str.length - 1) + direction);
 };
 
-},{"./makeString":66}],62:[function(require,module,exports){
+},{"./makeString":68}],64:[function(require,module,exports){
 var escapeRegExp = require('./escapeRegExp');
 
 module.exports = function defaultToWhiteSpace(characters) {
@@ -25253,7 +25250,7 @@ module.exports = function defaultToWhiteSpace(characters) {
     return '[' + escapeRegExp(characters) + ']';
 };
 
-},{"./escapeRegExp":64}],63:[function(require,module,exports){
+},{"./escapeRegExp":66}],65:[function(require,module,exports){
 /* We're explicitly defining the list of entities we want to escape.
 nbsp is an HTML entity, but we don't want to escape all space characters in a string, hence its omission in this map.
 
@@ -25274,14 +25271,14 @@ var escapeChars = {
 
 module.exports = escapeChars;
 
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 var makeString = require('./makeString');
 
 module.exports = function escapeRegExp(str) {
   return makeString(str).replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 };
 
-},{"./makeString":66}],65:[function(require,module,exports){
+},{"./makeString":68}],67:[function(require,module,exports){
 /*
 We're explicitly defining the list of entities that might see in escape HTML strings
 */
@@ -25302,7 +25299,7 @@ var htmlEntities = {
 
 module.exports = htmlEntities;
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 /**
  * Ensure some object is a coerced to a string
  **/
@@ -25311,7 +25308,7 @@ module.exports = function makeString(object) {
   return '' + object;
 };
 
-},{}],67:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 module.exports = function strRepeat(str, qty){
   if (qty < 1) return '';
   var result = '';
@@ -25322,12 +25319,12 @@ module.exports = function strRepeat(str, qty){
   return result;
 };
 
-},{}],68:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = function toPositive(number) {
   return number < 0 ? 0 : (+number || 0);
 };
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 var capitalize = require('./capitalize');
 var underscored = require('./underscored');
 var trim = require('./trim');
@@ -25336,7 +25333,7 @@ module.exports = function humanize(str) {
   return capitalize(trim(underscored(str).replace(/_id$/, '').replace(/_/g, ' ')));
 };
 
-},{"./capitalize":48,"./trim":109,"./underscored":111}],70:[function(require,module,exports){
+},{"./capitalize":50,"./trim":111,"./underscored":113}],72:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function include(str, needle) {
@@ -25344,7 +25341,7 @@ module.exports = function include(str, needle) {
   return makeString(str).indexOf(needle) !== -1;
 };
 
-},{"./helper/makeString":66}],71:[function(require,module,exports){
+},{"./helper/makeString":68}],73:[function(require,module,exports){
 /*
 * Underscore.string
 * (c) 2010 Esa-Matti Suuronen <esa-matti aet suuronen dot org>
@@ -25489,21 +25486,21 @@ for (var method in prototypeMethods) prototype2method(prototypeMethods[method]);
 
 module.exports = s;
 
-},{"./camelize":47,"./capitalize":48,"./chars":49,"./chop":50,"./classify":51,"./clean":52,"./cleanDiacritics":53,"./count":54,"./dasherize":55,"./decapitalize":56,"./dedent":57,"./endsWith":58,"./escapeHTML":59,"./exports":60,"./helper/escapeRegExp":64,"./humanize":69,"./include":70,"./insert":72,"./isBlank":73,"./join":74,"./levenshtein":75,"./lines":76,"./lpad":77,"./lrpad":78,"./ltrim":79,"./map":80,"./naturalCmp":81,"./numberFormat":82,"./pad":83,"./pred":84,"./prune":85,"./quote":86,"./repeat":87,"./replaceAll":88,"./reverse":89,"./rpad":90,"./rtrim":91,"./slugify":92,"./splice":93,"./sprintf":94,"./startsWith":95,"./strLeft":96,"./strLeftBack":97,"./strRight":98,"./strRightBack":99,"./stripTags":100,"./succ":101,"./surround":102,"./swapCase":103,"./titleize":104,"./toBoolean":105,"./toNumber":106,"./toSentence":107,"./toSentenceSerial":108,"./trim":109,"./truncate":110,"./underscored":111,"./unescapeHTML":112,"./unquote":113,"./vsprintf":114,"./words":115,"./wrap":116}],72:[function(require,module,exports){
+},{"./camelize":49,"./capitalize":50,"./chars":51,"./chop":52,"./classify":53,"./clean":54,"./cleanDiacritics":55,"./count":56,"./dasherize":57,"./decapitalize":58,"./dedent":59,"./endsWith":60,"./escapeHTML":61,"./exports":62,"./helper/escapeRegExp":66,"./humanize":71,"./include":72,"./insert":74,"./isBlank":75,"./join":76,"./levenshtein":77,"./lines":78,"./lpad":79,"./lrpad":80,"./ltrim":81,"./map":82,"./naturalCmp":83,"./numberFormat":84,"./pad":85,"./pred":86,"./prune":87,"./quote":88,"./repeat":89,"./replaceAll":90,"./reverse":91,"./rpad":92,"./rtrim":93,"./slugify":94,"./splice":95,"./sprintf":96,"./startsWith":97,"./strLeft":98,"./strLeftBack":99,"./strRight":100,"./strRightBack":101,"./stripTags":102,"./succ":103,"./surround":104,"./swapCase":105,"./titleize":106,"./toBoolean":107,"./toNumber":108,"./toSentence":109,"./toSentenceSerial":110,"./trim":111,"./truncate":112,"./underscored":113,"./unescapeHTML":114,"./unquote":115,"./vsprintf":116,"./words":117,"./wrap":118}],74:[function(require,module,exports){
 var splice = require('./splice');
 
 module.exports = function insert(str, i, substr) {
   return splice(str, i, 0, substr);
 };
 
-},{"./splice":93}],73:[function(require,module,exports){
+},{"./splice":95}],75:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function isBlank(str) {
   return (/^\s*$/).test(makeString(str));
 };
 
-},{"./helper/makeString":66}],74:[function(require,module,exports){
+},{"./helper/makeString":68}],76:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var slice = [].slice;
 
@@ -25514,7 +25511,7 @@ module.exports = function join() {
   return args.join(makeString(separator));
 };
 
-},{"./helper/makeString":66}],75:[function(require,module,exports){
+},{"./helper/makeString":68}],77:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 /**
@@ -25568,27 +25565,27 @@ module.exports = function levenshtein(str1, str2) {
   return nextCol;
 };
 
-},{"./helper/makeString":66}],76:[function(require,module,exports){
+},{"./helper/makeString":68}],78:[function(require,module,exports){
 module.exports = function lines(str) {
   if (str == null) return [];
   return String(str).split(/\r\n?|\n/);
 };
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lpad(str, length, padStr) {
   return pad(str, length, padStr);
 };
 
-},{"./pad":83}],78:[function(require,module,exports){
+},{"./pad":85}],80:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function lrpad(str, length, padStr) {
   return pad(str, length, padStr, 'both');
 };
 
-},{"./pad":83}],79:[function(require,module,exports){
+},{"./pad":85}],81:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimLeft = String.prototype.trimLeft;
@@ -25600,7 +25597,7 @@ module.exports = function ltrim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],80:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":64,"./helper/makeString":68}],82:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function(str, callback) {
@@ -25611,7 +25608,7 @@ module.exports = function(str, callback) {
   return str.replace(/./g, callback);
 };
 
-},{"./helper/makeString":66}],81:[function(require,module,exports){
+},{"./helper/makeString":68}],83:[function(require,module,exports){
 module.exports = function naturalCmp(str1, str2) {
   if (str1 == str2) return 0;
   if (!str1) return -1;
@@ -25642,7 +25639,7 @@ module.exports = function naturalCmp(str1, str2) {
   return str1 < str2 ? -1 : 1;
 };
 
-},{}],82:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = function numberFormat(number, dec, dsep, tsep) {
   if (isNaN(number) || number == null) return '';
 
@@ -25656,7 +25653,7 @@ module.exports = function numberFormat(number, dec, dsep, tsep) {
   return fnums.replace(/(\d)(?=(?:\d{3})+$)/g, '$1' + tsep) + decimals;
 };
 
-},{}],83:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -25684,14 +25681,14 @@ module.exports = function pad(str, length, padStr, type) {
   }
 };
 
-},{"./helper/makeString":66,"./helper/strRepeat":67}],84:[function(require,module,exports){
+},{"./helper/makeString":68,"./helper/strRepeat":69}],86:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, -1);
 };
 
-},{"./helper/adjacent":61}],85:[function(require,module,exports){
+},{"./helper/adjacent":63}],87:[function(require,module,exports){
 /**
  * _s.prune: a more elegant version of truncate
  * prune extra chars, never leaving a half-chopped word.
@@ -25720,14 +25717,14 @@ module.exports = function prune(str, length, pruneStr) {
   return (template + pruneStr).length > str.length ? str : str.slice(0, template.length) + pruneStr;
 };
 
-},{"./helper/makeString":66,"./rtrim":91}],86:[function(require,module,exports){
+},{"./helper/makeString":68,"./rtrim":93}],88:[function(require,module,exports){
 var surround = require('./surround');
 
 module.exports = function quote(str, quoteChar) {
   return surround(str, quoteChar || '"');
 };
 
-},{"./surround":102}],87:[function(require,module,exports){
+},{"./surround":104}],89:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var strRepeat = require('./helper/strRepeat');
 
@@ -25745,7 +25742,7 @@ module.exports = function repeat(str, qty, separator) {
   return repeat.join(separator);
 };
 
-},{"./helper/makeString":66,"./helper/strRepeat":67}],88:[function(require,module,exports){
+},{"./helper/makeString":68,"./helper/strRepeat":69}],90:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function replaceAll(str, find, replace, ignorecase) {
@@ -25755,21 +25752,21 @@ module.exports = function replaceAll(str, find, replace, ignorecase) {
   return makeString(str).replace(reg, replace);
 };
 
-},{"./helper/makeString":66}],89:[function(require,module,exports){
+},{"./helper/makeString":68}],91:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function reverse(str) {
   return chars(str).reverse().join('');
 };
 
-},{"./chars":49}],90:[function(require,module,exports){
+},{"./chars":51}],92:[function(require,module,exports){
 var pad = require('./pad');
 
 module.exports = function rpad(str, length, padStr) {
   return pad(str, length, padStr, 'right');
 };
 
-},{"./pad":83}],91:[function(require,module,exports){
+},{"./pad":85}],93:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrimRight = String.prototype.trimRight;
@@ -25781,7 +25778,7 @@ module.exports = function rtrim(str, characters) {
   return str.replace(new RegExp(characters + '+$'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],92:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":64,"./helper/makeString":68}],94:[function(require,module,exports){
 var trim = require('./trim');
 var dasherize = require('./dasherize');
 var cleanDiacritics = require('./cleanDiacritics');
@@ -25790,7 +25787,7 @@ module.exports = function slugify(str) {
   return trim(dasherize(cleanDiacritics(str).replace(/[^\w\s-]/g, '-').toLowerCase()), '-');
 };
 
-},{"./cleanDiacritics":53,"./dasherize":55,"./trim":109}],93:[function(require,module,exports){
+},{"./cleanDiacritics":55,"./dasherize":57,"./trim":111}],95:[function(require,module,exports){
 var chars = require('./chars');
 
 module.exports = function splice(str, i, howmany, substr) {
@@ -25799,13 +25796,13 @@ module.exports = function splice(str, i, howmany, substr) {
   return arr.join('');
 };
 
-},{"./chars":49}],94:[function(require,module,exports){
+},{"./chars":51}],96:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').sprintf,
   'sprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":46,"util-deprecate":118}],95:[function(require,module,exports){
+},{"sprintf-js":48,"util-deprecate":120}],97:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var toPositive = require('./helper/toPositive');
 
@@ -25816,7 +25813,7 @@ module.exports = function startsWith(str, starts, position) {
   return str.lastIndexOf(starts, position) === position;
 };
 
-},{"./helper/makeString":66,"./helper/toPositive":68}],96:[function(require,module,exports){
+},{"./helper/makeString":68,"./helper/toPositive":70}],98:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeft(str, sep) {
@@ -25826,7 +25823,7 @@ module.exports = function strLeft(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":66}],97:[function(require,module,exports){
+},{"./helper/makeString":68}],99:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strLeftBack(str, sep) {
@@ -25836,7 +25833,7 @@ module.exports = function strLeftBack(str, sep) {
   return~ pos ? str.slice(0, pos) : str;
 };
 
-},{"./helper/makeString":66}],98:[function(require,module,exports){
+},{"./helper/makeString":68}],100:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRight(str, sep) {
@@ -25846,7 +25843,7 @@ module.exports = function strRight(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":66}],99:[function(require,module,exports){
+},{"./helper/makeString":68}],101:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function strRightBack(str, sep) {
@@ -25856,26 +25853,26 @@ module.exports = function strRightBack(str, sep) {
   return~ pos ? str.slice(pos + sep.length, str.length) : str;
 };
 
-},{"./helper/makeString":66}],100:[function(require,module,exports){
+},{"./helper/makeString":68}],102:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function stripTags(str) {
   return makeString(str).replace(/<\/?[^>]+>/g, '');
 };
 
-},{"./helper/makeString":66}],101:[function(require,module,exports){
+},{"./helper/makeString":68}],103:[function(require,module,exports){
 var adjacent = require('./helper/adjacent');
 
 module.exports = function succ(str) {
   return adjacent(str, 1);
 };
 
-},{"./helper/adjacent":61}],102:[function(require,module,exports){
+},{"./helper/adjacent":63}],104:[function(require,module,exports){
 module.exports = function surround(str, wrapper) {
   return [wrapper, str, wrapper].join('');
 };
 
-},{}],103:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function swapCase(str) {
@@ -25884,7 +25881,7 @@ module.exports = function swapCase(str) {
   });
 };
 
-},{"./helper/makeString":66}],104:[function(require,module,exports){
+},{"./helper/makeString":68}],106:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function titleize(str) {
@@ -25893,7 +25890,7 @@ module.exports = function titleize(str) {
   });
 };
 
-},{"./helper/makeString":66}],105:[function(require,module,exports){
+},{"./helper/makeString":68}],107:[function(require,module,exports){
 var trim = require('./trim');
 
 function boolMatch(s, matchers) {
@@ -25915,14 +25912,14 @@ module.exports = function toBoolean(str, trueValues, falseValues) {
   if (boolMatch(str, falseValues || ['false', '0'])) return false;
 };
 
-},{"./trim":109}],106:[function(require,module,exports){
+},{"./trim":111}],108:[function(require,module,exports){
 module.exports = function toNumber(num, precision) {
   if (num == null) return 0;
   var factor = Math.pow(10, isFinite(precision) ? precision : 0);
   return Math.round(num * factor) / factor;
 };
 
-},{}],107:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 var rtrim = require('./rtrim');
 
 module.exports = function toSentence(array, separator, lastSeparator, serial) {
@@ -25936,14 +25933,14 @@ module.exports = function toSentence(array, separator, lastSeparator, serial) {
   return a.length ? a.join(separator) + lastSeparator + lastMember : lastMember;
 };
 
-},{"./rtrim":91}],108:[function(require,module,exports){
+},{"./rtrim":93}],110:[function(require,module,exports){
 var toSentence = require('./toSentence');
 
 module.exports = function toSentenceSerial(array, sep, lastSep) {
   return toSentence(array, sep, lastSep, true);
 };
 
-},{"./toSentence":107}],109:[function(require,module,exports){
+},{"./toSentence":109}],111:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var defaultToWhiteSpace = require('./helper/defaultToWhiteSpace');
 var nativeTrim = String.prototype.trim;
@@ -25955,7 +25952,7 @@ module.exports = function trim(str, characters) {
   return str.replace(new RegExp('^' + characters + '+|' + characters + '+$', 'g'), '');
 };
 
-},{"./helper/defaultToWhiteSpace":62,"./helper/makeString":66}],110:[function(require,module,exports){
+},{"./helper/defaultToWhiteSpace":64,"./helper/makeString":68}],112:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 
 module.exports = function truncate(str, length, truncateStr) {
@@ -25965,14 +25962,14 @@ module.exports = function truncate(str, length, truncateStr) {
   return str.length > length ? str.slice(0, length) + truncateStr : str;
 };
 
-},{"./helper/makeString":66}],111:[function(require,module,exports){
+},{"./helper/makeString":68}],113:[function(require,module,exports){
 var trim = require('./trim');
 
 module.exports = function underscored(str) {
   return trim(str).replace(/([a-z\d])([A-Z]+)/g, '$1_$2').replace(/[-\s]+/g, '_').toLowerCase();
 };
 
-},{"./trim":109}],112:[function(require,module,exports){
+},{"./trim":111}],114:[function(require,module,exports){
 var makeString = require('./helper/makeString');
 var htmlEntities = require('./helper/htmlEntities');
 
@@ -25994,7 +25991,7 @@ module.exports = function unescapeHTML(str) {
   });
 };
 
-},{"./helper/htmlEntities":65,"./helper/makeString":66}],113:[function(require,module,exports){
+},{"./helper/htmlEntities":67,"./helper/makeString":68}],115:[function(require,module,exports){
 module.exports = function unquote(str, quoteChar) {
   quoteChar = quoteChar || '"';
   if (str[0] === quoteChar && str[str.length - 1] === quoteChar)
@@ -26002,13 +25999,13 @@ module.exports = function unquote(str, quoteChar) {
   else return str;
 };
 
-},{}],114:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 var deprecate = require('util-deprecate');
 
 module.exports = deprecate(require('sprintf-js').vsprintf,
   'vsprintf() will be removed in the next major release, use the sprintf-js package instead.');
 
-},{"sprintf-js":46,"util-deprecate":118}],115:[function(require,module,exports){
+},{"sprintf-js":48,"util-deprecate":120}],117:[function(require,module,exports){
 var isBlank = require('./isBlank');
 var trim = require('./trim');
 
@@ -26017,7 +26014,7 @@ module.exports = function words(str, delimiter) {
   return trim(str, delimiter).split(delimiter || /\s+/);
 };
 
-},{"./isBlank":73,"./trim":109}],116:[function(require,module,exports){
+},{"./isBlank":75,"./trim":111}],118:[function(require,module,exports){
 // Wrap
 // wraps a string by a certain width
 
@@ -26121,7 +26118,7 @@ module.exports = function wrap(str, options){
   }
 };
 
-},{"./helper/makeString":66}],117:[function(require,module,exports){
+},{"./helper/makeString":68}],119:[function(require,module,exports){
 //     Underscore.js 1.8.3
 //     http://underscorejs.org
 //     (c) 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
@@ -27671,7 +27668,7 @@ module.exports = function wrap(str, options){
   }
 }.call(this));
 
-},{}],118:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 (function (global){
 
 /**
@@ -27742,81 +27739,80 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],119:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 (function (global){
 
-; _ = global._ = require("underscore");
+;_ = global._ = require("underscore");
 Backbone = global.Backbone = require("backbone");
 Mousetrap = global.Mousetrap = require("mousetrap");
-; var __browserify_shim_require__=require;(function browserifyShim(module, define, require) {
-// https://github.com/closeio/backbone.mousetrap
-(function(_, Backbone, Mousetrap) {
-    'use strict';
+;var __browserify_shim_require__ = require;(function browserifyShim(module, define, require) {
+    // https://github.com/closeio/backbone.mousetrap
+    (function (_, Backbone, Mousetrap) {
+        'use strict';
 
-    var oldDelegateEvents = Backbone.View.prototype.delegateEvents;
-    var oldUndelegateEvents = Backbone.View.prototype.undelegateEvents;
-    var oldRemove = Backbone.View.prototype.remove;
+        var oldDelegateEvents = Backbone.View.prototype.delegateEvents;
+        var oldUndelegateEvents = Backbone.View.prototype.undelegateEvents;
+        var oldRemove = Backbone.View.prototype.remove;
 
-    // Map from keyboard commands to the View instance that most recently bound each one.
-    // so we can avoid accidentally unbinding keys when a view replaced a previous view's keybinding.
-    var lastBound = {};
+        // Map from keyboard commands to the View instance that most recently bound each one.
+        // so we can avoid accidentally unbinding keys when a view replaced a previous view's keybinding.
+        var lastBound = {};
 
-    _.extend(Backbone.View.prototype, {
+        _.extend(Backbone.View.prototype, {
 
-        keyboardEvents: {},
+            keyboardEvents: {},
 
-        bindKeyboardEvents: function(events) {
-            if (!(events || (events = _.result(this, 'keyboardEvents')))) return;
-            for (var key in events) {
-                var method = events[key];
-                if (!_.isFunction(method)) method = this[events[key]];
-                if (!method) throw new Error('Method "' + events[key] + '" does not exist');
-                method = _.bind(method, this);
+            bindKeyboardEvents: function (events) {
+                if (!(events || (events = _.result(this, 'keyboardEvents')))) return;
+                for (var key in events) {
+                    var method = events[key];
+                    if (!_.isFunction(method)) method = this[events[key]];
+                    if (!method) throw new Error('Method "' + events[key] + '" does not exist');
+                    method = _.bind(method, this);
 
-                // Use global-bind plugin when appropriate
-                // https://github.com/ccampbell/mousetrap/tree/master/plugins/global-bind
-                if ('bindGlobal' in Mousetrap && (key.indexOf('mod') !== -1 || key.indexOf('command') !== -1 || key.indexOf('ctrl') !== -1)) {
-                    Mousetrap.bindGlobal(key, method);
-                } else {
-                    Mousetrap.bind(key, method);
+                    // Use global-bind plugin when appropriate
+                    // https://github.com/ccampbell/mousetrap/tree/master/plugins/global-bind
+                    if ('bindGlobal' in Mousetrap && (key.indexOf('mod') !== -1 || key.indexOf('command') !== -1 || key.indexOf('ctrl') !== -1)) {
+                        Mousetrap.bindGlobal(key, method);
+                    } else {
+                        Mousetrap.bind(key, method);
+                    }
+                    lastBound[key] = this;
                 }
-                lastBound[key] = this;
-            }
-            return this;
-        },
+                return this;
+            },
 
-        unbindKeyboardEvents: function() {
-            for (var keys in this.keyboardEvents) {
-                if (lastBound[keys] === this) {
-                    Mousetrap.unbind(keys);
-                    delete lastBound[keys];
+            unbindKeyboardEvents: function () {
+                for (var keys in this.keyboardEvents) {
+                    if (lastBound[keys] === this) {
+                        Mousetrap.unbind(keys);
+                        delete lastBound[keys];
+                    }
                 }
+                return this;
+            },
+
+            delegateEvents: function () {
+                var ret = oldDelegateEvents.apply(this, arguments);
+                this.bindKeyboardEvents();
+                return ret;
+            },
+
+            undelegateEvents: function () {
+                var ret = oldUndelegateEvents.apply(this, arguments);
+                if (this.unbindKeyboardEvents) this.unbindKeyboardEvents();
+                return ret;
+            },
+
+            remove: function () {
+                var ret = oldRemove.apply(this, arguments);
+                if (this.unbindKeyboardEvents) this.unbindKeyboardEvents();
+                return ret;
             }
-            return this;
-        },
 
-        delegateEvents: function() {
-            var ret = oldDelegateEvents.apply(this, arguments);
-            this.bindKeyboardEvents();
-            return ret;
-        },
-
-        undelegateEvents: function() {
-            var ret = oldUndelegateEvents.apply(this, arguments);
-            if (this.unbindKeyboardEvents) this.unbindKeyboardEvents();
-            return ret;
-        },
-
-        remove: function() {
-            var ret = oldRemove.apply(this, arguments);
-            if (this.unbindKeyboardEvents) this.unbindKeyboardEvents();
-            return ret;
-        }
-
-    });
-})(_, Backbone, Mousetrap);
-
+        });
+    })(_, Backbone, Mousetrap);
 }).call(global, module, undefined, undefined);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"backbone":34,"mousetrap":39,"underscore":117}]},{},[2]);
+},{"backbone":36,"mousetrap":41,"underscore":119}]},{},[2]);

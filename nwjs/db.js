@@ -103,6 +103,9 @@ DB.create = function(model, success, error){
         console.error(err);
         return error(err);
       }
+      //TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
+      console.info("Started processing transcription");
+      getTimeNow();
 
       // updating backbone with saved transcritpion, containing db id
       model.set(transcription);
@@ -153,6 +156,10 @@ DB.create = function(model, success, error){
               // saving current transcription
               trs.save(function(err) { 
                  model.set(trs);
+                 //TODO: add which transcription started done, title and id. eg trs.title, trs.id;
+                 console.info("done processing transcription");
+                 //TODO: could calculate difference between when started - when ended and say it took x long.
+                 getTimeNow();
                 if (err) console.error(err); 
               });
            
@@ -359,6 +366,22 @@ DB.delete = function(model, success, error) {
     });
   }
 };
+
+
+
+
+//helper function for debugging
+function getTimeNow(){
+  var now = new Date();
+  var resultSrt = ""+ now.getHours()+":"+ now.getMinutes()+"."+ now.getMilliseconds()+"_"+
+              now.getDate()+"-"+ now.getMonth()+"-"+  now.getFullYear();
+  // var result = {
+  //   string: resultSrt,
+  //   object: now
+  // };
+  console.info(resultSrt);          
+  // return result;
+}
 
 /**
  * @function

@@ -77,7 +77,7 @@ function makeLinvoCallback(success, error) {
       return error(err);
     }
     // return transcription collection
-    console.log("found",found);
+    // console.log("found",found);
     success(found);
   };
 }
@@ -103,6 +103,9 @@ DB.create = function(model, success, error){
         console.error(err);
         return error(err);
       }
+      //TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
+      console.info("Started processing transcription");
+      getTimeNow();
 
       // updating backbone with saved transcritpion, containing db id
       model.set(transcription);
@@ -123,51 +126,48 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
-        keys: window.IBMWatsonKeys,
+        keys: window.IBMWatsonKeys(),
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
         cbMetadata: function(respM) {
-          console.log("respM");
-          console.log(respM);
           // update current transcription with metadata data
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.debug('got metadata for transcription: ' + trs._id);
-            console.log(trs);
             trs.metadata = respM;
-            console.log("inside transcription find after assigning trs.to meta");
-            console.log(trs.metadata);
             // saving current transcription
             trs.save(function(err) { 
-              console.log("trs");
-              console.log(trs);
               if (err) console.error(err); 
             });
           });
         },
-        cbTranscription: function(respT) {
+        cbTranscription: function(respErr, respT) {
           // updating current transcription with transcription json.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.debug('got transcription json for transcription: ' + trs._id);
-            console.log(trs);
-            // updating transcription attributes with result
-            trs.audioFile = respT.audioFile;
-            trs.processedAudio = respT.processedAudio;
-            trs.text = respT.text;
-            trs.status = true;
-            // saving current transcription
-            trs.save(function(err) { 
-              console.warn("does the transcription contain the metadata");
-               console.warn(trs.metadata);
-               console.log(trs);
-               model.set(trs);
-
-              if (err) console.error(err); });
+            // updating transcription attributes with result         
+            if(respErr){
+              trs.status = null;
+              trs.error = respErr;
+              model.set(trs);
+            }else{
+              trs.audioFile = respT.audioFile;
+              trs.processedAudio = respT.processedAudio;
+              trs.text = respT.text;
+              trs.status = true;
+             }//else no error in transcription callback
+              // saving current transcription
+              trs.save(function(err) { 
+                 model.set(trs);
+                 //TODO: add which transcription started done, title and id. eg trs.title, trs.id;
+                 console.info("done processing transcription");
+                 //TODO: could calculate difference between when started - when ended and say it took x long.
+                 getTimeNow();
+                if (err) console.error(err); 
+              });
+           
           });
         },
         cbVideo: function(respV) {
           // updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.debug('got video webm back for transcription: ' + trs._id);
             // updating transcription attributes with result
             trs.videoOgg = respV.videoOgg;
             trs.processedVideo = respV.processedVideo;
@@ -179,8 +179,6 @@ DB.create = function(model, success, error){
 
     });
   }else if(model.constructor.modelType == 'paperedit'){
-    console.log("PAPEREDIT CREATE DB ", model );
-
     var newElementPaperedit = model.toJSON();
     // create transcription element to save in db
     var paperedit = new Paperedit(newElementPaperedit);
@@ -210,23 +208,19 @@ DB.create = function(model, success, error){
 DB.read = function(model, success, error) {
   // If a colleciton
   if (model.models) {
-    console.debug('DB.read', 'Collection', model.constructor.modelType);
     // for transcription model
     if (model.constructor.modelType === 'transcriptions') {
       // look in database
       Transcription.find({}, makeLinvoCallback(success, error));
     }else if(model.constructor.modelType === 'paperedits'){
-       console.log("PAPEREDIT READ DB ", model )
         Paperedit.find({}, makeLinvoCallback(success, error));
     }
   } else {
-    console.debug('DB.read', 'Model', model.constructor.modelType, model.get('_id'));
     // for transcription model
     if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
       Transcription.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }else if (model.constructor.modelType === 'paperedit'){
-       console.log("PAPEREDIT READ DB - singular", model )
         Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }
   }
@@ -241,7 +235,6 @@ DB.read = function(model, success, error) {
  * @returns {object} sucess callback with backbone model
  */
 DB.update = function(model, success, error) {
-  console.debug('DB.update', model.constructor.modelType);
   // for transcription model
   if (model.constructor.modelType == 'transcription') {
     // looks in database using transcription id
@@ -265,7 +258,6 @@ DB.update = function(model, success, error) {
       doc.save(makeLinvoCallback(success, error));
     });
   }else if (model.constructor.modelType == 'paperedit'){
-    console.log("PAPEREDIT UPDATE DB ", model );
       Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       // NOTE: rather then using update, which did not seemed to be optimised for speed.
@@ -289,7 +281,6 @@ DB.update = function(model, success, error) {
  * @returns {object} sucess callback with backbone model
  */
 DB.patch = function(model, success, error) {
-  console.debug('DB.patch', model.constructor.modelType);
   if (model.constructor.modelType == 'transcription') {
     Transcription.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
@@ -309,7 +300,6 @@ DB.patch = function(model, success, error) {
       doc.save(makeLinvoCallback(success, error));
     });
   }else if (model.constructor.modelType == 'paperedit'){
-    console.log("PAPEREDIT PATCH DB ", model );
      Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       doc.title               = model.attributes.title;
@@ -331,7 +321,6 @@ DB.patch = function(model, success, error) {
  * @returns {object} sucess callback with backbone model
  */
 DB.delete = function(model, success, error) {
-  console.debug('DB.delete', model.constructor.modelType);
   // /for transcription model
   if (model.constructor.modelType == 'transcription') {
     // looks in database using transcription id
@@ -356,12 +345,10 @@ DB.delete = function(model, success, error) {
           fs.unlinkSync(model.attributes.audioFile);
         }
         // returns sucess callback
-        console.debug('Deleted transcription ' + model.attributes._id);
         success(model);
       }
     });
   }else if (model.constructor.modelType == 'paperedit'){
-    console.log("PAPEREDIT DELETE DB ", model );
     Paperedit.remove({ _id: model.get('_id') }, {multi: false }, function (err, numRemoved) {
       if (err) {
         console.error(err);
@@ -374,12 +361,27 @@ DB.delete = function(model, success, error) {
         // removing media associated with transcription.
         // TODO: this only deletes the video if the video has done processing. think about refactoring so that attribute can be present before processing starts. As it is now this means incomplete vidoes are left in the folder if the transcription is deleted
         // returns sucess callback
-        console.debug('Deleted Paperedit ' + model.attributes._id);
         success(model);
       }
     });
   }
 };
+
+
+
+
+//helper function for debugging
+function getTimeNow(){
+  var now = new Date();
+  var resultSrt = ""+ now.getHours()+":"+ now.getMinutes()+"."+ now.getMilliseconds()+"_"+
+              now.getDate()+"-"+ now.getMonth()+"-"+  now.getFullYear();
+  // var result = {
+  //   string: resultSrt,
+  //   object: now
+  // };
+  console.info(resultSrt);          
+  // return result;
+}
 
 /**
  * @function
