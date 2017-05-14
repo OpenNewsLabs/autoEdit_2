@@ -1,5 +1,6 @@
 var fs = require('fs');
- if (typeof window.nw !== 'undefined') {
+
+if (typeof window.nw !== 'undefined') {
   var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
 }else{
   //not in nwjs 
