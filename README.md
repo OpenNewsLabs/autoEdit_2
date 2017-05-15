@@ -16,7 +16,7 @@ All you need to get started is IBM Watson API Blumix keys. [Check out the user m
 2. the user can make text selections 
 3. export those selections as a video sequence in the editing software of choice
 
-As of version `1.0.6` you can pull selections multiple transcriptions into a paperedit, see a video preview, and export as an EDL video sequence. [Check out the user manual for more on this](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/paperediting.html).
+As of version `1.0.6` you can pull selections from multiple transcriptions into a paperedit, see a video preview, and export as an EDL video sequence. [Check out the user manual for more on this](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/paperediting.html).
 
 It is built in node NWJS and backbone. 
 
