@@ -1132,7 +1132,7 @@ var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments
 with(obj||{}){
 __p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n<style media="screen">\n.highlighted {\n  background-color: yellow;\n\n}\n\n.highlighted-used {\n  background-color: #FFFF99;\n  /*FFFFCC*/\n}\n\n.transcript-n-text.row {\n  height: 70vh;\n  overflow: scroll;\n}\n\n.transcriptionsTabs{\n height: 90vh;\n overflow: scroll;\n}\n\n/*.video {\nheight: 20vh;\n}*/\n\n.embed-responsive-16by9 {\n  padding-bottom: 30%!important;\n}\n\n.syncPlayTest {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n\n/*Dragula style*/\n\n.gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n  -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n  width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n  height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, .5);\n  border-radius: 10px;\n  border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #ffffff;\n}\n\n</style>\n\n\n<div class="container-fluid">\n  <div class="row">\n    <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n      <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#paperedits">Paperedits</a></li>\n        <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice.   <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n\n            <a id="exportEdlJSONWithTitles" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL  JSON with titles\n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
+'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice.   <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
  for(var i =0; i<transcriptions.length;i++){ 
 __p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLink"><a  id="'+
 ((__t=( transcriptions[i]._id ))==null?'':__t)+
@@ -1590,7 +1590,6 @@ module.exports = Backbone.View.extend({
     'drop .deletePapercut': "deletePapercut",
     'click .deletePapercut': "deleteAllPapercuts",
     "click #exportEdlJSON": "exportEdlJSON",
-    "click #exportEdlJSONWithTitles": "exportEdlJSONWithTitles",
     "click #exportEdl": "exportEdl",
     "click .savePapercutsBtn": "savePapercuts",
     "click .playPapercutsBtn": "playPapercuts",
@@ -1773,16 +1772,24 @@ module.exports = Backbone.View.extend({
     return papereditJson;
   },
 
-  exportEdlJSONWithTitles: function () {
-    var papereditJson = this.makeEDLJSON(true);
-    var tmpPaperedit = JSON.stringify(papereditJson, null, "\t");
-    var jsonFileName = this.nameFileHelper(papereditJson.title + "_EDL", "json");
-    this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperedit, urlId: "#exportJsonEDL" });
-  },
+  //  exportEdlJSONWithTitles: function(){
+  //   var papereditJson=  this.makeEDLJSON(true);
+  //   var tmpPaperedit = JSON.stringify(papereditJson,null,"\t");
+  //   var jsonFileName = this.nameFileHelper(papereditJson.title+"_EDL","json");  
+  //   this.exportHelper({fileName: jsonFileName,fileContent: tmpPaperedit, urlId: "#exportJsonEDL"});
+  // },
 
   exportEdlJSON: function () {
-    var papereditJson = this.makeEDLJSON();
-    var tmpPaperedit = JSON.stringify(papereditJson, null, "\t");
+
+    // like this, model has also got the transcriptions attributes that are all the transcriptions in the project.
+    // can be a very big json. 
+    var papereditJson = {
+      title: this.model.attributes.title,
+      description: this.model.attributes.description,
+      events: this.model.attributes.events
+    }; //this.makeEDLJSON();
+
+    var tmpPaperedit = JSON.stringify(papereditJson, null, 2);
     var jsonFileName = this.nameFileHelper(papereditJson.title + "_EDL", "json");
     this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperedit, urlId: "#exportJsonEDL" });
   },
