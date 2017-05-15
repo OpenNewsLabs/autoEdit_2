@@ -42,7 +42,7 @@ npm install
 
 and then run the following comand to compile the js client side files with browserify and start nwjs. 
 
-````bash
+```bash
 npm start
 ```
 
