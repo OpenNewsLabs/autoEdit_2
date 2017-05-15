@@ -83,7 +83,7 @@ This is an open source project, in it's current version it was originally create
 
 This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues) or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
 
-If you are curious about [autoEdit "1" check this out](http://pietropassarelli.com/autoEdit.html).
+If you are curious about [whatever happened to autoEdit "1" check this out](http://pietropassarelli.com/autoEdit.html).
 
 <!-- 
 ## Contributors
