@@ -79,9 +79,9 @@ Is reccomended to use [`.eslintrc.json`](./.eslintrc.json) in your code editor o
 
 ## Open source 
 
-This is an open source project, in it's current version it was originally created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/){:target="_blank"} by [Pietro Passarelli](http://pietropassarelli.com){:target="_blank"} with the [Vox Media product team](http://product.voxmedia.com){:target="_blank"}. You can [contribute]({{site.github}}){:target="_blank"} and/or <a href="mailto:{{site.email}}?Subject=autoEdit%202%20question">propose ideas</a> you have for this project.
+This is an open source project, in it's current version it was originally created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/) by [Pietro Passarelli](http://pietropassarelli.com) with the [Vox Media product team](http://product.voxmedia.com). You can [contribute](https://github.com/OpenNewsLabs/autoEdit_2) and/or <a href="mailto:{{site.email}}?Subject=autoEdit%202%20question">propose ideas</a> you have for this project.
 
-This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues){:target="_blank"} or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
+This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues) or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
 
 If you are curious about [autoEdit "1" check this out](http://pietropassarelli.com/autoEdit.html).
 
