@@ -1,6 +1,6 @@
 {
   "name": "autoEdit2",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Text based video editing app",
   "main": "nwjs/index.html",
   "chromium-args": "--mixed-context",
@@ -116,8 +116,7 @@
   },
   "browser": {
     "bootstrap": "./node_modules/bootstrap/dist/js/bootstrap.js",
-    "backbone.mousetrap": "./vendor/backbone.mousetrap.js",
-    "videocompositor": "./vendor/videocompositor.js"
+    "backbone.mousetrap": "./vendor/backbone.mousetrap.js"
   },
   "browserify-shim": {
     "bootstrap": {

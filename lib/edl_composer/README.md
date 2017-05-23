@@ -5,20 +5,33 @@
 The EDL sequence should have the following attributes
 
 ```javascript
-var edlSq = {
+var edlSqDemo = {
     "title": "Demo Title of project",
+    //offset is optional default is "00:00:00:00"
     "events":  [
-      { "id":0,
-        "startTime": 30,
-        "endTime": 60,
+      { "id":1,
+        "startTime": 10,
+        "endTime": 20,
         "reelName":"SomeReelName",
         "clipName":"Something.mov"
+        "offset": "00:00:28:08",
+        "fps": 25
       },
       { "id":2,
-        "startTime": 40,
-        "endTime": 70,
+        "startTime": 45,
+        "endTime": 55,
         "reelName":"SomeOtherReelName",
+        "clipName":"SomethingElse.mov",
+        "offset": "00:00:28:08",
+        "fps": 29.97
+      },
+        { "id":2,
+        "startTime": 45,
+        "endTime": 55,
+        "reelName":"NA",
         "clipName":"SomethingElse.mov"
+        "offset": "00:00:28:08",
+        "fps": 24
       }
     ]
 }
