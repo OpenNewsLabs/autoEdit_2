@@ -27,19 +27,19 @@ A desktop app for OS X that given a video or audio file, returns a transcription
 ---
 
 ### User Manual  
-See the [user manual for]({{ site.baseurl }}/user_manual/usage.html) for a walkthrough on how to use it.
+See the [user manual for](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content) for a walkthrough on how to use it.
 
 ---
 
 ### How can I get started?
 
-1. [Setup Speech to Text service of choice]({{ site.baseurl }}/user_manual/setup.html){:target="_blank"} 
+1. [Setup Speech to Text service of choice](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html){:target="_blank"} 
 	-  IBM Watson STT Service.
 	-  Gentle offline Open source STT.
 <!-- find bluemix tutorial on IBM site -->
 2. [Download the last stable release of the Mac Os X app ]({{site.download}}){:target="_blank"}    
 <!--  -->
-3. [Check out the user manual for a more detailed tutorial]({{site.baseurl}}/user_manual/usage.html){:target="_blank"}   
+3. [Check out the user manual for a more detailed tutorial](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content){:target="_blank"}   
 
 ---
 
