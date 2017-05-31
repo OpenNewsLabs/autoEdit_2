@@ -10,7 +10,7 @@ All you need to get started is IBM Watson API Blumix keys. [Check out the user m
 
 ## Overview
 
-![Overview diagram ](/assets/0_diagram.png)
+![Overview diagram ](/assets/autoEdit_overview_diagram_1.0.7.png)
 
 1. It creates automatic transcription from a video or audio file
 2. the user can make text selections 
