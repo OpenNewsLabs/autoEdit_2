@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include header.html %}
+
+<body data-spy="scroll" data-offset="0" data-target="#navigation">
+
+	{% include navigation.html %}
+
+	<section id="home" name="home"></section>
+	<div id="headerwrap">
+		<div class="container">
+			<div class="row centered">
+				<div class="col-lg-12">
+					<h1><b>{{ site.title }}</b></h1>
+					<h3>{{ site.subtitle }}</h3>
+					<br>
+				</div>
+				<div class="col-lg-2">
+					<h5>Fast transcriptions</h5>
+					<p>Always in under 5 minutes.</p>
+					<img class="hidden-xs hidden-sm hidden-md" src="{{site.baseurl}}/img/arrow1.png">
+				</div>
+				<div class="col-lg-8">
+					<img class="img-responsive" src="{{site.baseurl}}/img/3_transcription.gif" alt="">
+				</div>
+				<div class="col-lg-2">
+					<br>
+					<img class="hidden-xs hidden-sm hidden-md" src="{{site.baseurl}}/img/arrow2.png">
+					<h5>Video editing</h5>
+					<p>Export text selections to video sequence.</p>
+				</div>
+			</div>
+		</div> <!--/ .container -->
+	</div><!--/ #headerwrap -->
+
+	<!-- News mentions links -->
+	<div class="container">
+		<div class="row">
+			<h3>As featured on</h3>
+			<div class="col-lg-4  text-center">
+				<a href="http://www.niemanlab.org/2016/10/try-out-this-open-source-tool-for-editing-video-and-audio-transcripts/" target="_blank">
+					<img src="{{ site.baseurl }}/img/press/niemanlab_logo.png">
+				</a>
+			</div>
+			<div class="col-lg-4 text-center">
+				<a href="https://www.journalism.co.uk/news/tool-for-journalists-autoedit-to-edit-videos-quicker-using-transcriptions/s2/a684359/" target="_blank">
+					<img src="{{ site.baseurl }}/img/press/jcu_logo.png">
+				</a>
+			</div>
+			<div class="col-lg-4 text-center">
+				<a href="https://www.rjionline.org/stories/fl171-ibm-watson-speech-to-text" target="_blank">
+					<img src="{{ site.baseurl }}/img/press/rij.png">
+				</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 text-center">
+				<a href="https://product.voxmedia.com/2016/11/22/13669486/faster-video-editing" target="_blank">
+					<img src="{{ site.baseurl }}/img/press/vox_product_logo.png">
+				</a>
+			</div>
+			<div class="col-lg-6 text-center">
+				<a href="https://source.opennews.org/en-US/articles/video-editing-made-better-introducing-autoedit" target="_blank">
+					<img src="{{ site.baseurl }}/img/press/source.png">
+				</a>
+			</div>
+		</div>
+	</div>
+	<!-- end news mentiones links -->
+	<section id="features" ></section>
+	<div class="container">
+		<div class="row">
+
+			{{ content }}
+
+		</div>
+	</div>
+
+	<div id="c">
+		<div class="container">
+			<div class="row">
+				<div id="footer" class="col-sm-12">
+					<!-- <p>Created by <a href="http://www.blacktie.co">BLACKTIE.CO</a></p> -->
+					{% include footer.html %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="assets/js/bootstrap.js"></script>
+</body>
+</html>

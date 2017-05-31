@@ -10,12 +10,11 @@ All you need to get started is IBM Watson API Blumix keys. [Check out the user m
 
 ## Overview
 
-![Overview diagram ](/docs/img/tutorial/0_diagram.png)
+![Overview diagram ](/assets/0_diagram.png)
 
 1. It creates automatic transcription from a video or audio file
 2. the user can make text selections 
 3. export those selections as a video sequence in the editing software of choice
-
 
 
 It is built in node NWJS and backbone. 
@@ -28,9 +27,9 @@ The app uses IBM watson(free trial), as well as Gentle and pocketsphinx open sou
 The user can then select text and export a video sequence to the video editing software of choice.
 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how 
-[the demo](https://opennewslabs.github.io/autoEdit_2/public/demo/frontEnd/index.html) is run, with an hard coded sample data in `backbone.sync`.
+[the demo](https://opennewslabs.github.io/autoEdit_2/demo/index.html) is run, with an hard coded sample data in `backbone.sync`.
 
-For more info [check out the documentation](https://pietropassarelli.gitbooks.io/autoedit-2-r-d-documentation-for-developers/content).
+For more info [check out the documentation](https://pietropassarelli.gitbooks.io/autoedit-2-documentation/content/).
 
 ### -->Papereditig<--
 
@@ -63,6 +62,13 @@ npm run build
 
 This install dependencies, runs browserify on the client side js code, builds the nwjs application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. 
 
+<!-- Build for Linux 
+
+https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+
+Build for windows 
+-->
+
 
 
 ## Documentation 
@@ -85,9 +91,15 @@ Is reccomended to use [`.eslintrc.json`](./.eslintrc.json) in your code editor o
 
 This is an open source project, in it's current version it was originally created as part of a [Knight-Mozilla fellowship](https://opennews.org/what/fellowships/) by [Pietro Passarelli](http://pietropassarelli.com) with the [Vox Media product team](http://product.voxmedia.com). You can [contribute](https://github.com/OpenNewsLabs/autoEdit_2) and/or <a href="mailto:{{site.email}}?Subject=autoEdit%202%20question">propose ideas</a> you have for this project.
 
-This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues) or<a href="mailto:{{site.email}}?Subject=autoEdit%20bug"> get in touch</a> .
+This tool is under development and you may find some bugs. In that case we will appreciate if you can [fill an issue](https://github.com/OpenNewsLabs/autoEdit_2/issues) or  <a href="mailto:pietro@autoEdit.io?Subject=Hello" target="_top">get in touch</a>.
 
 If you are curious about [whatever happened to autoEdit "1" check this out](http://pietropassarelli.com/autoEdit.html).
+
+## Support the project 
+
+Sign up to the [mailing list](http://eepurl.com/cMzwSX), follow on [twitter](http://twitter.com/autoEdit2) and/or [facebook](https://www.facebook.com/autoEdit.io/) to keep up to date with the latest releases. Say hi at <a href="mailto:pietro@autoEdit.io?Subject=Hello" target="_top">pietro@autoEdit.io</a>, always curious to hear what autoEdit is helping you with.
+
+[autoEdit.io](http://www.autoEdit.io) it's free and open source. Free as in free speech as well as in free beer. [Help support the autoEdit project to keep it that way](https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true). Support will go towards fixing bugs, adding features, provide support for users etc.
 
 <!-- 
 ## Contributors
@@ -109,3 +121,67 @@ List of contributors that have helped shaped this version of autoEdit by contrib
 
 - [Pietro Passarelli](http://github.com/pietrop)
 - [Andrea Baldo](https://twitter.com/and_baldo)
+
+
+<!--
+TODO: move in documentation appendix. 
+
+## packaging ffmpeg and ffprobe in autoEdit
+
+using modified version of static ffmpeg /ffprobe lib.
+
+require in config.js and make them avaible to rest of app from there.  eg require config to get the path.
+
+static ff has advantage that packages cross platform bin of ffmpeg. which means you could be developeing this app on mac, linux and windows, without ffmpeg on your machine and could still be developing for autoEdit. 
+
+in production, we want to remove the versions we don't need. 
+we use the files notation for electron-builder to specify in package.json 
+
+that all apps need to have these files. (this might not be needed tho as they are added by default?)
+Making use of ${os} and ${arch} var provided.
+
+```json
+"node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+"node_modules/ffmpeg-static/index.js",
+"node_modules/ffmpeg-static/package.json",
+"node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
+"node_modules/ffprobe-static/index.js",
+"node_modules/ffprobe-static/package.json"
+ ```
+
+then for each os specific settings, eg for mac we do this, remove the folders for the opposite os. 
+
+```json
+"mac": {
+      "category": "public.app-category.productivity",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}"
+      ]
+    },
+```
+
+To make use of use of ${os} and ${arch} var provided by electron-builder, we modified the ff github package
+
+- renames `win32` to `win`. win32 is how the `os` module detects it, but for the folder structure to be inferable programmaticly by electron-builder files settings, we need to change the name.
+- Similarly for os x, change folder to `mac` rather then `darwin`.
+- 
+
+Then  in index.js we adjust the output of `os` module to meet electron-builder needs
+
+```
+if(platform == "darwin"){
+	platform = "mac";
+}else if(platform == "win32"){
+	platform = "win";
+}
+```
+and change rest of code accordingly.
+
+
+
+Unrelated, but also added `browser` in list of platform, because when config, that requries ff path is loaded, if it is detected in browser mode. TODO: test not requirins config.js in browserify, removing this `!==browser` and see what happens.
+
+-->

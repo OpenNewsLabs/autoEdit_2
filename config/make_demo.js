@@ -4,8 +4,10 @@
 */
 
 var copydir = require('copy-dir');
+
+var destFolder = './project_page/demo';
  
-copydir('./nwjs', './docs/public/demo', function(err){
+copydir('./electron', destFolder, function(err){
   if(err){
     console.log(err);
   } else {

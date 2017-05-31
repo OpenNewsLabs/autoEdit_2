@@ -1,65 +1,124 @@
 {
-  "name": "autoEdit2",
+  "name": "autoedittest",
+  "productName": "autoedit_test",
   "version": "1.0.7",
-  "description": "Text based video editing app",
-  "main": "nwjs/index.html",
-  "chromium-args": "--mixed-context",
-  "dom_storage_quota": 5,
-  "window": {
-    "show": true,
-    "frame": true,
-    "toolbar": true,
-    "always_on_top": false,
-    "fullscreen": false,
-    "show_in_taskbar": true,
-    "transparent": false,
-    "icon": "assets/nw.icns",
-    "width": 1000,
-    "height": 670,
-    "position": "mouse",
-    "min_width": 1000,
-    "min_height": 500
-  },
-  "platformOverrides": {
-    "win": {
-      "window": {
-        "toolbar": false
-      }
-    },
-    "osx": {
-      "window": {
-        "toolbar": false
-      }
-    },
-    "linux": {
-      "window": {
-        "toolbar": false
-      }
-    }
-  },
+  "description": "Fast text based video editing",
+  "main": "electron/main.js",
   "scripts": {
     "test": "jasmine",
-    "watch_js": "watchify --debug lib/app/app.js --verbose --poll -o nwjs/app.js",
-    "nwjs": "nw",
-    "make_js": "browserify lib/app/app.js > nwjs/app.js",
+    "electron": "electron .",
+    "make_js": "browserify lib/app/app.js > electron/app.js",
+    "start": "npm run make_js && npm run electron",
+ 
+    "pack": "build --dir",
+    "pack:mac": "build --dir --mac --x64",
+    "pack:linux": "build --dir --linux --x64",
+    "pack:win": "build --dir --win --x64",
+    "build": "build",
+    "build:mac": "build --mac --x64",
+    "build:mac_app_store": "echo 'not currently avaibale'",
+    "build:win": "build --win nsis-web --x64",
+    "build:linux": "build --linux  --x64",
 
-    "page": "jekyll serve --source ./docs --destination ./docs/_site --watch",
-    "docs": "docco -o ./docs/docco_docs --title 'autoEdit 2 Documentation' ./nwjs/*.js ./lib/**/*.js",
-    "jsdoc": "jsdoc *.js  -c ./config/jsdoc_conf.json",
+    "publish:github": "build  --publish always --draft true",
+
     "make_demo": "npm run make_js && node ./config/make_demo.js",
-    
-    "make_nw": "node build.js",
-    "make_dmg": "appdmg appdmg.json ~/Desktop/autoEdit2_installer.dmg",
-    "build": "npm install && npm run make_js && npm run make_nw && npm run make_dmg",
-    
-    "start": "npm run make_js && npm run nwjs"
+    "preview_page": "npm run make_demo && jekyll serve  --source project_page  --destination docs",
+    "preview_page_no_demo_reload": "jekyll serve  --source project_page  --destination docs",
+    "make_page": "npm run make_demo && jekyll  build --source project_page --destination docs"
+  },
+    "build": {
+    "appId": "org.autoEdit2.autoEdit2-electron",
+    "asar": false,
+    "files": [
+      "**/*",
+      "!config/",
+      "!spec/",
+      "!project_page/",
+      "!vendor/",
+      "!docs/",
+      "!dist/",
+      "!assets/",
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json",
+      "node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffprobe-static/index.js",
+      "node_modules/ffprobe-static/package.json"
+    ],
+    "copyright": "2017 Pietro Passarelli",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}"
+      ]
+    },
+    "linux": {
+      "category": "",
+      "packageCategory": "GNOME;GTK;VideoEditing;PaperEditing;Transcriptions",
+      "description": "autoEdit2 Desktop Client for Linux",
+      "target": [
+        "deb",
+        "zip",
+        "AppImage"
+      ],
+      "maintainer": "Pietro Passarelli <pietro.passarelli@gmail.com>",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/linux/ia32${/*}",
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/mac${/*}",
+        "!node_modules/ffprobe-static/bin/linux/ia32${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/mac${/*}"
+      ]
+    },
+    "deb": {
+      "synopsis": "autoEdit2 Desktop App"
+    },
+    "dmg": {
+      "background": "build/background.png",
+      "icon": "build/icon.icns",
+      "iconSize": 128,
+      "contents": [
+        {
+          "x": 448,
+          "y": 340,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 192,
+          "y": 340,
+          "type": "file"
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico",
+        "files": [
+        "node_modules/ffmpeg-static/bin/win/${arch}/ffmpeg",
+        "!node_modules/ffmpeg-static/bin/win/ia32${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffmpeg-static/bin/mac${/*}"
+      ]
+    },
+    "nsis": {
+      "perMachine": true,
+      "oneClick": false
+    }
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "ISC",
   "dependencies": {
     "backbone": "^1.3.3",
     "bootstrap": "^3.3.7",
-    "browserify-shim": "^3.8.12",
+    "electron-debug": "^1.1.0",
+    "ffmpeg-static": "git@github.com:pietrop/ffmpeg-static.git",
+    "ffprobe-static": "git@github.com:pietrop/ffprobe-static.git",
     "file-saver": "^1.3.3",
     "fluent-ffmpeg": "^2.1.0",
     "jquery": "1.12.4",
@@ -70,10 +129,9 @@
     "mousetrap": "^1.6.0",
     "node-timecodes": "^2.4.1",
     "node-underscorify": "0.0.14",
-    "nw": "0.12.3",
     "path": "^0.12.7",
+    "request": "^2.81.0",
     "require-globify": "^1.4.1",
-    "sortablejs": "^1.5.1",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4",
     "watson-developer-cloud": "2.4.1"
@@ -82,11 +140,14 @@
     "appdmg": "^0.4.5",
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
+    "browserify-shim": "^3.8.12",
     "copy-dir": "^0.3.0",
     "docco": "^0.7.0",
+    "electron": "^1.6.10",
+    "electron-builder": "^18.1.1",
+    "electron-packager": "^8.7.0",
     "jasmine": "^2.5.2",
     "jsdoc": "^3.4.1",
-    "nw-builder": "^2.2.6",
     "watchify": "^3.7.0"
   },
   "repository": {
