@@ -1151,15 +1151,15 @@ var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='   <div class="container">\n\n    <!-- Demo notice  -->\n  ';
+__p+='<div class="container">\n  <!-- Demo notice  -->\n  ';
  if(!window.frontEndEnviromentNWJS ){
-__p+='\n   <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot create a Paperedit</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n     To view demo/example Paperedits <a href="/demo/#paperedits"> click here.</a><br>\n     To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n  </div>  \n ';
+__p+='\n  <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot create a Paperedit</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n    To view demo/example Paperedits <a href="/demo/#paperedits"> click here.</a><br>\n    To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n  </div>  \n  ';
  }
-__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Paperedits</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n      <p>Chose a title and description for your paper-edit. </p>\n      <p>Transcriptions that you have previously added in autoEdit will be available in the next view once you click save.</p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Paperedit</label>\n          <input type="text" name="title" value="'+
+__p+='\n  <!-- end demo notice  -->\n\n  <!-- Breadcrumb  -->\n  <ol class="breadcrumb">\n    <li><a href="#transcriptions">Paperedits</a></li>\n    <li class="active">New </a></li>\n  </ol>\n  <!--  end Breadcrumb -->\n  <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n        <p>Chose a title and description for your paper-edit. </p>\n        <p>Transcriptions that you have previously added in autoEdit will be available in the next view once you click save.</p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Paperedit</label>\n          <input type="text" name="title" value="'+
 ((__t=( title ))==null?'':__t)+
 '" class="form-control" id="title" placeholder="e.g. Documentary about Facebook ">\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Paperedit for documentary on Facebook">'+
 ((__t=( description ))==null?'':__t)+
-'</textarea>\n        </div>\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n    <div class="row">\n        <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Paperedit</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Paperedit</a>\n          <a id="cancel" class="btn btn-default" href="#paperedits">Cancel</a>\n      </div><!-- ./col -->\n      </div><!-- ./row -->\n  </form>\n  </div>\n\n';
+'</textarea>\n        </div>\n      </div><!-- ./col -->\n\n      <!-- Save  -->\n    </div><!-- ./row -->\n    <div class="row">\n      <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">\n       <!--  <a id="submitBtn" class="btn btn-primary">Save Paperedit</a> -->\n       <a id="submitBtn" class="btn btn-primary">Save Paperedit</a>\n       <a id="cancel" class="btn btn-default" href="#paperedits">Cancel</a>\n     </div><!-- ./col -->\n   </div><!-- ./row -->\n </form>\n</div>\n\n';
 }
 return __p;
 };
@@ -7847,14 +7847,20 @@ var os = require('os')
 var path = require('path')
 
 var platform = os.platform()
+//patch for compatibilit with electron-builder, for smart built process.
+if(platform == "darwin"){
+  platform = "mac";
+}else if(platform == "win32"){
+  platform = "win";
+}
 //adding browser, for use case when module is bundled using browserify. and added to html using src.
-if (platform !== 'linux' && platform !== 'darwin' && platform !== 'win32' && platform !=="browser") {
+if (platform !== 'linux' && platform !== 'mac' && platform !== 'win' && platform !=="browser") {
   console.error('Unsupported platform.', platform);
   process.exit(1)
 }
 
 var arch = os.arch()
-if (platform === 'darwin' && arch !== 'x64') {
+if (platform === 'mac' && arch !== 'x64') {
   console.error('Unsupported architecture.')
   process.exit(1)
 }
@@ -7864,7 +7870,7 @@ var ffmpegPath = path.join(
   'bin',
   platform,
   arch,
-  platform === 'win32' ? 'ffmpeg.exe' : 'ffmpeg'
+  platform === 'win' ? 'ffmpeg.exe' : 'ffmpeg'
 )
 
 exports.path = ffmpegPath;
@@ -7872,23 +7878,26 @@ exports.path = ffmpegPath;
 }).call(this,require('_process'),"/node_modules/ffmpeg-static")
 },{"_process":51,"os":49,"path":50}],40:[function(require,module,exports){
 (function (process,__dirname){
-//
-// With credits to https://github.com/eugeneware/ffmpeg-static
-//
-var os = require('os');
-var path = require('path');
+var os = require('os')
+var path = require('path')
 
-var platform = os.platform();
+var platform = os.platform()
+//patch for compatibilit with electron-builder, for smart built process.
+if(platform == "darwin"){
+	platform = "mac";
+}else if(platform == "win32"){
+	platform = "win";
+}
 //adding browser, for use case when module is bundled using browserify. and added to html using src.
-if (platform !== 'darwin' && platform !=='linux' && platform !== 'win32' && platform !=="browser") {
-  console.error('Unsupported platform.');
-  process.exit(1);
+if (platform !== 'linux' && platform !== 'mac' && platform !== 'win' && platform !=="browser") {
+  console.error('Unsupported platform.', platform);
+  process.exit(1)
 }
 
-var arch = os.arch();
-if (platform === 'darwin' && arch !== 'x64') {
-  console.error('Unsupported architecture.');
-  process.exit(1);
+var arch = os.arch()
+if (platform === 'mac' && arch !== 'x64') {
+  console.error('Unsupported architecture.')
+  process.exit(1)
 }
 
 var ffprobePath = path.join(
@@ -7896,8 +7905,8 @@ var ffprobePath = path.join(
   'bin',
   platform,
   arch,
-  platform === 'win32' ? 'ffprobe.exe' : 'ffprobe'
-);
+  platform === 'win' ? 'ffprobe.exe' : 'ffprobe'
+)
 
 exports.path = ffprobePath;
 

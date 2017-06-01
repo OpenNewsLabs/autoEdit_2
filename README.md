@@ -1,6 +1,6 @@
 # autoEdit V2
 
-autoEdit 2 is a fast text based video editing, node NWJS, Os X desktop app, with Backbone front end. For making video production faster, easier and more accessible.
+autoEdit 2 is a fast text based video editing, node electrong, Os X desktop app, with Backbone front end. For making video production faster, easier and more accessible.
 
 ## Ready to use release 
 
@@ -10,18 +10,20 @@ All you need to get started is IBM Watson API Blumix keys. [Check out the user m
 
 ## Overview
 
-![Overview diagram ](/assets/autoEdit_overview_diagram_1.0.7.png)
 
 1. It creates automatic transcription from a video or audio file
 2. the user can make text selections 
 3. export those selections as a video sequence in the editing software of choice
 
 
-It is built in node NWJS and backbone. 
+![Overview diagram ](/assets/autoEdit_overview_diagram_1.0.7.png)
+
+
+It is built in node electron and backbone. 
 
 <!-- ![Transcription ](/docs/img/gif/3_transcription.gif) -->
 
-Watch [video overview on youtube](http://www.youtube.com/watch?v=4z143-nJlzs).
+Watch [video overview of the transcription part on youtube](http://www.youtube.com/watch?v=4z143-nJlzs).
 
 The app uses IBM watson(free trial), as well as Gentle and pocketsphinx open source Speech To Text systems to generate transcription.
 The user can then select text and export a video sequence to the video editing software of choice.
@@ -35,6 +37,9 @@ For more info [check out the documentation](https://pietropassarelli.gitbooks.io
 
 As of version `1.0.6` you can pull selections from multiple transcriptions into a paperedit, see a video preview, and export as an EDL video sequence. [Check out the user manual for more on this](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/paperediting.html).
 
+### --> Move to electron<--
+As of version `1.0.7` (soon to be released) moved from nwjs to electron to package the app for desktop. This will allow to do a leap forward in certain areas of the roadmap. 
+
 ## Development
 
 ### Launching the app
@@ -43,7 +48,7 @@ As of version `1.0.6` you can pull selections from multiple transcriptions into 
 npm install
 ``` 
 
-and then run the following comand to compile the js client side files with browserify and start nwjs. 
+and then run the following comand to compile the js client side files with browserify and start electron. 
 
 ```bash
 npm start
@@ -57,10 +62,10 @@ Building and packaging the app, can be done with one comand.
 
 
 ```bash
-npm run build
+npm run build:mac
 ```
 
-This install dependencies, runs browserify on the client side js code, builds the nwjs application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. 
+This install dependencies, runs browserify on the client side js code, builds the electron application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. 
 
 <!-- Build for Linux 
 
@@ -101,12 +106,11 @@ Sign up to the [mailing list](http://eepurl.com/cMzwSX), follow on [twitter](htt
 
 [autoEdit.io](http://www.autoEdit.io) it's free and open source. Free as in free speech as well as in free beer. [Help support the autoEdit project to keep it that way](https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true). Support will go towards fixing bugs, adding features, provide support for users etc.
 
-<!-- 
+ 
 ## Contributors
 
 List of contributors that have helped shaped this version of autoEdit by contributing and/or advising on this or previous versions of autoEdit, in no particular order.
 
-- [Pietro Passarelli](http://github.com/pietrop)
 - [Andrea Baldo](https://twitter.com/and_baldo)
 - [Dan Zajdband](https://twitter.com/impronunciable)
 - [Rosario Rascuna](https://twitter.com/_sarhus)
@@ -114,8 +118,7 @@ List of contributors that have helped shaped this version of autoEdit by contrib
 - [Sanette Tanaka](https://twitter.com/ssktanaka)
 - [Ryan Mark](https://twitter.com/ryanmark)
 - [Katie O'Dowd]()
-- [Lauren Rabaino](https://twitter.com/laurenrabaino) -->
-
+- [Pietro Passarelli](http://github.com/pietrop)
 
 ## Active contributors 
 
@@ -123,65 +126,4 @@ List of contributors that have helped shaped this version of autoEdit by contrib
 - [Andrea Baldo](https://twitter.com/and_baldo)
 
 
-<!--
-TODO: move in documentation appendix. 
 
-## packaging ffmpeg and ffprobe in autoEdit
-
-using modified version of static ffmpeg /ffprobe lib.
-
-require in config.js and make them avaible to rest of app from there.  eg require config to get the path.
-
-static ff has advantage that packages cross platform bin of ffmpeg. which means you could be developeing this app on mac, linux and windows, without ffmpeg on your machine and could still be developing for autoEdit. 
-
-in production, we want to remove the versions we don't need. 
-we use the files notation for electron-builder to specify in package.json 
-
-that all apps need to have these files. (this might not be needed tho as they are added by default?)
-Making use of ${os} and ${arch} var provided.
-
-```json
-"node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
-"node_modules/ffmpeg-static/index.js",
-"node_modules/ffmpeg-static/package.json",
-"node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
-"node_modules/ffprobe-static/index.js",
-"node_modules/ffprobe-static/package.json"
- ```
-
-then for each os specific settings, eg for mac we do this, remove the folders for the opposite os. 
-
-```json
-"mac": {
-      "category": "public.app-category.productivity",
-      "files": [
-        "!node_modules/ffmpeg-static/bin/win${/*}",
-        "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffprobe-static/bin/win${/*}",
-        "!node_modules/ffprobe-static/bin/linux${/*}"
-      ]
-    },
-```
-
-To make use of use of ${os} and ${arch} var provided by electron-builder, we modified the ff github package
-
-- renames `win32` to `win`. win32 is how the `os` module detects it, but for the folder structure to be inferable programmaticly by electron-builder files settings, we need to change the name.
-- Similarly for os x, change folder to `mac` rather then `darwin`.
-- 
-
-Then  in index.js we adjust the output of `os` module to meet electron-builder needs
-
-```
-if(platform == "darwin"){
-	platform = "mac";
-}else if(platform == "win32"){
-	platform = "win";
-}
-```
-and change rest of code accordingly.
-
-
-
-Unrelated, but also added `browser` in list of platform, because when config, that requries ff path is loaded, if it is detected in browser mode. TODO: test not requirins config.js in browserify, removing this `!==browser` and see what happens.
-
--->
