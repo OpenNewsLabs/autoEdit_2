@@ -65,7 +65,7 @@ Building and packaging the app, can be done with one comand.
 npm run build:mac
 ```
 
-This install dependencies, runs browserify on the client side js code, builds the electron application in the `./build` folder and packages into a dmg image which is saved onto the `~/Desktop`. 
+This install dependencies, runs browserify on the client side js code, builds the electron application in the `./dist` folder and packages into a dmg image which is saved into the `~/dist` folder as well. 
 
 <!-- Build for Linux 
 
