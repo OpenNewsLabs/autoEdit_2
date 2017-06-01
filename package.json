@@ -16,7 +16,7 @@
     "pack:win": "build --dir --win --x64",
     "build": "build",
     "build:mac": "build --mac --x64",
-    "build:mac_app_store": "echo 'not currently avaibale'",
+    "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
     "build:linux": "build --linux  --x64",
 
