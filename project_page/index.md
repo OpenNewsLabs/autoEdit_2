@@ -24,6 +24,12 @@ See the [user manual for](https://pietropassarelli.gitbooks.io/autoedit2-user-ma
 
 ---
 
+### How does it work?
+
+![autoEdit_overview_diagram](img/autoEdit_overview_diagram_1.0.7.png)
+
+---
+
 ### Support 
 Sign up to the [mailing list](http://eepurl.com/cMzwSX), follow on [twitter](http://twitter.com/autoEdit2) and/or [facebook](https://www.facebook.com/autoEdit.io/) to keep up to date with the latest releases. Say hi at <a href="mailto:pietro@autoEdit.io?Subject=Hello" target="_top">pietro@autoEdit.io</a>, always curious to hear what autoEdit is helping you with.
 
