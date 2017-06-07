@@ -1,6 +1,6 @@
 {
-  "name": "autoedittest",
-  "productName": "autoedit_test",
+  "name": "autoEdit2",
+  "productName": "autoEdit2",
   "version": "1.0.7",
   "description": "Fast text based video editing",
   "main": "electron/main.js",
@@ -63,7 +63,8 @@
       "target": [
         "deb",
         "zip",
-        "AppImage"
+        "AppImage",
+        "rpm"
       ],
       "maintainer": "Pietro Passarelli <pietro.passarelli@gmail.com>",
       "files": [

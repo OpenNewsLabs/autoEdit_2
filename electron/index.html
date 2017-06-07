@@ -80,22 +80,6 @@
     window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
     window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
     window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
- 
-   
-    // file dialogue opener 
-     window.openFileDiaglogue = function(cb){
-      dialog.showOpenDialog(
-        // {
-        //   filters: [
-        //     {name: 'Movies', extensions: ['mp4']},
-        //   ]
-        // },
-        {properties: ['openFile']},
-
-       function(fileName){
-        if(cb){cb(fileName)};
-      });
-     }
 
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
@@ -108,9 +92,6 @@
     e.preventDefault();
     e.stopPropagation();
   });
-
-
-
 
   } else {
     console.debug("In Browser Enviroment");
@@ -138,14 +119,6 @@
     })
   }
 
-///adding dev tools in produciton
-// document.addEventListener("keydown", function (e) {
-//     if (e.which === "k") {
-//       require('remote').getCurrentWindow().toggleDevTools();
-//     } else if (e.which === 116) {
-//       location.reload();
-//     }
-//   });
   </script>
 
 
@@ -161,6 +134,25 @@
 
 
 
+  <script>
+  if (window.process !== undefined) {
+    var ffmpegExentions = require("./ffmpeg_extentions.js")
+   // file dialogue opener 
+   const {dialog} = require('electron').remote;
+     window.openFileDiaglogue = function(cb){
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          filters: [
+            {name: 'Movies',extensions: ffmpegExentions},
+          ]
+        },
+       function(fileName){
+        if(cb){cb(fileName)};
+      });
+     }
+  }
+</script>
 
   </body>
 
