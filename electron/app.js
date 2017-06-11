@@ -1179,7 +1179,7 @@ __p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLin
 ((__t=( transcriptions[i].title ))==null?'':__t)+
 ' </a></li>\n          ';
  }
-__p+='\n        </ul>\n        <!-- Tab paenl End  -->\n      </div>\n      <!-- end transcript list end -->\n      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n        <div class="transcription-tab-content" >\n          <!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- uses hypertranscript.html.ejs template to populate transcription -->\n          </div>   <!--transcript-n -->\n          <!-- End hypertranscript -->\n        </div>\n      </div>\n    </div>\n\n    <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n      <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n      <div class="row">\n        <div id="videoContainer" class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n          <video id="videoPreview" class="videoPlayer" width="400" >\n            <!--   <source src="" type="video/mp4"> -->\n            <!--   <source src="" type="video/ogg"> -->\n            Your browser does not support HTML5 video.\n          </video>\n        </div>\n        <!--  col -->\n      </div>\n      <!--  row -->\n      <!-- <hr> -->\n\n<br>\n    <div class="panel panel-default">\n    <div class="panel-heading">\n\n\n      <div class="btn-group" role="group" aria-label="...">\n      <button type="button" class="btn btn-sm btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  Beta   </button>\n      <button type="button" class="btn btn-sm btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> \n      <button type="button" class="btn btn-sm btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n      <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-sm btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n      <!-- <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-sm btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button> -->\n      <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-sm btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n      </div>\n\n\n    </div><!-- container panel -->\n    <div class="panel-body">\n\n      <div id="sortable" class="transcript-n-text row paperedit">\n        <!-- Paperedit is added here using template papercut.html.ejs -->\n      </div> <!--transcript-n-text -->\n\n    </div><!-- container panel -->\n  </div><!-- container panel -->\n\n\n    </div><!--.row-->\n  </div>  \n</div>   \n</div><!-- end row -->\n</div> <!-- container -->\n\n';
+__p+='\n        </ul>\n        <!-- Tab paenl End  -->\n      </div>\n      <!-- end transcript list end -->\n      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n        <div class="transcription-tab-content" >\n          <!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- uses hypertranscript.html.ejs template to populate transcription -->\n          </div>   <!--transcript-n -->\n          <!-- End hypertranscript -->\n        </div>\n      </div>\n    </div>\n\n    <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n      <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n      <div class="row">\n        <div id="videoContainer" class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n          <video id="videoPreview" class="videoPlayer" width="400" >\n            <!--   <source src="" type="video/mp4"> -->\n            <!--   <source src="" type="video/ogg"> -->\n            Your browser does not support HTML5 video.\n          </video>\n        </div>\n        <!--  col -->\n      </div>\n      <!--  row -->\n      <!-- <hr> -->\n\n<br>\n    <div class="panel panel-default">\n    <div class="panel-heading">\n\n\n      <div class="btn-group" role="group" aria-label="...">\n      <button type="button" class="btn btn-sm btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  Beta   </button>\n      <button type="button" class="btn btn-sm btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> \n      <button type="button" class="btn btn-sm btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n\n      <!-- TODO: story point should triggere a modal to get the story point info -->\n      <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-sm btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n      <!-- <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-sm btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button> -->\n      <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-sm btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n      </div>\n\n\n    </div><!-- container panel -->\n    <div class="panel-body">\n\n      <div id="sortable" class="transcript-n-text row paperedit">\n        <!-- Paperedit is added here using template papercut.html.ejs -->\n      </div> <!--transcript-n-text -->\n\n    </div><!-- container panel -->\n  </div><!-- container panel -->\n\n\n    </div><!--.row-->\n  </div>  \n</div>   \n</div><!-- end row -->\n</div> <!-- container -->\n\n';
 }
 return __p;
 };
@@ -1648,7 +1648,8 @@ module.exports = Backbone.View.extend({
   //keyboard event using mouse trap backbone version 
   keyboardEvents: {},
 
-  savePapereditOutlineHeading: function () {
+  savePapereditOutlineHeading: function (e) {
+    console.log("on focus", e.currentTarget);
     this.savePapercuts();
   },
 
@@ -1774,7 +1775,8 @@ module.exports = Backbone.View.extend({
 
       if (papereditLinesElements[i].dataset.title !== undefined) {
         //then it is a title 
-        line.title = papereditLinesElements[i].dataset.title;
+        // line.title = papereditLinesElements[i].dataset.title;
+        line.title = papereditLinesElements[i].innerText.trim();
         lines.push(line);
       } else {
         line.papercut = [];
@@ -1966,13 +1968,13 @@ module.exports = Backbone.View.extend({
   },
 
   addStoryPointBtn: function () {
-    var storyPointHeading = prompt("Had a heading for your story point", "Sequence : ");
-    if (storyPointHeading != null) {
-      // TODO: replace with ejs template
-      var papercutHeadingStringTemplate = "<div data-title='" + storyPointHeading + "' class='row papercut papereditLine' draggable='true'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
-      papercutHeadingStringTemplate += "<h4><span class='glyphicon glyphicon-pencil' ></span> <span class='storyOutlineHeading' contenteditable='true'>" + storyPointHeading + "</span></h4></div>";
-      this.addElementToPaperEditElement(papercutHeadingStringTemplate);
-    }
+    var storyPointHeading = '_______'; //prompt("Had a heading for your story point", "Sequence : ");
+    // if (storyPointHeading != null) {
+    // TODO: replace with ejs template
+    var papercutHeadingStringTemplate = "<div data-title='" + storyPointHeading + "' class='row papercut papereditLine' draggable='true'><div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>";
+    papercutHeadingStringTemplate += "<h4><span class='glyphicon glyphicon-pencil' ></span> <span class='storyOutlineHeading' contenteditable='true'>" + storyPointHeading + "</span></h4></div>";
+    this.addElementToPaperEditElement(papercutHeadingStringTemplate);
+    // }
   },
 
   selectingWords: function (e) {

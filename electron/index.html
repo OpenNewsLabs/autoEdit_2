@@ -136,9 +136,10 @@
 
   <script>
   if (window.process !== undefined) {
-    var ffmpegExentions = require("./ffmpeg_extentions.js")
+  var ffmpegExentions = require("./ffmpeg_extentions.js")
    // file dialogue opener 
    const {dialog} = require('electron').remote;
+
      window.openFileDiaglogue = function(cb){
       dialog.showOpenDialog(
         {
@@ -151,6 +152,7 @@
         if(cb){cb(fileName)};
       });
      }
+
   }
 </script>
 
