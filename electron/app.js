@@ -26,6 +26,7 @@ module.exports = {
 };
 
 },{"ffmpeg-static":39,"ffprobe-static":40,"path":50}],2:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var $ = require('jquery');
@@ -73,6 +74,11 @@ $(document).ready(function () {
    */
 
   if (window.process !== undefined) {
+    console.info("In Electron v ", process.versions.electron);
+    console.info("Using chrome v ", process.versions.chrome);
+    console.info("Using v8 engine v ", process.versions.v8);
+    console.info("Using node v ", process.versions.node);
+
     //TODO: update this part with Electron compatible code
 
     // var gui = window.nw;
@@ -116,9 +122,8 @@ $(document).ready(function () {
     // 
     // 
 
-
   } else {
-    console.debug('NOT USING NWJS ');
+    console.debug('NOT USING Electron ');
     // Chrome as both safari and chrome in the user agent
     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
       window.userAgentSafari = true;
@@ -140,7 +145,8 @@ $(document).ready(function () {
   }
 });
 
-},{"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"./demo_db":5,"./router":9,"./router_paperedit":10,"_process":51,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -1649,7 +1655,8 @@ module.exports = Backbone.View.extend({
   keyboardEvents: {},
 
   savePapereditOutlineHeading: function (e) {
-    console.log("on focus", e.currentTarget);
+    // console.log("on focus",e.currentTarget);
+    // TODO: update data-title with innerText of element that has been changed. 
     this.savePapercuts();
   },
 
@@ -2364,7 +2371,19 @@ module.exports = Backbone.View.extend({
     //Need to have IBM Options as element here in form view that can be appended or removed
     //TODO: There has to be a better way to get the value of radio buttons check boxes eg document.querySelector(".options");
     if ($('#IBMoption')[0].checked) {
+      //check if inside electron 
+      // if(window.process!== undefined){
+      //   //check if the app is connnected to the internet
+      //   if(navigator.onLine){
+      //      sttEngine         = "ibm";
+      //      //if not connected to the internet, alert that ibm stt won't work
+      //    }else{
+      //     alert("You seem to be offline, check your internet connection and try again if you want to use IBM as a speech to text option.");
+      //    }
+      // //if not in electron then just assign sttEngine to ibm  
+      // }else{
       sttEngine = "ibm";
+      // }
     } else if ($('#genelteOption')[0].checked) {
       sttEngine = "gentle";
     } else if ($('#pocketSphinxOption')[0].checked) {
@@ -2379,18 +2398,40 @@ module.exports = Backbone.View.extend({
       //TODO: Set description in focus 
     } else {
 
-      this.model.save({ title: newTitle,
-        description: newDescription,
-        videoUrl: newFilePath,
-        languageModel: newLanguage,
-        sttEngine: sttEngine }, { success: function (mode, response, option) {
-          Backbone.history.navigate("transcriptions", { trigger: true });
-        },
-        error: function (model, xhr, options) {
-          var errors = JSON.parse(xhr.responseText).errors;
-          alert("ops, something when wrong with saving the transcription:" + errors);
+      if (sttEngine === "ibm") {
+        if (navigator.onLine) {
+          this.model.save({ title: newTitle,
+            description: newDescription,
+            videoUrl: newFilePath,
+            languageModel: newLanguage,
+            sttEngine: sttEngine }, {
+            success: function (mode, response, option) {
+              Backbone.history.navigate("transcriptions", { trigger: true });
+            },
+            error: function (model, xhr, options) {
+              var errors = JSON.parse(xhr.responseText).errors;
+              alert("ops, something when wrong with saving the transcription:" + errors);
+            }
+          });
+        } else {
+          alert("You seem to be offline, check your internet connection and try again if you'd like to use IBM");
         }
-      });
+      } else {
+        //TODO: sort out htis repetition
+        this.model.save({ title: newTitle,
+          description: newDescription,
+          videoUrl: newFilePath,
+          languageModel: newLanguage,
+          sttEngine: sttEngine }, {
+          success: function (mode, response, option) {
+            Backbone.history.navigate("transcriptions", { trigger: true });
+          },
+          error: function (model, xhr, options) {
+            var errors = JSON.parse(xhr.responseText).errors;
+            alert("ops, something when wrong with saving the transcription:" + errors);
+          }
+        });
+      } //else
     }
   },
 
