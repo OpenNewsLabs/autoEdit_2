@@ -2417,7 +2417,7 @@ module.exports = Backbone.View.extend({
           alert("You seem to be offline, check your internet connection and try again if you'd like to use IBM");
         }
       } else {
-        //TODO: sort out htis repetition
+        //TODO: sort out this repetition
         this.model.save({ title: newTitle,
           description: newDescription,
           videoUrl: newFilePath,
