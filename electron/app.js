@@ -26,7 +26,6 @@ module.exports = {
 };
 
 },{"ffmpeg-static":39,"ffprobe-static":40,"path":50}],2:[function(require,module,exports){
-(function (process){
 'use strict';
 
 var $ = require('jquery');
@@ -74,10 +73,10 @@ $(document).ready(function () {
    */
 
   if (window.process !== undefined) {
-    console.info("In Electron v ", process.versions.electron);
-    console.info("Using chrome v ", process.versions.chrome);
-    console.info("Using v8 engine v ", process.versions.v8);
-    console.info("Using node v ", process.versions.node);
+    console.info("In Electron v ", window.process.versions.electron);
+    console.info("Using chrome v ", window.process.versions.chrome);
+    console.info("Using v8 engine v ", window.process.versions.v8);
+    console.info("Using node v ", window.process.versions.node);
 
     //TODO: update this part with Electron compatible code
 
@@ -145,8 +144,7 @@ $(document).ready(function () {
   }
 });
 
-}).call(this,require('_process'))
-},{"./demo_db":5,"./router":9,"./router_paperedit":10,"_process":51,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
+},{"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -729,7 +727,21 @@ module.exports = Backbone.Router.extend({
 
   settingsPanel: function () {
     console.debug('Router: settings panel: ');
-    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys() } };
+    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys(), microsoft: { key: "TBC" }, google: window.GoogleKeys()
+        //TODO: do window.GoogleKeys();
+        // {
+        //   "type": "service_account",
+        //   "project_id": "titanium-link-161713",
+        //   "private_key_id": "b194464245ccea9a5f7318af1333d26b116ff7ca",
+        //   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5g5zIssy76yUg\nXxI98RYJs3gXwNXTZeXewdOGtA+7wXz2YB8tRvns0qL+B1lubXEKcvuDwI460MHU\nVmOpfKiYB4KB5JFMfotuKygIsOi798MpOR9Vkpzs4g73q1XVpmVfvlhG/tYH+ATH\nRD64G9Ay30DbPDWpZ+eYLh9mOpFtqzPyXzBoBFgVkm/DmO0ntYHEShPeeanviKkg\nqBGjzqOmbaIBUHMX3x2LEoq1zb6CwxnitONPdd3BiMZ1zJCa2+tCiSOhYOiCsQRJ\n2882Nk1PNuERBiOY9jCcjcut9mAA3fHDIh5f+mj54QgIiaTTSFNNPl+816yv61v4\ng+KohjXJAgMBAAECggEADTeWi8kLY6ca9822OcILuSi3eW/EfEGCCWcjWDFLfqvI\nKLCMABiStWADe1hQM5kqCN3M1CP7ri6R5Lw78Qcf5ucAEhuUC5BnhDOgcFAUYNID\n7lOyyxC9S/ZGLTigjq6CgfoIhZRh8OLnij/vPQRERt+XmhcV1qo/upysoYayNk8x\nVQAzcNqtFJYoMh0ZTEwnGRH8krnZRT3x1f+WTPo46ejlqSGuZ1kxxsXsjtl1ovvO\nuXX0aL0I//M+IaSkBmDUqAaPtw0of6Br3FF/L0SwBDQdv81+o5oEhC2fC3uWXfV4\n/gystrTbxvhvBgi1WKJ6CIZHNHmiYj1T+rHslmJRFQKBgQDx7Jso895Ya8qqsmjV\nWRrOWRmUuSWatgyZIUtGA2lb6g9PSCc/OpvcCpO0Du61FVmVi+yOQa84yFYOEcne\nIJbeYxsQE6e79xTm5U96+nNGrhmo/X0oNT16x03rB+2biwoA52W/ESb0RJoBeqxN\nsOd1fhnUWXZrXUrcyjhBUfYAHQKBgQDETssQWKj7xRIyBUK2Jwro3NO4zFlIK8Ce\nftbIR1CFQghn24FAoyeWwmZlHjNm/g/goAx5secryxbWHPCp5WxDZGaCw3loX4iR\n2/D6JvZJe555zetKJJf1YVaQR86hwJtSNz8NHYhinGbk3WfTYWJS58i18oOZIoE7\nyKNdchd0nQKBgD/UCD/uz6wOjIMq3SPlBYCJ24j0rGo8O+iu8xg+0C5y+6UUSV6S\nTQrqM3wfMHXQczlUmI4T4HIf0SyXHuafPI7iIQLF3Mxn7TjaKXUt3Po59wUyFDJm\nkZjyOqmXBuax8Wq5ooudr+RksSlQv2MkGH1UTuZK0EaVb6n/JIZ/ZGM1AoGBAJ+m\ngQk7Qbr4jBK4KogfeoTlSx8IujeytYVxHFZngTnO+S0V3Klnx0OZuFLWW/GP//Or\n1lmGcL4x/dGGWceieQjZ93CzbuKOh3AwUmvvEe+zJLBk4s06s4bxccgHTipIjUkw\n+ws8kHW6QwgwdEb59U/9h0NKBvKcmEO5qfrOVfsVAoGBAJCzR5Iv5q0nbU0LTtmg\nZFAGO1J3rNDavFpDYDumJzJgG9qhIa5r6JQS+kDxtaysTks2zuveUlESAQsuL/1P\nhk9/uooJ7H3lalf+hvYkc8roJNhPmnZ1Fl+aOt0nPaVYb4yYN6m1nmGMSUEEZXLq\nB6bpLCUGjtVppgQ5E+z+ieIO\n-----END PRIVATE KEY-----\n",
+        //   "client_email": "test-stt@titanium-link-161713.iam.gserviceaccount.com",
+        //   "client_id": "114550441534194190431",
+        //   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        //   "token_uri": "https://accounts.google.com/o/oauth2/token",
+        //   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        //   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/test-stt%40titanium-link-161713.iam.gserviceaccount.com"
+        // }
+      } };
     var settingsView = new SettingsView({ settings: tmpSettings });
     displayMain(settingsView);
   },
@@ -1199,11 +1211,45 @@ __p+='<div class="container">\n\n\t<!-- Demo notice  -->\n\t';
  if(!window.frontEndEnviromentNWJS ){
 __p+='\n\t<div class="alert alert-warning alert-dismissible" role="alert">\n\t\t<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t<strong>You are viewing the app in demo mode</strong>.<br>\n\t\t<strong>Which means you cannot change settings</strong>.<br>\n\t\t<br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n\t\tTo view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>\n\t\tTo view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n\t</div>  \n\t';
  }
-__p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n\t\t<div class="alert alert-info alert-dismissable">\n\t\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-ibm.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t\t</div>\n\t\n\n\t<form id="form">\n\t\t<!-- File "upload" -->\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username" value="'+
+__p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n<div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" role="tablist">\n    <li role="presentation" class="active"><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n    <li role="presentation"><a href="#google" aria-controls="google" role="tab" data-toggle="tab">Google</a></li>\n    <li role="presentation"><a href="#microsoft" aria-controls="microsoft" role="tab" data-toggle="tab">Microsoft</a></li>\n    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="ibm">    \n    \t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-ibm.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t</div>\n\t\n<!-- IBM credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username" value="'+
 ((__t=( credentials.ibm.username ))==null?'':__t)+
 '" class="form-control" id="username" placeholder="e.g. PMYs8ZexZ7qKGkFgFJhGMYhqzEC4aNzRAv9H">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">IBM STT Password</label>\n\t\t\t\t\t<input type="title" name="password" value="'+
 ((__t=( credentials.ibm.password  ))==null?'':__t)+
-'" class="form-control" id="password" placeholder="e.g. 2QKJ79uRsD2a">\n\t\t\t\t</div>\n\n\t\t\t\t<!-- Save  -->\n\t\t\t\t<!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n\t\t\t\t<a id="submitBtn" class="btn btn-primary">Save Credentials</a>\n\t\t\t\t<!-- <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a> -->\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div>';
+'" class="form-control" id="password" placeholder="e.g. 2QKJ79uRsD2a">\n\t\t\t\t</div>\n\t\t\t\t<a id="submitBtnIbmCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div><!-- IBM tab -->\n\n\n<div role="tabpanel" class="tab-pane" id="google">\n\t\t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>Google  Speech To Text Service Credentials</strong> \n\t  <p>Here you can check or edit your credentials for the Google Speech To Text service.</p>\n\t</div>\n\n \n\t<!-- Google credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t <div class="form-group">\n           <label for="fileUpload">Choose google <code>keys.json</code> file to auto complete these fields</label>\n          ';
+ if(window.process !== undefined ){
+__p+='\n            \n            <button id="btnElectronInputMediaFileGoogleCredentials" class="btn btn-default btn-xs"  class="very-sweet-looking">Chose a File</button>\n\n            <input id="inputElectronInputMediaFileGoogleCredentials" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n\n            <p class="help-block" id="inputFilePreviewGoogleCredentials" style="word-wrap:break-word;" ></p>\n\n          ';
+ }else{
+__p+='\n          <input  name="file" type="file" id="inputMediaFileGoogleCredentials">\n           ';
+ }
+__p+='\n        </div>\n        </div>\n        </div>\n\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>Google  Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="t">type</label>\n\t\t\t\t\t<input type="title" name="type" value="'+
+((__t=( credentials.google.type ))==null?'':__t)+
+'" class="form-control" id="type" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">Project Id</label>\n\t\t\t\t\t<input type="title" name="project_id" value="'+
+((__t=( credentials.google.project_id  ))==null?'':__t)+
+'" class="form-control" id="project_id" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">Private Key Id</label>\n\t\t\t\t\t<input type="title" name="private_key_id" value="'+
+((__t=( credentials.google.private_key_id  ))==null?'':__t)+
+'" class="form-control" id="private_key_id" placeholder="">\n\t\t\t\t</div>\n\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">Private Key</label>\n\t\t\t\t\t<input type="title" name="private_key" value="'+
+((__t=( credentials.google.private_key  ))==null?'':__t)+
+'" class="form-control" id="private_key" placeholder="">\n\t\t\t\t</div>\n\n\t\t\t\t\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">Client email</label>\n\t\t\t\t\t<input type="title" name="client_email" value="'+
+((__t=( credentials.google.client_email  ))==null?'':__t)+
+'" class="form-control" id="client_email" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">Client Id</label>\n\t\t\t\t\t<input type="title" name="client_id" value="'+
+((__t=( credentials.google.client_id  ))==null?'':__t)+
+'" class="form-control" id="client_id" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password"><code>auth_uri</code></label>\n\t\t\t\t\t<input type="title" name="auth_uri" value="'+
+((__t=( credentials.google.auth_uri  ))==null?'':__t)+
+'" class="form-control" id="auth_uri" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password"><code>token_uri</code></label>\n\t\t\t\t\t<input type="title" name="token_uri" value="'+
+((__t=( credentials.google.token_uri  ))==null?'':__t)+
+'" class="form-control" id="token_uri" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password"><code>auth_provider_x509_cert_url</code></label>\n\t\t\t\t\t<input type="title" name="auth_provider_x509_cert_url" value="'+
+((__t=( credentials.google.auth_provider_x509_cert_url  ))==null?'':__t)+
+'" class="form-control" id="auth_provider_x509_cert_url" placeholder="">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password"><code>client_x509_cert_url</code></label>\n\t\t\t\t\t<input type="title" name="client_x509_cert_url" value="'+
+((__t=( credentials.google.client_x509_cert_url  ))==null?'':__t)+
+'" class="form-control" id="client_x509_cert_url" placeholder="">\n\t\t\t\t</div>\n\n\t\t\t\t<a id="submitBtnGoogleCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> <!-- google tab -->\n  <div role="tabpanel" class="tab-pane" id="microsoft">\n  \t\t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>Microsoft  Speech To Text Service</strong> \n\t  <p>Microsoft Bing STT service coming soon.</p>\n\t</div>\n\n\t<form id="form">\n<!-- \n\t\t <div class="form-group">\n           <label for="fileUpload">Choose google <code>keys.json</code> file to auto complete these fields</label>\n          ';
+ if(window.process !== undefined ){
+__p+='\n            \n            <button id="btnElectronInputMediaFile" class="btn btn-default btn-xs"  class="very-sweet-looking">Chose a File</button>\n\n            <input id="inputElectronInputMediaFile" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n\n            <p class="help-block" id="inputFilePreview" style="word-wrap:break-word;" ></p>\n\n          ';
+ }else{
+__p+='\n\n          <input  name="file" type="file" id="inputMediaFile">\n           ';
+ }
+__p+='\n        </div>\n -->\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>Microsoft bing  Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">Bing Speech API Key</label>\n\t\t\t\t\t<input type="title" name="username" value="'+
+((__t=( credentials.microsoft.key ))==null?'':__t)+
+'" class="form-control" id="username" placeholder="e.g. PMYs8ZexZ7qKGkFgFJhGMYhqzEC4aNzRAv9H" disabled>\n\t\t\t\t</div>\n\t\t\t\t<!-- Maybe others -->\n\n\t\t\t\t<a id="submitBtnMicrosoftCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n\n\n\n\n  </div>\n    <!-- <div role="tabpanel" class="tab-pane" id="settings">...</div> -->\n  </div>\n\n</div>\n\n\n</div>';
 }
 return __p;
 };
@@ -1263,17 +1309,17 @@ __p+='   <div class="container">\n\n    <!-- Demo notice  -->\n  ';
  if(!window.frontEndEnviromentNWJS ){
 __p+='\n   <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n     To view demo/example transcriptions <a href="/demo/#transcriptions"> click here.</a><br>\n     To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n  </div>  \n ';
  }
-__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n        <div class="form-group">\n           <label for="fileUpload">Choose an audio or video file to transcribe</label>\n          ';
+__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n\n\n\n\n\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">\n        <div class="form-group">\n           <label for="fileUpload">Choose an audio or video file to transcribe</label>\n          ';
  if(window.process !== undefined ){
 __p+='\n            \n            <button id="btnElectronInputMediaFile" class="btn btn-default btn-xs"  class="very-sweet-looking">Chose a File</button>\n\n            <input id="inputElectronInputMediaFile" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n\n              <p class="help-block" id="inputFilePreview" style="word-wrap:break-word;" ></p>\n\n          ';
  }else{
 __p+='\n\n          <input  name="file" type="file" id="inputMediaFile">\n           ';
  }
-__p+='\n        </div>\n        <!-- Online/offline -->\n      <div class="form-group">\n        <label for="radioSTT">Speech To Text Transcription System</label><br>\n        <label class="radio-inline"><input type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM </label><br>\n        <label class="radio-inline"><input type="radio" id="genelteOption" value="gentle" name="optradio">Gentle (offline/experimental)</label><br>\n        <label class="radio-inline"><input type="radio" id="pocketSphinxOption" name="optradio" value="pocketSphinx">pocketsphinx (offline/experimental) </label><br>\n        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Integration with Gentle is a bit more experimental at this stage. Follow the link for more info on setting it up\n        <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis.html" class="externalLink" id="linkToUserManual" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        </p>\n         <p class="help-block">With IBM chose <code>narrowband</code> for telephone recordings, everything else is broadband.\n        </p>\n         <p class="help-block">The IBM option always takes 5 minutes to generate a transcription regardless of the length of the media(audio or video file). In the current version Pocketsphinx and Gentle take slightly more then the duration of the media(audio or video) to do a full transcription <i>(eg 27min will take 30min to transcribe)</i>.</p>\n      </div>\n        <!-- languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModel">IBM Languages:</label>\n        <select class="form-control" id="languageModel">\n          <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n          <!-- <option disabled>_________</option> -->\n          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n          <!-- <option disabled>_________</option>          -->\n          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n\n           <option value="ar-AR_BroadbandModel">Modern Standard Arabic - Broadband</option>\n         \n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n      </div>\n    </div>\n<p> </p>\n        </p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Transcription</label>\n          <input type="text" name="title" value="'+
+__p+='\n        </div>\n        <!-- Online/offline -->\n\n      <div class="form-group">\n        <label for="radioSTT">Speech To Text Transcription System</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM Watson</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="googleOption" name="optradio" value="google" >Google Cloud </label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="microsoftOption" name="optradio" value="microsoft" >Microsoft Bing  </label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="genelteOption" value="gentle" name="optradio">Gentle/Kaldi (offline/experimental)</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="pocketSphinxOption" name="optradio" value="pocketsphinx">Pocketsphinx (offline/experimental) </label><br>\n         <label class="radio-inline"><input class="languageRadio" type="radio" id="captionsOption" name="optradio" value="captions">Captions </label><br>\n       <!--  <label class="radio-inline"><input type="radio" id="captions" name="optradio" value="captions">Caption File (<code>.srt</code>) </label><br> -->\n\n</div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" id="languageTabs" role="tablist">\n     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>\n    <li role="presentation" ><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n    <li role="presentation"><a href="#google" aria-controls="google" role="tab" data-toggle="tab">Google</a></li>\n    <li role="presentation"><a href="#microsoft" aria-controls="microsoft" role="tab" data-toggle="tab">Microsoft</a></li>\n     <li role="presentation"><a href="#gentle" aria-controls="gentle" role="tab" data-toggle="tab">Gentle</a></li>\n    <li role="presentation"><a href="#pocketsphinx" aria-controls="pocketsphinx" role="tab" data-toggle="tab">Pocketsphinx</a></li>\n    <li role="presentation"><a href="#captions" aria-controls="captions" role="tab" data-toggle="tab">Captions</a></li>\n <!--     <li role="presentation"><a href="#captions" aria-controls="captions" role="tab" data-toggle="tab">Caption</a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content" >\n     <div role="tabpanel" class="tab-pane active" id="overview">\n\n        <p class="help-block">IBM is fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Integration with Gentle is a bit more experimental at this stage. Follow the link for more info on setting it up\n        <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis.html" class="externalLink" id="linkToUserManual" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        </p>\n         <p class="help-block">With IBM chose <code>narrowband</code> for telephone recordings, everything else is broadband.\n        </p>\n         <p class="help-block">The IBM option always takes 5 minutes to generate a transcription regardless of the length of the media(audio or video file). In the current version Pocketsphinx and Gentle take slightly more then the duration of the media(audio or video) to do a full transcription <i>(eg 27min will take 30min to transcribe)</i>.</p>\n\n     </div>\n\n    <div role="tabpanel" class="tab-pane " id="ibm">\n      <br>\n    <!-- IBM languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModelIBM">IBM Languages:</label>\n        <select class="form-control" id="languageModelIBM">\n          <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n          <!-- <option disabled>_________</option> -->\n          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n          <!-- <option disabled>_________</option>          -->\n          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n\n           <option value="ar-AR_BroadbandModel">Modern Standard Arabic - Broadband</option>\n         \n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n      </div>\n    </div>\n    <!-- Eng IBM Languages -->\n    </div>\n    <div role="tabpanel" class="tab-pane" id="google">\n      <br>\n      <!-- Google languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModelGoogle">Google Cloud Speech Languages:</label>\n        <select class="form-control" id="languageModelGoogle">\n          <option value="en-US" >English (United States)  </option> \n            <option value="en-GB">English (United Kingdom)</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="it-IT">Italian (Italy) </option>\n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n      </div>\n      </div>\n      <!-- Eng google languages -->\n\n    </div>\n    <div role="tabpanel" class="tab-pane" id="microsoft">\n      <br>\n   \n      <i>Coming soon</i>\n      <!-- Google languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModelGoogle">Microsoft Bing Languages for conversation mode:</label>\n        <select class="form-control" id="languageModelGoogle" disabled>\n          <option value="en-US" >English (United States)  </option> \n            <option value="en-GB">English (United Kingdom)</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="it-IT">Italian (Italy) </option>\n          <option value="fr-FR">French (France)</option>\n          <option value="es-ES">Spanish (Spain)</option>\n          <option value="de-DE">German (Germany)</option>\n          <option value="pt-BR">Portuguese (Brazil)</option>\n          <option value="ru-RU">Russian (Russia)</option>\n          <option value="zh-CN">Chinese (Mandarin, simplified)</option>\n          <option value="ja-JP">Japanese (Japan)</option>\n          <option value="ar-EG">Arabic (Egypt), modern standard</option>\n          \n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">Chose the language of your media file. The default is English US.</p>\n      </div>\n      </div>\n      <!-- Eng google languages -->\n\n\n\n\n    </div>\n    \n    <div role="tabpanel" class="tab-pane" id="gentle">\n      <br>\n      <label for="languageModel">Gentle/Kaldi Speech To Text:</label><br>\n     <i> See User manual for extra setup needed, Only support US English For now</i></div>\n    \n\n\n    <div role="tabpanel" class="tab-pane" id="pocketsphinx">\n      <br>\n      <label for="languageModel">Pocketsphinx Speech To Text:</label><br>\n     <i> Does not require extra setup, only supports US English for now</i></div>\n\n       <div role="tabpanel" class="tab-pane" id="captions">\n        <br>\n        <label for="languageModel">Captions  <code>.srt</code> file:</label><br>\n        <i> coming soon</i>\n      </div>\n  </div>\n\n<hr>\n\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">\n        <div class="form-group">\n          <label for="title">Title of Transcription</label>\n          <input type="text" name="title" value="'+
 ((__t=( title ))==null?'':__t)+
 '" class="form-control" id="title" placeholder="e.g. Interview with Elon Musk" required>\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Space X and Tesla CEO about the simulation theory">'+
 ((__t=( description ))==null?'':__t)+
-'</textarea>\n        </div>\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n    <div class="row">\n        <div class="col-xs-offset-4 col-sm-offset-6 col-md-offset-8 col-lg-offset-9">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Transcription</a>\n          <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>\n      </div><!-- ./col -->\n      </div><!-- ./row -->\n  </form>\n  </div>\n\n';
+'</textarea>\n        </div>\n        <div class="row">\n        <div class="col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Transcription</a>\n          <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>\n       </div><!-- ./col -->\n      </div><!-- ./row -->\n\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n  \n  </form>\n  </div>\n\n';
 }
 return __p;
 };
@@ -2201,6 +2247,7 @@ var render = require('./utils').render;
 
 if (typeof window.nw !== 'undefined') {
   var watsonKeysPath = window.nw.App.dataPath + '/wttskeys.json';
+  var googleKeysPath = window.nw.App.dataPath + '/gskeys.json';
 } else {
   //not in nwjs 
   var watsonKeysPath = "/";
@@ -2223,7 +2270,10 @@ module.exports = Backbone.View.extend({
   },
 
   events: {
-    'click #submitBtn': 'save',
+    'click #submitBtnIbmCredentials': 'saveIBM',
+    'click #submitBtnIbmGoogleCredentisl': 'saveGoogle',
+    'click #submitBtnIbmMicrosoftCredentisl': 'saveMicrosoft',
+    "click #btnElectronInputMediaFileGoogleCredentials": "electronGetFilePathGoogleCredentials",
     "keypress .form-control": "onEnterListener"
   },
 
@@ -2236,8 +2286,43 @@ module.exports = Backbone.View.extend({
     }
   },
 
-  save: function (e) {
+  electronGetFilePathGoogleCredentials: function (e) {
     e.preventDefault();
+    var self = this;
+    window.openFileDiaglogueJSON(function (fileName) {
+      console.log(fileName);
+      self.newFilePath = fileName[0];
+      console.log(self.newFilePath);
+      document.getElementById("inputFilePreviewGoogleCredentials").innerHTML = self.newFilePath;
+      // console.log(document.getElementById("title").value);
+      if (window.process !== undefined) {
+        //TODO: maybe use fs instead.
+        // const fs = require('fs');
+        // var obj = JSON.parse(fs.readFileSync('file', 'utf8'));
+        // const googleCrdentials = require(self.newFilePath);
+        // console.log(googleCrdentials);
+        window.setGoogleAPIkeys(self.newFilePath);
+        window.alert("Thank you! Saved the Google API keys so you don't have to enter them again.");
+        //update elements in form form
+        var googleKeys = window.GoogleKeys();
+
+        document.getElementById("type").value = googleKeys.type;
+        document.getElementById("project_id").value = googleKeys.project_id;
+        document.getElementById("private_key_id").value = googleKeys.private_key_id;
+        document.getElementById("private_key").value = googleKeys.private_key;
+        document.getElementById("client_email").value = googleKeys.client_email;
+        document.getElementById("client_id").value = googleKeys.client_id;
+        document.getElementById("auth_uri").value = googleKeys.auth_uri;
+        document.getElementById("token_uri").value = googleKeys.token_uri;
+        document.getElementById("auth_provider_x509_cert_url").value = googleKeys.auth_provider_x509_cert_url;
+        document.getElementById("client_x509_cert_url").value = googleKeys.client_x509_cert_url;
+      }
+    });
+  },
+
+  saveIBM: function (e) {
+    e.preventDefault();
+    //SAVE IBM credentialls  
     var ibmCredentials = {};
     ibmCredentials.username = this.$('input[name=username]').val().trim();
     ibmCredentials.password = this.$('input[name=password]').val().trim();
@@ -2245,10 +2330,37 @@ module.exports = Backbone.View.extend({
     if (ibmCredentials.username != "" && ibmCredentials.password != "") {
       //save 
       window.setWatsonAPIkeys(ibmCredentials);
-      window.alert("Thank you! Saved the keys so you don't have to enter them again.");
+      window.alert("Thank you! Saved the IBM keys so you don't have to enter them again.");
     } else {
       alert("Please add valid credentials to save");
     }
+    // End Save IBM crdentials
+
+    // 
+  },
+  saveGoogle: function (e) {
+    e.preventDefault();
+    //SAVE IBM credentialls  
+    alert("Thank you! Saved the Google keys so you don't have to enter them again.");
+
+    // 
+  },
+
+  saveMicrosoft: function (e) {
+    e.preventDefault();
+    //  var ibmCredentials = {};
+    //  ibmCredentials.username  = this.$('input[name=username]').val().trim();
+    //  ibmCredentials.password  = this.$('input[name=password]').val().trim();
+    // //TODO: double check this
+    //  if((ibmCredentials.username  != "") && (ibmCredentials.password != "")){
+    //    //save 
+    //    window.setWatsonAPIkeys(ibmCredentials)
+    //    window.alert("Thank you! Saved the keys so you don't have to enter them again.");
+    //  }else{
+    //    alert("Please add valid credentials to save");
+    //  }
+
+    // 
   },
 
   render: function () {
@@ -2284,10 +2396,15 @@ module.exports = Backbone.View.extend({
     this.newFilePath = "";
   },
   events: {
-    "click #btnElectronInputMediaFile": "electronGetFilePath",
+    'click #btnElectronInputMediaFile': 'electronGetFilePath',
     'click #submitBtn': 'save',
-    "keypress .form-control": "onEnterListener"
+    'keypress .form-control': 'onEnterListener',
+    'change input[type=radio]': 'changedRadio'
+  },
 
+  //change view of language tab preferences when making a choice in radio button language options. 
+  changedRadio: function (e) {
+    $('#languageTabs a[href="#' + e.currentTarget.value + '"]').tab('show');
   },
 
   onEnterListener: function (e) {
@@ -2302,10 +2419,6 @@ module.exports = Backbone.View.extend({
   electronGetFilePath: function (e) {
     e.preventDefault();
 
-    // if (window.process !== undefined) {
-    //   document.getElementById("open-file").click();
-    // }
-    // 
     var self = this;
     window.openFileDiaglogue(function (fileName) {
       console.log(fileName);
@@ -2320,29 +2433,6 @@ module.exports = Backbone.View.extend({
     });
   },
 
-  // console.log(fileName);
-  // //TODO: here do some file type checks and alert if not compatible file type with ffmpeg. 
-  // //eg add in config.js array off ffmpeg `ffmpeg -formats` in termanl for list. 
-  // //use path library to get extension, if extension not in array then give error. 
-
-  // //return an array of files, since we only accepting one, then it's always first elemet
-  // //TODO: here if modify that can accept multiple, then here could deal with that logic, eg generate a panel/card with title and description for each. 
-  // //here could also default transcript name to name of file. 
-  // self.newFilePath = fileName[0];
-  // console.log(self.newFilePath );
-
-  // document.getElementById("inputFilePreview").innerHTML = self.newFilePath;
-
-  // // console.log(document.getElementById("title").value);
-  // if(document.getElementById("title").value ===""){
-
-  //   // self.newFilePath.split("/")
-  //   document.getElementById("title").value =  path.basename(self.newFilePath);
-  // }
-
-
-  // },
-
   save: function (e) {
     console.log(e.target);
     //TODO: there might be a better way to get values from a form in backbone? 
@@ -2354,40 +2444,50 @@ module.exports = Backbone.View.extend({
 
     //If using "multiple" in unput  will return all selected files's paths separated with `;`. split(";") to make an array. 
     // loop through that array to create a list of title, description etc..
-    // 
     //before trying this, test how many clips at same time.
     // https://trello.com/c/oDr7bSy7/173-raised-by-ben-need-to-be-able-to-add-a-batch-of-clips-into-new-transcription-not-one-by-one
-
-
     var newDescription = this.$('textarea[name=description]').val();
     //removing # carachter coz it breaks file path as it gets converted to %23
     //TODO: there might be other symbols that have effect. figure proper way to sanitise input
     // var newFilePath     = this.$('input[name=file]').val();
-    var newLanguage = $('#languageModel').find(":selected")[0].value;
+    var newLanguage = '';
 
     var newFilePath = this.newFilePath;
+
+    var radios = document.querySelectorAll('.languageRadio');
+    var sttEngine;
+    //see which one has been selected by the user. 
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].type === 'radio' && radios[i].checked) {
+        // get value, set checked flag or do whatever you need to
+        sttEngine = radios[i].value;
+      }
+    }
 
     //Listener on checkbox, that adds and removes IBM options if IBM is unclicked. 
     //Need to have IBM Options as element here in form view that can be appended or removed
     //TODO: There has to be a better way to get the value of radio buttons check boxes eg document.querySelector(".options");
-    if ($('#IBMoption')[0].checked) {
-      //check if inside electron 
-      // if(window.process!== undefined){
-      //   //check if the app is connnected to the internet
-      //   if(navigator.onLine){
-      //      sttEngine         = "ibm";
-      //      //if not connected to the internet, alert that ibm stt won't work
-      //    }else{
-      //     alert("You seem to be offline, check your internet connection and try again if you want to use IBM as a speech to text option.");
-      //    }
-      // //if not in electron then just assign sttEngine to ibm  
-      // }else{
-      sttEngine = "ibm";
-      // }
-    } else if ($('#genelteOption')[0].checked) {
-      sttEngine = "gentle";
-    } else if ($('#pocketSphinxOption')[0].checked) {
-      sttEngine = "pocketsphinx";
+    // if($('#IBMoption')[0].checked){
+    //     sttEngine         = "ibm";
+    //     $('#languageModelIBM').find(":selected")[0].value;
+    // }else if(){
+    //     sttEngine         = "google";
+    //     $('#languageModelIBM').find(":selected")[0].value;
+
+    // }else if($('#genelteOption')[0].checked){
+    //    sttEngine        = "gentle";
+    // }else if($('#pocketSphinxOption')[0].checked){
+    //   sttEngine        = "pocketsphinx";
+    // }
+
+    //TODO: there might be a better way to do this?
+    //set the language 
+    if (sttEngine == 'ibm') {
+      newLanguage = $('#languageModelIBM').find(":selected")[0].value;
+    } else if (sttEngine == 'google') {
+      newLanguage = $('#languageModelGoogle').find(":selected")[0].value;
+    } else if (sttEngine == 'microsoft') {
+      newLanguage = $('#languageModelMicrosoft').find(":selected")[0].value;
     }
 
     if (newFilePath == "") {
@@ -2397,8 +2497,7 @@ module.exports = Backbone.View.extend({
       alert("please give this transcriptiona title");
       //TODO: Set description in focus 
     } else {
-
-      if (sttEngine === "ibm") {
+      if (sttEngine === "ibm" || sttEngine === "google" || sttEngine === "microsoft") {
         if (navigator.onLine) {
           this.model.save({ title: newTitle,
             description: newDescription,
@@ -2416,6 +2515,26 @@ module.exports = Backbone.View.extend({
         } else {
           alert("You seem to be offline, check your internet connection and try again if you'd like to use IBM");
         }
+        // }else if(sttEngine === "google"){
+        //    if(navigator.onLine){
+
+
+        //     }else{
+        //     alert("You seem to be offline, check your internet connection and try again if you'd like to use Google");
+        //   }
+        // }else if(sttEngine === "microsoft"){
+        //    if(navigator.onLine){
+
+
+        //     }else{
+        //     alert("You seem to be offline, check your internet connection and try again if you'd like to use Microsoft");
+        //   }
+        //captions can be used offline
+      } else if (sttEngine === "captions") {
+
+        //pocketsphinx and Gentle handled as fallback cases.
+        // in the "backend" the `sttEngine` will determine which one is uded.
+        // these can be used offline 
       } else {
         //TODO: sort out this repetition
         this.model.save({ title: newTitle,
@@ -7912,9 +8031,9 @@ var path = require('path')
 var platform = os.platform()
 //patch for compatibilit with electron-builder, for smart built process.
 if(platform == "darwin"){
-  platform = "mac";
+	platform = "mac";
 }else if(platform == "win32"){
-  platform = "win";
+	platform = "win";
 }
 //adding browser, for use case when module is bundled using browserify. and added to html using src.
 if (platform !== 'linux' && platform !== 'mac' && platform !== 'win' && platform !=="browser") {
@@ -25253,9 +25372,9 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],52:[function(require,module,exports){
-/* globals window, exports, define */
+/* global window, exports, define */
 
-(function(window) {
+!function() {
     'use strict'
 
     var re = {
@@ -25276,22 +25395,22 @@ process.umask = function() { return 0; };
         sign: /^[\+\-]/
     }
 
-    function sprintf() {
-        var key = arguments[0], cache = sprintf.cache
-        if (!(cache[key])) {
-            cache[key] = sprintf.parse(key)
-        }
-        return sprintf.format.call(null, cache[key], arguments)
+    function sprintf(key) {
+        // `arguments` is not an array, but should be fine for this call
+        return sprintf_format(sprintf_parse(key), arguments)
     }
 
-    sprintf.format = function(parse_tree, argv) {
-        var cursor = 1, tree_length = parse_tree.length, node_type = '', arg, output = [], i, k, match, pad, pad_character, pad_length, is_positive = true, sign = ''
+    function vsprintf(fmt, argv) {
+        return sprintf.apply(null, [fmt].concat(argv || []))
+    }
+
+    function sprintf_format(parse_tree, argv) {
+        var cursor = 1, tree_length = parse_tree.length, arg, output = '', i, k, match, pad, pad_character, pad_length, is_positive, sign
         for (i = 0; i < tree_length; i++) {
-            node_type = get_type(parse_tree[i])
-            if (node_type === 'string') {
-                output[output.length] = parse_tree[i]
+            if (typeof parse_tree[i] === 'string') {
+                output += parse_tree[i]
             }
-            else if (node_type === 'array') {
+            else if (Array.isArray(parse_tree[i])) {
                 match = parse_tree[i] // convenience purposes only
                 if (match[2]) { // keyword argument
                     arg = argv[cursor]
@@ -25309,12 +25428,12 @@ process.umask = function() { return 0; };
                     arg = argv[cursor++]
                 }
 
-                if (re.not_type.test(match[8]) && re.not_primitive.test(match[8]) && get_type(arg) == 'function') {
+                if (re.not_type.test(match[8]) && re.not_primitive.test(match[8]) && arg instanceof Function) {
                     arg = arg()
                 }
 
-                if (re.numeric_arg.test(match[8]) && (get_type(arg) != 'number' && isNaN(arg))) {
-                    throw new TypeError(sprintf("[sprintf] expecting number but found %s", get_type(arg)))
+                if (re.numeric_arg.test(match[8]) && (typeof arg !== 'number' && isNaN(arg))) {
+                    throw new TypeError(sprintf('[sprintf] expecting number but found %T', arg))
                 }
 
                 if (re.number.test(match[8])) {
@@ -25324,57 +25443,57 @@ process.umask = function() { return 0; };
                 switch (match[8]) {
                     case 'b':
                         arg = parseInt(arg, 10).toString(2)
-                    break
+                        break
                     case 'c':
                         arg = String.fromCharCode(parseInt(arg, 10))
-                    break
+                        break
                     case 'd':
                     case 'i':
                         arg = parseInt(arg, 10)
-                    break
+                        break
                     case 'j':
                         arg = JSON.stringify(arg, null, match[6] ? parseInt(match[6]) : 0)
-                    break
+                        break
                     case 'e':
                         arg = match[7] ? parseFloat(arg).toExponential(match[7]) : parseFloat(arg).toExponential()
-                    break
+                        break
                     case 'f':
                         arg = match[7] ? parseFloat(arg).toFixed(match[7]) : parseFloat(arg)
-                    break
+                        break
                     case 'g':
-                        arg = match[7] ? parseFloat(arg).toPrecision(match[7]) : parseFloat(arg)
-                    break
+                        arg = match[7] ? String(Number(arg.toPrecision(match[7]))) : parseFloat(arg)
+                        break
                     case 'o':
-                        arg = arg.toString(8)
-                    break
+                        arg = (parseInt(arg, 10) >>> 0).toString(8)
+                        break
                     case 's':
                         arg = String(arg)
                         arg = (match[7] ? arg.substring(0, match[7]) : arg)
-                    break
+                        break
                     case 't':
                         arg = String(!!arg)
                         arg = (match[7] ? arg.substring(0, match[7]) : arg)
-                    break
+                        break
                     case 'T':
-                        arg = get_type(arg)
+                        arg = Object.prototype.toString.call(arg).slice(8, -1).toLowerCase()
                         arg = (match[7] ? arg.substring(0, match[7]) : arg)
-                    break
+                        break
                     case 'u':
                         arg = parseInt(arg, 10) >>> 0
-                    break
+                        break
                     case 'v':
                         arg = arg.valueOf()
                         arg = (match[7] ? arg.substring(0, match[7]) : arg)
-                    break
+                        break
                     case 'x':
-                        arg = parseInt(arg, 10).toString(16)
-                    break
+                        arg = (parseInt(arg, 10) >>> 0).toString(16)
+                        break
                     case 'X':
-                        arg = parseInt(arg, 10).toString(16).toUpperCase()
-                    break
+                        arg = (parseInt(arg, 10) >>> 0).toString(16).toUpperCase()
+                        break
                 }
                 if (re.json.test(match[8])) {
-                    output[output.length] = arg
+                    output += arg
                 }
                 else {
                     if (re.number.test(match[8]) && (!is_positive || match[3])) {
@@ -25386,45 +25505,49 @@ process.umask = function() { return 0; };
                     }
                     pad_character = match[4] ? match[4] === '0' ? '0' : match[4].charAt(1) : ' '
                     pad_length = match[6] - (sign + arg).length
-                    pad = match[6] ? (pad_length > 0 ? str_repeat(pad_character, pad_length) : '') : ''
-                    output[output.length] = match[5] ? sign + arg + pad : (pad_character === '0' ? sign + pad + arg : pad + sign + arg)
+                    pad = match[6] ? (pad_length > 0 ? pad_character.repeat(pad_length) : '') : ''
+                    output += match[5] ? sign + arg + pad : (pad_character === '0' ? sign + pad + arg : pad + sign + arg)
                 }
             }
         }
-        return output.join('')
+        return output
     }
 
-    sprintf.cache = Object.create(null)
+    var sprintf_cache = Object.create(null)
 
-    sprintf.parse = function(fmt) {
-        var _fmt = fmt, match = [], parse_tree = [], arg_names = 0
+    function sprintf_parse(fmt) {
+        if (sprintf_cache[fmt]) {
+            return sprintf_cache[fmt]
+        }
+
+        var _fmt = fmt, match, parse_tree = [], arg_names = 0
         while (_fmt) {
             if ((match = re.text.exec(_fmt)) !== null) {
-                parse_tree[parse_tree.length] = match[0]
+                parse_tree.push(match[0])
             }
             else if ((match = re.modulo.exec(_fmt)) !== null) {
-                parse_tree[parse_tree.length] = '%'
+                parse_tree.push('%')
             }
             else if ((match = re.placeholder.exec(_fmt)) !== null) {
                 if (match[2]) {
                     arg_names |= 1
                     var field_list = [], replacement_field = match[2], field_match = []
                     if ((field_match = re.key.exec(replacement_field)) !== null) {
-                        field_list[field_list.length] = field_match[1]
+                        field_list.push(field_match[1])
                         while ((replacement_field = replacement_field.substring(field_match[0].length)) !== '') {
                             if ((field_match = re.key_access.exec(replacement_field)) !== null) {
-                                field_list[field_list.length] = field_match[1]
+                                field_list.push(field_match[1])
                             }
                             else if ((field_match = re.index_access.exec(replacement_field)) !== null) {
-                                field_list[field_list.length] = field_match[1]
+                                field_list.push(field_match[1])
                             }
                             else {
-                                throw new SyntaxError("[sprintf] failed to parse named argument key")
+                                throw new SyntaxError('[sprintf] failed to parse named argument key')
                             }
                         }
                     }
                     else {
-                        throw new SyntaxError("[sprintf] failed to parse named argument key")
+                        throw new SyntaxError('[sprintf] failed to parse named argument key')
                     }
                     match[2] = field_list
                 }
@@ -25432,72 +25555,41 @@ process.umask = function() { return 0; };
                     arg_names |= 2
                 }
                 if (arg_names === 3) {
-                    throw new Error("[sprintf] mixing positional and named placeholders is not (yet) supported")
+                    throw new Error('[sprintf] mixing positional and named placeholders is not (yet) supported')
                 }
-                parse_tree[parse_tree.length] = match
+                parse_tree.push(match)
             }
             else {
-                throw new SyntaxError("[sprintf] unexpected placeholder")
+                throw new SyntaxError('[sprintf] unexpected placeholder')
             }
             _fmt = _fmt.substring(match[0].length)
         }
-        return parse_tree
-    }
-
-    var vsprintf = function(fmt, argv, _argv) {
-        _argv = (argv || []).slice(0)
-        _argv.splice(0, 0, fmt)
-        return sprintf.apply(null, _argv)
-    }
-
-    /**
-     * helpers
-     */
-    function get_type(variable) {
-        if (typeof variable === 'number') {
-            return 'number'
-        }
-        else if (typeof variable === 'string') {
-            return 'string'
-        }
-        else {
-            return Object.prototype.toString.call(variable).slice(8, -1).toLowerCase()
-        }
-    }
-
-    var preformattedPadding = {
-        '0': ['', '0', '00', '000', '0000', '00000', '000000', '0000000'],
-        ' ': ['', ' ', '  ', '   ', '    ', '     ', '      ', '       '],
-        '_': ['', '_', '__', '___', '____', '_____', '______', '_______'],
-    }
-    function str_repeat(input, multiplier) {
-        if (multiplier >= 0 && multiplier <= 7 && preformattedPadding[input]) {
-            return preformattedPadding[input][multiplier]
-        }
-        return Array(multiplier + 1).join(input)
+        return sprintf_cache[fmt] = parse_tree
     }
 
     /**
      * export to either browser or node.js
      */
+    /* eslint-disable quote-props */
     if (typeof exports !== 'undefined') {
-        exports.sprintf = sprintf
-        exports.vsprintf = vsprintf
+        exports['sprintf'] = sprintf
+        exports['vsprintf'] = vsprintf
     }
     if (typeof window !== 'undefined') {
-        window.sprintf = sprintf
-        window.vsprintf = vsprintf
+        window['sprintf'] = sprintf
+        window['vsprintf'] = vsprintf
 
-        if (typeof define === 'function' && define.amd) {
+        if (typeof define === 'function' && define['amd']) {
             define(function() {
                 return {
-                    sprintf: sprintf,
-                    vsprintf: vsprintf
+                    'sprintf': sprintf,
+                    'vsprintf': vsprintf
                 }
             })
         }
     }
-})(typeof window === 'undefined' ? this : window);
+    /* eslint-enable quote-props */
+}()
 
 },{}],53:[function(require,module,exports){
 var trim = require('./trim');

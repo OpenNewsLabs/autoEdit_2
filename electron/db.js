@@ -1,4 +1,4 @@
-'use strict';
+// 'use strict';
 /**
  * @module db
  * @description Manages the backend of the app by overwrighting backbone.sync function
@@ -99,6 +99,12 @@ function makeLinvoCallback(success, error) {
  * @returns {object} sucess callback with backbone model containing db id
  */
 DB.create = function(model, success, error){
+  
+
+
+
+  
+
   console.debug('DB.create', model.constructor.modelType);
   if (model.constructor.modelType == 'transcription') {
     var newElement = model.toJSON();
@@ -121,6 +127,21 @@ DB.create = function(model, success, error){
       // returning saved transcription callback
       success(model);
 
+      //TODO: there might be a way to make this more seamless. need to decide where this logic would go.
+      //setting STT API Keys for appropriate service, if needed. (eg Offline Open source STT Gentle and Pocketsphinx don't need it)
+      var sttServiceKeys = "";
+      if(newElement.sttEngine =="ibm"){
+        sttServiceKeys = window.IBMWatsonKeys();
+      }else if(newElement.sttEngine =="google"){
+        sttServiceKeys = window.GoogleKeys();
+        sttServiceKeys.path = window.getGoogleAPIKeysPath();
+      }else if(newElement.sttEngine =="microsoft"){
+        console.error("microsoft not yet implemented in backend");
+      }
+      // else{
+      //   console.error("ERROR: no STT API credentials provided")
+      // }
+
       // using interactive_transcription_generator to generate metadata,
       // transcription json
       // webm video preview
@@ -134,7 +155,7 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
-        keys: window.IBMWatsonKeys(),
+        keys: sttServiceKeys,
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
         cbMetadata: function(respM) {

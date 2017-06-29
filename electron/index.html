@@ -81,6 +81,14 @@
     window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
     window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
 
+    window.GoogleKeys = require('./google_keys.js').getGoogleAPIkeys;
+    window.setGoogleAPIkeys = require('./google_keys.js').setGoogleAPIkeys;
+    window.areGoogleAPIkeysSet = require('./google_keys.js').areGoogleAPIkeysSet;
+    window.getGoogleAPIKeysPath = require('./google_keys.js').getGoogleAPIKeysPath;
+
+    //TODO: do the same for microsoft 
+    
+    
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
     document.addEventListener('drop', function(e) {
@@ -145,7 +153,21 @@
         {
           properties: ['openFile'],
           filters: [
-            {name: 'Movies',extensions: ffmpegExentions},
+            {name: 'Movies',extensions: ffmpegExentions}
+          ]
+        },
+       function(fileName){
+        if(cb){cb(fileName)};
+      });
+     }
+
+      window.openFileDiaglogueJSON = function(cb){
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          //filter for JSON not working, not sure how.
+          filters: [
+            {name: 'All Files',extensions: 'json'}
           ]
         },
        function(fileName){
