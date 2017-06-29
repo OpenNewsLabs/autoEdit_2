@@ -727,20 +727,10 @@ module.exports = Backbone.Router.extend({
 
   settingsPanel: function () {
     console.debug('Router: settings panel: ');
-    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys(), microsoft: { key: "TBC" }, google: window.GoogleKeys()
-        //TODO: do window.GoogleKeys();
-        // {
-        //   "type": "service_account",
-        //   "project_id": "titanium-link-161713",
-        //   "private_key_id": "b194464245ccea9a5f7318af1333d26b116ff7ca",
-        //   "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC5g5zIssy76yUg\nXxI98RYJs3gXwNXTZeXewdOGtA+7wXz2YB8tRvns0qL+B1lubXEKcvuDwI460MHU\nVmOpfKiYB4KB5JFMfotuKygIsOi798MpOR9Vkpzs4g73q1XVpmVfvlhG/tYH+ATH\nRD64G9Ay30DbPDWpZ+eYLh9mOpFtqzPyXzBoBFgVkm/DmO0ntYHEShPeeanviKkg\nqBGjzqOmbaIBUHMX3x2LEoq1zb6CwxnitONPdd3BiMZ1zJCa2+tCiSOhYOiCsQRJ\n2882Nk1PNuERBiOY9jCcjcut9mAA3fHDIh5f+mj54QgIiaTTSFNNPl+816yv61v4\ng+KohjXJAgMBAAECggEADTeWi8kLY6ca9822OcILuSi3eW/EfEGCCWcjWDFLfqvI\nKLCMABiStWADe1hQM5kqCN3M1CP7ri6R5Lw78Qcf5ucAEhuUC5BnhDOgcFAUYNID\n7lOyyxC9S/ZGLTigjq6CgfoIhZRh8OLnij/vPQRERt+XmhcV1qo/upysoYayNk8x\nVQAzcNqtFJYoMh0ZTEwnGRH8krnZRT3x1f+WTPo46ejlqSGuZ1kxxsXsjtl1ovvO\nuXX0aL0I//M+IaSkBmDUqAaPtw0of6Br3FF/L0SwBDQdv81+o5oEhC2fC3uWXfV4\n/gystrTbxvhvBgi1WKJ6CIZHNHmiYj1T+rHslmJRFQKBgQDx7Jso895Ya8qqsmjV\nWRrOWRmUuSWatgyZIUtGA2lb6g9PSCc/OpvcCpO0Du61FVmVi+yOQa84yFYOEcne\nIJbeYxsQE6e79xTm5U96+nNGrhmo/X0oNT16x03rB+2biwoA52W/ESb0RJoBeqxN\nsOd1fhnUWXZrXUrcyjhBUfYAHQKBgQDETssQWKj7xRIyBUK2Jwro3NO4zFlIK8Ce\nftbIR1CFQghn24FAoyeWwmZlHjNm/g/goAx5secryxbWHPCp5WxDZGaCw3loX4iR\n2/D6JvZJe555zetKJJf1YVaQR86hwJtSNz8NHYhinGbk3WfTYWJS58i18oOZIoE7\nyKNdchd0nQKBgD/UCD/uz6wOjIMq3SPlBYCJ24j0rGo8O+iu8xg+0C5y+6UUSV6S\nTQrqM3wfMHXQczlUmI4T4HIf0SyXHuafPI7iIQLF3Mxn7TjaKXUt3Po59wUyFDJm\nkZjyOqmXBuax8Wq5ooudr+RksSlQv2MkGH1UTuZK0EaVb6n/JIZ/ZGM1AoGBAJ+m\ngQk7Qbr4jBK4KogfeoTlSx8IujeytYVxHFZngTnO+S0V3Klnx0OZuFLWW/GP//Or\n1lmGcL4x/dGGWceieQjZ93CzbuKOh3AwUmvvEe+zJLBk4s06s4bxccgHTipIjUkw\n+ws8kHW6QwgwdEb59U/9h0NKBvKcmEO5qfrOVfsVAoGBAJCzR5Iv5q0nbU0LTtmg\nZFAGO1J3rNDavFpDYDumJzJgG9qhIa5r6JQS+kDxtaysTks2zuveUlESAQsuL/1P\nhk9/uooJ7H3lalf+hvYkc8roJNhPmnZ1Fl+aOt0nPaVYb4yYN6m1nmGMSUEEZXLq\nB6bpLCUGjtVppgQ5E+z+ieIO\n-----END PRIVATE KEY-----\n",
-        //   "client_email": "test-stt@titanium-link-161713.iam.gserviceaccount.com",
-        //   "client_id": "114550441534194190431",
-        //   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-        //   "token_uri": "https://accounts.google.com/o/oauth2/token",
-        //   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-        //   "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/test-stt%40titanium-link-161713.iam.gserviceaccount.com"
-        // }
+    var tmpSettings = { credentials: {
+        ibm: window.IBMWatsonKeys(),
+        microsoft: { key: "TBC" },
+        google: window.GoogleKeys()
       } };
     var settingsView = new SettingsView({ settings: tmpSettings });
     displayMain(settingsView);
