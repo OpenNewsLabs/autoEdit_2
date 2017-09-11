@@ -3674,7 +3674,7 @@ module.exports = EDL;
 * originally from [srtParserComposer](https://github.com/pietrop/srtParserComposer) and  [on npm](https://www.npmjs.com/package/srt_parser_composer)
 * Expecting srtJsonContent to be like so
 
-@example <caption>Example USage</catpion>
+@example <caption>Example Usage</catpion>
 var srtJsonContent = [
   {
     "id": "1",

@@ -7,7 +7,7 @@ const url = require('url')
 // require('electron-debug')({enabled: true});
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win
+let win = null;
 
 // https://electron.atom.io/docs/api/app/#appsetaboutpaneloptionsoptions-macos
 
@@ -34,12 +34,8 @@ function createWindow () {
  win.dataPath = app.getPath("userData");
  win.app = app;
 
-// win.appPath = app.getAppPath();
 
-// console.log("app path" ,app.getAppPath());
-
-//MENU
-//
+ // MENU
  // Create the Application's main menu
     var template = [{
         label: "Application",
@@ -94,66 +90,10 @@ function createWindow () {
             click () { require('electron').shell.openExternal('https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/') }
           }
         ]}
-
     ];
-
-    // if (process.platform === 'darwin') {
-      // template.unshift({
-      //   label: app.getName(),
-      //   submenu: [
-      //     {role: 'about'},
-      //     {type: 'separator'},
-      //     {role: 'services', submenu: []},
-      //     {type: 'separator'},
-      //     {role: 'hide'},
-      //     {role: 'hideothers'},
-      //     {role: 'unhide'},
-      //     {type: 'separator'},
-      //     {role: 'quit'}
-      //   ]
-      // })
-
-    //   // Edit menu
-    //   template[1].submenu.push(
-    //     {type: 'separator'},
-    //     {
-    //       label: 'Speech',
-    //       submenu: [
-    //         {role: 'startspeaking'},
-    //         {role: 'stopspeaking'}
-    //       ]
-    //     }
-    //   )
-
-    //   // Window menu
-    //   template[3].submenu = [
-    //     {role: 'close'},
-    //     {role: 'minimize'},
-    //     {role: 'zoom'},
-    //     {type: 'separator'},
-    //     {role: 'front'}
-    //   ]
-    // }
-
-    // const menu = Menu.buildFromTemplate(template)
-    // Menu.setApplicationMenu(menu)
 
     Menu.setApplicationMenu(Menu.buildFromTemplate(template));
     
-//workaround to call a file in electron, using electron API for dialog box
-// making it accessible in backbone client side. 
-// win.openAfileDialog = function(cb){
-//   // var res = prompt("hello");
-//   dialog.showOpenDialog(win,{properties: ['openFile']}, function(fileName){
-//     console.log(fileName);
-//     if(cb){cb(fileName)};
-//   });
-  
-
-
-  // Open the DevTools.
-  // win.webContents.openDevTools()
-
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -203,16 +143,6 @@ app.on('open-file', (event, path) => {
   event.preventDefault();
   // shell.openExternal(url);
 })
-
-
-
-
-
-
-
-
-
-
 
 
 // In this file you can include the rest of your app's specific main process
