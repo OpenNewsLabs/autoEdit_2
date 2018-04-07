@@ -9,25 +9,23 @@
     "electron": "electron .",
     "make_js": "browserify lib/app/app.js > electron/app.js",
     "start": "npm run make_js && npm run electron",
- 
     "pack": "build --dir",
     "pack:mac": "build --dir --mac --x64",
     "pack:linux": "build --dir --linux --x64",
     "pack:win": "build --dir --win --x64",
     "build": "build",
     "build:mac": "build --mac --x64",
+    "build:mac:dmg":"npm run build:mac && npm run make_dmg",
     "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
     "build:linux": "build --linux  --x64",
-
     "publish:github": "build  --publish always --draft true",
-
     "make_demo": "npm run make_js && node ./config/make_demo.js",
     "preview_page": "npm run make_demo && jekyll serve  --source project_page  --destination docs",
     "preview_page_no_demo_reload": "jekyll serve  --source project_page  --destination docs",
     "make_page": "npm run make_demo && jekyll  build --source project_page --destination docs"
   },
-    "build": {
+  "build": {
     "appId": "org.autoEdit2.autoEdit2-electron",
     "asar": false,
     "files": [
@@ -61,10 +59,7 @@
       "packageCategory": "GNOME;GTK;VideoEditing;PaperEditing;Transcriptions",
       "description": "autoEdit2 Desktop Client for Linux",
       "target": [
-        "deb",
-        "zip",
-        "AppImage",
-        "rpm"
+        "AppImage"
       ],
       "maintainer": "Pietro Passarelli <pietro.passarelli@gmail.com>",
       "files": [
@@ -100,7 +95,7 @@
     "win": {
       "target": "nsis",
       "icon": "build/icon.ico",
-        "files": [
+      "files": [
         "node_modules/ffmpeg-static/bin/win/${arch}/ffmpeg",
         "!node_modules/ffmpeg-static/bin/win/ia32${/*}",
         "!node_modules/ffmpeg-static/bin/linux${/*}",
@@ -115,41 +110,43 @@
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "MIT",
   "dependencies": {
-    "backbone": "^1.3.3",
-    "bootstrap": "^3.3.7",
-    "electron-debug": "^1.1.0",
+    "backbone": "1.3.3",
+    "bootstrap": "3.3.7",
+    "electron-debug": "1.1.0",
     "ffmpeg-static": "git@github.com:pietrop/ffmpeg-static.git",
     "ffprobe-static": "git@github.com:pietrop/ffprobe-static.git",
-    "file-saver": "^1.3.3",
-    "fluent-ffmpeg": "^2.1.0",
+    "file-saver": "1.3.3",
+    "fluent-ffmpeg": "2.1.0",
     "jquery": "1.12.4",
-    "jquery-sortable": "^0.9.13",
-    "linvodb3": "^3.24.0",
-    "medeadown": "^1.1.8",
-    "moment": "^2.15.2",
-    "mousetrap": "^1.6.0",
-    "node-timecodes": "^2.4.1",
+    "jquery-sortable": "0.9.13",
+    "linvodb3": "3.24.0",
+    "medeadown": "1.1.8",
+    "moment": "2.15.2",
+    "mousetrap": "1.6.0",
+    "node-timecodes": "2.4.1",
     "node-underscorify": "0.0.14",
-    "path": "^0.12.7",
-    "request": "^2.81.0",
-    "require-globify": "^1.4.1",
-    "underscore": "^1.8.3",
-    "underscore.string": "^3.3.4",
+    "path": "0.12.7",
+    "request": "2.81.0",
+    "require-globify": "1.4.1",
+    "underscore": "1.8.3",
+    "underscore.string": "3.3.4",
     "watson-developer-cloud": "2.4.1"
   },
   "devDependencies": {
-    "appdmg": "^0.4.5",
-    "babelify": "^7.3.0",
-    "browserify": "^13.1.1",
-    "browserify-shim": "^3.8.12",
-    "copy-dir": "^0.3.0",
-    "docco": "^0.7.0",
-    "electron": "^1.6.10",
-    "electron-builder": "^18.1.1",
-    "electron-packager": "^8.7.0",
-    "jasmine": "^2.5.2",
-    "jsdoc": "^3.4.1",
-    "watchify": "^3.7.0"
+    "babelify": "7.3.0",
+    "browserify": "13.1.1",
+    "browserify-shim": "3.8.12",
+    "copy-dir": "0.3.0",
+    "docco": "0.7.0",
+    "electron": "1.6.10",
+    "electron-builder": "18.1.1",
+    "electron-packager": "8.7.0",
+    "jasmine": "2.5.2",
+    "jsdoc": "3.4.1",
+    "watchify": "3.7.0"
+  },
+   "optionalDependencies": {
+    "appdmg": "^0.4.5"
   },
   "repository": {
     "type": "git",
