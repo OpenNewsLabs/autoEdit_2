@@ -61,10 +61,7 @@
       "packageCategory": "GNOME;GTK;VideoEditing;PaperEditing;Transcriptions",
       "description": "autoEdit2 Desktop Client for Linux",
       "target": [
-        "deb",
-        "zip",
-        "AppImage",
-        "rpm"
+        "AppImage"
       ],
       "maintainer": "Pietro Passarelli <pietro.passarelli@gmail.com>",
       "files": [
@@ -118,8 +115,8 @@
     "backbone": "^1.3.3",
     "bootstrap": "^3.3.7",
     "electron-debug": "^1.1.0",
-    "ffmpeg-static": "git@github.com:pietrop/ffmpeg-static.git",
-    "ffprobe-static": "git@github.com:pietrop/ffprobe-static.git",
+    "ffmpeg-static": "https://github.com/pietrop/ffmpeg-static.git",
+    "ffprobe-static": "https://github.com/pietrop/ffprobe-static.git",
     "file-saver": "^1.3.3",
     "fluent-ffmpeg": "^2.1.0",
     "jquery": "1.12.4",
@@ -137,16 +134,18 @@
     "underscore.string": "^3.3.4",
     "watson-developer-cloud": "2.4.1"
   },
-  "devDependencies": {
-    "appdmg": "^0.4.5",
+  "optionalDependencies": {
+    "appdmg": "^0.4.5"
+  },
+    "devDependencies": {
     "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "browserify-shim": "^3.8.12",
     "copy-dir": "^0.3.0",
     "docco": "^0.7.0",
     "electron": "^1.6.10",
-    "electron-builder": "^18.1.1",
-    "electron-packager": "^8.7.0",
+    "electron-builder": "*",
+    "electron-packager": "*",
     "jasmine": "^2.5.2",
     "jsdoc": "^3.4.1",
     "watchify": "^3.7.0"

@@ -1,0 +1,39 @@
+# https://github.com/OpenNewsLabs/autoEdit_2/issues/36
+
+language: node_js
+node_js:
+  - "7"
+  
+os: linux
+dist: trusty
+sudo: required
+
+cache:
+  directories:
+  - node_modules
+  - $HOME/.electron
+  - $HOME/.npm
+  - $HOME/.nvm
+
+addons:
+  apt:
+    packages:
+      - libgnome-keyring-dev
+      - icnsutils
+
+install:
+  - node --version
+  - npm --version
+  - npm install
+
+script:
+#  - npm run test
+  - npm run build
+  - find . | grep AppImage
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/
