@@ -1,16 +1,20 @@
-var fs = require('fs');
-var electron = require('electron');
-var currentWindow = electron.remote.getCurrentWindow();
+"use strict";
+const fs = require('fs');
+const electron = require('electron');
+const currentWindow = electron.remote.getCurrentWindow();
+const path = require('path');
+
+var watsonKeysPath;
 
 if (window.process !== 'undefined') {
-  var watsonKeysPath = currentWindow.dataPath + '/wttskeys.json';
+  var watsonKeysPath = path.join(currentWindow.dataPath , 'wttskeys.json');
 }else{
-  //not in nwjs 
-  var watsonKeysPath = "/";
+  //not in electron 
+  var watsonKeysPath = "";
 }
 
 var watsonKeys = {username: "", password: ""};
-var watsonKeysSet = false;
+// var watsonKeysSet = false;
 
 // load keys on startup
 window.document.addEventListener('DOMContentLoaded', function() {

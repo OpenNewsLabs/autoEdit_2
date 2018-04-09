@@ -56,16 +56,19 @@ npm start
 
 You'd also need to get IBM watson STT keys or have the Gentle Open source app running locally [see the guide for instructions on setting this up ](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/chapter1.html)
 
-### Building/packaging the app
+### Building/packaging the app - OSX
 
 Building and packaging the app, can be done with one comand. 
 
 
 ```bash
-npm run build:mac
+npm run build:mac:dmg
 ```
 
 This install dependencies, runs browserify on the client side js code, builds the electron application in the `./dist` folder and packages into a dmg image which is saved into the `~/dist` folder as well. 
+
+
+### Building/packaging the app - Linux
 
 <!-- Build for Linux 
 
