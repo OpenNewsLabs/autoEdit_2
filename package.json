@@ -128,7 +128,7 @@
     "path": "0.12.7",
     "request": "2.81.0",
     "require-globify": "1.4.1",
-    "speechmatics": "^2.1.0",
+    "speechmatics": "git+https://github.com/pietrop/speechmatics.git",
     "underscore": "1.8.3",
     "underscore.string": "3.3.4",
     "watson-developer-cloud": "2.4.1"
