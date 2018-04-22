@@ -22,7 +22,7 @@ install:
 
 script:
 #  - npm run test
-  - npm run pack:mac
+  - npm run build
   - find . | grep dmg
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh ./dist/autoEdit2-*-mac.zip
