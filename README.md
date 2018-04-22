@@ -49,6 +49,7 @@ As of version `1.0.8` support is added for Linux thanks to [@probonopd](https://
 As of version `1.0.9` support is added for Speechmatics STT service, with 28 languages.
 
 
+
 ## Development
 
 ### Launching the app

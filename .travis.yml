@@ -29,7 +29,7 @@ install:
 script:
 #  - npm run test
   - npm run build
-  - find . | grep AppImage
+  - find . | grep dmg
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh ./dist/autoEdit2-*.dmg
 
