@@ -134,7 +134,10 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
-        keys: window.IBMWatsonKeys(),
+        keys: {
+          watson: window.IBMWatsonKeys(),
+          speechmatics: window.SpeechmaticsKeys()
+        },
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
         cbMetadata: function(respM) {
