@@ -3,9 +3,9 @@
 language: node_js
 node_js:
   - "7"
-
-os: osx
-osx_image: xcode9.3
+  
+os: linux
+dist: trusty
 sudo: required
 
 cache:
@@ -15,6 +15,12 @@ cache:
   - $HOME/.npm
   - $HOME/.nvm
 
+addons:
+  apt:
+    packages:
+      - libgnome-keyring-dev
+      - icnsutils
+
 install:
   - node --version
   - npm --version
@@ -23,9 +29,9 @@ install:
 script:
 #  - npm run test
   - npm run build
-  - find . | grep dmg
+  - find . | grep AppImage
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh ./dist/autoEdit2-*-mac.zip
+  - bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage
 
 branches:
   except:
