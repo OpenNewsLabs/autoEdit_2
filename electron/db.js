@@ -141,13 +141,17 @@ DB.create = function(model, success, error){
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
         cbMetadata: function(respM) {
+          console.log('respM: ', respM);
           // update current transcription with metadata data
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             trs.metadata = respM;
             // saving current transcription
             trs.save(function(err) { 
-              if (err) console.error(err); 
+              if (err) console.error('error saving tr meta: ',err); 
+              console.log('trs-cbMetadata: ', JSON.stringify(trs,null,2));
             });
+
+            
           });
         },
         cbTranscription: function(respErr, respT) {

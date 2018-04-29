@@ -136,7 +136,8 @@ List of contributors that have helped shaped this version of autoEdit by contrib
 ## Active contributors 
 
 - [Pietro Passarelli](http://github.com/pietrop)
-- [Andrea Baldo](https://twitter.com/and_baldo)
 
 
 
+
+<!-- https://www.davidbaumgold.com/tutorials/wine-mac/ -->
