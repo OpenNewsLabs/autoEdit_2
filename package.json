@@ -6,7 +6,7 @@
   "main": "electron/main.js",
   "scripts": {
     "test": "jasmine",
-    "electron": "electron . --disable-background-timer-throttling",
+    "electron": "electron .",
     "make_js": "browserify lib/app/app.js > electron/app.js",
     "start": "npm run make_js && npm run electron",
     "pack": "build --dir",
