@@ -33,12 +33,22 @@ Is designed so that the front end in backbone can be used as standalone static s
 
 For more info [check out the documentation](https://pietropassarelli.gitbooks.io/autoedit-2-documentation/content/).
 
-### -->Papereditig<--
+### Main updates in latest releases
+
+#### -->Papereditig<--
 
 As of version `1.0.6` you can pull selections from multiple transcriptions into a paperedit, see a video preview, and export as an EDL video sequence. [Check out the user manual for more on this](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/paperediting.html).
 
-### --> Move to electron<--
+#### --> Move to electron<--
 As of version `1.0.7` (soon to be released) moved from nwjs to electron to package the app for desktop. This will allow to do a leap forward in certain areas of the roadmap. 
+
+#### --> Linux <--
+As of version `1.0.8` support is added for Linux thanks to [@probonopd](https://github.com/probonopd) [#36](https://github.com/OpenNewsLabs/autoEdit_2/issues/36).
+
+#### --> Speechmatics <--
+As of version `1.0.9` support is added for Speechmatics STT service, with 28 languages.
+
+
 
 ## Development
 
@@ -126,7 +136,8 @@ List of contributors that have helped shaped this version of autoEdit by contrib
 ## Active contributors 
 
 - [Pietro Passarelli](http://github.com/pietrop)
-- [Andrea Baldo](https://twitter.com/and_baldo)
 
 
 
+
+<!-- https://www.davidbaumgold.com/tutorials/wine-mac/ -->

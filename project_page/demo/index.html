@@ -43,7 +43,7 @@
           <li ><a href="#paperedits">Paperedits</a></li>
           <!-- settings -->
           <li ><a href="#settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span></a></li>
-          <li><a class="externalLink" href="https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true" class="custom-dbox-popup"  target="_blank"><span class="glyphicon glyphicon-gift" aria-hidden="true"> Donate</a></li>
+          <li><a class="externalLink" href="https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true" class="custom-dbox-popup"  target="_blank"><span class="glyphicon glyphicon-gift" aria-hidden="true"></span> Donate</a></li>
 
       <li class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Help
@@ -69,17 +69,22 @@
 
   <!-- Setup database and nwjs stuff -->
   <script>
+  "use strict";
   if (window.process !== undefined) {
     const {dialog} = require('electron').remote;
     console.debug("In Electron Enviroment");
     //TODO: rename across code base, perhaps use ENVIROMENT instead of this. 
-    window.frontEndEnviromentNWJS = true;
+    window.frontEndEnviromentElectron = true;
     // window.nw = require('nw.gui');
     window.DB = require('./db.js');
  
     window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
     window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
     window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
+
+    window.SpeechmaticsKeys = require('./speechmatics_keys.js').getSpeechmaticsAPIkeys;
+    window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
+    window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
 
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
@@ -95,7 +100,7 @@
 
   } else {
     console.debug("In Browser Enviroment");
-    window.frontEndEnviromentNWJS = false;
+    window.frontEndEnviromentElectron = false;
   }
   </script>
 

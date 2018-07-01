@@ -26,7 +26,7 @@ See the [user manual for](https://pietropassarelli.gitbooks.io/autoedit2-user-ma
 
 ### How does it work?
 
-![autoEdit_overview_diagram](img/autoEdit_overview_diagram_1.0.7.png)
+<img src="img/autoEdit_overview_diagram_1.0.7.png" alt="autoEdit_overview_diagram" style=" width: 100%; height: auto;">
 
 ---
 

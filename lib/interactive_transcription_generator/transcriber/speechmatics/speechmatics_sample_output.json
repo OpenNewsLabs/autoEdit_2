@@ -1,0 +1,183 @@
+{
+  "job": {
+    "lang": "en-US",
+    "user_id": 11173,
+    "name": "norman_door_trimmed.mp4.1523222669333.ogg",
+    "duration": 11,
+    "created_at": "Sun Apr  8 21:24:33 2018",
+    "id": 7491278
+  },
+  "speakers": [
+    {
+      "duration": "9.92",
+      "confidence": null,
+      "name": "UU",
+      "time": "0.12"
+    }
+  ],
+  "words": [
+    {
+      "duration": "0.08",
+      "confidence": "0.690",
+      "name": "There",
+      "time": "0.12"
+    },
+    {
+      "duration": "0.16",
+      "confidence": "0.690",
+      "name": "is",
+      "time": "0.26"
+    },
+    {
+      "duration": "0.21",
+      "confidence": "1.000",
+      "name": "this",
+      "time": "0.42"
+    },
+    {
+      "duration": "0.48",
+      "confidence": "1.000",
+      "name": "door",
+      "time": "0.63"
+    },
+    {
+      "duration": "0.12",
+      "confidence": "1.000",
+      "name": "on",
+      "time": "1.20"
+    },
+    {
+      "duration": "0.09",
+      "confidence": "1.000",
+      "name": "the",
+      "time": "1.32"
+    },
+    {
+      "duration": "0.24",
+      "confidence": "0.790",
+      "name": "10th",
+      "time": "1.41"
+    },
+    {
+      "duration": "0.39",
+      "confidence": "1.000",
+      "name": "floor",
+      "time": "1.65"
+    },
+    {
+      "duration": "0.18",
+      "confidence": "1.000",
+      "name": "of",
+      "time": "2.04"
+    },
+    {
+      "duration": "0.12",
+      "confidence": "1.000",
+      "name": "the",
+      "time": "2.22"
+    },
+    {
+      "duration": "0.27",
+      "confidence": "1.000",
+      "name": "Vox",
+      "time": "2.34"
+    },
+    {
+      "duration": "0.27",
+      "confidence": "1.000",
+      "name": "Media",
+      "time": "2.61"
+    },
+    {
+      "duration": "0.33",
+      "confidence": "1.000",
+      "name": "Office",
+      "time": "2.88"
+    },
+    {
+      "duration": "0.12",
+      "confidence": "1.000",
+      "name": "that",
+      "time": "3.21"
+    },
+    {
+      "duration": "0.09",
+      "confidence": "1.000",
+      "name": "I",
+      "time": "3.33"
+    },
+    {
+      "duration": "0.27",
+      "confidence": "1.000",
+      "name": "hate",
+      "time": "3.42"
+    },
+    {
+      "duration": "0.45",
+      "confidence": "1.000",
+      "name": "so",
+      "time": "3.69"
+    },
+    {
+      "duration": "0.48",
+      "confidence": "1.000",
+      "name": "much",
+      "time": "4.14"
+    },
+    {
+      "duration": "1.23",
+      "confidence": "0.560",
+      "name": ".",
+      "time": "5.08"
+    },
+    {
+      "duration": "0.25",
+      "confidence": "0.300",
+      "name": "Dan",
+      "time": "6.49"
+    },
+    {
+      "duration": "0.11",
+      "confidence": "0.650",
+      "name": "you",
+      "time": "8.97"
+    },
+    {
+      "duration": "0.17",
+      "confidence": "0.450",
+      "name": "write",
+      "time": "9.13"
+    },
+    {
+      "duration": "0.15",
+      "confidence": "0.520",
+      "name": "this",
+      "time": "9.33"
+    },
+    {
+      "duration": "0.13",
+      "confidence": "0.840",
+      "name": "you",
+      "time": "9.49"
+    },
+    {
+      "duration": "0.10",
+      "confidence": "0.590",
+      "name": "are",
+      "time": "9.61"
+    },
+    {
+      "duration": "0.31",
+      "confidence": "1.000",
+      "name": "wrong",
+      "time": "9.71"
+    },
+    {
+      "duration": "0.02",
+      "confidence": "0.550",
+      "name": ".",
+      "time": "10.02"
+    }
+  ],
+  "format": "1.0"
+}
