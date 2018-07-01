@@ -1,7 +1,7 @@
 {
   "name": "autoEdit2",
   "productName": "autoEdit2",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "Fast text based video editing",
   "main": "electron/main.js",
   "scripts": {
@@ -15,7 +15,6 @@
     "pack:win": "build --dir --win --x64",
     "build": "build",
     "build:mac": "build --mac --x64",
-    "build:mac:dmg":"npm run build:mac && npm run make_dmg",
     "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
     "build:linux": "build --linux  --x64",
@@ -93,60 +92,62 @@
       ]
     },
     "win": {
-      "target": "nsis",
+      "target": "portable",
       "icon": "build/icon.ico",
       "files": [
         "node_modules/ffmpeg-static/bin/win/${arch}/ffmpeg",
         "!node_modules/ffmpeg-static/bin/win/ia32${/*}",
         "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffmpeg-static/bin/mac${/*}"
+        "!node_modules/ffmpeg-static/bin/mac${/*}",
+        "node_modules/ffprobe-static/bin/win/${arch}/ffprobe",
+        "!node_modules/ffprobe-static/bin/win/ia32${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/mac${/*}"
       ]
-    },
-    "nsis": {
-      "perMachine": true,
-      "oneClick": false
     }
   },
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "MIT",
   "dependencies": {
-    "backbone": "1.3.3",
-    "bootstrap": "3.3.7",
-    "electron-debug": "1.1.0",
-    "ffmpeg-static": "git@github.com:pietrop/ffmpeg-static.git",
-    "ffprobe-static": "git@github.com:pietrop/ffprobe-static.git",
-    "file-saver": "1.3.3",
-    "fluent-ffmpeg": "2.1.0",
+    "backbone": "^1.3.3",
+    "bootstrap": "^3.3.7",
+    "electron-debug": "^1.1.0",
+    "ffmpeg-static": "https://github.com/pietrop/ffmpeg-static.git",
+    "ffprobe-static": "https://github.com/pietrop/ffprobe-static.git",
+    "file-saver": "^1.3.3",
+    "fluent-ffmpeg": "^2.1.0",
     "jquery": "1.12.4",
-    "jquery-sortable": "0.9.13",
-    "linvodb3": "3.24.0",
-    "medeadown": "1.1.8",
-    "moment": "2.15.2",
-    "mousetrap": "1.6.0",
-    "node-timecodes": "2.4.1",
+    "jquery-sortable": "^0.9.13",
+    "linvodb3": "^3.24.0",
+    "medeadown": "^1.1.8",
+    "moment": "^2.15.2",
+    "mousetrap": "^1.6.0",
+    "node-timecodes": "^2.4.1",
     "node-underscorify": "0.0.14",
-    "path": "0.12.7",
-    "request": "2.81.0",
-    "require-globify": "1.4.1",
-    "underscore": "1.8.3",
-    "underscore.string": "3.3.4",
+    "speechmatics": "git+https://github.com/pietrop/speechmatics.git",
+    "path": "^0.12.7",
+    "request": "^2.81.0",
+    "require-globify": "^1.4.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4",
     "watson-developer-cloud": "2.4.1"
   },
-  "devDependencies": {
-    "babelify": "7.3.0",
-    "browserify": "13.1.1",
-    "browserify-shim": "3.8.12",
-    "copy-dir": "0.3.0",
-    "docco": "0.7.0",
-    "electron": "1.6.10",
-    "electron-builder": "18.1.1",
-    "electron-packager": "8.7.0",
-    "jasmine": "2.5.2",
-    "jsdoc": "3.4.1",
-    "watchify": "3.7.0"
-  },
-   "optionalDependencies": {
+  "optionalDependencies": {
     "appdmg": "^0.4.5"
+  },
+  "devDependencies": {
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "browserify-shim": "^3.8.12",
+    "copy-dir": "^0.3.0",
+    "docco": "^0.7.0",
+    "electron": "^1.6.10",
+    "electron-builder": "*",
+    "electron-packager": "*",
+    "jasmine": "^2.5.2",
+    "jest": "^22.4.3",
+    "jsdoc": "^3.4.1",
+    "watchify": "^3.7.0"
   },
   "repository": {
     "type": "git",

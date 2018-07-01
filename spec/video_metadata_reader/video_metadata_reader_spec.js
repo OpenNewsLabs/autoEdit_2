@@ -1,5 +1,5 @@
 
-var metadataReader = require('../../interactive_transcription_generator/video_metadata_reader/index.js');
+var metadataReader = require('../../lib/interactive_transcription_generator/video_metadata_reader/index.js');
 //TODO: how to test this module without testing the ffprobe binary? What is a good way to deal with the media dependency to run the test? eg you need an audio or video file to run the test.
 var recodeSampleVideo = "/Users/pietropassarelli/INCOMING_FILES/autoEdit_demo_videos/RecodeLiveEditing_test/Bowman.mov";
 // var exampleFfprobePath = "/Users/pietropassarelli/Dropbox/CODE/Vox/SubtitleBurner_project/SubtitleBurner/bin/ffprobe";
