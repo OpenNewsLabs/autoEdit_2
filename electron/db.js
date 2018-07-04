@@ -136,10 +136,12 @@ DB.create = function(model, success, error){
         destFolder: mediaFolder,
         keys: {
           watson: window.IBMWatsonKeys(),
-          speechmatics: window.SpeechmaticsKeys()
+          speechmatics: window.SpeechmaticsKeys(),
+          rev: window.revKeys()
         },
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
+        revOrderNumber: newElement.revOrderNumber,
         cbMetadata: function(respM) {
           console.log('respM: ', respM);
           // update current transcription with metadata data
