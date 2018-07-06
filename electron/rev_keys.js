@@ -13,7 +13,7 @@ if (window.process !== 'undefined') {
   var revKeysPath = "";
 }
 // CLIENT_API_KEY  USER_API_KEY
-var revKeys = {username: "", password: ""};
+var revKeys = {username: "", password: "", url: ""};
 // var speechmaticsKeysSet = false;
 
 // load keys on startup
