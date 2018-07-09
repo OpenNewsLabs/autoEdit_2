@@ -46,3 +46,5 @@ node_modules
 
 .idea
 Notes
+
+.env
