@@ -149,7 +149,8 @@ DB.create = function(model, success, error){
             trs.metadata = respM;
             // saving current transcription
             trs.metadataStatus = true;
-            if(trs.videoStatus === true && trs.transcriptionStatus === true){
+             // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
+            if(trs.processedAudio === true && trs.transcriptionStatus === true){
               trs.status = true;
             }
             trs.save(function(err) { 
@@ -174,7 +175,8 @@ DB.create = function(model, success, error){
               trs.processedAudio = respT.processedAudio;
               trs.text = respT.text;
               trs.transcriptionStatus = true;
-              if(trs.videoStatus === true && trs.metadataStatus === true){
+              // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
+              if(trs.processedAudio === true && trs.metadataStatus === true){
                 trs.status = true;
               }
              }//else no error in transcription callback
