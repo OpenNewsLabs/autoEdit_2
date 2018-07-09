@@ -148,7 +148,12 @@ DB.create = function(model, success, error){
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             trs.metadata = respM;
             // saving current transcription
+            trs.metadataStatus = true;
+            if(trs.videoStatus === true && trs.transcriptionStatus === true){
+              trs.status = true;
+            }
             trs.save(function(err) { 
+              model.set(trs);
               if (err) console.error('error saving tr meta: ',err); 
               console.log('trs-cbMetadata: ', JSON.stringify(trs,null,2));
             });
@@ -168,7 +173,10 @@ DB.create = function(model, success, error){
               trs.audioFile = respT.audioFile;
               trs.processedAudio = respT.processedAudio;
               trs.text = respT.text;
-              trs.status = true;
+              trs.transcriptionStatus = true;
+              if(trs.videoStatus === true && trs.metadataStatus === true){
+                trs.status = true;
+              }
              }//else no error in transcription callback
               // saving current transcription
               trs.save(function(err) { 
@@ -177,19 +185,29 @@ DB.create = function(model, success, error){
                  console.info("done processing transcription");
                  //TODO: could calculate difference between when started - when ended and say it took x long.
                  getTimeNow();
-                if (err) console.error(err); 
+                if (err) console.error('error saving tr transcription : ', err); 
               });
            
           });
         },
         cbVideo: function(respV) {
+          console.log('cbVideo: ', respV);
           // updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
+            console.error('cbVideo err: ',err);
+            console.log('cbVideo inside trs findOne respV', respV);
             // updating transcription attributes with result
             trs.videoOgg = respV.videoOgg;
             trs.processedVideo = respV.processedVideo;
             // saving current transcription
-            trs.save(function(err) { if (err) console.error(err); });
+            trs.videoStatus = true;
+            if(trs.metadataStatus === true && trs.transcriptionStatus === true){
+              trs.status = true;
+            }
+            trs.save(function(err) { 
+              model.set(trs);
+              if (err) console.error('error saving tr cbVideo : ', err); 
+            });
           });
         }
       });
