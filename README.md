@@ -56,7 +56,7 @@ autoEdit, it's a text based video editing software that creates a digital paper-
 
 ### Stack
 
-It is built using node electron and backbone. 
+It is built using `node` `electron` and `backbone`. 
 
 <!--
 #### Folder structure
@@ -127,17 +127,17 @@ It is built using node electron and backbone.
 
 -->
 
-#### backbone app
+#### Backbone app
 The backbone app is in `lib/app` for troubleshooting you can use `cmd`+ `alt` +`i` to ge the electron developer console, and there you have `appTranscription` and `appPaperedit` two backbone routers in the gloabl `window` scope that give you access to getting to individual backbone models and collections for transcriptions and paper-edit.
 
-#### `backbone.sync` 
+#### `Backbone.sync` 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how [the demo](https://opennewslabs.github.io/autoEdit_2/demo/index.html) is run, with an hard coded sample data in `backbone.sync`.
 
 In the `electron` app `backbone.sync` overrides the backbone API methods.
 This is set in `./lib/app/app.js` as 
 `Backbone.sync = window.DB;` where `DB` is set in `./electrong/db.js`.
 
-This also a workaround for electron different ways of threating node and javascript depending on how they are added to the project. 
+This is also a workaround for electron different ways of threating node and javascript depending on how they are added to the project. 
 
 If you use `require` in the html file, then you are in node context, and can use module like `fs` but if you use a script tag, then you are in js client side code and don't have access to thos function. 
 
