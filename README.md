@@ -129,10 +129,30 @@ It is built using node electron and backbone.
 
 -->
 
+#### backbone app
+The backbone app is in `lib/app` for troubleshooting you can use `cmd`+ `alt` +`i` to ge the electron developer console, and there you have `appTranscription` and `appPaperedit` two backbone routers in the gloabl `window` scope that give you access to getting to individual backbone models and collections for transcriptions and paper-edit.
+
 #### `backbone.sync` 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how [the demo](https://opennewslabs.github.io/autoEdit_2/demo/index.html) is run, with an hard coded sample data in `backbone.sync`.
 
-`backbone.sync` is overridden in `./electrong/db.js` to connect to `medeadown`/ `linvodb3` databse locally.
+In the `electron` app `backbone.sync` overrides the backbone API methods.
+This is set in `./lib/app/app.js` as 
+`Backbone.sync = window.DB;` where `DB` is set in `./electrong/db.js`.
+
+This also a workaround for electron different ways of threating node and javascript depending on how they are added to the project. 
+
+If you use `require` in the html file, then you are in node context, and can use module like `fs` but if you use a script tag, then you are in js client side code and don't have access to thos function. 
+
+The downside of being in node context on the client side, without using a bundle like browserify and requring modules directly is that the front end is no longer portable as standalone client side web app if needed, eg for the demo page.
+
+`DB` in `./electrong/db.js` allows to connect the backbone front to the `medeadown`/ `linvodb3` databse locally. As well as trigger `./lib/interactive_transcription_generator` component to at a high level
+- read metadata of the media file, for the EDL sequence
+- create video preview
+- create audio version to send to STT APIs
+
+#### electron
+Code of the electron app is in the `./electron` folder.
+
 
 #### `ffmpeg` and `electrong`
 autoEdit uses `ffmpeg` under the hood, and getting `ffmpeg` and `electron` to work can sometimes be problematic when setting up a new app, so [I wrote here](http://pietropassarelli.com/ffmpeg-electron.html) about how this setup works in autoEdit, with semplified example.
