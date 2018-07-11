@@ -1,6 +1,4 @@
-## Brief of the project
-
-# autoEdit V2
+# autoEdit 2
 
 autoEdit 2 is a fast text based video editing, desktop app for Mac, Linux and Windows, built with node and electron, and Backbone front end. For making video production faster, easier and more accessible.
 
