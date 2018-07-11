@@ -55,17 +55,6 @@ autoEdit, it's a text based video editing software that creates a digital paper-
 
 ![Overview diagram ](/assets/autoEdit_overview_diagram_1.0.7.png)
 
-### STT 
-
-The app uses the following Speech To Text systems to generate transcription
-
-- [X] IBM watson(free trial + paid), 
-- [X] Speechmatics(free trial + paid), 
-- [X] Gentle(open source) 
-- [X] pocketsphinx (open source) 
-- [ ] Rev.com (human transcriptions)
-
-The user can then select text and export a video sequence to the video editing software of choice.
 
 ### Stack
 
@@ -77,7 +66,19 @@ Is designed so that the front end in backbone can be used as standalone static s
 `backbone.sync` is overridden in `./electrong/db.js` to connect to `medeadown`/ `linvodb3` databse locally.
 
 #### `ffmpeg` and `electrong`
-autoEdit uses ffmpeg under the hood, and this can sometimes be problematic to setup, [I wrote here](http://pietropassarelli.com/ffmpeg-electron.html) about how this setup works in autoEdit, with semplified example.
+autoEdit uses `ffmpeg` under the hood, and getting `ffmpeg` and `electron` to work can sometimes be problematic when setting up a new app, so [I wrote here](http://pietropassarelli.com/ffmpeg-electron.html) about how this setup works in autoEdit, with semplified example.
+
+### STT 
+
+The app uses the following Speech To Text systems to generate transcription
+
+- [X] IBM watson(free trial + paid), 
+- [X] Speechmatics(free trial + paid), 
+- [X] Gentle(open source) 
+- [X] pocketsphinx (open source) 
+- [ ] Rev.com (human transcriptions)
+
+The user can then select text and export a video sequence to the video editing software of choice.
 
 ###  Documentation for developers
 
@@ -166,6 +167,17 @@ However As of version `1.0.8` support is added for Linux thanks to [@probonopd](
 On commit to  master there is a continuos built setup on Travis CI that builds and adds an up to date linux release to the release section under [Continuous build](https://github.com/OpenNewsLabs/autoEdit_2/releases/tag/continuous)
 
 - [ ] PR and help welcome on creatiing a continuos integration service for Mac and Windows as well
+
+
+## Build project page
+To update the project page run
+
+```
+npm run make_page
+```
+This updates the project page as [github page](https://pages.github.com/), that lives in [the `/docs` folder](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) in this repo.
+
+## Build demo front end page
 
 ## Open source 
 
