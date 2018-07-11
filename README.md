@@ -47,7 +47,7 @@ _High level overview of system architecture_
 
 See [See use rmanual ](https://pietropassarelli.gitbooks.io/autoedit2-user-manual) and diagram below for more details.
 
-### background 
+### Background 
 autoEdit, it's a text based video editing software that creates a digital paper-editing workflow. For more backaground see this write up on Source ["Introducing autoEdit"](https://source.opennews.org/articles/video-editing-made-better-introducing-autoedit/) as well as for more in depth on the underlying workflow [see this gitbook  "How to tell compelling stories out of video interviews"](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/), and [especially this section focused on digital Paper-editing](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/digital-paper-editing/autoedit-2-digital-paper-editing-software.html).
 
 <!-- Video overview of main user journey Watch [video overview of the transcription part on youtube](http://www.youtube.com/watch?v=4z143-nJlzs). -->
@@ -59,11 +59,11 @@ autoEdit, it's a text based video editing software that creates a digital paper-
 
 The app uses the following Speech To Text systems to generate transcription
 
-- IBM watson(free trial + paid), 
-- Speechmatics(free trial + paid), 
-- Gentle(open source) 
-- pocketsphinx (open source) 
-- Rev.com (human transcriptions)
+- [X] IBM watson(free trial + paid), 
+- [X] Speechmatics(free trial + paid), 
+- [X] Gentle(open source) 
+- [X] pocketsphinx (open source) 
+- [ ] Rev.com (human transcriptions)
 
 The user can then select text and export a video sequence to the video editing software of choice.
 
