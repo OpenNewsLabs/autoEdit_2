@@ -2,7 +2,7 @@
 
 # autoEdit V2
 
-autoEdit 2 is a fast text based video editing, desktop app for Mac, Linux and PC, built with node and electron, and Backbone front end. For making video production faster, easier and more accessible.
+autoEdit 2 is a fast text based video editing, desktop app for Mac, Linux and Windows, built with node and electron, and Backbone front end. For making video production faster, easier and more accessible.
 
 
 ## Ready to use release 
@@ -48,7 +48,7 @@ _High level overview of system architecture_
 See [See use rmanual ](https://pietropassarelli.gitbooks.io/autoedit2-user-manual) and diagram below for more details.
 
 ### background 
-autoEdit, it's a text based video editing software that creates a digital paper-editing workflow. For more backaground see this write up on Source ["Introducing autoEdit"]((https://source.opennews.org/articles/video-editing-made-better-introducing-autoedit/) as well as for more in depth on the underlying workflow [see this gitbook  "How to tell compelling stories out of video interviews"](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/), and [especially this section focused on digital Paper-editing](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/digital-paper-editing/autoedit-2-digital-paper-editing-software.html).
+autoEdit, it's a text based video editing software that creates a digital paper-editing workflow. For more backaground see this write up on Source ["Introducing autoEdit"](https://source.opennews.org/articles/video-editing-made-better-introducing-autoedit/) as well as for more in depth on the underlying workflow [see this gitbook  "How to tell compelling stories out of video interviews"](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/), and [especially this section focused on digital Paper-editing](https://pietropassarelli.gitbooks.io/how-to-tell-compelling-stories-out-of-video-inter/content/digital-paper-editing/autoedit-2-digital-paper-editing-software.html).
 
 <!-- Video overview of main user journey Watch [video overview of the transcription part on youtube](http://www.youtube.com/watch?v=4z143-nJlzs). -->
 
@@ -83,7 +83,7 @@ autoEdit uses ffmpeg under the hood, and this can sometimes be problematic to se
 
 For more info check out the [project documentation](https://pietropassarelli.gitbooks.io/autoedit-2-documentation/content/)
 
-- [ ] documentation needs cleaning up, sudgestions on how to improve this welcome
+- [ ] documentation is out of date and needs cleaning up, sudgestions on how to improve this welcome
 
 <!-- For development I also use an [R&D planning doc](https://docs.google.com/document/d/1aQ8MzevowNq2QrK77cT0Bh46xeq4ABxoV93FD85MCkM/edit?usp=sharing) that helps me plan architectural and components choices, evaluate different options and keep track of what has or hasn't worked over time.-->
  
@@ -91,9 +91,7 @@ For more info check out the [project documentation](https://pietropassarelli.git
 ## Development env
 
  _How to run the development environment_
-
 _Coding style convention ref optional, eg which linter to use_
-
 _Linting, github pre-push hook - optional_
 
 - node 
@@ -105,7 +103,6 @@ _Linting, github pre-push hook - optional_
 Use [`.eslintrc.json`](./.eslintrc.json) in your code editor of choice to keep style consistency.
 
 ## Build
-
 _How to run build_
 <!-- 
 https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
