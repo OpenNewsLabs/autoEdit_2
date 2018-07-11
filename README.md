@@ -60,6 +60,7 @@ autoEdit, it's a text based video editing software that creates a digital paper-
 
 It is built using node electron and backbone. 
 
+<!--
 #### Folder structure
 
 ```js
@@ -125,6 +126,8 @@ It is built using node electron and backbone.
 // provides keyboard shortcuts
     └── backbone.mousetrap.js
 ```
+
+-->
 
 #### `backbone.sync` 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how [the demo](https://opennewslabs.github.io/autoEdit_2/demo/index.html) is run, with an hard coded sample data in `backbone.sync`.
