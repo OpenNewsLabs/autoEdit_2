@@ -60,6 +60,71 @@ autoEdit, it's a text based video editing software that creates a digital paper-
 
 It is built using node electron and backbone. 
 
+#### Folder structure
+```
+.
+├── LICENCE.md
+├── README.md
+├── assets
+│   └── autoEdit_overview_diagram_1.0.7.png
+// images, icons needed during the build processs
+├── build
+│   ├── autoedit.png
+│   ├── background.png
+│   ├── icon.icns
+│   └── icon.ico
+├── config
+│   └── make_demo.js
+├── config.js
+// where you find packaged version of the app after running build
+├── dist
+│   ├── autoEdit2-1.0.11-mac.zip
+│   ├── autoEdit2-1.0.11.dmg
+│   ├── github
+│   └── mac
+// contain project page published as github pages - autoEdit.io
+├── docs
+// electron part of the app
+├── electron
+// app.js is excluded from repo through .gitignore
+// and is generated with browserify to bundle client side js on npm start
+│   ├── app.js
+│   ├── custom.css
+// db.js connects to "backend" through overriding `backbone.sync` API methods
+│   ├── db.js
+// hard coded demos for front end demo 
+│   ├── demo_paperedit.json
+│   ├── demo_transcription.json
+// list of ffmpeg extensions allowed to be opened by auto edit when loading video or audio
+│   ├── ffmpeg_extentions.js
+// main landing page for the app
+│   ├── index.html
+// main electron js entrypoint as specified in package.json "main": "electron/main.js",
+// loading window, adding app menues etc..
+│   ├── main.js
+// logic to handle credentials for some of the STT services
+│   ├── rev_keys.js
+│   ├── speechmatics_keys.js
+│   └── watson_keys.js
+├── lib
+// main logic of client side app, bundled into electron/app.js
+│   ├── app
+// module to convert sequence into an EDL file, edit decision list
+// to open in video editig software
+│   ├── edl_composer
+// a collection of modules to handle prepping media and communicating with the STT APIs
+│   ├── interactive_transcription_generator
+// node module to generate caption file
+│   └── srt
+// tests, written using jasmine
+├── spec
+// third party library bundled with browserify in package.json
+└── vendor
+    ├── backbone.async.js
+// provides keyboard shortcuts
+    └── backbone.mousetrap.js
+```
+
 #### `backbone.sync` 
 Is designed so that the front end in backbone can be used as standalone static site. Which is how [the demo](https://opennewslabs.github.io/autoEdit_2/demo/index.html) is run, with an hard coded sample data in `backbone.sync`.
 
