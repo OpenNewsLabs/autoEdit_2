@@ -13,7 +13,7 @@ if (window.process !== 'undefined') {
   var watsonKeysPath = "";
 }
 
-var watsonKeys = {username: "", password: "", url : ""};
+var watsonKeys = {username: "", password: "", url:""};
 // var watsonKeysSet = false;
 
 // load keys on startup
@@ -45,7 +45,6 @@ function getWatsonAPIkeys(){
 
 //set
 function setWatsonAPIkeys(keys){
-  console.log(`SAVING KEYS TO ${watsonKeysPath}`);
   if(keysAreValid(keys)){
      fs.writeFileSync(watsonKeysPath, JSON.stringify(keys));
     }else{

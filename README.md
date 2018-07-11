@@ -169,15 +169,39 @@ On commit to  master there is a continuos built setup on Travis CI that builds a
 - [ ] PR and help welcome on creatiing a continuos integration service for Mac and Windows as well
 
 
+
 ## Build project page
+The project page is visible at [autoedit.io/demo](http://www.autoedit.io).To edit the project page go to `./project_page` flder and edit the [jekyll](https://jekyllrb.com/) site.
+
 To update the project page run
 
 ```
 npm run make_page
 ```
-This updates the project page as [github page](https://pages.github.com/), that lives in [the `/docs` folder](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) in this repo.
 
-## Build demo front end page
+This copyies from the `./project_page` folder (that also contains the demo front end) to [the `/docs` folder](https://help.github.com/articles/configuring-a-publishing-source-for-github-pages/) in this repo used to publish with [github page](https://pages.github.com/).
+
+This comand also updates the demo front end ([autoedit.io/demo](http://www.autoedit.io/demo)). To update project page without updating demo front end code `npm run preview_page_no_demo_reload`.
+
+The project page is a jeckyll site, and can be previewed locally using
+
+```
+npm run preview_page
+```
+
+Then visit [http://127.0.0.1:4000/](http://127.0.0.1:4000/)
+
+## Build/update demo front end page
+
+[autoedit.io/demo](http://www.autoedit.io/demo) contains a dummy demo of the front end, to update this after substantial changes to the app, run
+
+```
+npm run make_demo
+```
+
+This runs browserify to bundle the client side code and copies the `./electron` folder into the `./project_page/demo` folder.
+
+
 
 ## Open source 
 

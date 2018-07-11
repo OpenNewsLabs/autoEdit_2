@@ -86,6 +86,10 @@
     window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
     window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
 
+    window.revKeys = require('./rev_keys.js').getRevAPIkeys;
+    window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
+    window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
+
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
     document.addEventListener('drop', function(e) {

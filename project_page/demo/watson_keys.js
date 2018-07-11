@@ -13,7 +13,7 @@ if (window.process !== 'undefined') {
   var watsonKeysPath = "";
 }
 
-var watsonKeys = {username: "", password: ""};
+var watsonKeys = {username: "", password: "", url:""};
 // var watsonKeysSet = false;
 
 // load keys on startup
