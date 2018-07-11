@@ -5,7 +5,7 @@ autoEdit 2 is a fast text based video editing, desktop app for Mac, Linux and Wi
 
 ## Ready to use release 
 
-See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to download latest packaged version ready to use. 
+See [releases section](https://github.com/OpenNewsLabs/autoEdit_2/releases) to download latest packaged version ready to use. And view [user manual](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/) for overview of the app.
 
 All you need to get started is to decide what speech to text service you want to use and get some credentials to get going [check out the user manual for more details](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html) 
 
