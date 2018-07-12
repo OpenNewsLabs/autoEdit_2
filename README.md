@@ -25,11 +25,11 @@ npm install
 
 ## Usage - development
 
-To compile the js client side files with browserify and start electron. 
-
 ```
 npm start
 ```
+
+Compiles the js client side files with browserify and starts electron
 
 _Note:_ You'd also need to get Speech to text keys or have the Gentle Open source app running locally [check out the user manual for more details](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html), unless you are chosing `pocketsphinx` as speech to text option.
 
@@ -235,13 +235,13 @@ npm run build:win
 
 _How to carry out tests_
 
-At the moment some unit tests are in the `spec` folder using jasmine, and you can them using
+At the moment some unit tests are in the `spec` folder using `jasmine`, and you can run them using
 
 ```
 npm run test
 ```
 
-However they still need to be fixed up a bit. And perhaps move to jest.
+However they still need to be fixed up a bit. And perhaps move to `jest`.
 
 - [ ] PR and help on improving test coverage welcome.
 
@@ -255,7 +255,7 @@ However As of version `1.0.8` support is added for Linux thanks to [@probonopd](
 
 On commit to  master there is a continuos built setup on Travis CI that builds and adds an up to date linux release to the release section under [Continuous build](https://github.com/OpenNewsLabs/autoEdit_2/releases/tag/continuous)
 
-- [ ] PR and help welcome on creatiing a continuos integration service for Mac and Windows as well
+- [ ] PR and help welcome on creating a continuos integration service for Mac and Windows as well
 
 
 
