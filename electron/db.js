@@ -134,6 +134,8 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
+        // for caption file conversion
+        captionFilePath: newElement.captionFilePath,
         keys: {
           watson: window.IBMWatsonKeys(),
           speechmatics: window.SpeechmaticsKeys(),
