@@ -1,0 +1,54 @@
+function convertOneSrtLine(srtLine){ //cb
+  var resultWords = [];
+  // console.log(srtLine)
+  //WORDS
+  //array of words in a line
+  //TODO: add more separators for splitting text on end of words?
+  // var separators = [' ', '\n'];
+  //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+  // var words = srtLine.text.split(new RegExp(separators.join('|'), 'g'));
+  var words = srtLine.text.split(" ");
+  var numberOfWordsInALine = words.length;
+  var numberOfLettersInALine = 0;
+  //to calculate numberOfLettersInALine iterate over array of words and add up lenght of each.
+  for (var j=0; j< words.length; j++){
+    var oneWord = words[j];
+    var numberOfLettersInOneWord = oneWord.length;
+    numberOfLettersInALine +=numberOfLettersInOneWord;
+  }
+  // console.log(numberOfLettersInALine)
+
+  //line duration in seconds
+  // var lineStartTime =  tc_converter.fractionalTimecodeToSeconds(srtLine.endTimeSeconds);
+  // var lineEdnTime = tc_converter.fractionalTimecodeToSeconds(srtLine.startTimeSeconds);
+  var lineStartTime =  srtLine.endTime;
+  var lineEdnTime = srtLine.startTime;
+  var lineDuration = lineEdnTime - lineStartTime ;
+  //Define Word level granualrity
+  var averageWordDuration = lineDuration / numberOfWordsInALine;
+  //word counter resets for every new line
+  var wordCounter = 0;
+  for(var k = 0; k< words.length; k++){
+    var word = words[k];
+    var wordDuration = word.length * averageWordDuration;
+    // var wordStartTime = lineStartTime + wordCounter * averageWordDuration;
+    // var wordEndTime = wordStartTime + wordDuration;
+    var wordStartTime;
+    var wordEndTime;
+    if(k===0){
+      wordStartTime = lineStartTime;
+      wordEndTime = wordStartTime+wordDuration;
+    }
+    wordStartTime = lineStartTime + wordDuration;
+    wordEndTime =  lineStartTime + wordCounter * averageWordDuration;
+
+    var correspondingWord = words[wordCounter];
+    //
+    var wordO = createWord(k,wordStartTime, wordEndTime, correspondingWord)
+    // console.log(wordO)
+    resultWords.push(wordO)
+    wordCounter+=1;
+  }
+  return resultWords
+  // console.log(result)
+}
