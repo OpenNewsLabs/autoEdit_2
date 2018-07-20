@@ -1,0 +1,12 @@
+{ FetchError: request to http://apis.labs.jupiter.bbc.co.uk/audio-transcribe?email=pietro.passarelli%40bbc.co.uk&fileName=sample-audio.m4a failed, reason: getaddrinfo ENOTFOUND apis.labs.jupiter.bbc.co.uk apis.labs.jupiter.bbc.co.uk:80
+    at ClientRequest.<anonymous> (/Users/passap02/autoEdit_2/node_modules/node-fetch/lib/index.js:1393:11)
+    at ClientRequest.emit (events.js:182:13)
+    at Socket.socketErrorListener (_http_client.js:371:9)
+    at Socket.emit (events.js:182:13)
+    at emitErrorNT (internal/streams/destroy.js:92:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:59:3)
+    at process._tickCallback (internal/process/next_tick.js:174:19)
+  message: 'request to http://apis.labs.jupiter.bbc.co.uk/audio-transcribe?email=pietro.passarelli%40bbc.co.uk&fileName=sample-audio.m4a failed, reason: getaddrinfo ENOTFOUND apis.labs.jupiter.bbc.co.uk apis.labs.jupiter.bbc.co.uk:80',
+  type: 'system',
+  errno: 'ENOTFOUND',
+  code: 'ENOTFOUND' }

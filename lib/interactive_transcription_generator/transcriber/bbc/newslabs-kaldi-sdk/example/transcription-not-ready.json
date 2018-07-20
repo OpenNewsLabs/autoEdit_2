@@ -1,0 +1,11 @@
+{ "action": "audio-transcribe",
+  "retval":
+     { "success": true,
+       "audiobytes": 89022,
+       "filename": "",
+       "jobid": "e279b573-74a6-43db-a5c4-f2be893725c4",
+       "transcript": "http://apis.labs.jupiter.bbc.co.uk/audio-transcribe/e279b573-74a6-43db-a5c4-f2be893725c4" 
+    },
+    "elapsed": 0.13762903213501,
+    "servertime": "20180720095813.0134"
+}
