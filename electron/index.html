@@ -149,7 +149,9 @@
 
   <script>
   if (window.process !== undefined) {
-  var ffmpegExentions = require("./ffmpeg_extentions.js")
+    const path = require('path');
+    const remix = require('ffmpeg-remix');
+    const ffmpegExentions = require("./ffmpeg_extentions.js")
    // file dialogue opener 
    const {dialog} = require('electron').remote;
 
@@ -178,6 +180,37 @@
         if(cb){cb(fileName)};
       });
      }
+
+      window.ffmpegRemix = function (jsonSequence, cb){
+      // https://github.com/electron/electron/blob/master/docs/api/dialog.md#dialogshowsavedialogbrowserwindow-options-callback
+      var savePath = dialog.showSaveDialog({});
+      console.log('savePath',savePath);
+      console.log('jsonSequence.output',jsonSequence.output);
+      // if user does not specify mp4 extension then we should add it othersiwe ffmpeg will fail
+      if(!isVideoFileMp4(savePath)){
+        savePath +='.mp4';
+      }
+      jsonSequence.output = savePath;
+      console.log('jsonSequence.output',jsonSequence.output);
+      // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
+      jsonSequence.ffmpegPath =  require("../config.js").ffmpegPath;
+      // //call ffmpeg remix
+      
+      remix(jsonSequence,function(err, result) {
+        console.log(err, result);
+          if(cb){cb(savePath)}
+      })
+     }
+      function isVideoFileMp4(file){
+      var extname = path.extname(file);
+      if(extname === '.mp4'){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+
 
   }
 </script>
