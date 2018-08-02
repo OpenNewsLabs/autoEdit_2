@@ -1,0 +1,5921 @@
+[
+  {
+    "id": 0,
+    "speaker": "Speaker 1",
+    "paragraph": [
+      {
+        "id": 0,
+        "startTime": 6.17,
+        "endTime": 3.2475000000000005,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 6.17,
+            "endTime": 2.4125,
+            "text": "QUESTION:"
+          },
+          {
+            "id": 1,
+            "startTime": 5.7524999999999995,
+            "endTime": 4.9174999999999995,
+            "text": "ma"
+          },
+          {
+            "id": 2,
+            "startTime": 5.335,
+            "endTime": 3.665,
+            "text": "come"
+          },
+          {
+            "id": 3,
+            "startTime": 4.9175,
+            "endTime": 3.2475000000000005,
+            "text": "hai\n"
+          }
+        ]
+      },
+      {
+        "id": 1,
+        "startTime": 9.229,
+        "endTime": 5.295999999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 9.229,
+            "endTime": 4.422000000000001,
+            "text": "cominciato,"
+          },
+          {
+            "id": 1,
+            "startTime": 8.792,
+            "endTime": 7.0440000000000005,
+            "text": "come"
+          },
+          {
+            "id": 2,
+            "startTime": 8.354999999999999,
+            "endTime": 7.043999999999999,
+            "text": "hai"
+          },
+          {
+            "id": 3,
+            "startTime": 7.917999999999999,
+            "endTime": 5.295999999999999,
+            "text": "deciso"
+          },
+          {
+            "id": 4,
+            "startTime": 7.481,
+            "endTime": 6.607,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 7.044,
+            "endTime": 3.1110000000000007,
+            "text": "diventare"
+          },
+          {
+            "id": 6,
+            "startTime": 6.606999999999999,
+            "endTime": 5.295999999999999,
+            "text": "un\n"
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "startTime": 13.119,
+        "endTime": 4.2275714285714265,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 13.119,
+            "endTime": 10.896142857142856,
+            "text": "come"
+          },
+          {
+            "id": 1,
+            "startTime": 12.563285714285714,
+            "endTime": 11.451857142857142,
+            "text": "ho"
+          },
+          {
+            "id": 2,
+            "startTime": 12.007571428571428,
+            "endTime": 8.673285714285713,
+            "text": "deciso"
+          },
+          {
+            "id": 3,
+            "startTime": 11.451857142857142,
+            "endTime": 10.34042857142857,
+            "text": "di"
+          },
+          {
+            "id": 4,
+            "startTime": 10.896142857142856,
+            "endTime": 8.673285714285711,
+            "text": "fare"
+          },
+          {
+            "id": 5,
+            "startTime": 10.340428571428571,
+            "endTime": 7.006142857142857,
+            "text": "questo"
+          },
+          {
+            "id": 6,
+            "startTime": 9.784714285714285,
+            "endTime": 4.2275714285714265,
+            "text": "mestiere?\n"
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "startTime": 18.31,
+        "endTime": 6.7744444444444465,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 18.31,
+            "endTime": 17.73322222222222,
+            "text": "è"
+          },
+          {
+            "id": 1,
+            "startTime": 17.73322222222222,
+            "endTime": 14.849333333333332,
+            "text": "stato"
+          },
+          {
+            "id": 2,
+            "startTime": 17.156444444444443,
+            "endTime": 16.002888888888886,
+            "text": "un"
+          },
+          {
+            "id": 3,
+            "startTime": 16.579666666666665,
+            "endTime": 13.695777777777776,
+            "text": "caso,"
+          },
+          {
+            "id": 4,
+            "startTime": 16.00288888888889,
+            "endTime": 12.542222222222225,
+            "text": "perché"
+          },
+          {
+            "id": 5,
+            "startTime": 15.42611111111111,
+            "endTime": 13.695777777777778,
+            "text": "mia"
+          },
+          {
+            "id": 6,
+            "startTime": 14.849333333333334,
+            "endTime": 7.3512222222222245,
+            "text": "moglie\nvoleva"
+          },
+          {
+            "id": 7,
+            "startTime": 14.272555555555556,
+            "endTime": 13.119,
+            "text": "un"
+          },
+          {
+            "id": 8,
+            "startTime": 13.695777777777778,
+            "endTime": 6.7744444444444465,
+            "text": "telescopio,\n"
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "startTime": 25.31,
+        "endTime": 15.128181818181817,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 25.31,
+            "endTime": 24.673636363636362,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 24.673636363636362,
+            "endTime": 22.764545454545452,
+            "text": "non"
+          },
+          {
+            "id": 2,
+            "startTime": 24.037272727272725,
+            "endTime": 20.855454545454542,
+            "text": "avevo"
+          },
+          {
+            "id": 3,
+            "startTime": 23.40090909090909,
+            "endTime": 22.128181818181815,
+            "text": "il"
+          },
+          {
+            "id": 4,
+            "startTime": 22.764545454545452,
+            "endTime": 18.946363636363635,
+            "text": "denaro"
+          },
+          {
+            "id": 5,
+            "startTime": 22.128181818181815,
+            "endTime": 13.855454545454542,
+            "text": "sufficiente\na"
+          },
+          {
+            "id": 6,
+            "startTime": 21.491818181818182,
+            "endTime": 16.400909090909092,
+            "text": "comprare"
+          },
+          {
+            "id": 7,
+            "startTime": 20.855454545454545,
+            "endTime": 18.946363636363635,
+            "text": "una"
+          },
+          {
+            "id": 8,
+            "startTime": 20.21909090909091,
+            "endTime": 17.673636363636362,
+            "text": "cosa"
+          },
+          {
+            "id": 9,
+            "startTime": 19.582727272727272,
+            "endTime": 9.40090909090909,
+            "text": "sufficientemente"
+          },
+          {
+            "id": 10,
+            "startTime": 18.946363636363635,
+            "endTime": 15.128181818181817,
+            "text": "buona\n"
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "startTime": 34.01,
+        "endTime": 26.008666666666667,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 34.01,
+            "endTime": 33.50991666666666,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 33.50991666666666,
+            "endTime": 32.50975,
+            "text": "mi"
+          },
+          {
+            "id": 2,
+            "startTime": 33.00983333333333,
+            "endTime": 32.50975,
+            "text": "è"
+          },
+          {
+            "id": 3,
+            "startTime": 32.50975,
+            "endTime": 28.509083333333333,
+            "text": "capitato"
+          },
+          {
+            "id": 4,
+            "startTime": 32.00966666666667,
+            "endTime": 30.509416666666667,
+            "text": "fra"
+          },
+          {
+            "id": 5,
+            "startTime": 31.50958333333333,
+            "endTime": 30.509416666666667,
+            "text": "le"
+          },
+          {
+            "id": 6,
+            "startTime": 31.0095,
+            "endTime": 29.009166666666665,
+            "text": "mani"
+          },
+          {
+            "id": 7,
+            "startTime": 30.509416666666667,
+            "endTime": 29.50925,
+            "text": "un"
+          },
+          {
+            "id": 8,
+            "startTime": 30.009333333333334,
+            "endTime": 24.50841666666667,
+            "text": "articolo\ndi"
+          },
+          {
+            "id": 9,
+            "startTime": 29.50925,
+            "endTime": 24.50841666666667,
+            "text": "Scientific"
+          },
+          {
+            "id": 10,
+            "startTime": 29.009166666666665,
+            "endTime": 25.0085,
+            "text": "American"
+          },
+          {
+            "id": 11,
+            "startTime": 28.509083333333333,
+            "endTime": 26.008666666666667,
+            "text": "dove\n"
+          }
+        ]
+      },
+      {
+        "id": 6,
+        "startTime": 36.37,
+        "endTime": 30.47,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 36.37,
+            "endTime": 22.21,
+            "text": "raccontavano"
+          },
+          {
+            "id": 1,
+            "startTime": 35.19,
+            "endTime": 30.47,
+            "text": "che\n"
+          }
+        ]
+      },
+      {
+        "id": 7,
+        "startTime": 41.61,
+        "endTime": 33.226,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 41.61,
+            "endTime": 36.894,
+            "text": "astrofili"
+          },
+          {
+            "id": 1,
+            "startTime": 41.086,
+            "endTime": 36.37,
+            "text": "americani"
+          },
+          {
+            "id": 2,
+            "startTime": 40.562,
+            "endTime": 39.513999999999996,
+            "text": "si"
+          },
+          {
+            "id": 3,
+            "startTime": 40.038,
+            "endTime": 34.273999999999994,
+            "text": "costruivano"
+          },
+          {
+            "id": 4,
+            "startTime": 39.513999999999996,
+            "endTime": 35.846,
+            "text": "da\nsoli"
+          },
+          {
+            "id": 5,
+            "startTime": 38.989999999999995,
+            "endTime": 34.797999999999995,
+            "text": "l'ottica"
+          },
+          {
+            "id": 6,
+            "startTime": 38.466,
+            "endTime": 36.894,
+            "text": "per"
+          },
+          {
+            "id": 7,
+            "startTime": 37.942,
+            "endTime": 36.894,
+            "text": "un"
+          },
+          {
+            "id": 8,
+            "startTime": 37.418,
+            "endTime": 32.178,
+            "text": "telescopio"
+          },
+          {
+            "id": 9,
+            "startTime": 36.894,
+            "endTime": 33.226,
+            "text": "allora\n"
+          }
+        ]
+      },
+      {
+        "id": 8,
+        "startTime": 44.6,
+        "endTime": 34.88249999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 44.6,
+            "endTime": 43.105000000000004,
+            "text": "ho"
+          },
+          {
+            "id": 1,
+            "startTime": 43.8525,
+            "endTime": 37.872499999999995,
+            "text": "comprato"
+          },
+          {
+            "id": 2,
+            "startTime": 43.105000000000004,
+            "endTime": 41.61,
+            "text": "il"
+          },
+          {
+            "id": 3,
+            "startTime": 42.3575,
+            "endTime": 34.88249999999999,
+            "text": "materiale\n"
+          }
+        ]
+      },
+      {
+        "id": 9,
+        "startTime": 50.93,
+        "endTime": 41.78666666666667,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 50.93,
+            "endTime": 50.22666666666667,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 50.22666666666667,
+            "endTime": 48.82,
+            "text": "ho"
+          },
+          {
+            "id": 2,
+            "startTime": 49.52333333333333,
+            "endTime": 42.49,
+            "text": "cominciato"
+          },
+          {
+            "id": 3,
+            "startTime": 48.82,
+            "endTime": 36.86333333333334,
+            "text": "questa\navventura."
+          },
+          {
+            "id": 4,
+            "startTime": 48.11666666666667,
+            "endTime": 46.71,
+            "text": "Ho"
+          },
+          {
+            "id": 5,
+            "startTime": 47.413333333333334,
+            "endTime": 41.78666666666667,
+            "text": "lavorato"
+          },
+          {
+            "id": 6,
+            "startTime": 46.71,
+            "endTime": 44.6,
+            "text": "per"
+          },
+          {
+            "id": 7,
+            "startTime": 46.00666666666667,
+            "endTime": 40.38,
+            "text": "parecchi"
+          },
+          {
+            "id": 8,
+            "startTime": 45.303333333333335,
+            "endTime": 41.78666666666667,
+            "text": "mesi\n"
+          }
+        ]
+      },
+      {
+        "id": 10,
+        "startTime": 56.56,
+        "endTime": 44.78818181818181,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 56.56,
+            "endTime": 55.02454545454545,
+            "text": "per"
+          },
+          {
+            "id": 1,
+            "startTime": 56.04818181818182,
+            "endTime": 54.00090909090909,
+            "text": "fare"
+          },
+          {
+            "id": 2,
+            "startTime": 55.53636363636364,
+            "endTime": 54.00090909090909,
+            "text": "uno"
+          },
+          {
+            "id": 3,
+            "startTime": 55.02454545454545,
+            "endTime": 50.93,
+            "text": "specchio"
+          },
+          {
+            "id": 4,
+            "startTime": 54.512727272727275,
+            "endTime": 53.48909090909091,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 54.00090909090909,
+            "endTime": 51.44181818181818,
+            "text": "buona"
+          },
+          {
+            "id": 6,
+            "startTime": 53.48909090909091,
+            "endTime": 48.88272727272727,
+            "text": "qualità\ne"
+          },
+          {
+            "id": 7,
+            "startTime": 52.97727272727273,
+            "endTime": 51.95363636363636,
+            "text": "il"
+          },
+          {
+            "id": 8,
+            "startTime": 52.46545454545455,
+            "endTime": 51.441818181818185,
+            "text": "mi"
+          },
+          {
+            "id": 9,
+            "startTime": 51.95363636363636,
+            "endTime": 49.906363636363636,
+            "text": "sono"
+          },
+          {
+            "id": 10,
+            "startTime": 51.44181818181818,
+            "endTime": 44.78818181818181,
+            "text": "appassionato\n"
+          }
+        ]
+      },
+      {
+        "id": 11,
+        "startTime": 59.55,
+        "endTime": 46.59333333333335,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 59.55,
+            "endTime": 58.553333333333335,
+            "text": "a"
+          },
+          {
+            "id": 1,
+            "startTime": 58.553333333333335,
+            "endTime": 52.573333333333345,
+            "text": "questa"
+          },
+          {
+            "id": 2,
+            "startTime": 57.556666666666665,
+            "endTime": 46.59333333333335,
+            "text": "disciplina\n"
+          }
+        ]
+      },
+      {
+        "id": 12,
+        "startTime": 65.41,
+        "endTime": 55.64333333333333,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 65.41,
+            "endTime": 63.45666666666666,
+            "text": "Poi"
+          },
+          {
+            "id": 1,
+            "startTime": 64.75888888888889,
+            "endTime": 62.154444444444444,
+            "text": "sono"
+          },
+          {
+            "id": 2,
+            "startTime": 64.10777777777777,
+            "endTime": 59.54999999999999,
+            "text": "entrato"
+          },
+          {
+            "id": 3,
+            "startTime": 63.45666666666666,
+            "endTime": 62.154444444444444,
+            "text": "in"
+          },
+          {
+            "id": 4,
+            "startTime": 62.80555555555555,
+            "endTime": 57.596666666666664,
+            "text": "contatto"
+          },
+          {
+            "id": 5,
+            "startTime": 62.154444444444444,
+            "endTime": 60.20111111111111,
+            "text": "con"
+          },
+          {
+            "id": 6,
+            "startTime": 61.50333333333333,
+            "endTime": 47.83,
+            "text": "amici\ndell'università"
+          },
+          {
+            "id": 7,
+            "startTime": 60.85222222222222,
+            "endTime": 59.55,
+            "text": "di"
+          },
+          {
+            "id": 8,
+            "startTime": 60.20111111111111,
+            "endTime": 55.64333333333333,
+            "text": "Padova\n"
+          }
+        ]
+      },
+      {
+        "id": 13,
+        "startTime": 71.21000000000001,
+        "endTime": 61.54333333333332,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 71.21000000000001,
+            "endTime": 70.56555555555556,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 70.56555555555556,
+            "endTime": 69.27666666666667,
+            "text": "lì"
+          },
+          {
+            "id": 2,
+            "startTime": 69.92111111111112,
+            "endTime": 65.41,
+            "text": "c'erano"
+          },
+          {
+            "id": 3,
+            "startTime": 69.27666666666667,
+            "endTime": 66.05444444444444,
+            "text": "delle"
+          },
+          {
+            "id": 4,
+            "startTime": 68.63222222222223,
+            "endTime": 63.47666666666666,
+            "text": "riunioni"
+          },
+          {
+            "id": 5,
+            "startTime": 67.98777777777778,
+            "endTime": 66.69888888888889,
+            "text": "di"
+          },
+          {
+            "id": 6,
+            "startTime": 67.34333333333333,
+            "endTime": 61.54333333333332,
+            "text": "astrofili"
+          },
+          {
+            "id": 7,
+            "startTime": 66.69888888888889,
+            "endTime": 64.76555555555555,
+            "text": "del"
+          },
+          {
+            "id": 8,
+            "startTime": 66.05444444444444,
+            "endTime": 61.54333333333332,
+            "text": "Veneto\n"
+          }
+        ]
+      },
+      {
+        "id": 14,
+        "startTime": 78.21000000000001,
+        "endTime": 69.59461538461538,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 78.21000000000001,
+            "endTime": 77.67153846153847,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 77.67153846153847,
+            "endTime": 74.44076923076925,
+            "text": "allora"
+          },
+          {
+            "id": 2,
+            "startTime": 77.13307692307693,
+            "endTime": 72.82538461538462,
+            "text": "capitano"
+          },
+          {
+            "id": 3,
+            "startTime": 76.5946153846154,
+            "endTime": 74.97923076923078,
+            "text": "tra"
+          },
+          {
+            "id": 4,
+            "startTime": 76.05615384615385,
+            "endTime": 74.97923076923077,
+            "text": "le"
+          },
+          {
+            "id": 5,
+            "startTime": 75.51769230769231,
+            "endTime": 73.36384615384615,
+            "text": "mani"
+          },
+          {
+            "id": 6,
+            "startTime": 74.97923076923078,
+            "endTime": 70.67153846153847,
+            "text": "progetti"
+          },
+          {
+            "id": 7,
+            "startTime": 74.44076923076923,
+            "endTime": 72.82538461538462,
+            "text": "via"
+          },
+          {
+            "id": 8,
+            "startTime": 73.9023076923077,
+            "endTime": 72.28692307692309,
+            "text": "via"
+          },
+          {
+            "id": 9,
+            "startTime": 73.36384615384617,
+            "endTime": 70.13307692307694,
+            "text": "sempre"
+          },
+          {
+            "id": 10,
+            "startTime": 72.82538461538462,
+            "endTime": 71.21000000000001,
+            "text": "più"
+          },
+          {
+            "id": 11,
+            "startTime": 72.28692307692309,
+            "endTime": 66.9023076923077,
+            "text": "complicati"
+          },
+          {
+            "id": 12,
+            "startTime": 71.74846153846154,
+            "endTime": 69.59461538461538,
+            "text": "più\n"
+          }
+        ]
+      },
+      {
+        "id": 15,
+        "startTime": 81.46000000000001,
+        "endTime": 77.14799999999998,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 81.46000000000001,
+            "endTime": 75.91599999999998,
+            "text": "difficili"
+          },
+          {
+            "id": 1,
+            "startTime": 80.84400000000001,
+            "endTime": 80.22800000000001,
+            "text": "e"
+          },
+          {
+            "id": 2,
+            "startTime": 80.22800000000001,
+            "endTime": 76.532,
+            "text": "quindi"
+          },
+          {
+            "id": 3,
+            "startTime": 79.612,
+            "endTime": 78.38,
+            "text": "io"
+          },
+          {
+            "id": 4,
+            "startTime": 78.996,
+            "endTime": 77.14799999999998,
+            "text": "ho\n"
+          }
+        ]
+      },
+      {
+        "id": 16,
+        "startTime": 86.21000000000001,
+        "endTime": 76.11625000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 86.21000000000001,
+            "endTime": 79.67875000000001,
+            "text": "collaborato"
+          },
+          {
+            "id": 1,
+            "startTime": 85.61625000000001,
+            "endTime": 83.83500000000001,
+            "text": "con"
+          },
+          {
+            "id": 2,
+            "startTime": 85.02250000000001,
+            "endTime": 77.89750000000001,
+            "text": "l'università"
+          },
+          {
+            "id": 3,
+            "startTime": 84.42875000000001,
+            "endTime": 83.24125000000001,
+            "text": "di"
+          },
+          {
+            "id": 4,
+            "startTime": 83.83500000000001,
+            "endTime": 79.08500000000001,
+            "text": "Padova\ne"
+          },
+          {
+            "id": 5,
+            "startTime": 83.24125000000001,
+            "endTime": 82.05375000000001,
+            "text": "ho"
+          },
+          {
+            "id": 6,
+            "startTime": 82.64750000000001,
+            "endTime": 79.08500000000001,
+            "text": "aperto"
+          },
+          {
+            "id": 7,
+            "startTime": 82.05375000000001,
+            "endTime": 76.11625000000001,
+            "text": "l'azienda\n"
+          }
+        ]
+      },
+      {
+        "id": 17,
+        "startTime": 89.75,
+        "endTime": 79.13000000000002,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 89.75,
+            "endTime": 84.44000000000001,
+            "text": "nel"
+          },
+          {
+            "id": 1,
+            "startTime": 87.98,
+            "endTime": 79.13000000000002,
+            "text": "1977\n"
+          }
+        ]
+      },
+      {
+        "id": 18,
+        "startTime": 94.38,
+        "endTime": 77.59625000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 94.38,
+            "endTime": 93.80125,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 93.80125,
+            "endTime": 92.64375,
+            "text": "da"
+          },
+          {
+            "id": 2,
+            "startTime": 93.2225,
+            "endTime": 92.065,
+            "text": "lì"
+          },
+          {
+            "id": 3,
+            "startTime": 92.64375,
+            "endTime": 90.32875,
+            "text": "sono"
+          },
+          {
+            "id": 4,
+            "startTime": 92.065,
+            "endTime": 88.01375,
+            "text": "partito"
+          },
+          {
+            "id": 5,
+            "startTime": 91.48625,
+            "endTime": 90.9075,
+            "text": "a"
+          },
+          {
+            "id": 6,
+            "startTime": 90.9075,
+            "endTime": 88.5925,
+            "text": "fare"
+          },
+          {
+            "id": 7,
+            "startTime": 90.32875,
+            "endTime": 77.59625000000001,
+            "text": "questa\nquest'attività\n"
+          }
+        ]
+      },
+      {
+        "id": 19,
+        "startTime": 101.38,
+        "endTime": 89.2890909090909,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 101.38,
+            "endTime": 100.74363636363636,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 100.74363636363636,
+            "endTime": 96.92545454545454,
+            "text": "quindi"
+          },
+          {
+            "id": 2,
+            "startTime": 100.10727272727273,
+            "endTime": 93.10727272727273,
+            "text": "attualmente"
+          },
+          {
+            "id": 3,
+            "startTime": 99.47090909090909,
+            "endTime": 98.19818181818182,
+            "text": "ho"
+          },
+          {
+            "id": 4,
+            "startTime": 98.83454545454545,
+            "endTime": 95.65272727272726,
+            "text": "molti"
+          },
+          {
+            "id": 5,
+            "startTime": 98.19818181818181,
+            "endTime": 89.92545454545453,
+            "text": "clienti\nanche"
+          },
+          {
+            "id": 6,
+            "startTime": 97.56181818181818,
+            "endTime": 94.38,
+            "text": "negli"
+          },
+          {
+            "id": 7,
+            "startTime": 96.92545454545454,
+            "endTime": 93.74363636363636,
+            "text": "Stati"
+          },
+          {
+            "id": 8,
+            "startTime": 96.2890909090909,
+            "endTime": 93.10727272727271,
+            "text": "Uniti"
+          },
+          {
+            "id": 9,
+            "startTime": 95.65272727272726,
+            "endTime": 94.38,
+            "text": "in"
+          },
+          {
+            "id": 10,
+            "startTime": 95.01636363636364,
+            "endTime": 89.2890909090909,
+            "text": "Giappone\n"
+          }
+        ]
+      },
+      {
+        "id": 20,
+        "startTime": 108.92,
+        "endTime": 98.23833333333334,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 108.92,
+            "endTime": 107.27666666666667,
+            "text": "in"
+          },
+          {
+            "id": 1,
+            "startTime": 108.09833333333333,
+            "endTime": 100.70333333333335,
+            "text": "Germania,"
+          },
+          {
+            "id": 2,
+            "startTime": 107.27666666666667,
+            "endTime": 103.16833333333335,
+            "text": "molti"
+          },
+          {
+            "id": 3,
+            "startTime": 106.45500000000001,
+            "endTime": 100.70333333333335,
+            "text": "clienti"
+          },
+          {
+            "id": 4,
+            "startTime": 105.63333333333334,
+            "endTime": 103.99000000000001,
+            "text": "in"
+          },
+          {
+            "id": 5,
+            "startTime": 104.81166666666667,
+            "endTime": 98.23833333333334,
+            "text": "Francia\n"
+          }
+        ]
+      },
+      {
+        "id": 21,
+        "startTime": 111.03999999999999,
+        "endTime": 102.56000000000003,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 111.03999999999999,
+            "endTime": 109.97999999999999,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 109.97999999999999,
+            "endTime": 102.56000000000003,
+            "text": "quindi\n"
+          }
+        ]
+      },
+      {
+        "id": 22,
+        "startTime": 113.11,
+        "endTime": 108.96999999999998,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 113.11,
+            "endTime": 111.454,
+            "text": "sono"
+          },
+          {
+            "id": 1,
+            "startTime": 112.696,
+            "endTime": 108.14199999999998,
+            "text": "soddisfatto"
+          },
+          {
+            "id": 2,
+            "startTime": 112.282,
+            "endTime": 111.454,
+            "text": "di"
+          },
+          {
+            "id": 3,
+            "startTime": 111.868,
+            "endTime": 109.38399999999999,
+            "text": "questa"
+          },
+          {
+            "id": 4,
+            "startTime": 111.454,
+            "endTime": 108.96999999999998,
+            "text": "cosa.\n"
+          }
+        ]
+      },
+      {
+        "id": 23,
+        "startTime": 114.44,
+        "endTime": 112.445,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 114.44,
+            "endTime": 111.4475,
+            "text": "QUESTION:"
+          },
+          {
+            "id": 1,
+            "startTime": 114.1075,
+            "endTime": 112.44500000000001,
+            "text": "Quali"
+          },
+          {
+            "id": 2,
+            "startTime": 113.775,
+            "endTime": 112.44500000000001,
+            "text": "sono"
+          },
+          {
+            "id": 3,
+            "startTime": 113.4425,
+            "endTime": 112.445,
+            "text": "le\n"
+          }
+        ]
+      },
+      {
+        "id": 24,
+        "startTime": 118.44,
+        "endTime": 114.44,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 118.44,
+            "endTime": 110.94,
+            "text": "caratteristiche"
+          },
+          {
+            "id": 1,
+            "startTime": 117.94,
+            "endTime": 112.94,
+            "text": "necessarie"
+          },
+          {
+            "id": 2,
+            "startTime": 117.44,
+            "endTime": 115.94,
+            "text": "per"
+          },
+          {
+            "id": 3,
+            "startTime": 116.94,
+            "endTime": 112.94,
+            "text": "svolgere"
+          },
+          {
+            "id": 4,
+            "startTime": 116.44,
+            "endTime": 115.44,
+            "text": "un"
+          },
+          {
+            "id": 5,
+            "startTime": 115.94,
+            "endTime": 111.94,
+            "text": "mestiere"
+          },
+          {
+            "id": 6,
+            "startTime": 115.44,
+            "endTime": 112.94,
+            "text": "così?"
+          },
+          {
+            "id": 7,
+            "startTime": 114.94,
+            "endTime": 114.44,
+            "text": "\n"
+          }
+        ]
+      },
+      {
+        "id": 25,
+        "startTime": 124.5,
+        "endTime": 110.36,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 124.5,
+            "endTime": 114.39999999999999,
+            "text": "Secondo\nme"
+          },
+          {
+            "id": 1,
+            "startTime": 123.49,
+            "endTime": 120.46,
+            "text": "non"
+          },
+          {
+            "id": 2,
+            "startTime": 122.48,
+            "endTime": 121.47,
+            "text": "è"
+          },
+          {
+            "id": 3,
+            "startTime": 121.47,
+            "endTime": 118.44,
+            "text": "che"
+          },
+          {
+            "id": 4,
+            "startTime": 120.46,
+            "endTime": 118.44,
+            "text": "ci"
+          },
+          {
+            "id": 5,
+            "startTime": 119.45,
+            "endTime": 110.36,
+            "text": "vogliano\n"
+          }
+        ]
+      },
+      {
+        "id": 26,
+        "startTime": 129.519,
+        "endTime": 106.93349999999998,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 129.519,
+            "endTime": 110.69774999999998,
+            "text": "caratteristiche"
+          },
+          {
+            "id": 1,
+            "startTime": 128.26425,
+            "endTime": 113.20724999999999,
+            "text": "particolari,"
+          },
+          {
+            "id": 2,
+            "startTime": 127.0095,
+            "endTime": 124.5,
+            "text": "ci"
+          },
+          {
+            "id": 3,
+            "startTime": 125.75475,
+            "endTime": 106.93349999999998,
+            "text": "vuole\npassione\n"
+          }
+        ]
+      },
+      {
+        "id": 27,
+        "startTime": 137.04,
+        "endTime": 120.96599999999998,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 137.04,
+            "endTime": 129.896,
+            "text": "capacità"
+          },
+          {
+            "id": 1,
+            "startTime": 136.147,
+            "endTime": 134.361,
+            "text": "di"
+          },
+          {
+            "id": 2,
+            "startTime": 135.254,
+            "endTime": 121.85899999999998,
+            "text": "approfondimento"
+          },
+          {
+            "id": 3,
+            "startTime": 134.361,
+            "endTime": 120.96599999999998,
+            "text": "degli\nargomenti"
+          },
+          {
+            "id": 4,
+            "startTime": 133.468,
+            "endTime": 132.575,
+            "text": "e"
+          },
+          {
+            "id": 5,
+            "startTime": 132.575,
+            "endTime": 128.10999999999999,
+            "text": "molta"
+          },
+          {
+            "id": 6,
+            "startTime": 131.682,
+            "endTime": 120.96599999999998,
+            "text": "autocritica\n"
+          }
+        ]
+      },
+      {
+        "id": 28,
+        "startTime": 142.669,
+        "endTime": 129.15939999999995,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 142.669,
+            "endTime": 135.9142,
+            "text": "perchè"
+          },
+          {
+            "id": 1,
+            "startTime": 141.5432,
+            "endTime": 134.7884,
+            "text": "questi"
+          },
+          {
+            "id": 2,
+            "startTime": 140.41740000000001,
+            "endTime": 117.90139999999994,
+            "text": "strumenti\nrichiedono"
+          },
+          {
+            "id": 3,
+            "startTime": 139.2916,
+            "endTime": 135.91419999999997,
+            "text": "una"
+          },
+          {
+            "id": 4,
+            "startTime": 138.1658,
+            "endTime": 129.15939999999995,
+            "text": "qualità\n"
+          }
+        ]
+      },
+      {
+        "id": 29,
+        "startTime": 144.839,
+        "endTime": 135.07400000000007,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 144.839,
+            "endTime": 139.41400000000004,
+            "text": "molto"
+          },
+          {
+            "id": 1,
+            "startTime": 143.75400000000002,
+            "endTime": 135.07400000000007,
+            "text": "elevata\n"
+          }
+        ]
+      },
+      {
+        "id": 30,
+        "startTime": 150.549,
+        "endTime": 141.66677777777778,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 150.549,
+            "endTime": 149.91455555555555,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 149.91455555555555,
+            "endTime": 148.64566666666667,
+            "text": "se"
+          },
+          {
+            "id": 2,
+            "startTime": 149.28011111111113,
+            "endTime": 147.3767777777778,
+            "text": "non"
+          },
+          {
+            "id": 3,
+            "startTime": 148.64566666666667,
+            "endTime": 147.3767777777778,
+            "text": "ci"
+          },
+          {
+            "id": 4,
+            "startTime": 148.01122222222222,
+            "endTime": 146.74233333333333,
+            "text": "si"
+          },
+          {
+            "id": 5,
+            "startTime": 147.3767777777778,
+            "endTime": 135.32233333333332,
+            "text": "mette\ncontinuamente"
+          },
+          {
+            "id": 6,
+            "startTime": 146.74233333333333,
+            "endTime": 145.47344444444445,
+            "text": "in"
+          },
+          {
+            "id": 7,
+            "startTime": 146.10788888888888,
+            "endTime": 139.129,
+            "text": "discussione"
+          },
+          {
+            "id": 8,
+            "startTime": 145.47344444444445,
+            "endTime": 141.66677777777778,
+            "text": "sulla\n"
+          }
+        ]
+      },
+      {
+        "id": 31,
+        "startTime": 152.26,
+        "endTime": 145.41600000000005,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 152.26,
+            "endTime": 148.26766666666668,
+            "text": "qualità"
+          },
+          {
+            "id": 1,
+            "startTime": 151.68966666666665,
+            "endTime": 148.83800000000002,
+            "text": "dello"
+          },
+          {
+            "id": 2,
+            "startTime": 151.11933333333334,
+            "endTime": 145.41600000000005,
+            "text": "strumento\n"
+          }
+        ]
+      },
+      {
+        "id": 32,
+        "startTime": 154.699,
+        "endTime": 143.31699999999992,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 154.699,
+            "endTime": 152.26,
+            "text": "non"
+          },
+          {
+            "id": 1,
+            "startTime": 153.886,
+            "endTime": 152.26,
+            "text": "si"
+          },
+          {
+            "id": 2,
+            "startTime": 153.073,
+            "endTime": 143.31699999999992,
+            "text": "progredisce\n"
+          }
+        ]
+      },
+      {
+        "id": 33,
+        "startTime": 156.849,
+        "endTime": 150.39900000000006,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 156.849,
+            "endTime": 152.54900000000004,
+            "text": "quindi"
+          },
+          {
+            "id": 1,
+            "startTime": 156.13233333333332,
+            "endTime": 151.1156666666667,
+            "text": "bisogna"
+          },
+          {
+            "id": 2,
+            "startTime": 155.41566666666668,
+            "endTime": 150.39900000000006,
+            "text": "sempre\n"
+          }
+        ]
+      },
+      {
+        "id": 34,
+        "startTime": 159.139,
+        "endTime": 131.65899999999976,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 159.139,
+            "endTime": 131.65899999999976,
+            "text": "migliorare.\n"
+          }
+        ]
+      },
+      {
+        "id": 35,
+        "startTime": 197.559,
+        "endTime": 183.08774999999997,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 197.559,
+            "endTime": 188.87624999999997,
+            "text": "QUESTION:"
+          },
+          {
+            "id": 1,
+            "startTime": 196.59425,
+            "endTime": 192.73524999999998,
+            "text": "Come"
+          },
+          {
+            "id": 2,
+            "startTime": 195.6295,
+            "endTime": 192.73525,
+            "text": "hai"
+          },
+          {
+            "id": 3,
+            "startTime": 194.66475,
+            "endTime": 183.08774999999997,
+            "text": "cominciato?\n"
+          }
+        ]
+      },
+      {
+        "id": 36,
+        "startTime": 203.629,
+        "endTime": 193.917,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 203.629,
+            "endTime": 202.415,
+            "text": "Ho"
+          },
+          {
+            "id": 1,
+            "startTime": 203.022,
+            "endTime": 196.952,
+            "text": "cominciato"
+          },
+          {
+            "id": 2,
+            "startTime": 202.415,
+            "endTime": 200.594,
+            "text": "per"
+          },
+          {
+            "id": 3,
+            "startTime": 201.808,
+            "endTime": 198.773,
+            "text": "caso."
+          },
+          {
+            "id": 4,
+            "startTime": 201.201,
+            "endTime": 199.38,
+            "text": "Mia"
+          },
+          {
+            "id": 5,
+            "startTime": 200.594,
+            "endTime": 196.952,
+            "text": "moglie"
+          },
+          {
+            "id": 6,
+            "startTime": 199.987,
+            "endTime": 193.31,
+            "text": "negli\nnegli"
+          },
+          {
+            "id": 7,
+            "startTime": 199.38,
+            "endTime": 196.952,
+            "text": "anni"
+          },
+          {
+            "id": 8,
+            "startTime": 198.773,
+            "endTime": 197.559,
+            "text": "70"
+          },
+          {
+            "id": 9,
+            "startTime": 198.166,
+            "endTime": 193.917,
+            "text": "voleva\n"
+          }
+        ]
+      },
+      {
+        "id": 37,
+        "startTime": 209.269,
+        "endTime": 201.4597692307692,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 209.269,
+            "endTime": 208.40130769230768,
+            "text": "un"
+          },
+          {
+            "id": 1,
+            "startTime": 208.83515384615384,
+            "endTime": 204.49669230769229,
+            "text": "telescopio"
+          },
+          {
+            "id": 2,
+            "startTime": 208.40130769230768,
+            "endTime": 207.96746153846152,
+            "text": "e"
+          },
+          {
+            "id": 3,
+            "startTime": 207.96746153846155,
+            "endTime": 206.6659230769231,
+            "text": "non"
+          },
+          {
+            "id": 4,
+            "startTime": 207.5336153846154,
+            "endTime": 205.3643846153846,
+            "text": "avevo"
+          },
+          {
+            "id": 5,
+            "startTime": 207.09976923076923,
+            "endTime": 206.2320769230769,
+            "text": "il"
+          },
+          {
+            "id": 6,
+            "startTime": 206.66592307692306,
+            "endTime": 204.06284615384612,
+            "text": "denaro"
+          },
+          {
+            "id": 7,
+            "startTime": 206.23207692307693,
+            "endTime": 200.59207692307692,
+            "text": "per\ncomprarlo"
+          },
+          {
+            "id": 8,
+            "startTime": 205.79823076923077,
+            "endTime": 205.3643846153846,
+            "text": "e"
+          },
+          {
+            "id": 9,
+            "startTime": 205.3643846153846,
+            "endTime": 202.76130769230767,
+            "text": "allora"
+          },
+          {
+            "id": 10,
+            "startTime": 204.93053846153845,
+            "endTime": 204.06284615384612,
+            "text": "ho"
+          },
+          {
+            "id": 11,
+            "startTime": 204.4966923076923,
+            "endTime": 202.32746153846153,
+            "text": "letto"
+          },
+          {
+            "id": 12,
+            "startTime": 204.06284615384615,
+            "endTime": 201.4597692307692,
+            "text": "delle\n"
+          }
+        ]
+      },
+      {
+        "id": 38,
+        "startTime": 214.109,
+        "endTime": 208.30100000000002,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 214.109,
+            "endTime": 210.721,
+            "text": "riviste"
+          },
+          {
+            "id": 1,
+            "startTime": 213.625,
+            "endTime": 208.301,
+            "text": "soprattutto"
+          },
+          {
+            "id": 2,
+            "startTime": 213.14100000000002,
+            "endTime": 210.721,
+            "text": "dagli"
+          },
+          {
+            "id": 3,
+            "startTime": 212.657,
+            "endTime": 210.23700000000002,
+            "text": "Stati"
+          },
+          {
+            "id": 4,
+            "startTime": 212.173,
+            "endTime": 209.753,
+            "text": "Uniti"
+          },
+          {
+            "id": 5,
+            "startTime": 211.68900000000002,
+            "endTime": 205.88100000000003,
+            "text": "dove\nc'erano"
+          },
+          {
+            "id": 6,
+            "startTime": 211.205,
+            "endTime": 208.78500000000003,
+            "text": "degli"
+          },
+          {
+            "id": 7,
+            "startTime": 210.721,
+            "endTime": 206.365,
+            "text": "astrofili"
+          },
+          {
+            "id": 8,
+            "startTime": 210.237,
+            "endTime": 208.785,
+            "text": "che"
+          },
+          {
+            "id": 9,
+            "startTime": 209.75300000000001,
+            "endTime": 208.30100000000002,
+            "text": "si\n"
+          }
+        ]
+      },
+      {
+        "id": 39,
+        "startTime": 216.16899999999998,
+        "endTime": 212.46100000000004,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 216.16899999999998,
+            "endTime": 211.63700000000003,
+            "text": "costruivano"
+          },
+          {
+            "id": 1,
+            "startTime": 215.75699999999998,
+            "endTime": 214.933,
+            "text": "lo"
+          },
+          {
+            "id": 2,
+            "startTime": 215.345,
+            "endTime": 211.63700000000006,
+            "text": "strumento"
+          },
+          {
+            "id": 3,
+            "startTime": 214.933,
+            "endTime": 214.109,
+            "text": "da"
+          },
+          {
+            "id": 4,
+            "startTime": 214.52100000000002,
+            "endTime": 212.46100000000004,
+            "text": "soli\n"
+          }
+        ]
+      },
+      {
+        "id": 40,
+        "startTime": 218.75900000000001,
+        "endTime": 211.4206666666666,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 218.75900000000001,
+            "endTime": 218.32733333333334,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 218.32733333333334,
+            "endTime": 217.464,
+            "text": "da"
+          },
+          {
+            "id": 2,
+            "startTime": 217.89566666666667,
+            "endTime": 217.03233333333333,
+            "text": "là"
+          },
+          {
+            "id": 3,
+            "startTime": 217.464,
+            "endTime": 217.03233333333333,
+            "text": "è"
+          },
+          {
+            "id": 4,
+            "startTime": 217.03233333333333,
+            "endTime": 213.57899999999995,
+            "text": "iniziata"
+          },
+          {
+            "id": 5,
+            "startTime": 216.60066666666665,
+            "endTime": 211.4206666666666,
+            "text": "l'avventura\n"
+          }
+        ]
+      },
+      {
+        "id": 41,
+        "startTime": 221.88,
+        "endTime": 215.1921428571429,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 221.88,
+            "endTime": 221.43414285714286,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 221.43414285714286,
+            "endTime": 218.75900000000001,
+            "text": "adesso"
+          },
+          {
+            "id": 2,
+            "startTime": 220.98828571428572,
+            "endTime": 217.4214285714286,
+            "text": "vendiamo"
+          },
+          {
+            "id": 3,
+            "startTime": 220.5424285714286,
+            "endTime": 216.52971428571433,
+            "text": "strumenti"
+          },
+          {
+            "id": 4,
+            "startTime": 220.09657142857142,
+            "endTime": 219.20485714285715,
+            "text": "in"
+          },
+          {
+            "id": 5,
+            "startTime": 219.6507142857143,
+            "endTime": 217.42142857142858,
+            "text": "tutto"
+          },
+          {
+            "id": 6,
+            "startTime": 219.20485714285715,
+            "endTime": 215.1921428571429,
+            "text": "il\nmondo\n"
+          }
+        ]
+      },
+      {
+        "id": 42,
+        "startTime": 225.219,
+        "endTime": 221.2122,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 225.219,
+            "endTime": 223.8834,
+            "text": "In"
+          },
+          {
+            "id": 1,
+            "startTime": 224.5512,
+            "endTime": 218.541,
+            "text": "Giappone,"
+          },
+          {
+            "id": 2,
+            "startTime": 223.8834,
+            "endTime": 220.5444,
+            "text": "Stati"
+          },
+          {
+            "id": 3,
+            "startTime": 223.2156,
+            "endTime": 219.8766,
+            "text": "Uniti"
+          },
+          {
+            "id": 4,
+            "startTime": 222.5478,
+            "endTime": 221.2122,
+            "text": "e\n"
+          }
+        ]
+      },
+      {
+        "id": 43,
+        "startTime": 229.359,
+        "endTime": 212.79899999999992,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 229.359,
+            "endTime": 225.219,
+            "text": "in"
+          },
+          {
+            "id": 1,
+            "startTime": 227.289,
+            "endTime": 212.79899999999992,
+            "text": "Europa\n"
+          }
+        ]
+      },
+      {
+        "id": 44,
+        "startTime": 250.019,
+        "endTime": 244.919,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 250.019,
+            "endTime": 247.31900000000002,
+            "text": "QUESTION:"
+          },
+          {
+            "id": 1,
+            "startTime": 249.719,
+            "endTime": 248.219,
+            "text": "Quali"
+          },
+          {
+            "id": 2,
+            "startTime": 249.419,
+            "endTime": 248.21900000000002,
+            "text": "sono"
+          },
+          {
+            "id": 3,
+            "startTime": 249.119,
+            "endTime": 248.519,
+            "text": "le"
+          },
+          {
+            "id": 4,
+            "startTime": 248.81900000000002,
+            "endTime": 245.81900000000002,
+            "text": "competenze"
+          },
+          {
+            "id": 5,
+            "startTime": 248.519,
+            "endTime": 245.519,
+            "text": "necessarie"
+          },
+          {
+            "id": 6,
+            "startTime": 248.219,
+            "endTime": 247.319,
+            "text": "per"
+          },
+          {
+            "id": 7,
+            "startTime": 247.919,
+            "endTime": 245.519,
+            "text": "svolgere"
+          },
+          {
+            "id": 8,
+            "startTime": 247.619,
+            "endTime": 245.819,
+            "text": "questo"
+          },
+          {
+            "id": 9,
+            "startTime": 247.31900000000002,
+            "endTime": 244.919,
+            "text": "lavoro?\n"
+          }
+        ]
+      },
+      {
+        "id": 45,
+        "startTime": 255.449,
+        "endTime": 240.064,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 255.449,
+            "endTime": 250.019,
+            "text": "questo"
+          },
+          {
+            "id": 1,
+            "startTime": 254.544,
+            "endTime": 249.114,
+            "text": "lavoro"
+          },
+          {
+            "id": 2,
+            "startTime": 253.639,
+            "endTime": 244.589,
+            "text": "richiedere"
+          },
+          {
+            "id": 3,
+            "startTime": 252.734,
+            "endTime": 246.399,
+            "text": "secondo"
+          },
+          {
+            "id": 4,
+            "startTime": 251.829,
+            "endTime": 244.589,
+            "text": "me\nvarie"
+          },
+          {
+            "id": 5,
+            "startTime": 250.924,
+            "endTime": 240.064,
+            "text": "competenze:\n"
+          }
+        ]
+      },
+      {
+        "id": 46,
+        "startTime": 259.809,
+        "endTime": 232.1956666666666,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 259.809,
+            "endTime": 255.449,
+            "text": "una"
+          },
+          {
+            "id": 1,
+            "startTime": 258.3556666666667,
+            "endTime": 251.08900000000003,
+            "text": "buona"
+          },
+          {
+            "id": 2,
+            "startTime": 256.90233333333333,
+            "endTime": 232.1956666666666,
+            "text": "capacità\nmanuale\n"
+          }
+        ]
+      },
+      {
+        "id": 47,
+        "startTime": 265.239,
+        "endTime": 258.72300000000007,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 265.239,
+            "endTime": 263.067,
+            "text": "quindi"
+          },
+          {
+            "id": 1,
+            "startTime": 264.87699999999995,
+            "endTime": 263.79099999999994,
+            "text": "non"
+          },
+          {
+            "id": 2,
+            "startTime": 264.515,
+            "endTime": 263.067,
+            "text": "aver"
+          },
+          {
+            "id": 3,
+            "startTime": 264.15299999999996,
+            "endTime": 262.34299999999996,
+            "text": "paura"
+          },
+          {
+            "id": 4,
+            "startTime": 263.791,
+            "endTime": 263.067,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 263.429,
+            "endTime": 261.981,
+            "text": "fare"
+          },
+          {
+            "id": 6,
+            "startTime": 263.067,
+            "endTime": 262.343,
+            "text": "le"
+          },
+          {
+            "id": 7,
+            "startTime": 262.705,
+            "endTime": 261.257,
+            "text": "cose"
+          },
+          {
+            "id": 8,
+            "startTime": 262.343,
+            "endTime": 261.257,
+            "text": "con"
+          },
+          {
+            "id": 9,
+            "startTime": 261.981,
+            "endTime": 261.257,
+            "text": "le"
+          },
+          {
+            "id": 10,
+            "startTime": 261.619,
+            "endTime": 260.17100000000005,
+            "text": "mani"
+          },
+          {
+            "id": 11,
+            "startTime": 261.257,
+            "endTime": 259.08500000000004,
+            "text": "quindi"
+          },
+          {
+            "id": 12,
+            "startTime": 260.89500000000004,
+            "endTime": 256.91300000000007,
+            "text": "manualmente"
+          },
+          {
+            "id": 13,
+            "startTime": 260.533,
+            "endTime": 260.171,
+            "text": "e"
+          },
+          {
+            "id": 14,
+            "startTime": 260.17100000000005,
+            "endTime": 258.72300000000007,
+            "text": "poi\n"
+          }
+        ]
+      },
+      {
+        "id": 48,
+        "startTime": 270.639,
+        "endTime": 257.13899999999995,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 270.639,
+            "endTime": 257.1389999999999,
+            "text": "competenze"
+          },
+          {
+            "id": 1,
+            "startTime": 269.289,
+            "endTime": 266.58899999999994,
+            "text": "di"
+          },
+          {
+            "id": 2,
+            "startTime": 267.93899999999996,
+            "endTime": 253.08899999999988,
+            "text": "matematica,"
+          },
+          {
+            "id": 3,
+            "startTime": 266.589,
+            "endTime": 257.13899999999995,
+            "text": "fisica\n"
+          }
+        ]
+      },
+      {
+        "id": 49,
+        "startTime": 274.9,
+        "endTime": 268.3446153846154,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 274.9,
+            "endTime": 274.2444615384615,
+            "text": "da"
+          },
+          {
+            "id": 1,
+            "startTime": 274.57223076923077,
+            "endTime": 272.27784615384616,
+            "text": "ragazzo"
+          },
+          {
+            "id": 2,
+            "startTime": 274.2444615384615,
+            "endTime": 273.58892307692304,
+            "text": "ho"
+          },
+          {
+            "id": 3,
+            "startTime": 273.9166923076923,
+            "endTime": 271.6223076923077,
+            "text": "seguito"
+          },
+          {
+            "id": 4,
+            "startTime": 273.58892307692304,
+            "endTime": 273.26115384615383,
+            "text": "i"
+          },
+          {
+            "id": 5,
+            "startTime": 273.26115384615383,
+            "endTime": 271.6223076923077,
+            "text": "corsi"
+          },
+          {
+            "id": 6,
+            "startTime": 272.9333846153846,
+            "endTime": 272.27784615384616,
+            "text": "di"
+          },
+          {
+            "id": 7,
+            "startTime": 272.60561538461536,
+            "endTime": 268.6723846153846,
+            "text": "ingegneria\ne"
+          },
+          {
+            "id": 8,
+            "startTime": 272.27784615384616,
+            "endTime": 270.3112307692308,
+            "text": "quindi"
+          },
+          {
+            "id": 9,
+            "startTime": 271.95007692307695,
+            "endTime": 269.9834615384616,
+            "text": "questo"
+          },
+          {
+            "id": 10,
+            "startTime": 271.6223076923077,
+            "endTime": 270.9667692307692,
+            "text": "mi"
+          },
+          {
+            "id": 11,
+            "startTime": 271.2945384615385,
+            "endTime": 270.639,
+            "text": "ha"
+          },
+          {
+            "id": 12,
+            "startTime": 270.9667692307692,
+            "endTime": 268.3446153846154,
+            "text": "aiutato\n"
+          }
+        ]
+      },
+      {
+        "id": 50,
+        "startTime": 277.55,
+        "endTime": 268.7166666666665,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 277.55,
+            "endTime": 268.7166666666666,
+            "text": "parecchio."
+          },
+          {
+            "id": 1,
+            "startTime": 276.6666666666667,
+            "endTime": 271.3666666666666,
+            "text": "Alcuni"
+          },
+          {
+            "id": 2,
+            "startTime": 275.7833333333333,
+            "endTime": 268.7166666666665,
+            "text": "aspetti\n"
+          }
+        ]
+      },
+      {
+        "id": 51,
+        "startTime": 279.919,
+        "endTime": 267.2843333333335,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 279.919,
+            "endTime": 271.2326666666668,
+            "text": "soprattutto"
+          },
+          {
+            "id": 1,
+            "startTime": 279.1293333333333,
+            "endTime": 275.18100000000004,
+            "text": "nella"
+          },
+          {
+            "id": 2,
+            "startTime": 278.3396666666667,
+            "endTime": 267.2843333333335,
+            "text": "progettazione\n"
+          }
+        ]
+      },
+      {
+        "id": 52,
+        "startTime": 281.31,
+        "endTime": 277.13699999999994,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 281.31,
+            "endTime": 280.38266666666664,
+            "text": "di"
+          },
+          {
+            "id": 1,
+            "startTime": 280.84633333333335,
+            "endTime": 277.60066666666665,
+            "text": "sistemi"
+          },
+          {
+            "id": 2,
+            "startTime": 280.38266666666664,
+            "endTime": 277.13699999999994,
+            "text": "ottici\n"
+          }
+        ]
+      },
+      {
+        "id": 53,
+        "startTime": 282.659,
+        "endTime": 269.1690000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 282.659,
+            "endTime": 269.1690000000001,
+            "text": "complessi\n"
+          }
+        ]
+      },
+      {
+        "id": 54,
+        "startTime": 287.449,
+        "endTime": 265.8939999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 287.449,
+            "endTime": 282.659,
+            "text": "come"
+          },
+          {
+            "id": 1,
+            "startTime": 286.2515,
+            "endTime": 275.474,
+            "text": "obiettivi"
+          },
+          {
+            "id": 2,
+            "startTime": 285.054,
+            "endTime": 270.6839999999999,
+            "text": "apocromatici"
+          },
+          {
+            "id": 3,
+            "startTime": 283.8565,
+            "endTime": 265.8939999999999,
+            "text": "oppure\nsistemi\n"
+          }
+        ]
+      },
+      {
+        "id": 55,
+        "startTime": 290.889,
+        "endTime": 283.4356666666667,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 290.889,
+            "endTime": 289.169,
+            "text": "con"
+          },
+          {
+            "id": 1,
+            "startTime": 290.3156666666667,
+            "endTime": 286.8756666666667,
+            "text": "lastre"
+          },
+          {
+            "id": 2,
+            "startTime": 289.74233333333336,
+            "endTime": 288.5956666666667,
+            "text": "di"
+          },
+          {
+            "id": 3,
+            "startTime": 289.169,
+            "endTime": 283.43566666666663,
+            "text": "correzione"
+          },
+          {
+            "id": 4,
+            "startTime": 288.59566666666666,
+            "endTime": 286.3023333333333,
+            "text": "tipo"
+          },
+          {
+            "id": 5,
+            "startTime": 288.02233333333334,
+            "endTime": 283.4356666666667,
+            "text": "'Smith'\n"
+          }
+        ]
+      },
+      {
+        "id": 56,
+        "startTime": 297.8,
+        "endTime": 284.7458888888889,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 297.8,
+            "endTime": 288.5853333333333,
+            "text": "richiedevamo"
+          },
+          {
+            "id": 1,
+            "startTime": 297.03211111111113,
+            "endTime": 288.5853333333334,
+            "text": "competenze."
+          },
+          {
+            "id": 2,
+            "startTime": 296.26422222222226,
+            "endTime": 293.9605555555556,
+            "text": "Non"
+          },
+          {
+            "id": 3,
+            "startTime": 295.4963333333333,
+            "endTime": 292.42477777777776,
+            "text": "è\nun"
+          },
+          {
+            "id": 4,
+            "startTime": 294.72844444444445,
+            "endTime": 290.12111111111113,
+            "text": "lavoro"
+          },
+          {
+            "id": 5,
+            "startTime": 293.9605555555556,
+            "endTime": 291.6568888888889,
+            "text": "del"
+          },
+          {
+            "id": 6,
+            "startTime": 293.1926666666667,
+            "endTime": 289.35322222222226,
+            "text": "tutto"
+          },
+          {
+            "id": 7,
+            "startTime": 292.42477777777776,
+            "endTime": 287.0495555555555,
+            "text": "manuale"
+          },
+          {
+            "id": 8,
+            "startTime": 291.6568888888889,
+            "endTime": 284.7458888888889,
+            "text": "insomma.\n"
+          }
+        ]
+      },
+      {
+        "id": 57,
+        "startTime": 336.77,
+        "endTime": 330.50600000000003,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 336.77,
+            "endTime": 334.15999999999997,
+            "text": "Nella"
+          },
+          {
+            "id": 1,
+            "startTime": 336.248,
+            "endTime": 330.50600000000003,
+            "text": "lavorazione"
+          },
+          {
+            "id": 2,
+            "startTime": 335.726,
+            "endTime": 334.682,
+            "text": "di"
+          },
+          {
+            "id": 3,
+            "startTime": 335.204,
+            "endTime": 331.55,
+            "text": "oggi\nin"
+          },
+          {
+            "id": 4,
+            "startTime": 334.682,
+            "endTime": 332.59400000000005,
+            "text": "gran"
+          },
+          {
+            "id": 5,
+            "startTime": 334.15999999999997,
+            "endTime": 331.54999999999995,
+            "text": "parte"
+          },
+          {
+            "id": 6,
+            "startTime": 333.638,
+            "endTime": 332.594,
+            "text": "si"
+          },
+          {
+            "id": 7,
+            "startTime": 333.116,
+            "endTime": 330.506,
+            "text": "usano"
+          },
+          {
+            "id": 8,
+            "startTime": 332.594,
+            "endTime": 326.33000000000004,
+            "text": "attrezzature"
+          },
+          {
+            "id": 9,
+            "startTime": 332.072,
+            "endTime": 330.50600000000003,
+            "text": "di\n"
+          }
+        ]
+      },
+      {
+        "id": 58,
+        "startTime": 338.28,
+        "endTime": 330.73,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 338.28,
+            "endTime": 330.73,
+            "text": "tecnologia"
+          },
+          {
+            "id": 1,
+            "startTime": 337.525,
+            "endTime": 330.73,
+            "text": "avanzata\n"
+          }
+        ]
+      },
+      {
+        "id": 59,
+        "startTime": 343.35,
+        "endTime": 333.2099999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 343.35,
+            "endTime": 339.96999999999997,
+            "text": "quindi"
+          },
+          {
+            "id": 1,
+            "startTime": 342.7866666666667,
+            "endTime": 341.0966666666667,
+            "text": "per"
+          },
+          {
+            "id": 2,
+            "startTime": 342.22333333333336,
+            "endTime": 338.28,
+            "text": "esempio"
+          },
+          {
+            "id": 3,
+            "startTime": 341.66,
+            "endTime": 337.1533333333333,
+            "text": "utensili"
+          },
+          {
+            "id": 4,
+            "startTime": 341.0966666666667,
+            "endTime": 329.2666666666666,
+            "text": "diamantati,\nstrumenti"
+          },
+          {
+            "id": 5,
+            "startTime": 340.5333333333333,
+            "endTime": 339.40666666666664,
+            "text": "di"
+          },
+          {
+            "id": 6,
+            "startTime": 339.96999999999997,
+            "endTime": 336.5899999999999,
+            "text": "misura"
+          },
+          {
+            "id": 7,
+            "startTime": 339.40666666666664,
+            "endTime": 338.28,
+            "text": "di"
+          },
+          {
+            "id": 8,
+            "startTime": 338.8433333333333,
+            "endTime": 333.2099999999999,
+            "text": "altissima\n"
+          }
+        ]
+      },
+      {
+        "id": 60,
+        "startTime": 345.789,
+        "endTime": 325.0575000000003,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 345.789,
+            "endTime": 332.3745000000002,
+            "text": "precisione,"
+          },
+          {
+            "id": 1,
+            "startTime": 344.5695,
+            "endTime": 325.0575000000003,
+            "text": "interferometri,\n"
+          }
+        ]
+      },
+      {
+        "id": 61,
+        "startTime": 350.62,
+        "endTime": 341.561875,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 350.62,
+            "endTime": 347.600625,
+            "text": "tutte"
+          },
+          {
+            "id": 1,
+            "startTime": 350.016125,
+            "endTime": 347.600625,
+            "text": "cose"
+          },
+          {
+            "id": 2,
+            "startTime": 349.41225,
+            "endTime": 347.600625,
+            "text": "che"
+          },
+          {
+            "id": 3,
+            "startTime": 348.808375,
+            "endTime": 340.95799999999997,
+            "text": "evidentemente"
+          },
+          {
+            "id": 4,
+            "startTime": 348.2045,
+            "endTime": 342.16575,
+            "text": "nell'epoca"
+          },
+          {
+            "id": 5,
+            "startTime": 347.600625,
+            "endTime": 341.561875,
+            "text": "di\nGalileo"
+          },
+          {
+            "id": 6,
+            "startTime": 346.99675,
+            "endTime": 345.185125,
+            "text": "non"
+          },
+          {
+            "id": 7,
+            "startTime": 346.392875,
+            "endTime": 341.561875,
+            "text": "c'erano\n"
+          }
+        ]
+      },
+      {
+        "id": 62,
+        "startTime": 355.54,
+        "endTime": 347.34000000000003,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 355.54,
+            "endTime": 353.08000000000004,
+            "text": "adesso"
+          },
+          {
+            "id": 1,
+            "startTime": 355.13,
+            "endTime": 352.66999999999996,
+            "text": "magari"
+          },
+          {
+            "id": 2,
+            "startTime": 354.72,
+            "endTime": 353.90000000000003,
+            "text": "io"
+          },
+          {
+            "id": 3,
+            "startTime": 354.31,
+            "endTime": 352.26,
+            "text": "cerco"
+          },
+          {
+            "id": 4,
+            "startTime": 353.90000000000003,
+            "endTime": 353.08000000000004,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 353.49,
+            "endTime": 351.44,
+            "text": "farvi"
+          },
+          {
+            "id": 6,
+            "startTime": 353.08000000000004,
+            "endTime": 349.39000000000004,
+            "text": "vedere\nin"
+          },
+          {
+            "id": 7,
+            "startTime": 352.67,
+            "endTime": 351.03000000000003,
+            "text": "modo"
+          },
+          {
+            "id": 8,
+            "startTime": 352.26,
+            "endTime": 350.21,
+            "text": "molto"
+          },
+          {
+            "id": 9,
+            "startTime": 351.85,
+            "endTime": 348.57,
+            "text": "semplice"
+          },
+          {
+            "id": 10,
+            "startTime": 351.44,
+            "endTime": 349.39,
+            "text": "quali"
+          },
+          {
+            "id": 11,
+            "startTime": 351.03000000000003,
+            "endTime": 347.34000000000003,
+            "text": "potevano\n"
+          }
+        ]
+      },
+      {
+        "id": 63,
+        "startTime": 360.069,
+        "endTime": 352.709375,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 360.069,
+            "endTime": 356.67225,
+            "text": "essere"
+          },
+          {
+            "id": 1,
+            "startTime": 359.502875,
+            "endTime": 358.370625,
+            "text": "le"
+          },
+          {
+            "id": 2,
+            "startTime": 358.93675,
+            "endTime": 352.709375,
+            "text": "tecnologie,"
+          },
+          {
+            "id": 3,
+            "startTime": 358.370625,
+            "endTime": 357.238375,
+            "text": "la"
+          },
+          {
+            "id": 4,
+            "startTime": 357.8045,
+            "endTime": 353.841625,
+            "text": "tecnica"
+          },
+          {
+            "id": 5,
+            "startTime": 357.238375,
+            "endTime": 350.444875,
+            "text": "per\nlavorare"
+          },
+          {
+            "id": 6,
+            "startTime": 356.67225,
+            "endTime": 354.973875,
+            "text": "una"
+          },
+          {
+            "id": 7,
+            "startTime": 356.106125,
+            "endTime": 352.709375,
+            "text": "lente\n"
+          }
+        ]
+      },
+      {
+        "id": 64,
+        "startTime": 368.16,
+        "endTime": 362.74,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 368.16,
+            "endTime": 366.6818181818182,
+            "text": "nel"
+          },
+          {
+            "id": 1,
+            "startTime": 367.66727272727275,
+            "endTime": 365.6963636363636,
+            "text": "modo"
+          },
+          {
+            "id": 2,
+            "startTime": 367.17454545454547,
+            "endTime": 365.6963636363636,
+            "text": "più"
+          },
+          {
+            "id": 3,
+            "startTime": 366.6818181818182,
+            "endTime": 362.24727272727273,
+            "text": "possibile"
+          },
+          {
+            "id": 4,
+            "startTime": 366.1890909090909,
+            "endTime": 363.2327272727273,
+            "text": "vicino"
+          },
+          {
+            "id": 5,
+            "startTime": 365.6963636363636,
+            "endTime": 365.20363636363635,
+            "text": "a"
+          },
+          {
+            "id": 6,
+            "startTime": 365.2036363636364,
+            "endTime": 360.27636363636367,
+            "text": "quello\nche"
+          },
+          {
+            "id": 7,
+            "startTime": 364.7109090909091,
+            "endTime": 362.24727272727273,
+            "text": "usava"
+          },
+          {
+            "id": 8,
+            "startTime": 364.21818181818185,
+            "endTime": 360.76909090909095,
+            "text": "Galileo"
+          },
+          {
+            "id": 9,
+            "startTime": 363.72545454545457,
+            "endTime": 359.2909090909091,
+            "text": "all'epoca"
+          },
+          {
+            "id": 10,
+            "startTime": 363.2327272727273,
+            "endTime": 362.74,
+            "text": "\n"
+          }
+        ]
+      },
+      {
+        "id": 65,
+        "startTime": 375.16,
+        "endTime": 365.535,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 375.16,
+            "endTime": 371.66,
+            "text": "alla"
+          },
+          {
+            "id": 1,
+            "startTime": 374.285,
+            "endTime": 370.785,
+            "text": "fine"
+          },
+          {
+            "id": 2,
+            "startTime": 373.41,
+            "endTime": 370.785,
+            "text": "del"
+          },
+          {
+            "id": 3,
+            "startTime": 372.535,
+            "endTime": 369.91,
+            "text": "500"
+          },
+          {
+            "id": 4,
+            "startTime": 371.66,
+            "endTime": 370.785,
+            "text": "e"
+          },
+          {
+            "id": 5,
+            "startTime": 370.785,
+            "endTime": 362.035,
+            "text": "all'inizio"
+          },
+          {
+            "id": 6,
+            "startTime": 369.91,
+            "endTime": 367.285,
+            "text": "del"
+          },
+          {
+            "id": 7,
+            "startTime": 369.035,
+            "endTime": 365.535,
+            "text": "600\n"
+          }
+        ]
+      },
+      {
+        "id": 66,
+        "startTime": 422.759,
+        "endTime": 416.16328571428573,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 422.759,
+            "endTime": 419.0947142857143,
+            "text": "Molta"
+          },
+          {
+            "id": 1,
+            "startTime": 422.0261428571429,
+            "endTime": 414.69757142857145,
+            "text": "differenza"
+          },
+          {
+            "id": 2,
+            "startTime": 421.29328571428573,
+            "endTime": 406.6361428571429,
+            "text": "potranno\nlavorazione"
+          },
+          {
+            "id": 3,
+            "startTime": 420.5604285714286,
+            "endTime": 419.0947142857143,
+            "text": "di"
+          },
+          {
+            "id": 4,
+            "startTime": 419.82757142857145,
+            "endTime": 411.7661428571429,
+            "text": "quell'epoca"
+          },
+          {
+            "id": 5,
+            "startTime": 419.0947142857143,
+            "endTime": 414.69757142857145,
+            "text": "quella"
+          },
+          {
+            "id": 6,
+            "startTime": 418.36185714285716,
+            "endTime": 416.16328571428573,
+            "text": "di\n"
+          }
+        ]
+      },
+      {
+        "id": 67,
+        "startTime": 426.58,
+        "endTime": 419.89325,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 426.58,
+            "endTime": 424.66949999999997,
+            "text": "oggi"
+          },
+          {
+            "id": 1,
+            "startTime": 426.102375,
+            "endTime": 423.236625,
+            "text": "perchè"
+          },
+          {
+            "id": 2,
+            "startTime": 425.62475,
+            "endTime": 424.6695,
+            "text": "si"
+          },
+          {
+            "id": 3,
+            "startTime": 425.147125,
+            "endTime": 422.759,
+            "text": "usano"
+          },
+          {
+            "id": 4,
+            "startTime": 424.66949999999997,
+            "endTime": 414.63937500000003,
+            "text": "attrezzature\nmoderne,"
+          },
+          {
+            "id": 5,
+            "startTime": 424.191875,
+            "endTime": 418.460375,
+            "text": "attrezzature"
+          },
+          {
+            "id": 6,
+            "startTime": 423.71425,
+            "endTime": 422.759,
+            "text": "di"
+          },
+          {
+            "id": 7,
+            "startTime": 423.236625,
+            "endTime": 419.89325,
+            "text": "ultima\n"
+          }
+        ]
+      },
+      {
+        "id": 68,
+        "startTime": 428.349,
+        "endTime": 407.1209999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 428.349,
+            "endTime": 407.1209999999999,
+            "text": "generazione\n"
+          }
+        ]
+      },
+      {
+        "id": 69,
+        "startTime": 435.349,
+        "endTime": 423.25809090909087,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 435.349,
+            "endTime": 434.71263636363636,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 434.71263636363636,
+            "endTime": 430.89445454545455,
+            "text": "quindi"
+          },
+          {
+            "id": 2,
+            "startTime": 434.07627272727274,
+            "endTime": 432.8035454545455,
+            "text": "io"
+          },
+          {
+            "id": 3,
+            "startTime": 433.43990909090905,
+            "endTime": 430.8944545454545,
+            "text": "oggi"
+          },
+          {
+            "id": 4,
+            "startTime": 432.80354545454543,
+            "endTime": 429.62172727272724,
+            "text": "cerco"
+          },
+          {
+            "id": 5,
+            "startTime": 432.1671818181818,
+            "endTime": 430.89445454545455,
+            "text": "di"
+          },
+          {
+            "id": 6,
+            "startTime": 431.5308181818182,
+            "endTime": 423.89445454545455,
+            "text": "farvi\nvedere"
+          },
+          {
+            "id": 7,
+            "startTime": 430.89445454545455,
+            "endTime": 428.349,
+            "text": "come"
+          },
+          {
+            "id": 8,
+            "startTime": 430.2580909090909,
+            "endTime": 426.4399090909091,
+            "text": "poteva"
+          },
+          {
+            "id": 9,
+            "startTime": 429.62172727272724,
+            "endTime": 425.80354545454543,
+            "text": "essere"
+          },
+          {
+            "id": 10,
+            "startTime": 428.9853636363636,
+            "endTime": 423.25809090909087,
+            "text": "lavorata\n"
+          }
+        ]
+      },
+      {
+        "id": 70,
+        "startTime": 442.779,
+        "endTime": 426.1540000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 442.779,
+            "endTime": 424.4915000000001,
+            "text": "attualmente"
+          },
+          {
+            "id": 1,
+            "startTime": 441.1165,
+            "endTime": 434.4665,
+            "text": "come"
+          },
+          {
+            "id": 2,
+            "startTime": 439.454,
+            "endTime": 419.5040000000001,
+            "text": "attrezzatura"
+          },
+          {
+            "id": 3,
+            "startTime": 437.79150000000004,
+            "endTime": 426.1540000000001,
+            "text": "antica\n"
+          }
+        ]
+      },
+      {
+        "id": 71,
+        "startTime": 465.719,
+        "endTime": 455.75899999999984,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 465.719,
+            "endTime": 455.75899999999984,
+            "text": "leggo\n"
+          }
+        ]
+      },
+      {
+        "id": 72,
+        "startTime": 500.65,
+        "endTime": 494.62499999999994,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 500.65,
+            "endTime": 499.0433333333333,
+            "text": "Oggi"
+          },
+          {
+            "id": 1,
+            "startTime": 500.24833333333333,
+            "endTime": 499.04333333333335,
+            "text": "c'è"
+          },
+          {
+            "id": 2,
+            "startTime": 499.84666666666664,
+            "endTime": 498.64166666666665,
+            "text": "una"
+          },
+          {
+            "id": 3,
+            "startTime": 499.445,
+            "endTime": 497.03499999999997,
+            "text": "grande"
+          },
+          {
+            "id": 4,
+            "startTime": 499.0433333333333,
+            "endTime": 495.02666666666664,
+            "text": "differenza"
+          },
+          {
+            "id": 5,
+            "startTime": 498.64166666666665,
+            "endTime": 497.43666666666667,
+            "text": "del"
+          },
+          {
+            "id": 6,
+            "startTime": 498.24,
+            "endTime": 495.42833333333334,
+            "text": "tipo\ndi"
+          },
+          {
+            "id": 7,
+            "startTime": 497.8383333333333,
+            "endTime": 493.41999999999996,
+            "text": "lavorazione"
+          },
+          {
+            "id": 8,
+            "startTime": 497.43666666666667,
+            "endTime": 495.02666666666664,
+            "text": "ottica"
+          },
+          {
+            "id": 9,
+            "startTime": 497.03499999999997,
+            "endTime": 496.2316666666666,
+            "text": "da"
+          },
+          {
+            "id": 10,
+            "startTime": 496.6333333333333,
+            "endTime": 494.22333333333336,
+            "text": "quella"
+          },
+          {
+            "id": 11,
+            "startTime": 496.2316666666666,
+            "endTime": 494.62499999999994,
+            "text": "che\n"
+          }
+        ]
+      },
+      {
+        "id": 73,
+        "startTime": 507.65,
+        "endTime": 494.8166666666666,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 507.65,
+            "endTime": 504.7333333333333,
+            "text": "c'era"
+          },
+          {
+            "id": 1,
+            "startTime": 507.06666666666666,
+            "endTime": 505.31666666666666,
+            "text": "nel"
+          },
+          {
+            "id": 2,
+            "startTime": 506.4833333333333,
+            "endTime": 504.7333333333333,
+            "text": "600"
+          },
+          {
+            "id": 3,
+            "startTime": 505.9,
+            "endTime": 503.56666666666666,
+            "text": "oggi"
+          },
+          {
+            "id": 4,
+            "startTime": 505.31666666666666,
+            "endTime": 504.15,
+            "text": "si"
+          },
+          {
+            "id": 5,
+            "startTime": 504.7333333333333,
+            "endTime": 501.8166666666666,
+            "text": "usano"
+          },
+          {
+            "id": 6,
+            "startTime": 504.15,
+            "endTime": 492.4833333333333,
+            "text": "attrezzature\nmoderne"
+          },
+          {
+            "id": 7,
+            "startTime": 503.56666666666666,
+            "endTime": 502.98333333333335,
+            "text": "e"
+          },
+          {
+            "id": 8,
+            "startTime": 502.9833333333333,
+            "endTime": 501.8166666666666,
+            "text": "si"
+          },
+          {
+            "id": 9,
+            "startTime": 502.4,
+            "endTime": 499.4833333333333,
+            "text": "usano"
+          },
+          {
+            "id": 10,
+            "startTime": 501.81666666666666,
+            "endTime": 501.23333333333335,
+            "text": "o"
+          },
+          {
+            "id": 11,
+            "startTime": 501.2333333333333,
+            "endTime": 494.8166666666666,
+            "text": "attrezzini\n"
+          }
+        ]
+      },
+      {
+        "id": 74,
+        "startTime": 511.74,
+        "endTime": 500.0399999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 511.74,
+            "endTime": 500.0399999999999,
+            "text": "elettrici"
+          },
+          {
+            "id": 1,
+            "startTime": 510.44,
+            "endTime": 509.14,
+            "text": "e"
+          },
+          {
+            "id": 2,
+            "startTime": 509.14,
+            "endTime": 500.0399999999999,
+            "text": "quindi\n"
+          }
+        ]
+      },
+      {
+        "id": 75,
+        "startTime": 516.56,
+        "endTime": 510.535,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 516.56,
+            "endTime": 514.9533333333333,
+            "text": "Oggi"
+          },
+          {
+            "id": 1,
+            "startTime": 516.1583333333333,
+            "endTime": 514.15,
+            "text": "cerco"
+          },
+          {
+            "id": 2,
+            "startTime": 515.7566666666667,
+            "endTime": 514.9533333333334,
+            "text": "di"
+          },
+          {
+            "id": 3,
+            "startTime": 515.355,
+            "endTime": 512.945,
+            "text": "fargli"
+          },
+          {
+            "id": 4,
+            "startTime": 514.9533333333333,
+            "endTime": 512.5433333333333,
+            "text": "vedere"
+          },
+          {
+            "id": 5,
+            "startTime": 514.5516666666666,
+            "endTime": 512.9449999999999,
+            "text": "come"
+          },
+          {
+            "id": 6,
+            "startTime": 514.15,
+            "endTime": 508.9283333333334,
+            "text": "poteva\nessere"
+          },
+          {
+            "id": 7,
+            "startTime": 513.7483333333333,
+            "endTime": 509.33000000000004,
+            "text": "lavorazione"
+          },
+          {
+            "id": 8,
+            "startTime": 513.3466666666667,
+            "endTime": 512.5433333333334,
+            "text": "di"
+          },
+          {
+            "id": 9,
+            "startTime": 512.9449999999999,
+            "endTime": 511.73999999999995,
+            "text": "una"
+          },
+          {
+            "id": 10,
+            "startTime": 512.5433333333333,
+            "endTime": 510.53499999999997,
+            "text": "mente"
+          },
+          {
+            "id": 11,
+            "startTime": 512.1416666666667,
+            "endTime": 510.535,
+            "text": "con\n"
+          }
+        ]
+      },
+      {
+        "id": 76,
+        "startTime": 521.4,
+        "endTime": 509.6457142857142,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 521.4,
+            "endTime": 513.102857142857,
+            "text": "attrezzatura"
+          },
+          {
+            "id": 1,
+            "startTime": 520.7085714285714,
+            "endTime": 517.2514285714285,
+            "text": "molto"
+          },
+          {
+            "id": 2,
+            "startTime": 520.0171428571429,
+            "endTime": 515.8685714285714,
+            "text": "simile"
+          },
+          {
+            "id": 3,
+            "startTime": 519.3257142857143,
+            "endTime": 518.6342857142857,
+            "text": "a"
+          },
+          {
+            "id": 4,
+            "startTime": 518.6342857142856,
+            "endTime": 514.4857142857142,
+            "text": "quella"
+          },
+          {
+            "id": 5,
+            "startTime": 517.9428571428571,
+            "endTime": 510.33714285714274,
+            "text": "che\navevano"
+          },
+          {
+            "id": 6,
+            "startTime": 517.2514285714285,
+            "endTime": 509.6457142857142,
+            "text": "all'epoca.\n"
+          }
+        ]
+      },
+      {
+        "id": 77,
+        "startTime": 580.689,
+        "endTime": 573.153375,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 580.689,
+            "endTime": 578.1771249999999,
+            "text": "Credo"
+          },
+          {
+            "id": 1,
+            "startTime": 580.1866249999999,
+            "endTime": 578.6795,
+            "text": "che"
+          },
+          {
+            "id": 2,
+            "startTime": 579.68425,
+            "endTime": 576.167625,
+            "text": "Galileo"
+          },
+          {
+            "id": 3,
+            "startTime": 579.181875,
+            "endTime": 575.66525,
+            "text": "venisse"
+          },
+          {
+            "id": 4,
+            "startTime": 578.6795,
+            "endTime": 575.66525,
+            "text": "spesso"
+          },
+          {
+            "id": 5,
+            "startTime": 578.1771249999999,
+            "endTime": 571.6462499999999,
+            "text": "a\nquell'epoca"
+          },
+          {
+            "id": 6,
+            "startTime": 577.6747499999999,
+            "endTime": 577.1723749999999,
+            "text": "a"
+          },
+          {
+            "id": 7,
+            "startTime": 577.172375,
+            "endTime": 573.153375,
+            "text": "Venezia\n"
+          }
+        ]
+      },
+      {
+        "id": 78,
+        "startTime": 585.74,
+        "endTime": 575.6379999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 585.74,
+            "endTime": 583.2145,
+            "text": "pur"
+          },
+          {
+            "id": 1,
+            "startTime": 584.8981666666666,
+            "endTime": 579.8471666666666,
+            "text": "avendo"
+          },
+          {
+            "id": 2,
+            "startTime": 584.0563333333333,
+            "endTime": 582.3726666666666,
+            "text": "la"
+          },
+          {
+            "id": 3,
+            "startTime": 583.2145,
+            "endTime": 576.4798333333333,
+            "text": "cattedra"
+          },
+          {
+            "id": 4,
+            "startTime": 582.3726666666666,
+            "endTime": 581.5308333333332,
+            "text": "a"
+          },
+          {
+            "id": 5,
+            "startTime": 581.5308333333332,
+            "endTime": 575.6379999999999,
+            "text": "Padova\n"
+          }
+        ]
+      },
+      {
+        "id": 79,
+        "startTime": 591.59,
+        "endTime": 579.89,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 591.59,
+            "endTime": 588.08,
+            "text": "perché"
+          },
+          {
+            "id": 1,
+            "startTime": 591.005,
+            "endTime": 588.0799999999999,
+            "text": "aveva"
+          },
+          {
+            "id": 2,
+            "startTime": 590.4200000000001,
+            "endTime": 587.4950000000001,
+            "text": "molte"
+          },
+          {
+            "id": 3,
+            "startTime": 589.835,
+            "endTime": 585.155,
+            "text": "amicizie"
+          },
+          {
+            "id": 4,
+            "startTime": 589.25,
+            "endTime": 588.665,
+            "text": "a"
+          },
+          {
+            "id": 5,
+            "startTime": 588.665,
+            "endTime": 584.5699999999999,
+            "text": "Venezia"
+          },
+          {
+            "id": 6,
+            "startTime": 588.08,
+            "endTime": 584.57,
+            "text": "poteva"
+          },
+          {
+            "id": 7,
+            "startTime": 587.495,
+            "endTime": 581.645,
+            "text": "procurarsi"
+          },
+          {
+            "id": 8,
+            "startTime": 586.91,
+            "endTime": 585.155,
+            "text": "più"
+          },
+          {
+            "id": 9,
+            "startTime": 586.325,
+            "endTime": 579.89,
+            "text": "facilmente\n"
+          }
+        ]
+      },
+      {
+        "id": 80,
+        "startTime": 595.32,
+        "endTime": 583.5971428571428,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 595.32,
+            "endTime": 594.2542857142857,
+            "text": "il"
+          },
+          {
+            "id": 1,
+            "startTime": 594.787142857143,
+            "endTime": 592.1228571428572,
+            "text": "vetro"
+          },
+          {
+            "id": 2,
+            "startTime": 594.2542857142857,
+            "endTime": 588.9257142857143,
+            "text": "necessario"
+          },
+          {
+            "id": 3,
+            "startTime": 593.7214285714286,
+            "endTime": 592.1228571428572,
+            "text": "per"
+          },
+          {
+            "id": 4,
+            "startTime": 593.1885714285714,
+            "endTime": 592.1228571428571,
+            "text": "la"
+          },
+          {
+            "id": 5,
+            "startTime": 592.6557142857143,
+            "endTime": 586.7942857142857,
+            "text": "costruzione"
+          },
+          {
+            "id": 6,
+            "startTime": 592.1228571428571,
+            "endTime": 583.5971428571428,
+            "text": "di\ncannocchiali\n"
+          }
+        ]
+      },
+      {
+        "id": 81,
+        "startTime": 598.71,
+        "endTime": 589.5085714285716,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 598.71,
+            "endTime": 595.32,
+            "text": "tramite"
+          },
+          {
+            "id": 1,
+            "startTime": 598.2257142857143,
+            "endTime": 595.8042857142857,
+            "text": "anche"
+          },
+          {
+            "id": 2,
+            "startTime": 597.7414285714286,
+            "endTime": 596.7728571428572,
+            "text": "ad"
+          },
+          {
+            "id": 3,
+            "startTime": 597.2571428571429,
+            "endTime": 596.2885714285715,
+            "text": "un"
+          },
+          {
+            "id": 4,
+            "startTime": 596.7728571428572,
+            "endTime": 594.3514285714286,
+            "text": "amico"
+          },
+          {
+            "id": 5,
+            "startTime": 596.2885714285715,
+            "endTime": 595.32,
+            "text": "di"
+          },
+          {
+            "id": 6,
+            "startTime": 595.8042857142858,
+            "endTime": 589.5085714285716,
+            "text": "nome\nSegredo\n"
+          }
+        ]
+      },
+      {
+        "id": 82,
+        "startTime": 604.73,
+        "endTime": 595.4263636363636,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 604.73,
+            "endTime": 603.0881818181819,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 604.1827272727273,
+            "endTime": 600.899090909091,
+            "text": "sembra"
+          },
+          {
+            "id": 2,
+            "startTime": 603.6354545454545,
+            "endTime": 601.9936363636364,
+            "text": "che"
+          },
+          {
+            "id": 3,
+            "startTime": 603.0881818181819,
+            "endTime": 601.4463636363637,
+            "text": "gli"
+          },
+          {
+            "id": 4,
+            "startTime": 602.5409090909092,
+            "endTime": 595.4263636363637,
+            "text": "procuri\nmolte"
+          },
+          {
+            "id": 5,
+            "startTime": 601.9936363636364,
+            "endTime": 599.2572727272727,
+            "text": "lenti"
+          },
+          {
+            "id": 6,
+            "startTime": 601.4463636363637,
+            "endTime": 598.1627272727274,
+            "text": "perché"
+          },
+          {
+            "id": 7,
+            "startTime": 600.8990909090909,
+            "endTime": 597.6154545454546,
+            "text": "sembra"
+          },
+          {
+            "id": 8,
+            "startTime": 600.3518181818182,
+            "endTime": 598.71,
+            "text": "che"
+          },
+          {
+            "id": 9,
+            "startTime": 599.8045454545455,
+            "endTime": 594.879090909091,
+            "text": "all'epoca"
+          },
+          {
+            "id": 10,
+            "startTime": 599.2572727272727,
+            "endTime": 595.4263636363636,
+            "text": "veniva\n"
+          }
+        ]
+      },
+      {
+        "id": 83,
+        "startTime": 609.64,
+        "endTime": 600.3655555555556,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 609.64,
+            "endTime": 605.2755555555556,
+            "text": "prodotta"
+          },
+          {
+            "id": 1,
+            "startTime": 609.0944444444444,
+            "endTime": 608.5488888888889,
+            "text": "a"
+          },
+          {
+            "id": 2,
+            "startTime": 608.5488888888889,
+            "endTime": 605.2755555555556,
+            "text": "Murano"
+          },
+          {
+            "id": 3,
+            "startTime": 608.0033333333333,
+            "endTime": 606.3666666666667,
+            "text": "una"
+          },
+          {
+            "id": 4,
+            "startTime": 607.4577777777778,
+            "endTime": 604.1844444444445,
+            "text": "grande"
+          },
+          {
+            "id": 5,
+            "startTime": 606.9122222222222,
+            "endTime": 600.9111111111112,
+            "text": "quantità\ndi"
+          },
+          {
+            "id": 6,
+            "startTime": 606.3666666666667,
+            "endTime": 603.6388888888889,
+            "text": "lenti"
+          },
+          {
+            "id": 7,
+            "startTime": 605.8211111111111,
+            "endTime": 604.73,
+            "text": "da"
+          },
+          {
+            "id": 8,
+            "startTime": 605.2755555555556,
+            "endTime": 600.3655555555556,
+            "text": "occhiali\n"
+          }
+        ]
+      },
+      {
+        "id": 84,
+        "startTime": 616.64,
+        "endTime": 606.14,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 616.64,
+            "endTime": 615.9399999999999,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 615.9399999999999,
+            "endTime": 608.2399999999999,
+            "text": "l'obiettivo"
+          },
+          {
+            "id": 2,
+            "startTime": 615.24,
+            "endTime": 613.14,
+            "text": "del"
+          },
+          {
+            "id": 3,
+            "startTime": 614.54,
+            "endTime": 606.14,
+            "text": "cannocchiale"
+          },
+          {
+            "id": 4,
+            "startTime": 613.84,
+            "endTime": 606.84,
+            "text": "di\nGalileo"
+          },
+          {
+            "id": 5,
+            "startTime": 613.14,
+            "endTime": 611.04,
+            "text": "era"
+          },
+          {
+            "id": 6,
+            "startTime": 612.4399999999999,
+            "endTime": 607.54,
+            "text": "formato"
+          },
+          {
+            "id": 7,
+            "startTime": 611.74,
+            "endTime": 610.34,
+            "text": "da"
+          },
+          {
+            "id": 8,
+            "startTime": 611.04,
+            "endTime": 608.9399999999999,
+            "text": "una"
+          },
+          {
+            "id": 9,
+            "startTime": 610.34,
+            "endTime": 606.14,
+            "text": "lente\n"
+          }
+        ]
+      },
+      {
+        "id": 85,
+        "startTime": 619.65,
+        "endTime": 614.8725000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 619.65,
+            "endTime": 618.5475,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 619.2825,
+            "endTime": 617.0775000000001,
+            "text": "sembra"
+          },
+          {
+            "id": 2,
+            "startTime": 618.915,
+            "endTime": 617.0775,
+            "text": "fosse"
+          },
+          {
+            "id": 3,
+            "startTime": 618.5475,
+            "endTime": 616.3425000000001,
+            "text": "simile"
+          },
+          {
+            "id": 4,
+            "startTime": 618.1800000000001,
+            "endTime": 617.8125000000001,
+            "text": "a"
+          },
+          {
+            "id": 5,
+            "startTime": 617.8125,
+            "endTime": 615.6075000000001,
+            "text": "quella"
+          },
+          {
+            "id": 6,
+            "startTime": 617.445,
+            "endTime": 616.71,
+            "text": "da"
+          },
+          {
+            "id": 7,
+            "startTime": 617.0775,
+            "endTime": 614.8725000000001,
+            "text": "vista\n"
+          }
+        ]
+      },
+      {
+        "id": 86,
+        "startTime": 621.21,
+        "endTime": 613.4099999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 621.21,
+            "endTime": 618.8699999999999,
+            "text": "per"
+          },
+          {
+            "id": 1,
+            "startTime": 620.4300000000001,
+            "endTime": 613.4099999999999,
+            "text": "leggere.\n"
+          }
+        ]
+      },
+      {
+        "id": 87,
+        "startTime": 654.21,
+        "endTime": 647.3736363636363,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 654.21,
+            "endTime": 651.6463636363636,
+            "text": "Allora"
+          },
+          {
+            "id": 1,
+            "startTime": 653.7827272727274,
+            "endTime": 650.3645454545455,
+            "text": "riguardo"
+          },
+          {
+            "id": 2,
+            "startTime": 653.3554545454546,
+            "endTime": 652.9281818181819,
+            "text": "a"
+          },
+          {
+            "id": 3,
+            "startTime": 652.9281818181819,
+            "endTime": 650.3645454545455,
+            "text": "questa"
+          },
+          {
+            "id": 4,
+            "startTime": 652.5009090909091,
+            "endTime": 649.0827272727272,
+            "text": "facilità"
+          },
+          {
+            "id": 5,
+            "startTime": 652.0736363636364,
+            "endTime": 646.9463636363637,
+            "text": "di\nprocurare"
+          },
+          {
+            "id": 6,
+            "startTime": 651.6463636363636,
+            "endTime": 647.800909090909,
+            "text": "materiale"
+          },
+          {
+            "id": 7,
+            "startTime": 651.2190909090909,
+            "endTime": 650.7918181818183,
+            "text": "a"
+          },
+          {
+            "id": 8,
+            "startTime": 650.7918181818181,
+            "endTime": 647.800909090909,
+            "text": "Venezia"
+          },
+          {
+            "id": 9,
+            "startTime": 650.3645454545455,
+            "endTime": 649.9372727272728,
+            "text": "è"
+          },
+          {
+            "id": 10,
+            "startTime": 649.9372727272727,
+            "endTime": 647.3736363636363,
+            "text": "stata\n"
+          }
+        ]
+      },
+      {
+        "id": 88,
+        "startTime": 659.6,
+        "endTime": 651.13,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 659.6,
+            "endTime": 656.905,
+            "text": "trovata"
+          },
+          {
+            "id": 1,
+            "startTime": 659.215,
+            "endTime": 658.0600000000001,
+            "text": "una"
+          },
+          {
+            "id": 2,
+            "startTime": 658.83,
+            "endTime": 656.9050000000001,
+            "text": "lista"
+          },
+          {
+            "id": 3,
+            "startTime": 658.445,
+            "endTime": 656.5200000000001,
+            "text": "della"
+          },
+          {
+            "id": 4,
+            "startTime": 658.0600000000001,
+            "endTime": 656.1350000000001,
+            "text": "spesa"
+          },
+          {
+            "id": 5,
+            "startTime": 657.6750000000001,
+            "endTime": 656.9050000000001,
+            "text": "di"
+          },
+          {
+            "id": 6,
+            "startTime": 657.2900000000001,
+            "endTime": 653.44,
+            "text": "Galileo\nin"
+          },
+          {
+            "id": 7,
+            "startTime": 656.905,
+            "endTime": 655.75,
+            "text": "cui"
+          },
+          {
+            "id": 8,
+            "startTime": 656.52,
+            "endTime": 655.365,
+            "text": "tra"
+          },
+          {
+            "id": 9,
+            "startTime": 656.135,
+            "endTime": 655.365,
+            "text": "le"
+          },
+          {
+            "id": 10,
+            "startTime": 655.75,
+            "endTime": 653.825,
+            "text": "altre"
+          },
+          {
+            "id": 11,
+            "startTime": 655.365,
+            "endTime": 653.825,
+            "text": "cose"
+          },
+          {
+            "id": 12,
+            "startTime": 654.98,
+            "endTime": 653.825,
+            "text": "era"
+          },
+          {
+            "id": 13,
+            "startTime": 654.595,
+            "endTime": 651.13,
+            "text": "presente\n"
+          }
+        ]
+      },
+      {
+        "id": 89,
+        "startTime": 664.54,
+        "endTime": 655.7577777777778,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 664.54,
+            "endTime": 661.7955555555556,
+            "text": "della"
+          },
+          {
+            "id": 1,
+            "startTime": 663.9911111111111,
+            "endTime": 661.7955555555556,
+            "text": "pece"
+          },
+          {
+            "id": 2,
+            "startTime": 663.4422222222222,
+            "endTime": 660.6977777777778,
+            "text": "greca"
+          },
+          {
+            "id": 3,
+            "startTime": 662.8933333333333,
+            "endTime": 661.2466666666667,
+            "text": "che"
+          },
+          {
+            "id": 4,
+            "startTime": 662.3444444444444,
+            "endTime": 655.208888888889,
+            "text": "probabilmente"
+          },
+          {
+            "id": 5,
+            "startTime": 661.7955555555556,
+            "endTime": 656.3066666666667,
+            "text": "si\ntrovava"
+          },
+          {
+            "id": 6,
+            "startTime": 661.2466666666667,
+            "endTime": 659.0511111111111,
+            "text": "solo"
+          },
+          {
+            "id": 7,
+            "startTime": 660.6977777777778,
+            "endTime": 660.1488888888889,
+            "text": "a"
+          },
+          {
+            "id": 8,
+            "startTime": 660.1488888888889,
+            "endTime": 655.7577777777778,
+            "text": "Venezia\n"
+          }
+        ]
+      },
+      {
+        "id": 90,
+        "startTime": 669.54,
+        "endTime": 655.79,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 669.54,
+            "endTime": 667.665,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 668.915,
+            "endTime": 668.29,
+            "text": "è"
+          },
+          {
+            "id": 2,
+            "startTime": 668.29,
+            "endTime": 664.54,
+            "text": "resina"
+          },
+          {
+            "id": 3,
+            "startTime": 667.665,
+            "endTime": 664.54,
+            "text": "degli"
+          },
+          {
+            "id": 4,
+            "startTime": 667.04,
+            "endTime": 663.29,
+            "text": "alberi"
+          },
+          {
+            "id": 5,
+            "startTime": 666.415,
+            "endTime": 663.29,
+            "text": "tolta"
+          },
+          {
+            "id": 6,
+            "startTime": 665.79,
+            "endTime": 664.54,
+            "text": "la"
+          },
+          {
+            "id": 7,
+            "startTime": 665.165,
+            "endTime": 655.79,
+            "text": "parte\nvolatile\n"
+          }
+        ]
+      },
+      {
+        "id": 91,
+        "startTime": 672.58,
+        "endTime": 665.9933333333332,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 672.58,
+            "endTime": 672.0733333333334,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 672.0733333333334,
+            "endTime": 669.54,
+            "text": "anche"
+          },
+          {
+            "id": 2,
+            "startTime": 671.5666666666667,
+            "endTime": 670.0466666666666,
+            "text": "una"
+          },
+          {
+            "id": 3,
+            "startTime": 671.06,
+            "endTime": 668.5266666666665,
+            "text": "palla"
+          },
+          {
+            "id": 4,
+            "startTime": 670.5533333333333,
+            "endTime": 669.54,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 670.0466666666666,
+            "endTime": 665.9933333333332,
+            "text": "cannone\n"
+          }
+        ]
+      },
+      {
+        "id": 92,
+        "startTime": 679.19,
+        "endTime": 671.1635714285715,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 679.19,
+            "endTime": 677.7735714285715,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 678.7178571428572,
+            "endTime": 677.7735714285715,
+            "text": "si"
+          },
+          {
+            "id": 2,
+            "startTime": 678.2457142857144,
+            "endTime": 674.9407142857144,
+            "text": "presume"
+          },
+          {
+            "id": 3,
+            "startTime": 677.7735714285715,
+            "endTime": 675.4128571428572,
+            "text": "possa"
+          },
+          {
+            "id": 4,
+            "startTime": 677.3014285714286,
+            "endTime": 674.4685714285714,
+            "text": "essere"
+          },
+          {
+            "id": 5,
+            "startTime": 676.8292857142858,
+            "endTime": 674.4685714285715,
+            "text": "stata"
+          },
+          {
+            "id": 6,
+            "startTime": 676.3571428571429,
+            "endTime": 672.58,
+            "text": "usata\nda"
+          },
+          {
+            "id": 7,
+            "startTime": 675.885,
+            "endTime": 672.5799999999999,
+            "text": "Galileo"
+          },
+          {
+            "id": 8,
+            "startTime": 675.4128571428572,
+            "endTime": 673.9964285714286,
+            "text": "per"
+          },
+          {
+            "id": 9,
+            "startTime": 674.9407142857143,
+            "endTime": 671.6357142857144,
+            "text": "formare"
+          },
+          {
+            "id": 10,
+            "startTime": 674.4685714285715,
+            "endTime": 673.5242857142858,
+            "text": "la"
+          },
+          {
+            "id": 11,
+            "startTime": 673.9964285714286,
+            "endTime": 671.6357142857144,
+            "text": "lente"
+          },
+          {
+            "id": 12,
+            "startTime": 673.5242857142857,
+            "endTime": 670.2192857142857,
+            "text": "oculare"
+          },
+          {
+            "id": 13,
+            "startTime": 673.0521428571429,
+            "endTime": 671.1635714285715,
+            "text": "del\n"
+          }
+        ]
+      },
+      {
+        "id": 93,
+        "startTime": 684.67,
+        "endTime": 624.390000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 684.67,
+            "endTime": 624.390000000001,
+            "text": "telescopio\n"
+          }
+        ]
+      },
+      {
+        "id": 94,
+        "startTime": 699.05,
+        "endTime": 690.59375,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 699.05,
+            "endTime": 694.54,
+            "text": "Riguardo"
+          },
+          {
+            "id": 1,
+            "startTime": 698.4862499999999,
+            "endTime": 696.2312499999999,
+            "text": "alla"
+          },
+          {
+            "id": 2,
+            "startTime": 697.9224999999999,
+            "endTime": 693.4124999999999,
+            "text": "facilità"
+          },
+          {
+            "id": 3,
+            "startTime": 697.35875,
+            "endTime": 696.23125,
+            "text": "di"
+          },
+          {
+            "id": 4,
+            "startTime": 696.795,
+            "endTime": 691.7212499999999,
+            "text": "procurare"
+          },
+          {
+            "id": 5,
+            "startTime": 696.2312499999999,
+            "endTime": 689.46625,
+            "text": "il\nmateriale"
+          },
+          {
+            "id": 6,
+            "startTime": 695.6675,
+            "endTime": 695.10375,
+            "text": "a"
+          },
+          {
+            "id": 7,
+            "startTime": 695.10375,
+            "endTime": 690.59375,
+            "text": "Venezia\n"
+          }
+        ]
+      },
+      {
+        "id": 95,
+        "startTime": 704.05,
+        "endTime": 697.2642857142857,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 704.05,
+            "endTime": 703.6928571428571,
+            "text": "È"
+          },
+          {
+            "id": 1,
+            "startTime": 703.6928571428571,
+            "endTime": 701.9071428571427,
+            "text": "stato"
+          },
+          {
+            "id": 2,
+            "startTime": 703.3357142857143,
+            "endTime": 700.8357142857143,
+            "text": "trovata"
+          },
+          {
+            "id": 3,
+            "startTime": 702.9785714285714,
+            "endTime": 701.9071428571428,
+            "text": "una"
+          },
+          {
+            "id": 4,
+            "startTime": 702.6214285714285,
+            "endTime": 700.8357142857142,
+            "text": "lista"
+          },
+          {
+            "id": 5,
+            "startTime": 702.2642857142856,
+            "endTime": 700.4785714285713,
+            "text": "della"
+          },
+          {
+            "id": 6,
+            "startTime": 701.9071428571428,
+            "endTime": 700.1214285714285,
+            "text": "spesa"
+          },
+          {
+            "id": 7,
+            "startTime": 701.55,
+            "endTime": 700.8357142857143,
+            "text": "di"
+          },
+          {
+            "id": 8,
+            "startTime": 701.1928571428571,
+            "endTime": 698.6928571428571,
+            "text": "Galileo"
+          },
+          {
+            "id": 9,
+            "startTime": 700.8357142857143,
+            "endTime": 699.7642857142857,
+            "text": "tra"
+          },
+          {
+            "id": 10,
+            "startTime": 700.4785714285714,
+            "endTime": 699.4071428571428,
+            "text": "cui"
+          },
+          {
+            "id": 11,
+            "startTime": 700.1214285714285,
+            "endTime": 698.3357142857142,
+            "text": "c'era"
+          },
+          {
+            "id": 12,
+            "startTime": 699.7642857142856,
+            "endTime": 697.9785714285713,
+            "text": "anche"
+          },
+          {
+            "id": 13,
+            "startTime": 699.4071428571428,
+            "endTime": 697.2642857142857,
+            "text": "della\n"
+          }
+        ]
+      },
+      {
+        "id": 96,
+        "startTime": 708.23,
+        "endTime": 701.7277777777776,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 708.23,
+            "endTime": 706.3722222222223,
+            "text": "pece"
+          },
+          {
+            "id": 1,
+            "startTime": 707.7655555555556,
+            "endTime": 705.4433333333333,
+            "text": "greca"
+          },
+          {
+            "id": 2,
+            "startTime": 707.3011111111111,
+            "endTime": 705.9077777777778,
+            "text": "che"
+          },
+          {
+            "id": 3,
+            "startTime": 706.8366666666667,
+            "endTime": 703.1211111111111,
+            "text": "è\nresina"
+          },
+          {
+            "id": 4,
+            "startTime": 706.3722222222223,
+            "endTime": 704.05,
+            "text": "degli"
+          },
+          {
+            "id": 5,
+            "startTime": 705.9077777777777,
+            "endTime": 703.121111111111,
+            "text": "alberi"
+          },
+          {
+            "id": 6,
+            "startTime": 705.4433333333333,
+            "endTime": 703.121111111111,
+            "text": "torta"
+          },
+          {
+            "id": 7,
+            "startTime": 704.9788888888888,
+            "endTime": 704.05,
+            "text": "la"
+          },
+          {
+            "id": 8,
+            "startTime": 704.5144444444444,
+            "endTime": 701.7277777777776,
+            "text": "parte\n"
+          }
+        ]
+      },
+      {
+        "id": 97,
+        "startTime": 709.84,
+        "endTime": 707.4250000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 709.84,
+            "endTime": 703.4,
+            "text": "volatile"
+          },
+          {
+            "id": 1,
+            "startTime": 709.0350000000001,
+            "endTime": 707.4250000000001,
+            "text": "e\n"
+          }
+        ]
+      },
+      {
+        "id": 98,
+        "startTime": 714.26,
+        "endTime": 704.6833333333334,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 714.26,
+            "endTime": 710.5766666666667,
+            "text": "anche"
+          },
+          {
+            "id": 1,
+            "startTime": 713.5233333333333,
+            "endTime": 709.84,
+            "text": "anche"
+          },
+          {
+            "id": 2,
+            "startTime": 712.7866666666666,
+            "endTime": 710.5766666666666,
+            "text": "una"
+          },
+          {
+            "id": 3,
+            "startTime": 712.05,
+            "endTime": 708.3666666666667,
+            "text": "palla"
+          },
+          {
+            "id": 4,
+            "startTime": 711.3133333333334,
+            "endTime": 709.84,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 710.5766666666667,
+            "endTime": 704.6833333333334,
+            "text": "cannone\n"
+          }
+        ]
+      },
+      {
+        "id": 99,
+        "startTime": 715.78,
+        "endTime": 710.7133333333334,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 715.78,
+            "endTime": 714.26,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 715.2733333333333,
+            "endTime": 714.26,
+            "text": "si"
+          },
+          {
+            "id": 2,
+            "startTime": 714.7666666666667,
+            "endTime": 710.7133333333334,
+            "text": "presume\n"
+          }
+        ]
+      },
+      {
+        "id": 100,
+        "startTime": 721.25,
+        "endTime": 714.8683333333333,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 721.25,
+            "endTime": 718.9708333333333,
+            "text": "possa"
+          },
+          {
+            "id": 1,
+            "startTime": 720.7941666666667,
+            "endTime": 718.0591666666667,
+            "text": "essere"
+          },
+          {
+            "id": 2,
+            "startTime": 720.3383333333334,
+            "endTime": 718.0591666666667,
+            "text": "stata"
+          },
+          {
+            "id": 3,
+            "startTime": 719.8824999999999,
+            "endTime": 717.6033333333332,
+            "text": "usata"
+          },
+          {
+            "id": 4,
+            "startTime": 719.4266666666666,
+            "endTime": 718.515,
+            "text": "da"
+          },
+          {
+            "id": 5,
+            "startTime": 718.9708333333333,
+            "endTime": 715.78,
+            "text": "Galileo"
+          },
+          {
+            "id": 6,
+            "startTime": 718.515,
+            "endTime": 716.6916666666666,
+            "text": "come"
+          },
+          {
+            "id": 7,
+            "startTime": 718.0591666666667,
+            "endTime": 715.3241666666667,
+            "text": "contro"
+          },
+          {
+            "id": 8,
+            "startTime": 717.6033333333334,
+            "endTime": 715.3241666666667,
+            "text": "pezzo"
+          },
+          {
+            "id": 9,
+            "startTime": 717.1475,
+            "endTime": 715.78,
+            "text": "per"
+          },
+          {
+            "id": 10,
+            "startTime": 716.6916666666666,
+            "endTime": 713.5008333333333,
+            "text": "formare"
+          },
+          {
+            "id": 11,
+            "startTime": 716.2358333333333,
+            "endTime": 714.8683333333333,
+            "text": "la\n"
+          }
+        ]
+      },
+      {
+        "id": 101,
+        "startTime": 727.32,
+        "endTime": 706.0749999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 727.32,
+            "endTime": 719.7325,
+            "text": "lente"
+          },
+          {
+            "id": 1,
+            "startTime": 725.8025,
+            "endTime": 715.18,
+            "text": "oculare"
+          },
+          {
+            "id": 2,
+            "startTime": 724.2850000000001,
+            "endTime": 719.7325000000001,
+            "text": "del"
+          },
+          {
+            "id": 3,
+            "startTime": 722.7675,
+            "endTime": 706.0749999999999,
+            "text": "telescopio\n"
+          }
+        ]
+      },
+      {
+        "id": 102,
+        "startTime": 743.89,
+        "endTime": 738.7275,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 743.89,
+            "endTime": 743.2016666666666,
+            "text": "Al"
+          },
+          {
+            "id": 1,
+            "startTime": 743.5458333333333,
+            "endTime": 740.7925,
+            "text": "riguardo"
+          },
+          {
+            "id": 2,
+            "startTime": 743.2016666666666,
+            "endTime": 742.5133333333333,
+            "text": "la"
+          },
+          {
+            "id": 3,
+            "startTime": 742.8575,
+            "endTime": 740.1041666666666,
+            "text": "facilità"
+          },
+          {
+            "id": 4,
+            "startTime": 742.5133333333333,
+            "endTime": 741.825,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 742.1691666666667,
+            "endTime": 735.63,
+            "text": "procurare\nmateriale"
+          },
+          {
+            "id": 6,
+            "startTime": 741.825,
+            "endTime": 741.4808333333334,
+            "text": "a"
+          },
+          {
+            "id": 7,
+            "startTime": 741.4808333333333,
+            "endTime": 739.0716666666666,
+            "text": "Venezia"
+          },
+          {
+            "id": 8,
+            "startTime": 741.1366666666667,
+            "endTime": 740.7925,
+            "text": "è"
+          },
+          {
+            "id": 9,
+            "startTime": 740.7925,
+            "endTime": 739.0716666666667,
+            "text": "stata"
+          },
+          {
+            "id": 10,
+            "startTime": 740.4483333333333,
+            "endTime": 738.0391666666666,
+            "text": "trovata"
+          },
+          {
+            "id": 11,
+            "startTime": 740.1041666666666,
+            "endTime": 738.7275,
+            "text": "una\n"
+          }
+        ]
+      },
+      {
+        "id": 103,
+        "startTime": 746.18,
+        "endTime": 740.684,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 746.18,
+            "endTime": 743.89,
+            "text": "lista"
+          },
+          {
+            "id": 1,
+            "startTime": 745.722,
+            "endTime": 743.432,
+            "text": "della"
+          },
+          {
+            "id": 2,
+            "startTime": 745.264,
+            "endTime": 742.974,
+            "text": "spesa"
+          },
+          {
+            "id": 3,
+            "startTime": 744.8059999999999,
+            "endTime": 743.89,
+            "text": "di"
+          },
+          {
+            "id": 4,
+            "startTime": 744.348,
+            "endTime": 740.684,
+            "text": "Galileo\n"
+          }
+        ]
+      },
+      {
+        "id": 104,
+        "startTime": 749.51,
+        "endTime": 742.8499999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 749.51,
+            "endTime": 748.6775,
+            "text": "in"
+          },
+          {
+            "id": 1,
+            "startTime": 749.09375,
+            "endTime": 747.845,
+            "text": "cui"
+          },
+          {
+            "id": 2,
+            "startTime": 748.6775,
+            "endTime": 747.42875,
+            "text": "tra"
+          },
+          {
+            "id": 3,
+            "startTime": 748.26125,
+            "endTime": 747.42875,
+            "text": "le"
+          },
+          {
+            "id": 4,
+            "startTime": 747.845,
+            "endTime": 745.76375,
+            "text": "altre"
+          },
+          {
+            "id": 5,
+            "startTime": 747.4287499999999,
+            "endTime": 745.7637499999998,
+            "text": "cose"
+          },
+          {
+            "id": 6,
+            "startTime": 747.0124999999999,
+            "endTime": 745.3474999999999,
+            "text": "sono"
+          },
+          {
+            "id": 7,
+            "startTime": 746.5962499999999,
+            "endTime": 742.8499999999999,
+            "text": "presenti\n"
+          }
+        ]
+      },
+      {
+        "id": 105,
+        "startTime": 753.88,
+        "endTime": 740.77,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 753.88,
+            "endTime": 749.51,
+            "text": "della"
+          },
+          {
+            "id": 1,
+            "startTime": 753.006,
+            "endTime": 749.51,
+            "text": "pece"
+          },
+          {
+            "id": 2,
+            "startTime": 752.132,
+            "endTime": 746.8879999999999,
+            "text": "greca,"
+          },
+          {
+            "id": 3,
+            "startTime": 751.258,
+            "endTime": 746.888,
+            "text": "della"
+          },
+          {
+            "id": 4,
+            "startTime": 750.384,
+            "endTime": 740.77,
+            "text": "colofonia,\n"
+          }
+        ]
+      },
+      {
+        "id": 106,
+        "startTime": 758.63,
+        "endTime": 750.4254545454545,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 758.63,
+            "endTime": 757.3345454545455,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 758.1981818181819,
+            "endTime": 756.9027272727274,
+            "text": "non"
+          },
+          {
+            "id": 2,
+            "startTime": 757.7663636363636,
+            "endTime": 757.3345454545455,
+            "text": "è"
+          },
+          {
+            "id": 3,
+            "startTime": 757.3345454545455,
+            "endTime": 755.1754545454546,
+            "text": "altro"
+          },
+          {
+            "id": 4,
+            "startTime": 756.9027272727272,
+            "endTime": 755.6072727272727,
+            "text": "che"
+          },
+          {
+            "id": 5,
+            "startTime": 756.4709090909091,
+            "endTime": 753.88,
+            "text": "resina"
+          },
+          {
+            "id": 6,
+            "startTime": 756.0390909090909,
+            "endTime": 753.88,
+            "text": "degli"
+          },
+          {
+            "id": 7,
+            "startTime": 755.6072727272727,
+            "endTime": 750.4254545454546,
+            "text": "alberi\ntolta"
+          },
+          {
+            "id": 8,
+            "startTime": 755.1754545454545,
+            "endTime": 754.3118181818181,
+            "text": "la"
+          },
+          {
+            "id": 9,
+            "startTime": 754.7436363636364,
+            "endTime": 752.5845454545455,
+            "text": "parte"
+          },
+          {
+            "id": 10,
+            "startTime": 754.3118181818181,
+            "endTime": 750.4254545454545,
+            "text": "volatile\n"
+          }
+        ]
+      },
+      {
+        "id": 107,
+        "startTime": 762.56,
+        "endTime": 754.0450000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 762.56,
+            "endTime": 761.905,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 761.905,
+            "endTime": 758.63,
+            "text": "anche"
+          },
+          {
+            "id": 2,
+            "startTime": 761.25,
+            "endTime": 759.2850000000001,
+            "text": "una"
+          },
+          {
+            "id": 3,
+            "startTime": 760.595,
+            "endTime": 757.32,
+            "text": "palla"
+          },
+          {
+            "id": 4,
+            "startTime": 759.9399999999999,
+            "endTime": 758.63,
+            "text": "di"
+          },
+          {
+            "id": 5,
+            "startTime": 759.285,
+            "endTime": 754.0450000000001,
+            "text": "cannone\n"
+          }
+        ]
+      },
+      {
+        "id": 108,
+        "startTime": 764.46,
+        "endTime": 758.1266666666663,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 764.46,
+            "endTime": 762.56,
+            "text": "che"
+          },
+          {
+            "id": 1,
+            "startTime": 763.8266666666667,
+            "endTime": 762.56,
+            "text": "si"
+          },
+          {
+            "id": 2,
+            "startTime": 763.1933333333333,
+            "endTime": 758.1266666666663,
+            "text": "presume\n"
+          }
+        ]
+      },
+      {
+        "id": 109,
+        "startTime": 770.04,
+        "endTime": 762.1350000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 770.04,
+            "endTime": 767.715,
+            "text": "possa"
+          },
+          {
+            "id": 1,
+            "startTime": 769.5749999999999,
+            "endTime": 767.25,
+            "text": "esser"
+          },
+          {
+            "id": 2,
+            "startTime": 769.11,
+            "endTime": 766.7850000000001,
+            "text": "stata"
+          },
+          {
+            "id": 3,
+            "startTime": 768.645,
+            "endTime": 766.32,
+            "text": "usata"
+          },
+          {
+            "id": 4,
+            "startTime": 768.18,
+            "endTime": 767.25,
+            "text": "da"
+          },
+          {
+            "id": 5,
+            "startTime": 767.715,
+            "endTime": 764.46,
+            "text": "Galileo"
+          },
+          {
+            "id": 6,
+            "startTime": 767.25,
+            "endTime": 762.1350000000001,
+            "text": "come\ncontro"
+          },
+          {
+            "id": 7,
+            "startTime": 766.785,
+            "endTime": 764.46,
+            "text": "pezzo"
+          },
+          {
+            "id": 8,
+            "startTime": 766.32,
+            "endTime": 764.9250000000001,
+            "text": "per"
+          },
+          {
+            "id": 9,
+            "startTime": 765.855,
+            "endTime": 764.9250000000001,
+            "text": "la"
+          },
+          {
+            "id": 10,
+            "startTime": 765.39,
+            "endTime": 760.74,
+            "text": "formazione"
+          },
+          {
+            "id": 11,
+            "startTime": 764.9250000000001,
+            "endTime": 762.1350000000001,
+            "text": "della\n"
+          }
+        ]
+      },
+      {
+        "id": 110,
+        "startTime": 776.94,
+        "endTime": 752.7899999999997,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 776.94,
+            "endTime": 768.3149999999999,
+            "text": "lente"
+          },
+          {
+            "id": 1,
+            "startTime": 775.215,
+            "endTime": 763.1399999999999,
+            "text": "oculare"
+          },
+          {
+            "id": 2,
+            "startTime": 773.49,
+            "endTime": 768.3149999999999,
+            "text": "del"
+          },
+          {
+            "id": 3,
+            "startTime": 771.765,
+            "endTime": 752.7899999999997,
+            "text": "telescopio\n"
+          }
+        ]
+      },
+      {
+        "id": 111,
+        "startTime": 786.82,
+        "endTime": 780.87,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 786.82,
+            "endTime": 784.27,
+            "text": "Allora"
+          },
+          {
+            "id": 1,
+            "startTime": 786.3950000000001,
+            "endTime": 785.9700000000001,
+            "text": "è"
+          },
+          {
+            "id": 2,
+            "startTime": 785.97,
+            "endTime": 781.295,
+            "text": "presumibile"
+          },
+          {
+            "id": 3,
+            "startTime": 785.5450000000001,
+            "endTime": 784.2700000000001,
+            "text": "che"
+          },
+          {
+            "id": 4,
+            "startTime": 785.12,
+            "endTime": 784.695,
+            "text": "a"
+          },
+          {
+            "id": 5,
+            "startTime": 784.695,
+            "endTime": 778.745,
+            "text": "quell'epoca\nil"
+          },
+          {
+            "id": 6,
+            "startTime": 784.27,
+            "endTime": 782.145,
+            "text": "vetro"
+          },
+          {
+            "id": 7,
+            "startTime": 783.845,
+            "endTime": 780.445,
+            "text": "prodotto"
+          },
+          {
+            "id": 8,
+            "startTime": 783.4200000000001,
+            "endTime": 782.9950000000001,
+            "text": "a"
+          },
+          {
+            "id": 9,
+            "startTime": 782.995,
+            "endTime": 780.4449999999999,
+            "text": "Murano"
+          },
+          {
+            "id": 10,
+            "startTime": 782.57,
+            "endTime": 780.445,
+            "text": "fosse"
+          },
+          {
+            "id": 11,
+            "startTime": 782.145,
+            "endTime": 780.87,
+            "text": "il\n"
+          }
+        ]
+      },
+      {
+        "id": 112,
+        "startTime": 787.85,
+        "endTime": 778.5800000000003,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 787.85,
+            "endTime": 778.5800000000003,
+            "text": "migliore\n"
+          }
+        ]
+      },
+      {
+        "id": 113,
+        "startTime": 793.28,
+        "endTime": 781.0625,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 793.28,
+            "endTime": 790.565,
+            "text": "di"
+          },
+          {
+            "id": 1,
+            "startTime": 791.9225,
+            "endTime": 785.1350000000001,
+            "text": "tutto"
+          },
+          {
+            "id": 2,
+            "startTime": 790.565,
+            "endTime": 787.8500000000001,
+            "text": "il"
+          },
+          {
+            "id": 3,
+            "startTime": 789.2075,
+            "endTime": 781.0625,
+            "text": "mondo\n"
+          }
+        ]
+      },
+      {
+        "id": 114,
+        "startTime": 796.1,
+        "endTime": 790.4599999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 796.1,
+            "endTime": 795.7475000000001,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 795.7475000000001,
+            "endTime": 793.6325,
+            "text": "quindi"
+          },
+          {
+            "id": 2,
+            "startTime": 795.395,
+            "endTime": 793.28,
+            "text": "questo"
+          },
+          {
+            "id": 3,
+            "startTime": 795.0425,
+            "endTime": 794.3375,
+            "text": "ha"
+          },
+          {
+            "id": 4,
+            "startTime": 794.69,
+            "endTime": 791.165,
+            "text": "facilitato"
+          },
+          {
+            "id": 5,
+            "startTime": 794.3375,
+            "endTime": 791.8699999999999,
+            "text": "l'opera"
+          },
+          {
+            "id": 6,
+            "startTime": 793.985,
+            "endTime": 793.28,
+            "text": "di"
+          },
+          {
+            "id": 7,
+            "startTime": 793.6324999999999,
+            "endTime": 790.4599999999999,
+            "text": "Galileo.\n"
+          }
+        ]
+      },
+      {
+        "id": 115,
+        "startTime": 819.92,
+        "endTime": 814.16,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 819.92,
+            "endTime": 817.76,
+            "text": "Allora"
+          },
+          {
+            "id": 1,
+            "startTime": 819.56,
+            "endTime": 819.1999999999999,
+            "text": "è"
+          },
+          {
+            "id": 2,
+            "startTime": 819.1999999999999,
+            "endTime": 817.4,
+            "text": "molto"
+          },
+          {
+            "id": 3,
+            "startTime": 818.8399999999999,
+            "endTime": 815.5999999999999,
+            "text": "probabile"
+          },
+          {
+            "id": 4,
+            "startTime": 818.48,
+            "endTime": 817.4,
+            "text": "che"
+          },
+          {
+            "id": 5,
+            "startTime": 818.12,
+            "endTime": 817.4,
+            "text": "il"
+          },
+          {
+            "id": 6,
+            "startTime": 817.76,
+            "endTime": 815.96,
+            "text": "vetro"
+          },
+          {
+            "id": 7,
+            "startTime": 817.4,
+            "endTime": 814.52,
+            "text": "Muranese"
+          },
+          {
+            "id": 8,
+            "startTime": 817.04,
+            "endTime": 813.4399999999999,
+            "text": "dell'epoca"
+          },
+          {
+            "id": 9,
+            "startTime": 816.68,
+            "endTime": 814.88,
+            "text": "fosse"
+          },
+          {
+            "id": 10,
+            "startTime": 816.3199999999999,
+            "endTime": 815.5999999999999,
+            "text": "il"
+          },
+          {
+            "id": 11,
+            "startTime": 815.96,
+            "endTime": 813.08,
+            "text": "migliore"
+          },
+          {
+            "id": 12,
+            "startTime": 815.6,
+            "endTime": 814.52,
+            "text": "che"
+          },
+          {
+            "id": 13,
+            "startTime": 815.24,
+            "endTime": 814.16,
+            "text": "si\n"
+          }
+        ]
+      },
+      {
+        "id": 116,
+        "startTime": 821.4,
+        "endTime": 818.0699999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 821.4,
+            "endTime": 818.81,
+            "text": "potesse"
+          },
+          {
+            "id": 1,
+            "startTime": 821.03,
+            "endTime": 818.4399999999999,
+            "text": "trovare"
+          },
+          {
+            "id": 2,
+            "startTime": 820.66,
+            "endTime": 819.92,
+            "text": "al"
+          },
+          {
+            "id": 3,
+            "startTime": 820.29,
+            "endTime": 818.0699999999999,
+            "text": "mondo\n"
+          }
+        ]
+      },
+      {
+        "id": 117,
+        "startTime": 822.77,
+        "endTime": 817.29,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 822.77,
+            "endTime": 822.085,
+            "text": "e"
+          },
+          {
+            "id": 1,
+            "startTime": 822.085,
+            "endTime": 817.29,
+            "text": "quindi\n"
+          }
+        ]
+      },
+      {
+        "id": 118,
+        "startTime": 834.649,
+        "endTime": 830.3620000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 834.649,
+            "endTime": 833.6963333333333,
+            "text": "si"
+          },
+          {
+            "id": 1,
+            "startTime": 834.1726666666667,
+            "endTime": 832.7436666666667,
+            "text": "può"
+          },
+          {
+            "id": 2,
+            "startTime": 833.6963333333333,
+            "endTime": 830.3620000000001,
+            "text": "curare\n"
+          }
+        ]
+      },
+      {
+        "id": 119,
+        "startTime": 880.67,
+        "endTime": 872.7042857142857,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 880.67,
+            "endTime": 877.8585714285714,
+            "text": "Allora"
+          },
+          {
+            "id": 1,
+            "startTime": 880.2014285714286,
+            "endTime": 879.2642857142857,
+            "text": "il"
+          },
+          {
+            "id": 2,
+            "startTime": 879.7328571428571,
+            "endTime": 877.39,
+            "text": "vetro"
+          },
+          {
+            "id": 3,
+            "startTime": 879.2642857142857,
+            "endTime": 875.5157142857144,
+            "text": "prodotto"
+          },
+          {
+            "id": 4,
+            "startTime": 878.7957142857142,
+            "endTime": 878.3271428571428,
+            "text": "a"
+          },
+          {
+            "id": 5,
+            "startTime": 878.3271428571428,
+            "endTime": 874.5785714285714,
+            "text": "Venezia,"
+          },
+          {
+            "id": 6,
+            "startTime": 877.8585714285714,
+            "endTime": 877.39,
+            "text": "a"
+          },
+          {
+            "id": 7,
+            "startTime": 877.39,
+            "endTime": 874.5785714285714,
+            "text": "Murano"
+          },
+          {
+            "id": 8,
+            "startTime": 876.9214285714286,
+            "endTime": 875.5157142857144,
+            "text": "era"
+          },
+          {
+            "id": 9,
+            "startTime": 876.4528571428572,
+            "endTime": 871.2985714285714,
+            "text": "sicuramente"
+          },
+          {
+            "id": 10,
+            "startTime": 875.9842857142858,
+            "endTime": 874.5785714285715,
+            "text": "uno"
+          },
+          {
+            "id": 11,
+            "startTime": 875.5157142857142,
+            "endTime": 874.11,
+            "text": "dei"
+          },
+          {
+            "id": 12,
+            "startTime": 875.0471428571428,
+            "endTime": 871.2985714285714,
+            "text": "migliori"
+          },
+          {
+            "id": 13,
+            "startTime": 874.5785714285714,
+            "endTime": 872.7042857142857,
+            "text": "del\n"
+          }
+        ]
+      },
+      {
+        "id": 120,
+        "startTime": 882.4,
+        "endTime": 872.0199999999999,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 882.4,
+            "endTime": 872.0199999999999,
+            "text": "mondo\n"
+          }
+        ]
+      },
+      {
+        "id": 121,
+        "startTime": 882.91,
+        "endTime": 876.7900000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 882.91,
+            "endTime": 876.7900000000001,
+            "text": "dell'epoca.\n"
+          }
+        ]
+      },
+      {
+        "id": 122,
+        "startTime": 882.91,
+        "endTime": 876.7900000000001,
+        "line": [
+          {
+            "id": 0,
+            "startTime": 882.91,
+            "endTime": 876.7900000000001,
+            "text": "dell'epoca.\n"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -162,6 +162,19 @@
       });
      }
 
+     window.openCaptionsFileDiaglogue = function(cb){
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          filters: [
+          { name: 'All Files', extensions: ['srt']}
+          ]
+        },
+       function(fileName){
+        if(cb){cb(fileName)};
+      });
+     }
+
   }
 </script>
 
