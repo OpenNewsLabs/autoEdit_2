@@ -196,7 +196,9 @@ DB.create = function(model, success, error) {
           });
         },
         cbVideo: function(respV) {
-          console.log('cbVideo: ', respV);
+          if(err){
+            console.log('cbVideo: ', respV);
+          }
           // updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
             if (err) {
