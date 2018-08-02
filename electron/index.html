@@ -90,6 +90,10 @@
     window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
     window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
 
+    window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
+    window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
+    window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
     document.addEventListener('drop', function(e) {
