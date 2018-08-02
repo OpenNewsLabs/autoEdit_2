@@ -8,7 +8,7 @@
     "no-console": "off",
     "no-trailing-spaces": "error",
     "no-whitespace-before-property": "error",
-    "require-jsdoc": "warn",
+    "require-jsdoc": "off",
     "space-before-blocks": "error",
     "space-in-parens": "error",
     "space-infix-ops": "error",
