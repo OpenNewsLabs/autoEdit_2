@@ -135,7 +135,7 @@ Is designed so that the front end in backbone can be used as standalone static s
 
 In the `electron` app `backbone.sync` overrides the backbone API methods.
 This is set in `./lib/app/app.js` as 
-`Backbone.sync = window.DB;` where `DB` is set in `./electrong/db.js`.
+`Backbone.sync = window.DB;` where `DB` is set in `./electron/db.js`.
 
 This is also a workaround for electron different ways of threating node and javascript depending on how they are added to the project. 
 
@@ -143,7 +143,7 @@ If you use `require` in the html file, then you are in node context, and can use
 
 The downside of being in node context on the client side, without using a bundle like browserify and requring modules directly is that the front end is no longer portable as standalone client side web app if needed, eg for the demo page.
 
-`DB` in `./electrong/db.js` allows to connect the backbone front to the `medeadown`/ `linvodb3` databse locally. As well as trigger `./lib/interactive_transcription_generator` component to at a high level
+`DB` in `./electron/db.js` allows to connect the backbone front to the `medeadown`/ `linvodb3` databse locally. As well as trigger `./lib/interactive_transcription_generator` component to at a high level
 - read metadata of the media file, for the EDL sequence
 - create video preview
 - create audio version to send to STT APIs
@@ -152,7 +152,7 @@ The downside of being in node context on the client side, without using a bundle
 Code of the electron app is in the `./electron` folder.
 
 
-#### `ffmpeg` and `electrong`
+#### `ffmpeg` and `electron`
 autoEdit uses `ffmpeg` under the hood, and getting `ffmpeg` and `electron` to work can sometimes be problematic when setting up a new app, so [I wrote here](http://pietropassarelli.com/ffmpeg-electron.html) about how this setup works in autoEdit, with semplified example.
 
 ### STT 
@@ -163,7 +163,7 @@ The app uses the following Speech To Text systems to generate transcription
 - [X] Speechmatics(free trial + paid), 
 - [X] Gentle(open source) 
 - [X] pocketsphinx (open source) 
-- [ ] Rev.com (human transcriptions)
+- [x] Rev.com (human transcriptions)
 
 The user can then select text and export a video sequence to the video editing software of choice.
 
