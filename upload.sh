@@ -38,7 +38,7 @@ echo  "$UPLOADTOOL_SUFFIX"
 if [ ! -z "$UPLOADTOOL_SUFFIX" ] ; then
   if [ "$UPLOADTOOL_SUFFIX" = "$TRAVIS_TAG" ] ; then
     RELEASE_NAME=$TRAVIS_TAG
-    RELEASE_TITLE="Release build ($TRAVIS_TAG)"
+    RELEASE_TITLE="$TRAVIS_TAG $TRAVIS_OS_NAME"
     is_prerelease="false"
   else
     RELEASE_NAME="continuous-$UPLOADTOOL_SUFFIX"
