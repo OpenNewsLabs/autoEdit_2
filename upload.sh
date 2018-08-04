@@ -1,4 +1,5 @@
 #!/bin/bash
+# script used in travis CI continuos deployement, called by .travis.yml 
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
 

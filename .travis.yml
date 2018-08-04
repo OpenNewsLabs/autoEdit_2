@@ -32,6 +32,7 @@ script:
   - npm run build:linux
   - find . | grep AppImage
 # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - UPLOADTOOL_SUFFIX="testTag"
   - bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage
 
 branches:
