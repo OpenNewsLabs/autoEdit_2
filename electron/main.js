@@ -89,6 +89,9 @@ function createWindow () {
           {
             label: 'User Manual',
             click () { require('electron').shell.openExternal('https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/') }
+          },{
+            label : 'Advanced - Developer Console',
+            click () { win.webContents.toggleDevTools() }
           }
         ]}
     ];

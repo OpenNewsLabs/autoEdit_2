@@ -176,6 +176,8 @@ For more info check out the [project documentation](https://pietropassarelli.git
 <!-- For development I also use an [R&D planning doc](https://docs.google.com/document/d/1aQ8MzevowNq2QrK77cT0Bh46xeq4ABxoV93FD85MCkM/edit?usp=sharing) that helps me plan architectural and components choices, evaluate different options and keep track of what has or hasn't worked over time.-->
 
 There is also a google doc for a ["QA Test Plan autoEdit 2"](https://docs.google.com/document/d/18hqjb5K7owSV6HJ-uqgeFwxicRUvf-nYsdpJiBkF-BU/edit?usp=sharing), which was original used with Vox Media QA team. It is now not up to date to the paper-editing features, but is comprehensive enough for the test. And a great starting point to make a new one.
+
+There is also an ["R&D planning google doc"](https://docs.google.com/document/d/12mUuXAtE65vhy5Sm0tmKRdgXGMn_Ob4RZEs9T5uDPkM/edit?usp=sharing) that was used for version `1.0.6` to add the paper-editing functionality.
  
 
 ## Development env
