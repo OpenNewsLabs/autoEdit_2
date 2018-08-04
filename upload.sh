@@ -42,15 +42,19 @@ fi
 #     RELEASE_TITLE="$TRAVIS_TAG $TRAVIS_OS_NAME"
 #     is_prerelease="false"
 #   else
-    RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
-    RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
-    is_prerelease="true"
+#     RELEASE_NAME="continuous-$UPLOADTOOL_SUFFIX"
+#     RELEASE_TITLE="Continuous build ($UPLOADTOOL_SUFFIX)"
+#     is_prerelease="true"
 #   fi
 # else
 #   RELEASE_NAME="continuous" # Do not use "latest" as it is reserved by GitHub
 #   RELEASE_TITLE="Continuous build"
 #   is_prerelease="true"
 # fi
+
+RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
+RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
+is_prerelease="false"
 
 if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   echo "ARTIFACTORY_BASE_URL set, trying to upload to artifactory"
@@ -95,6 +99,7 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   rm -r "$tempdir"
 fi
 
+# PULL REQUEST Tigger Build
 if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
   echo "Release uploading disabled for pull requests"
   if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
@@ -110,20 +115,6 @@ if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
       echo -n "$(cat ./one-upload)\\n" >> ./uploaded-to # this way we get a \n but no newline
     done
   fi
-#  review_url="https://api.github.com/repos/${TRAVIS_REPO_SLUG}/pulls/${TRAVIS_PULL_REQUEST}/reviews"
-#  if [ -z $UPLOADTOOL_PR_BODY ] ; then
-#    body="Travis CI has created build artifacts for this PR here:"
-#  else
-#    body="$UPLOADTOOL_PR_BODY"
-#  fi
-#  body="$body\n$(cat ./uploaded-to)\nThe link(s) will expire 14 days from now."
-#  review_comment=$(curl -X POST \
-#    --header "Authorization: token ${GITHUB_TOKEN}" \
-#    --data '{"commit_id": "'"$TRAVIS_COMMIT"'","body": "'"$body"'","event": "COMMENT"}' \
-#    $review_url)
-#  if echo $review_comment | grep -q "Bad credentials" 2>/dev/null ; then
-#    echo '"Bad credentials" response for --data {"commit_id": "'"$TRAVIS_COMMIT"'","body": "'"$body"'","event": "COMMENT"}'
-#  fi
   $shatool "$@"
   exit 0
 fi
