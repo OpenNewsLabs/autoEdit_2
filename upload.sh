@@ -3,6 +3,7 @@
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
 
+# checks for command line argument to this script
 # Exit immediately if one of the files given as arguments is not there
 # because we don't want to delete the existing release if we don't have
 # the new files that should be uploaded 
@@ -25,6 +26,9 @@ elif command -v shasum >/dev/null 2>&1 ; then
 else
   echo "Neither sha256sum nor shasum is available, cannot check hashes"
 fi
+
+echo "printing out the upload suffix"
+echo  "$UPLOADTOOL_SUFFIX"
 
 # The calling script (usually .travis.yml) can set a suffix to be used for
 # the tag and release name. This way it is possible to have a release for
@@ -57,6 +61,7 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
 
   files="$@"
 
+  # This adds the description to the release by uploading a file 
   # artifactory doesn't support any kind of "artifact description", so we're uploading a text file containing the
   # relevant details along with the other artifacts
   tempdir=$(mktemp -d)
