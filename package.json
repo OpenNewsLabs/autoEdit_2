@@ -36,21 +36,21 @@
       "!docs/",
       "!dist/",
       "!assets/",
-      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
-      "node_modules/ffmpeg-static/index.js",
-      "node_modules/ffmpeg-static/package.json",
-      "node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
-      "node_modules/ffprobe-static/index.js",
-      "node_modules/ffprobe-static/package.json"
+      "node_modules/ffmpeg-static-electron/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static-electron/index.js",
+      "node_modules/ffmpeg-static-electron/package.json",
+      "node_modules/ffprobe-static-electron/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffprobe-static-electron/index.js",
+      "node_modules/ffprobe-static-electron/package.json"
     ],
     "copyright": "2017 Pietro Passarelli",
     "mac": {
       "category": "public.app-category.productivity",
       "files": [
-        "!node_modules/ffmpeg-static/bin/win${/*}",
-        "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffprobe-static/bin/win${/*}",
-        "!node_modules/ffprobe-static/bin/linux${/*}"
+        "!node_modules/ffmpeg-static-electron/bin/win${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/linux${/*}",
+        "!node_modules/ffprobe-static-electron/bin/win${/*}",
+        "!node_modules/ffprobe-static-electron/bin/linux${/*}"
       ]
     },
     "linux": {
@@ -62,12 +62,12 @@
       ],
       "maintainer": "Pietro Passarelli <pietro.passarelli@gmail.com>",
       "files": [
-        "!node_modules/ffmpeg-static/bin/linux/ia32${/*}",
-        "!node_modules/ffmpeg-static/bin/win${/*}",
-        "!node_modules/ffmpeg-static/bin/mac${/*}",
-        "!node_modules/ffprobe-static/bin/linux/ia32${/*}",
-        "!node_modules/ffprobe-static/bin/win${/*}",
-        "!node_modules/ffprobe-static/bin/mac${/*}"
+        "!node_modules/ffmpeg-static-electron/bin/linux/ia32${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/win${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/mac${/*}",
+        "!node_modules/ffprobe-static-electron/bin/linux/ia32${/*}",
+        "!node_modules/ffprobe-static-electron/bin/win${/*}",
+        "!node_modules/ffprobe-static-electron/bin/mac${/*}"
       ]
     },
     "deb": {
@@ -95,14 +95,14 @@
       "target": "portable",
       "icon": "build/icon.ico",
       "files": [
-        "node_modules/ffmpeg-static/bin/win/${arch}/ffmpeg",
-        "!node_modules/ffmpeg-static/bin/win/ia32${/*}",
-        "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffmpeg-static/bin/mac${/*}",
-        "node_modules/ffprobe-static/bin/win/${arch}/ffprobe",
-        "!node_modules/ffprobe-static/bin/win/ia32${/*}",
-        "!node_modules/ffprobe-static/bin/linux${/*}",
-        "!node_modules/ffprobe-static/bin/mac${/*}"
+        "node_modules/ffmpeg-static-electron/bin/win/${arch}/ffmpeg",
+        "!node_modules/ffmpeg-static-electron/bin/win/ia32${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/linux${/*}",
+        "!node_modules/ffmpeg-static-electron/bin/mac${/*}",
+        "node_modules/ffprobe-static-electron/bin/win/${arch}/ffprobe",
+        "!node_modules/ffprobe-static-electron/bin/win/ia32${/*}",
+        "!node_modules/ffprobe-static-electron/bin/linux${/*}",
+        "!node_modules/ffprobe-static-electron/bin/mac${/*}"
       ]
     }
   },
