@@ -37,12 +37,12 @@ install:
   - npm install
 
 script:
-#  - npm run test
-# - npm run build
-  - npm run build:linux
-  - find . | grep AppImage
-# - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build:linux; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build:mac; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then  find . | grep AppImage; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . | grep dmg; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash upload.sh ./dist/autoEdit2-*.dmg; fi
 
 branches:
   except:
