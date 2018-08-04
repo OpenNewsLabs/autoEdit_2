@@ -14,6 +14,12 @@ do
     fi
 done
 
+echo "Processing"
+echo $UPLOADTOOL_SUFFIX
+echo $TRAVIS_TAG
+echo $TRAVIS_OS_NAME
+
+
 if [ $# -eq 0 ]; then
     echo "No artifacts to use for release, giving up."
     exit 0

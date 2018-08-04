@@ -7,45 +7,52 @@ matrix:
       language: node_js
       node_js: "10"
       sudo: required
+      cache:
+        directories:
+        - node_modules
+        - $HOME/.electron
+        - $HOME/.npm
+        - $HOME/.nvm
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
-
+        - TRAVIS_TAG="1.0.12"
+        - UPLOADTOOL_SUFFIX=autoEdit2
+    
     - os: linux
       dist: trusty
       sudo: required
       services: docker
       language: node_js
-env:
-  global:
-    - TRAVIS_TAG="1.0.12"
-    - UPLOADTOOL_SUFFIX=autoEdit2
-
-cache:
-  directories:
-  - node_modules
-  - $HOME/.electron
-  - $HOME/.npm
-  - $HOME/.nvm
-
-addons:
-  apt:
-    packages:
-      - libgnome-keyring-dev
-      - icnsutils
-
-install:
-  - node --version
-  - npm --version
-  - npm install
+      node_js: "10"
+      cache:
+        directories:
+        - node_modules
+        - $HOME/.electron
+        - $HOME/.npm
+        - $HOME/.nvm
+      env:
+        - TRAVIS_TAG="1.0.12"
+        - UPLOADTOOL_SUFFIX=autoEdit2
+      addons:
+        apt:
+          packages:
+            - libgnome-keyring-dev
+            - icnsutils
 
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+    node --version
+    npm --version
+    npm install
     npm run build:linux
     find . | grep AppImage
     bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+    node --version
+    npm --version
+    npm install
     npm run build:mac
     find . | grep dmg
     bash upload.sh ./dist/autoEdit2-*.dmg; 
