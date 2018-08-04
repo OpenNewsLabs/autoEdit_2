@@ -27,29 +27,30 @@ else
   echo "Neither sha256sum nor shasum is available, cannot check hashes"
 fi
 
-echo "printing out the upload suffix"
-echo  "$UPLOADTOOL_SUFFIX"
+# echo "printing out the upload suffix"
+# echo  "$UPLOADTOOL_SUFFIX"
 
+# NAME OF RELEASE
 # The calling script (usually .travis.yml) can set a suffix to be used for
 # the tag and release name. This way it is possible to have a release for
 # the output of the CI/CD pipeline (marked as 'continuous') and also test
 # builds for other branches.
 # If this build was triggered by a tag, call the result a Release
-if [ ! -z "$UPLOADTOOL_SUFFIX" ] ; then
-  if [ "$UPLOADTOOL_SUFFIX" = "$TRAVIS_TAG" ] ; then
-    RELEASE_NAME=$TRAVIS_TAG
-    RELEASE_TITLE="$TRAVIS_TAG $TRAVIS_OS_NAME"
-    is_prerelease="false"
-  else
-    RELEASE_NAME="continuous-$UPLOADTOOL_SUFFIX"
-    RELEASE_TITLE="Continuous build ($UPLOADTOOL_SUFFIX)"
+# if [ ! -z "$UPLOADTOOL_SUFFIX" ] ; then
+#   if [ "$UPLOADTOOL_SUFFIX" = "$TRAVIS_TAG" ] ; then
+#     RELEASE_NAME=$TRAVIS_TAG
+#     RELEASE_TITLE="$TRAVIS_TAG $TRAVIS_OS_NAME"
+#     is_prerelease="false"
+#   else
+    RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
+    RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
     is_prerelease="true"
-  fi
-else
-  RELEASE_NAME="continuous" # Do not use "latest" as it is reserved by GitHub
-  RELEASE_TITLE="Continuous build"
-  is_prerelease="true"
-fi
+#   fi
+# else
+#   RELEASE_NAME="continuous" # Do not use "latest" as it is reserved by GitHub
+#   RELEASE_TITLE="Continuous build"
+#   is_prerelease="true"
+# fi
 
 if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   echo "ARTIFACTORY_BASE_URL set, trying to upload to artifactory"
@@ -61,6 +62,7 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
 
   files="$@"
 
+  # DESCRIPION
   # This adds the description to the release by uploading a file 
   # artifactory doesn't support any kind of "artifact description", so we're uploading a text file containing the
   # relevant details along with the other artifacts

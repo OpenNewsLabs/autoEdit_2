@@ -10,8 +10,8 @@ sudo: required
 
 env:
   global:
-    - TRAVIS_TAG="autoEdit 2 - 1.0.12"
-    - UPLOADTOOL_SUFFIX=testTag2
+    - TRAVIS_TAG="1.0.12"
+    - UPLOADTOOL_SUFFIX=autoEdit2
 
 cache:
   directories:
