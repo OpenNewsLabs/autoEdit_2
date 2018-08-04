@@ -34,19 +34,23 @@ cache:
   - $HOME/.npm
   - $HOME/.nvm
 
+env:
+  global:
+    - TRAVIS_TAG="1.0.12"
+    - UPLOADTOOL_SUFFIX="autoEdit2"
+
+install:
+  - node --version
+  - npm --version
+  - npm install
+
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-    node --version
-    npm --version
-    npm install
     npm run build:linux
     find . | grep AppImage
     bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    node --version
-    npm --version
-    npm install
     npm run build:mac
     find . | grep dmg
     bash upload.sh ./dist/autoEdit2-*.dmg; 
