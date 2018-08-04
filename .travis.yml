@@ -6,13 +6,16 @@ matrix:
       osx_image: xcode9.4
       language: node_js
       node_js: "10"
+      sudo: required
       env:
         - ELECTRON_CACHE=$HOME/.cache/electron
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
     - os: linux
+      dist: trusty
+      sudo: required
       services: docker
-      language: generic
+      language: node_js
 env:
   global:
     - TRAVIS_TAG="1.0.12"
@@ -37,12 +40,16 @@ install:
   - npm install
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build:linux; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build:mac; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then  find . | grep AppImage; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . | grep dmg; fi
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash upload.sh ./dist/autoEdit2-*.dmg; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+    npm run build:linux
+    find . | grep AppImage
+    bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+    npm run build:mac
+    find . | grep dmg
+    bash upload.sh ./dist/autoEdit2-*.dmg; 
+    fi
 
 branches:
   except:
