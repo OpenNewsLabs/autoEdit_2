@@ -12,7 +12,6 @@ matrix:
         - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
         - TRAVIS_TAG="1.0.12"
         - UPLOADTOOL_SUFFIX=autoEdit2
-    
     - os: linux
       dist: trusty
       sudo: required
@@ -45,22 +44,22 @@ install:
   - npm install
 
 script:
-#   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-#     npm run build:linux
-#     find . | grep AppImage
-#     bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
-#     fi
-#   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-#     npm run build:mac
-#     find . | grep dmg
-#     bash upload.sh ./dist/autoEdit2-*.dmg; 
-#     fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build:linux; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then  find . | grep AppImage; fi
-    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build:mac; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . | grep dmg; fi
-    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash upload.sh ./dist/autoEdit2-*.dmg; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+    npm run build:linux;
+    find . | grep AppImage;
+    bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+    npm run build:mac;
+    find . | grep dmg;
+    bash upload.sh ./dist/autoEdit2-*.dmg; 
+    fi
+    # - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run build:linux; fi
+    # - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then  find . | grep AppImage; fi
+    # - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; fi
+    # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run build:mac; fi
+    # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then find . | grep dmg; fi
+    # - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then bash upload.sh ./dist/autoEdit2-*.dmg; fi
 
 
 branches:

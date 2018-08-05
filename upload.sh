@@ -232,6 +232,7 @@ if [ -z "$release_url" ] ; then
 	exit 1
 fi
 
+# UPLOAD FILE TO RELEASE
 echo "Upload binaries to the release..."
 
 for FILE in "$@" ; do
