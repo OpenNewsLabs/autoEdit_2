@@ -52,6 +52,14 @@
         "!node_modules/ffmpeg-static-electron/bin/linux${/*}",
         "!node_modules/ffprobe-static-electron/bin/win${/*}",
         "!node_modules/ffprobe-static-electron/bin/linux${/*}"
+      ],
+      "target":[
+        {
+          "target": "zip",
+          "arch": [
+            "x64"
+          ]
+        }
       ]
     },
     "linux": {
