@@ -44,12 +44,14 @@ install:
   - npm install
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
     npm run build:linux;
     find . | grep AppImage;
     bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
     fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
     npm run build:mac;
     find . | grep dmg;
     bash upload.sh ./dist/autoEdit2-*.dmg; 
