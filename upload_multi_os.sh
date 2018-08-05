@@ -1,4 +1,5 @@
 # https://www.electron.build/multi-platform-build#docker
+# alternative https://github.com/electron-userland/electron-builder/issues/1751 
 matrix:
   include:
     - os: osx
@@ -28,9 +29,11 @@ script:
         -v ~/.cache/electron:/root/.cache/electron \
         -v ~/.cache/electron-builder:/root/.cache/electron-builder \
         electronuserland/builder:wine \
-        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"
+        /bin/bash -c "yarn --link-duplicates --pure-lockfile && yarn release --linux --win"\
+        # upload
     else
       yarn release
+    #   upload 
     fi
 before_cache:
   - rm -rf $HOME/.cache/electron-builder/wine
