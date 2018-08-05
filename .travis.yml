@@ -19,11 +19,11 @@ cache:
   - $HOME/.npm
   - $HOME/.nvm
 
-# addons:
-#   apt:
-#     packages:
-#       - libgnome-keyring-dev
-#       - icnsutils
+addons:
+  apt:
+    packages:
+      - libgnome-keyring-dev
+      - icnsutils
 
 env:
   global:
