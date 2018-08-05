@@ -4,13 +4,9 @@ language: node_js
 node_js:
   - "10"
 
-os: 
-  - osx
-  - linux
+os: osx
 osx_image: xcode9.4
 sudo: required
-
-dist: trusty
 
 cache:
   directories:
@@ -36,22 +32,13 @@ install:
   - npm install
 
 script:
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-    npm run build:linux;
-    ls ./dist;
-    find . | grep AppImage;
-    #wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage; 
-    fi
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    npm run build:mac;
-    ls ./dist;
-    find . | grep mac.zip;
-    #wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    bash upload.sh ./dist/autoEdit2-*-mac.zip; 
-    fi
+#  - npm run test
+# - npm run build
+  - npm run build:mac
+  - find . | grep mac.zip
+  - ls ./dist
+  # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh ./dist/autoEdit2-*-mac.zip
 
 branches:
   except:
