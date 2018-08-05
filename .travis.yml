@@ -35,9 +35,9 @@ script:
 #  - npm run test
 # - npm run build
   - npm run pack:mac
-  - find . | grep zip
+  - find . | grep -mac.zip
   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh ./dist/autoEdit2-*-mac.zip; 
+  - bash upload.sh ./dist/autoEdit2-*-mac.zip
 
 branches:
   except:
