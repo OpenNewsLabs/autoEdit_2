@@ -34,8 +34,9 @@ install:
 script:
 #  - npm run test
 # - npm run build
-  - npm run pack:mac
+  - npm run build:mac
   - find . | grep mac.zip
+  - ls ./dist
   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh ./dist/autoEdit2-*-mac.zip
 
