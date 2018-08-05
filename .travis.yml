@@ -35,7 +35,7 @@ script:
 #  - npm run test
 # - npm run build
   - npm run pack:mac
-  - find . | grep dmg
+  - find . | grep zip
   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh ./dist/autoEdit2-*-mac.zip; 
 
