@@ -8,12 +8,12 @@ os: linux
 dist: trusty
 sudo: required
 
-cache:
-  directories:
-  - node_modules
-  - $HOME/.electron
-  - $HOME/.npm
-  - $HOME/.nvm
+# cache:
+#   directories:
+#   - node_modules
+#   - $HOME/.electron
+#   - $HOME/.npm
+#   - $HOME/.nvm
 
   env:
     global:
