@@ -15,7 +15,6 @@ sudo: required
 #   - $HOME/.npm
 #   - $HOME/.nvm
 
-
 env:
   global:
     - TRAVIS_TAG="1.0.12"
@@ -33,8 +32,8 @@ install:
   - npm install
 
 script:
-# - npm run test 
-# - npm run build 
+# - npm run test
+# - npm run build
   - |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
   echo "INSIDE Travis OS Linux script";
