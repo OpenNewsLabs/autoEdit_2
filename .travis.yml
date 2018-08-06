@@ -31,6 +31,7 @@ install:
   - npm --version
   - npm install
 
+# scripts
 script:
 # - npm run test
 # - npm run build
