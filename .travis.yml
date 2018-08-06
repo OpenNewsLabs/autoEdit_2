@@ -37,7 +37,7 @@ script:
 # - npm run build
   - |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-  echo "INSIDE Travis OS Linux script"
+  echo "INSIDE Travis OS Linux script";
   npm run build:linux;
   find . | grep AppImage;
   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
