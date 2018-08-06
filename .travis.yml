@@ -34,7 +34,7 @@ install:
 
 script:
 #  - npm run test
-# - npm run build
+# - npm run build 
   - |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
   echo "INSIDE Travis OS Linux script";
