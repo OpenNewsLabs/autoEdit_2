@@ -62,6 +62,11 @@ RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
 RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
 is_prerelease="false"
 
+echo  "Infos"
+echo $RELEASE_NAME
+echo $RELEASE_TITLE
+
+
 if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   echo "ARTIFACTORY_BASE_URL set, trying to upload to artifactory"
 
