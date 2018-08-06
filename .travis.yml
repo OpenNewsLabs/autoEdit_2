@@ -35,10 +35,14 @@ install:
 script:
 #  - npm run test
 # - npm run build
-  - npm run build:linux
-  - find . | grep AppImage
+  - |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+  echo "INSIDE Travis OS Linux script"
+  npm run build:linux;
+  find . | grep AppImage;
   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  - bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage
+  bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage;
+  fi
 
 branches:
   except:
