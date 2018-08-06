@@ -234,8 +234,8 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
 fi # if [ "$TRAVIS_COMMIT" != "$tag_sha" ]
 
 if [ -z "$release_url" ] ; then
-	echo "Cannot figure out the release URL for $RELEASE_NAME"
-	exit 1
+  echo "Cannot figure out the release URL for $RELEASE_NAME"
+  exit 1
 fi
 
 # UPLOAD FILE TO RELEASE

@@ -34,11 +34,10 @@ install:
   - node --version
   - npm --version
   - npm install
+  - npm run make_js
 
 
 script:
-# - npm run test
-# - npm run build
   - |
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
     echo "INSIDE Travis OS Linux script";
