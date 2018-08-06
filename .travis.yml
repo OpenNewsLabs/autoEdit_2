@@ -16,10 +16,10 @@ sudo: required
 #   - $HOME/.nvm
 
 
-  env:
-    global:
-      - TRAVIS_TAG="1.0.12"
-      - UPLOADTOOL_SUFFIX="autoEdit2"
+env:
+  global:
+    - TRAVIS_TAG="1.0.12"
+    - UPLOADTOOL_SUFFIX="autoEdit2"
 
 addons:
   apt:
