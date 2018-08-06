@@ -26,13 +26,17 @@ var dataPath = currentWindow.dataPath;
 
 // console.log()
 
+// +db path, for now in root of app, to be change so that in config where user
+// can set where they want it, but also provide a default.
+// LinvoDB.dbPath = path.join(process.cwd(), '/db');
+LinvoDB.dbPath = dataPath;
 
 LinvoDB.defaults.store = { db: medeadown };
 
 // +db path, for now in root of app, to be change so that in config where user
 // can set where they want it, but also provide a default.
 // LinvoDB.dbPath = path.join(process.cwd(), '/db');
-LinvoDB.dbPath = dataPath;
+// LinvoDB.dbPath = dataPath;
 
 // setting up transcription model in database.
 var transcriptionModel = 'transcription';
