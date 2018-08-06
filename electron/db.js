@@ -21,15 +21,15 @@ var LinvoDB = require('linvodb3');
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
 var medeadown = require('medeadown');
 
-// var dataPath = window.nw.App.dataPath;
 var dataPath = currentWindow.dataPath;
-
-// console.log()
 
 // +db path, for now in root of app, to be change so that in config where user
 // can set where they want it, but also provide a default.
 // LinvoDB.dbPath = path.join(process.cwd(), '/db');
-LinvoDB.dbPath = dataPath;
+// https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
+// const {app} = require('electron')
+LinvoDB.dbPath = electron.getPath('appData')
+// LinvoDB.dbPath = dataPath;
 
 LinvoDB.defaults.store = { db: medeadown };
 
