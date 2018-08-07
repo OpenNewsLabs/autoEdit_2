@@ -3,6 +3,11 @@
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
 
+# reading version number from json using bash and assigning to enviroment variable for travis as explained ehre https://gist.github.com/DarrenN/8c6a5b969481725a4413
+TRAVIS_TAG=$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
+echo "troubleshooting TRAVIS_TAG"
+echo $TRAVIS_TAG
+
 # checks for command line argument to this script
 # Exit immediately if one of the files given as arguments is not there
 # because we don't want to delete the existing release if we don't have
