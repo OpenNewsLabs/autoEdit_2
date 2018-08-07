@@ -67,6 +67,7 @@ script:
       electronuserland/builder:wine \
       /bin/bash -c "npm run build:win"\
       /bin/bash -c "echo 'in windows command'"\
+      /bin/bash -c "wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh"\
       /bin/bash -c "upload.sh ./dist/autoEdit2-*.exe.zip"\
     fi
 
