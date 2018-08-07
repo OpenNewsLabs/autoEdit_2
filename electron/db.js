@@ -30,6 +30,7 @@ var dataPath = currentWindow.dataPath;
 // const {app} = require('electron')
 // LinvoDB.dbPath = electron.getPath('appData')
 LinvoDB.dbPath = dataPath;
+console.info('dataPath ', dataPath);
 
 LinvoDB.defaults.store = { db: medeadown };
 
