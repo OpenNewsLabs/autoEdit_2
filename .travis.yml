@@ -33,11 +33,11 @@ env:
 
 # by default travis seemed to sue 4.2.0
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs/#using-a-specific-npm-version
-before_install: 
-  - npm i -g npm@5
+# before_install: 
 
 install:
   - node --version
+  - npm i -g npm@5
   - npm --version
   - npm install
   - npm run make_js
