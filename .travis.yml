@@ -4,11 +4,11 @@ matrix:
     - os: osx
       osx_image: xcode9.4
       language: node_js
-      node_js: "7"
+      node_js: "8"
       sudo: required
     - os: linux
       language: node_js
-      node_js: "7"
+      node_js: "8"
       sudo: required
       # services: docker
       addons:
@@ -27,9 +27,12 @@ matrix:
 env:
   global:
     # - TRAVIS_TAG="1.0.12"
-    - UPLOADTOOL_SUFFIX="autoEdit2"
+    # - UPLOADTOOL_SUFFIX="autoEdit2"
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
+
+before_install: 
+  - npm i -g npm@5
 
 install:
   - node --version

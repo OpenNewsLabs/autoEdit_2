@@ -3,10 +3,16 @@
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
 
-# reading version number from json using bash and assigning to enviroment variable for travis as explained ehre https://gist.github.com/DarrenN/8c6a5b969481725a4413
+# reading version number from package.json using bash and assigning to enviroment variable for travis 
+# as explained here https://gist.github.com/DarrenN/8c6a5b969481725a4413
 TRAVIS_TAG=$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[" ,]//g')
 echo "troubleshooting TRAVIS_TAG"
 echo $TRAVIS_TAG
+
+# doing same thing with app name, reading it from package.json to make suffix of release
+UPLOADTOOL_SUFFIX=$(cat ./package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[" ,]//g')
+echo "troubleshooting UPLOADTOOL_SUFFIX"
+echo $UPLOADTOOL_SUFFIX
 
 # checks for command line argument to this script
 # Exit immediately if one of the files given as arguments is not there

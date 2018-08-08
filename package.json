@@ -129,7 +129,7 @@
     "jquery": "1.12.4",
     "jquery-sortable": "^0.9.13",
     "linvodb3": "^3.24.0",
-    "medeadown": "1.1.8",
+    "medeadown": "^1.1.8",
     "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
     "node-fetch": "^2.1.2",
