@@ -16,6 +16,10 @@ matrix:
           packages:
             - libgnome-keyring-dev
             - icnsutils
+            - graphicsmagick
+            # - xz-utils
+            # - rpm
+            # - bsdtar
 
 # cache:
 #   directories:
