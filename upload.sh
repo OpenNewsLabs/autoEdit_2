@@ -11,7 +11,7 @@ echo $TRAVIS_TAG
 
 # doing same thing with app name, reading it from package.json to make suffix of release
 UPLOADTOOL_SUFFIX=$(cat ./package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[" ,]//g')
-echo "troubleshooting UPLOADTOOL_SUFFIX"
+echo "troubleshooting UPLOADTOOL_SUFFIX "
 echo $UPLOADTOOL_SUFFIX
 
 # checks for command line argument to this script

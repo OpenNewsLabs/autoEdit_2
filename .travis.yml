@@ -31,6 +31,8 @@ env:
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
+# by default travis seemed to sue 4.2.0
+# https://docs.travis-ci.com/user/languages/javascript-with-nodejs/#using-a-specific-npm-version
 before_install: 
   - npm i -g npm@5
 
