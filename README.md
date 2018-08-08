@@ -186,8 +186,8 @@ There is also an ["R&D planning google doc"](https://docs.google.com/document/d/
 _Coding style convention ref optional, eg which linter to use_
 _Linting, github pre-push hook - optional_
 
-- node 
-- npm 
+- node 8 or greater
+- npm 5 or greater
 - [speech to text credentials](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html)
 
 ### linting 
