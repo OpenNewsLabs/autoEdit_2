@@ -1,13 +1,22 @@
 "use strict";
 const fs = require('fs');
-const electron = require('electron');
-const currentWindow = electron.remote.getCurrentWindow();
+
 const path = require('path');
 
 var watsonKeysPath;
 
-if (window.process !== 'undefined') {
-  var watsonKeysPath = path.join(currentWindow.dataPath , 'wttskeys.json');
+if (!window.ENV_BROSWER) {
+  var watsonKeysPath; 
+  if(window.ENV_ELECTRON){
+    const electron = require('electron');
+    const currentWindow = electron.remote.getCurrentWindow();
+    watsonKeysPath = path.join(currentWindow.dataPath , 'wttskeys.json');
+  }
+  if(window.ENV_CHROMIUM){
+    // https://forums.adobe.com/thread/1956086
+    watsonKeysPath = path.join(Folder.userData.fsName, 'wttskeys.json');
+  }
+    
 }else{
   //not in electron 
   var watsonKeysPath = "";

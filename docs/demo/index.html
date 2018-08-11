@@ -90,6 +90,10 @@
     window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
     window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
 
+    window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
+    window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
+    window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+
     // if you drag a file onto the app, it stops from the window opening that file. 
     // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
     document.addEventListener('drop', function(e) {
@@ -141,11 +145,11 @@
   <!-- load App UI -->
   <script src="app.js"></script>
 
-
-
   <script>
   if (window.process !== undefined) {
-  var ffmpegExentions = require("./ffmpeg_extentions.js")
+    const path = require('path');
+    const remix = require('ffmpeg-remix');
+    const ffmpegExentions = require("./ffmpeg_extentions.js")
    // file dialogue opener 
    const {dialog} = require('electron').remote;
 
@@ -162,7 +166,98 @@
       });
      }
 
+     window.openCaptionsFileDiaglogue = function(cb){
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          filters: [
+          { name: 'All Files', extensions: ['srt']}
+          ]
+        },
+       function(fileName){
+        if(cb){cb(fileName)};
+      });
+     }
+
+      window.ffmpegRemix = function (jsonSequence, cb){
+      // https://github.com/electron/electron/blob/master/docs/api/dialog.md#dialogshowsavedialogbrowserwindow-options-callback
+      var savePath = dialog.showSaveDialog({});
+      console.log('savePath',savePath);
+      console.log('jsonSequence.output',jsonSequence.output);
+      // if user does not specify mp4 extension then we should add it othersiwe ffmpeg will fail
+      if(!isVideoFileMp4(savePath)){
+        savePath +='.mp4';
+      }
+      jsonSequence.output = savePath;
+      console.log('jsonSequence.output',jsonSequence.output);
+      // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
+      jsonSequence.ffmpegPath =  require("../config.js").ffmpegPath;
+      // //call ffmpeg remix
+      
+      remix(jsonSequence,function(err, result) {
+        console.log(err, result);
+          if(cb){cb(savePath)}
+      })
+     }
+      function isVideoFileMp4(file){
+      var extname = path.extname(file);
+      if(extname === '.mp4'){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
   }
+
+ 
+
+
+/*
+* find way to make this as it's own module
+*/
+function getCurrentEnviromentType(){
+
+  // needs setting Window.demo = {} in db.js
+  if (window.demo !== undefined) {
+    return 'demo';
+  }
+
+  // Is browser Eg client side app
+  if(window.process === undefined){
+    return 'browser';
+  }
+
+  // Is electron 
+  if(window.process.versions.electron !== undefined){
+    return 'electron';
+  }
+
+  // if it is chromium -> is adobe premiere panel 
+  // could also check for window.cep_node
+  if(window.process.versions.chromium !== undefined) {
+    return 'adobe-panel';
+  }
+}
+
+
+
+function isBrowsEnv(){
+  return getCurrentEnviromentType() === 'browser'? true :false;
+}
+
+function isElectronEnv(){
+  return getCurrentEnviromentType() === 'electron'? true :false;
+}
+
+function isAdobePanellEnv(){
+  return getCurrentEnviromentType() === 'adobe-panel'? true :false;
+}
+
+function isDemoEnv(){
+  return getCurrentEnviromentType() === 'demo'? true :false;
+}
+
 </script>
 
   </body>

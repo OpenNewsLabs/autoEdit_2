@@ -23,7 +23,14 @@
     "preview_page": "npm run make_demo && jekyll serve  --source project_page  --destination docs",
     "preview_page_no_demo_reload": "jekyll serve  --source project_page  --destination docs",
     "make_page": "npm run make_demo && jekyll  build --source project_page --destination docs",
-    "release": "build"
+    "release": "build",
+    "adobe-panel-dev-src": "sync-files adobe-panel-src ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel",
+    "adobe-panel-dev-electron": "sync-files electron ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/electron",
+    "adobe-panel-dev-lib": "sync-files lib ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/lib",
+    "adobe-panel-dev-packagejson": "sync-files ./package.json ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/package.json",
+    "adobe-panel-dev-node_modules": "sync-files node_modules ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/node_modules",
+    "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson",
+    "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev"
   },
   "build": {
     "appId": "org.autoEdit2.autoEdit2-electron",
@@ -53,7 +60,7 @@
         "!node_modules/ffprobe-static-electron/bin/win${/*}",
         "!node_modules/ffprobe-static-electron/bin/linux${/*}"
       ],
-      "target":[
+      "target": [
         {
           "target": "zip",
           "arch": [
@@ -158,6 +165,8 @@
     "jasmine": "^2.5.2",
     "jest": "^22.4.3",
     "jsdoc": "^3.4.1",
+    "onchange": "^4.1.0",
+    "watch": "^1.0.2",
     "watchify": "^3.7.0"
   },
   "repository": {

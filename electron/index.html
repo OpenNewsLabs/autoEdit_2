@@ -70,14 +70,52 @@
   <!-- Setup database and nwjs stuff -->
   <script>
   "use strict";
-  if (window.process !== undefined) {
+
+  // Is browser Eg client side app
+  if(window.process === undefined){
+    window.ENV ='browser';
+    window.ENV_BROSWER = true;
+    window.ENV_ELECTRON = false;
+    window.ENV_CHROMIUM = false;
+    console.debug("In browser Enviroment"); 
+  } else {
+     // Is electron 
+    if(window.process.versions.electron !== undefined){
+      window.ENV ='electron';
+      window.ENV_ELECTRON = true;
+      window.ENV_BROSWER = false;
+      window.ENV_CHROMIUM = false;
+      console.debug("In Electron Enviroment"); 
+    }
+    // if it is chromium -> is adobe premiere panel 
+    // could also check for window.cep_node
+    if(window.process.versions.chromium !== undefined) {
+      window.ENV ='chromium';
+      window.ENV_CHROMIUM = true;
+      window.ENV_BROSWER = false;
+      window.ENV_ELECTRON = false;
+      console.debug("In Chromimum Enviroment"); 
+    }
+  }
+
+  // if you drag a file onto the app, it stops from the window opening that file. 
+  // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
+  document.addEventListener('drop', function(e) {
+    // console.log(e);
+    e.preventDefault();
+    e.stopPropagation();
+  });
+  document.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+  });
+
+
+
+  if(window.ENV_ELECTRON){
     const {dialog} = require('electron').remote;
-    console.debug("In Electron Enviroment");
-    //TODO: rename across code base, perhaps use ENVIROMENT instead of this. 
-    window.frontEndEnviromentElectron = true;
-    // window.nw = require('nw.gui');
     window.DB = require('./db.js');
- 
+    
     window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
     window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
     window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
@@ -93,23 +131,29 @@
     window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
     window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
     window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
-
-    // if you drag a file onto the app, it stops from the window opening that file. 
-    // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
-    document.addEventListener('drop', function(e) {
-      // console.log(e);
-      e.preventDefault();
-      e.stopPropagation();
-    });
-  document.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-
-  } else {
-    console.debug("In Browser Enviroment");
-    window.frontEndEnviromentElectron = false;
   }
+
+if(window.ENV_CHROMIUM){
+  const envPath = `${__dirname}/electron`
+  window.DB = require(`${envPath}/db.js`);
+
+  window.IBMWatsonKeys = require(`${envPath}/watson_keys.js`).getWatsonAPIkeys;
+  window.setWatsonAPIkeys = require(`${envPath}/watson_keys.js`).setWatsonAPIkeys;
+  window.areWatsonAPIkeysSet = require(`${envPath}/watson_keys.js`).areWatsonAPIkeysSet;
+
+  window.SpeechmaticsKeys = require(`${envPath}/speechmatics_keys.js`).getSpeechmaticsAPIkeys;
+  window.setSpeechmaticsAPIkeys = require(`${envPath}/speechmatics_keys.js`).setSpeechmaticsAPIkeys;
+  window.areSpeechmaticsAPIkeysSet = require(`${envPath}/speechmatics_keys.js`).areSpeechmaticsAPIkeysSet;
+
+  window.revKeys = require(`${envPath}/rev_keys.js`).getRevAPIkeys;
+  window.setRevAPIkeys = require(`${envPath}/rev_keys.js`).setRevAPIkeys;
+  window.areRevAPIkeysSet = require(`${envPath}/rev_keys.js`).areRevAPIkeysSet;
+
+  window.BBCKeys = require(`${envPath}/bbc_keys.js`).getBBCAPIkeys;
+  window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
+  window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
+}
+ 
   </script>
 
 
@@ -145,13 +189,17 @@
   <!-- load App UI -->
   <script src="app.js"></script>
 
-
-
   <script>
   if (window.process !== undefined) {
     const path = require('path');
     const remix = require('ffmpeg-remix');
-    const ffmpegExentions = require("./ffmpeg_extentions.js")
+    var ffmpegExentions;
+    if(window.ENV_ELECTRON){
+       ffmpegExentions = require("./ffmpeg_extentions.js");
+    }
+    if (!window.ENV_CHROMIUM) {
+       ffmpegExentions = require(`${__dirname}/elecron/ffmpeg_extentions.js`);
+    }
    // file dialogue opener 
    const {dialog} = require('electron').remote;
 
@@ -210,9 +258,56 @@
         return false;
       }
     }
-
-
   }
+
+ 
+
+
+/*
+* find way to make this as it's own module
+*/
+function getCurrentEnviromentType(){
+
+  // needs setting Window.demo = {} in db.js
+  if (window.demo !== undefined) {
+    return 'demo';
+  }
+
+  // Is browser Eg client side app
+  if(window.process === undefined){
+    return 'browser';
+  }
+
+  // Is electron 
+  if(window.process.versions.electron !== undefined){
+    return 'electron';
+  }
+
+  // if it is chromium -> is adobe premiere panel 
+  // could also check for window.cep_node
+  if(window.process.versions.chromium !== undefined) {
+    return 'adobe-panel';
+  }
+}
+
+
+
+function isBrowsEnv(){
+  return getCurrentEnviromentType() === 'browser'? true :false;
+}
+
+function isElectronEnv(){
+  return getCurrentEnviromentType() === 'electron'? true :false;
+}
+
+function isAdobePanellEnv(){
+  return getCurrentEnviromentType() === 'adobe-panel'? true :false;
+}
+
+function isDemoEnv(){
+  return getCurrentEnviromentType() === 'demo'? true :false;
+}
+
 </script>
 
   </body>

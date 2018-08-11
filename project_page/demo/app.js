@@ -1,11 +1,11 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
-var path = require("path");
+var path = require('path');
 // https://nodejs.org/api/path.html#path_path_resolve_paths
 // var appDir = path.resolve("./package.json");
 
 // const {app} = require('electron');
-var ffmpegPath = require('ffmpeg-static').path;
-var ffprobePath = require('ffprobe-static').path;
+var ffmpegPath = require('ffmpeg-static-electron').path;
+var ffprobePath = require('ffprobe-static-electron').path;
 
 module.exports = {
   serverUrl: '',
@@ -13,20 +13,19 @@ module.exports = {
   ffmpegPath: ffmpegPath,
   ffprobePath: ffprobePath,
   links: {
-    donate: "https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true",
-    projectPage: "http://www.autoedit.io",
-    mailingList: "http://eepurl.com/cMzwSX",
-    twitter: "https://twitter.com/autoEdit2",
-    facebook: "https://www.facebook.com/autoEdit.io/",
-    email: "mailto:pietro@autoEdit.io?Subject=autoEdit%202",
-    userManual: "https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/",
-    sttSetup: "https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html",
-    sttSetupIBM: "https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-ibm.html"
+    donate: 'https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true',
+    projectPage: 'http://www.autoedit.io',
+    mailingList: 'http://eepurl.com/cMzwSX',
+    twitter: 'https://twitter.com/autoEdit2',
+    facebook: 'https://www.facebook.com/autoEdit.io/',
+    email: 'mailto:pietro@autoEdit.io?Subject=autoEdit%202',
+    userManual: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/',
+    sttSetup: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html',
+    sttSetupIBM: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-ibm.html'
   }
 };
 
-},{"ffmpeg-static":39,"ffprobe-static":40,"path":50}],2:[function(require,module,exports){
-(function (process){
+},{"ffmpeg-static-electron":39,"ffprobe-static-electron":40,"path":50}],2:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -54,12 +53,12 @@ var PapereditRouter = require('./router_paperedit');
 $(document).ready(function () {
   // name in navbar brand element
 
-  //TODO: get this from somewhere else so it's not hardcoded
-  $('#brandAppName').text("autoEdit2");
-  document.title = "autoEdit2";
+  // TODO: get this from somewhere else so it's not hardcoded
+  $('#brandAppName').text('autoEdit2');
+  document.title = 'autoEdit2';
 
   // Name in page document title
-  // TODO: can replace thie with electron's name. 
+  // TODO: can replace thie with electron's name.
 
 
   // For mobile version safari doesn't play webm
@@ -74,12 +73,13 @@ $(document).ready(function () {
    */
 
   if (window.process !== undefined) {
-    console.info("In Electron v ", process.versions.electron);
-    console.info("Using chrome v ", process.versions.chrome);
-    console.info("Using v8 engine v ", process.versions.v8);
-    console.info("Using node v ", process.versions.node);
+    console.info('In Electron v ', window.process.versions.electron);
+    console.info('In Chromium v ', window.process.versions.chromium);
+    console.info('Using chrome v ', window.process.versions.chrome);
+    console.info('Using v8 engine v ', window.process.versions.v8);
+    console.info('Using node v ', window.process.versions.node);
 
-    //TODO: update this part with Electron compatible code
+    // TODO: update this part with Electron compatible code
 
     // var gui = window.nw;
     // Create menu
@@ -119,8 +119,8 @@ $(document).ready(function () {
     //   eve.preventDefault();
     //   gui.Shell.openExternal($(this).attr('href'));
     // });
-    // 
-    // 
+    //
+    //
 
   } else {
     console.debug('NOT USING Electron ');
@@ -135,18 +135,18 @@ $(document).ready(function () {
   window.appPaperedit = new PapereditRouter();
   Backbone.history.start();
 
-  //if in nwjs mode check if the watson keys are set. 
-  if (window.process !== undefined) {
-    if (!window.areWatsonAPIkeysSet()) {
-      window.location = 'index.html#settings';
-    } else {
-      window.location = 'index.html#transcriptions';
-    }
-  }
+  // if in nwjs mode check if the watson keys are set.
+  // if (window.process !== undefined) {
+  //   // TODO: perhaps change this as || speechmatics, watson, IBM are set?
+  //   if (!window.areWatsonAPIkeysSet()) {
+  //     window.location = 'index.html#settings';
+  //   }else {
+  window.location = 'index.html#transcriptions';
+  //   }
+  // }
 });
 
-}).call(this,require('_process'))
-},{"./demo_db":5,"./router":9,"./router_paperedit":10,"_process":51,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
+},{"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -212,7 +212,7 @@ module.exports = Backbone.Collection.extend({
     }
     return this.last().get('order') + 1;
   },
-  //Sorting models in collection alphabetically 
+  // Sorting models in collection alphabetically 
   comparator: function (model) {
     return model.get('title');
   }
@@ -294,15 +294,12 @@ module.exports = {
 },{"node-timecodes":47}],7:[function(require,module,exports){
 'use strict';
 
-var path = require("path");
-var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
-var fromSeconds = require('node-timecodes').fromSeconds;
-var createSrtContent = require('../../srt').createSrtContent;
+var path = require('path');
 var Backbone = require('backbone');
 var config = require('../../../config');
 
-// 
-// getting transcriptions for paperedit  
+//
+// getting transcriptions for paperedit
 var Transcriptions = require('../collections/transcriptions');
 
 // http://backbonejs.org/#Model
@@ -312,8 +309,8 @@ module.exports = Backbone.Model.extend({
   defaults: {
     title: 'Default Title ',
     description: 'Default Description',
-    offset: "00:00:00:00",
-    //papercuts 
+    offset: '00:00:00:00',
+    // papercuts
     events: []
   },
 
@@ -357,10 +354,10 @@ module.exports = Backbone.Model.extend({
   modelType: 'paperedit'
 });
 
-},{"../../../config":1,"../../srt":36,"../collections/transcriptions":4,"backbone":37,"node-timecodes":47,"path":50}],8:[function(require,module,exports){
+},{"../../../config":1,"../collections/transcriptions":4,"backbone":37,"path":50}],8:[function(require,module,exports){
 'use strict';
 
-var path = require("path");
+var path = require('path');
 var fromSecondsForSrt = require('../../srt').fromSecondsForSrt;
 var fromSeconds = require('node-timecodes').fromSeconds;
 var createSrtContent = require('../../srt').createSrtContent;
@@ -383,11 +380,13 @@ module.exports = Backbone.Model.extend({
     audioFile: undefined,
     processedAudio: false,
     processedVideo: false,
+    // for caption fiel converion
+    captionFilePath: "",
     // status is marked as false by default and turned to true when transcription has been processed
     // could changed as status marked as null if there's an issue
     // so that can have 3 options. not set yet, gone wrong, success.
     status: false,
-    // to avoid race condition interactive transcription generator 
+    // to avoid race condition interactive transcription generator
     // https://github.com/OpenNewsLabs/autoEdit_2/issues/53
     metadataStatus: false,
     videoStatus: false,
@@ -395,10 +394,10 @@ module.exports = Backbone.Model.extend({
     highlights: [],
     // orderedPaperCuts:[],
     videoOgg: undefined,
-    //TODO: get date from metadata of video
+    // TODO: get date from metadata of video
     metadata: undefined,
     text: undefined,
-    //used for error handling when processing transcription
+    // used for error handling when processing transcription
     error: undefined
   },
 
@@ -442,62 +441,57 @@ module.exports = Backbone.Model.extend({
   // TODO: change this to returnSrt coz that's what it is doing
   // and make rturns srtJson in helper function in model
 
-  returnSrtContent: function (text) {
-    var result;
-    // helper function to split array in equal parts
-    // from http://stackoverflow.com/questions/8188548/splitting-a-js-array-into-n-arrays
-    function split(arr, n) {
-      var res = [];
-      while (arr.length) {
-        res.push(arr.splice(0, n));
-      }
-      return res;
+  returnSrtContent: function (text, maxNumberOfCharPerLine) {
+    function reorgTranscription(autoEditJsonText) {
+      var flatArrayOfWords = flatten(autoEditJsonText);
+      var wordsInLines = groupWordsInSrtLines(flatArrayOfWords);
+      return wordsInLines;
     }
 
-    function loopThroughStuff(text, cb) {
-      // var text = app.TranscriptionsList.get(8).get('text');
-      var newLinesAr = [];
-      var newLine = {};
-      var counter = 1;
-      text.forEach(function (paragraphs) {
-        paragraphs.paragraph.forEach(function (paragraph) {
-          if (paragraph.line.length > 8) {
-            var regroupLines = split(paragraph.line, 8);
-            // make srt lines
-            regroupLines.forEach(function (l) {
-              newLine.id = counter;
-              counter += 1;
-              newLine.startTime = fromSecondsForSrt(l[0].startTime);
-              newLine.endTime = fromSecondsForSrt(l[l.length - 1].endTime);
-              newLine.text = '';
-              l.forEach(function (w) {
-                newLine.text += w.text + ' ';
-              }); // words
-              newLinesAr.push(newLine);
-              newLine = {};
-            }); // lines in regrouped lines
-          } else {
-            newLine.id = counter;
-            counter += 1;
-            newLine.startTime = fromSecondsForSrt(paragraph.line[0].startTime);
-            newLine.endTime = fromSecondsForSrt(paragraph.line[paragraph.line.length - 1].endTime);
-            newLine.text = '';
-            paragraph.line.forEach(function (word) {
-              newLine.text += word.text + ' ';
-            }); // line
-            newLinesAr.push(newLine);
-            newLine = {};
-          }
-        }); // paragraph
-      }); // paragraphs
-      cb(newLinesAr);
+    function flatten(autoEditJsonText, cb) {
+      let flatArrayOfWords = [];
+      autoEditJsonText.forEach(p => {
+        p.paragraph.forEach(l => {
+          l.line.forEach(w => {
+            flatArrayOfWords.push(w);
+          });
+        });
+      });
+      return flatArrayOfWords;
     }
 
-    loopThroughStuff(text, function (res) {
-      result = createSrtContent(res);
-    });
+    function groupWordsInSrtLines(flatArrayOfWords) {
+      let charCounter = 0;
+      let result = [];
+      let tmpLine = [];
+      flatArrayOfWords.forEach(word => {
+        charCounter += word.text.length + 1; //+1 because of spaces
+        // console.log(charCounter)
+        if (charCounter > maxNumberOfCharPerLine) {
+          tmpLine.push(word);
+          // create new srt line
+          let newLine = {
+            startTime: tmpLine[0].startTime,
+            endTime: tmpLine[tmpLine.length - 1].endTime,
+            text: tmpLine.map(w => {
+              return w.text;
+            }).join(' ')
+          };
 
-    return result;
+          console.log(newLine.text, newLine.text.length);
+          // 
+          result.push(newLine);
+          tmpLine = [];
+          // console.log('charCounter', charCounter)
+          charCounter = 0;
+        } else {
+          tmpLine.push(word);
+        }
+      });
+      return result;
+    }
+
+    return createSrtContent(reorgTranscription(text));
   },
 
   returnPlainTextTimecoded: function (attr) {
@@ -520,11 +514,11 @@ module.exports = Backbone.Model.extend({
           newLine.text = '';
           _.each(paragraph.line, function (word) {
             newLine.text += word.text + ' ';
-          }); //line
+          }); // line
           newLinesAr.push(newLine);
           newLine = {};
-        }); //paragraph
-      }); //paragraphs
+        }); // paragraph
+      }); // paragraphs
 
       cb(newLinesAr);
     }
@@ -540,21 +534,21 @@ module.exports = Backbone.Model.extend({
       head += 'Camera Timecode: ' + attr.metadata.timecode + '\n';
       head += 'fps: ' + attr.metadata.fps + '\n';
       head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n';
-      // 
+      //
       for (var i = 0; i < srtJsonContent.length; i++) {
 
         var srtLineO = srtJsonContent[i];
         // lines+=srtLineO.id+'\n';
         lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
-        //removing IBM hesitation marks if present
-        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
+        // removing IBM hesitation marks if present
+        lines += srtLineO.text.replace(/%HESITATION /g, ' ') + '\n\n';
       }
 
       if (cb) {
         cb(lines);
       } else {
         return head + '\n\n' + lines;
-      };
+      }
     }
 
     loopThroughStuff(attr.text, function (res) {
@@ -564,7 +558,7 @@ module.exports = Backbone.Model.extend({
     return result;
   },
 
-  //TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
+  // TODO: returnPlainText and  returnPlainTextTimecoded have a lot of common code, worth optimizing to remove duplciate code.
   returnPlainText: function (attr) {
     var result;
 
@@ -585,11 +579,11 @@ module.exports = Backbone.Model.extend({
           newLine.text = '';
           _.each(paragraph.line, function (word) {
             newLine.text += word.text + ' ';
-          }); //line
+          }); // line
           newLinesAr.push(newLine);
           newLine = {};
-        }); //paragraph
-      }); //paragraphs
+        }); // paragraph
+      }); // paragraphs
 
       cb(newLinesAr);
     }
@@ -605,21 +599,21 @@ module.exports = Backbone.Model.extend({
       head += 'Camera Timecode: ' + attr.metadata.timecode + '\n';
       head += 'fps: ' + attr.metadata.fps + '\n';
       head += 'Duration: ' + fromSeconds(attr.metadata.duration) + '\n';
-      // 
+      //
       for (var i = 0; i < srtJsonContent.length; i++) {
 
         var srtLineO = srtJsonContent[i];
         // lines+=srtLineO.id+'\n';
         // lines += '[' + srtLineO.startTime + '\t' + srtLineO.endTime + '\t' + srtLineO.speaker + ']' + '\n';
         //  //removing IBM hesitation marks if present
-        lines += srtLineO.text.replace(/%HESITATION /g, " ") + '\n\n';
+        lines += srtLineO.text.replace(/%HESITATION /g, ' ') + '\n\n';
       }
 
       if (cb) {
         cb(lines);
       } else {
         return head + '\n\n' + lines;
-      };
+      }
     }
 
     loopThroughStuff(attr.text, function (res) {
@@ -627,12 +621,11 @@ module.exports = Backbone.Model.extend({
     });
 
     return result;
-  },
-
-  returnEDLSrtJson: function (text) {
-
-    return createSrtContent(text);
   }
+
+  // returnEDLSrtJson: function(text) {
+  //   return createSrtContent(text);
+  // }
 
 });
 
@@ -716,7 +709,7 @@ module.exports = Backbone.Router.extend({
     var tmpTranscriptionView = new TranscriptionView({ model: tmpTranscription });
     displayMain(tmpTranscriptionView);
   },
-  //TODO: not currently implements. eg nothing links to it.
+  // TODO: not currently implements. eg nothing links to it.
   editTranscription: function (id) {
     console.debug('Router: editTranscription: ' + id);
     var tmpEditTranscription = this.transcriptionsList.get({ 'cid': id });
@@ -726,7 +719,7 @@ module.exports = Backbone.Router.extend({
 
   settingsPanel: function () {
     console.debug('Router: settings panel: ');
-    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys(), speechmatics: window.SpeechmaticsKeys(), rev: window.revKeys() } };
+    var tmpSettings = { credentials: { ibm: window.IBMWatsonKeys(), speechmatics: window.SpeechmaticsKeys(), rev: window.revKeys(), bbc: window.BBCKeys() } };
     var settingsView = new SettingsView({ settings: tmpSettings });
     displayMain(settingsView);
   },
@@ -888,7 +881,7 @@ __p+=' <!-- else if using safari  -->\n\n\t\t<!-- if video has been processed --
  if(videoOgg) { 
 __p+='\n\t\t\t<!-- TODO: video type should be a var, videoOgg var should be changed to videoHTML5?or add new line with webm? -->\n\t\t\t\t<source src="'+
 ((__t=( videoOgg ))==null?'':__t)+
-'" type="video/webm">\n\t\t\t\t\t';
+'" type="video/mp4">\n\t\t\t\t\t';
  }else{ 
 __p+='\n\t\t\t\t<source src="" type="video/ogg">\n\t\t\t\t\t';
  }
@@ -1168,7 +1161,7 @@ var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments
 with(obj||{}){
 __p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n<style media="screen">\n.highlighted {\n  background-color: yellow;\n\n}\n\n.highlighted-used {\n  background-color: #FFFF99;\n  /*FFFFCC*/\n}\n\n.transcript-n-text.row {\n  height: 70vh;\n  overflow: scroll;\n}\n\n.transcriptionsTabs{\n height: 90vh;\n overflow: scroll;\n}\n\n/*.video {\nheight: 20vh;\n}*/\n\n.embed-responsive-16by9 {\n  padding-bottom: 30%!important;\n}\n\n.syncPlayTest {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n\n/*Dragula style*/\n\n.gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n  -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n  width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n  height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, .5);\n  border-radius: 10px;\n  border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #ffffff;\n}\n\n</style>\n\n\n<div class="container-fluid">\n  <div class="row">\n    <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n      <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#paperedits">Paperedits</a></li>\n        <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice.   <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
+'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice. </p>  <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a></p>\n            <p>You can export a video sequence of the paperedit as video file<code>.mp4</code></p>  \n           <p><a id="exportVideoRemix" class="btn btn-primary btn-sm">\n             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n             Export mp4 file\n           </a></p>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
  for(var i =0; i<transcriptions.length;i++){ 
 __p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLink"><a  id="'+
 ((__t=( transcriptions[i]._id ))==null?'':__t)+
@@ -1190,7 +1183,7 @@ __p+='<div class="container">\n\n\t<!-- Demo notice  -->\n\t';
  if(!window.frontEndEnviromentElectron ){
 __p+='\n\t<div class="alert alert-warning alert-dismissible" role="alert">\n\t\t<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t<strong>You are viewing the app in demo mode</strong>.<br>\n\t\t<strong>Which means you cannot change settings</strong>.<br>\n\t\t<br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n\t\tTo view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>\n\t\tTo view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n\t</div>  \n\t';
  }
-__p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n<div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" role="tablist">\n    <li role="presentation" class="active"><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n\t<li role="presentation"><a href="#speechmatics" aria-controls="speechmatics" role="tab" data-toggle="tab">Speechmatics</a></li>\n\t<li role="presentation"><a href="#rev" aria-controls="rev" role="tab" data-toggle="tab">Rev</a></li>\n    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="ibm">    \n    \t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-ibm.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t</div>\n\t\n<!-- IBM credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username-ibm" value="'+
+__p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n<div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" role="tablist">\n    <li role="presentation" class="active"><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n\t<li role="presentation"><a href="#speechmatics" aria-controls="speechmatics" role="tab" data-toggle="tab">Speechmatics</a></li>\n\t<li role="presentation"><a href="#rev" aria-controls="rev" role="tab" data-toggle="tab">Rev</a></li>\n\t<li role="presentation"><a href="#bbc" aria-controls="bbc" role="tab" data-toggle="tab">BBC</a></li>\n    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="ibm">    \n    \t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-ibm.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t</div>\n\t\n<!-- IBM credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username-ibm" value="'+
 ((__t=( credentials.ibm.username ))==null?'':__t)+
 '" class="form-control" id="username" placeholder="e.g. PMYs8ZexZ7qKGkFgFJhGMYhqzEC4aNzRAv9H">\n\t\t\t\t</div>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="password">IBM STT Password</label>\n\t\t\t\t\t<input type="title" name="password-ibm" value="'+
 ((__t=( credentials.ibm.password  ))==null?'':__t)+
@@ -1200,11 +1193,13 @@ __p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="brea
 ((__t=( credentials.speechmatics.username ))==null?'':__t)+
 '" class="form-control" id="username" placeholder="e.g. 72249">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="password">Speechmatics STT Password</label>\n\t\t\t\t\t\t<input type="title" name="password-speechmatics" value="'+
 ((__t=( credentials.speechmatics.password  ))==null?'':__t)+
-'" class="form-control" id="password" placeholder="e.g. dYsaEPJZGzjdAEfW3R4oRXDaMkPwb9aqxDMwwMrekRAAnDxP">\n\t\t\t\t\t</div>\n\t\t\t\t<a id="submitBtnSpeechmaticsCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> <!-- Speechmatics tab -->\n\n\n<div role="tabpanel" class="tab-pane" id="rev">\n\t<br>\n<div class="alert alert-info alert-dismissable">\n  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n  <strong>Rev Speech To Text Service Credentials</strong> \n  <p>Here you can check or edit your credentials for the Rev Speech To Text service.</p>\n\t<p>Note that these are different from your Rev account login credentials. </p>\n\t<p>You need to activate the Rev Speech To Text Service API to get these.</p>\n\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-speechmatics.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n</div>\n\n\t<!-- rev credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t <h3>Rev Speech to text Service credentials</h3>\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="username">Rev Client API Key</label>\n\t\t\t\t\t\t<input type="title" name="username-rev" value="'+
+'" class="form-control" id="password" placeholder="e.g. dYsaEPJZGzjdAEfW3R4oRXDaMkPwb9aqxDMwwMrekRAAnDxP">\n\t\t\t\t\t</div>\n\t\t\t\t<a id="submitBtnSpeechmaticsCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> <!-- Speechmatics tab -->\n\n<!-- Rev tab -->\n<div role="tabpanel" class="tab-pane" id="rev">\n\t<br>\n<div class="alert alert-info alert-dismissable">\n  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n  <strong>Rev Speech To Text Service Credentials</strong> \n  <p>Here you can check or edit your credentials for the Rev Speech To Text service.</p>\n\t<p>Note that these are different from your Rev account login credentials. </p>\n\t<p>You need to activate the Rev Speech To Text Service API to get these.</p>\n\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-speechmatics.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n</div>\n\n\t<!-- rev credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t <h3>Rev Speech to text Service credentials</h3>\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="username">Rev Client API Key</label>\n\t\t\t\t\t\t<input type="title" name="username-rev" value="'+
 ((__t=( credentials.rev.username ))==null?'':__t)+
 '" class="form-control" id="username" placeholder="e.g. 2CrDACUUeeg4f4fcjj7SmQlVRxQ">\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="password">Rev User API Key</label>\n\t\t\t\t\t\t<input type="title" name="password-rev" value="'+
 ((__t=( credentials.rev.password  ))==null?'':__t)+
-'" class="form-control" id="password" placeholder="e.g. 3CrDACUUeeg4f4fcjj7SmQlVRxR=">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="title">Rev API Url</label>\n\t\t\t\t\t\t<input type="text" name="url-rev" class="form-control" id="revUrl" value="https://www.rev.com/api/v1/orders" placeholder="eg for sandbox: https://api-sandbox.rev.com/api/v1/orders or for production https://www.rev.com/api/v1/orders">\n\t\t\t\t\t\t<p class="help-block">Add the Rev transcription order number to retrieve media file and transcript</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t<a id="submitBtnRevCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> <!-- rev tab -->\n\n\n    <!-- <div role="tabpanel" class="tab-pane" id="settings">...</div> -->\n  </div>\n\n</div>\n\n\n</div>';
+'" class="form-control" id="password" placeholder="e.g. 3CrDACUUeeg4f4fcjj7SmQlVRxR=">\n\t\t\t\t\t</div>\n\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="title">Rev API Url</label>\n\t\t\t\t\t\t<input type="text" name="url-rev" class="form-control" id="revUrl" value="https://www.rev.com/api/v1/orders" placeholder="eg for sandbox: https://api-sandbox.rev.com/api/v1/orders or for production https://www.rev.com/api/v1/orders">\n\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\n\t\t\t\t<a id="submitBtnRevCredentials" class="btn btn-primary">Save Credentials</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> <!-- rev tab -->\n<!-- Rev tab end -->\n\n\n<!-- BBC tab -->\n<div role="tabpanel" class="tab-pane" id="bbc">\n\t<br>\n<div class="alert alert-info alert-dismissable">\n  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n  <strong>BBC Speech To Text email address</strong> \n  <p>This service only works for BBC employee while on the BBC network.</p>\n  <p>In order to use this service add your BBC work email address here.</p>\n</div>\n\n\t<!-- rev credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t <h3>BBC Speech to text </h3>\n\t\t\t\t\t<div class="form-group">\n\t\t\t\t\t\t<label for="username">BBC email address</label>\n\t\t\t\t\t\t<input type="title" name="email-bbc" value="'+
+((__t=( credentials.bbc.email ))==null?'':__t)+
+'" class="form-control" id="username" placeholder="e.g. name.lastname@bbc.co.uk">\t\n\t\t\t\t\t</div>\t\t\t\n\t\t\t\t<a id="submitBtnBBCCredentials" class="btn btn-primary">Save email details</a>\n\t\t\t</div><!-- ./col -->\n\t\t</div><!-- ./row -->\n\t</form>\n</div> \n<!-- BBC tab end -->\n\n    <!-- <div role="tabpanel" class="tab-pane" id="settings">...</div> -->\n  </div>\n\n</div>\n\n\n</div>';
 }
 return __p;
 };
@@ -1214,41 +1209,59 @@ var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='    <div class="row">\n      ';
+__p+='    <div class="row">\n      <!-- Transcription not ready -->\n      ';
  if(status == false) { 
-__p+='\n\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n        <!--  not ready -->\n        <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
+__p+='\n        <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n          <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
 ((__t=( title ))==null?'':__t)+
-' </button>\n        <button type="button" class="btn btn-lg btn-link"  disabled>\n          <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>&nbsp;&nbsp;\n        </button>\n        <p>'+
+' </button>\n          <button type="button" class="btn btn-lg btn-link"  disabled>\n            <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>&nbsp;&nbsp;\n          </button>\n          <p><kbd>'+
+((__t=( sttEngine ))==null?'':__t)+
+'</kbd> <kbd>'+
+((__t=( languageModel ))==null?'':__t)+
+'</kbd> <code>'+
+((__t=( metadata? metadata.fileName : '' ))==null?'':__t)+
+'</code> </p>\n          <p>'+
 ((__t=( description ))==null?'':__t)+
-'</p>\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"     class="btn btn-danger btn-xs deleteBtn" disabled>\n          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n        </button>\n      </div>\n\n      ';
+'</p>\n        </div>\n        <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <button type="button"     class="btn btn-danger btn-xs deleteBtn" disabled>\n            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n          </button>\n        </div>\n      <!-- Transcription ready -->\n      ';
  }else if(status == true){ 
-__p+='\n\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">\n        <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
+__p+='\n        <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11" id="transcriptionCard">\n          <button type="button" class="btn btn-lg btn-link showBtn controls" >'+
 ((__t=( title ))==null?'':__t)+
-'</button>\n        <p>'+
+'</button>\n          <p><kbd>'+
+((__t=( sttEngine ))==null?'':__t)+
+'</kbd> <kbd>'+
+((__t=( languageModel ))==null?'':__t)+
+'</kbd> <code>'+
+((__t=( metadata? metadata.fileName : '' ))==null?'':__t)+
+'</code> </p>\n          <p>'+
 ((__t=( description ))==null?'':__t)+
-'</p>\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n        </button>\n      </div>\n\n      ';
+'</p>\n        </div>\n        <!-- Icon delete button -->\n        <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <button type="button"  class="btn btn-danger btn-xs deleteBtn">\n            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>\n          </button>\n        </div>\n      ';
  }else if(status == null){ 
-__p+='\n\n\n<!--  not succesfull ready -->\n      <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n        <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
+__p+='\n      <!--  Transcription not succesfull -->\n        <div class="col-xs-9 col-sm-10 cold-md-10 col-lg-11">\n          <button type="button" class="btn btn-lg btn-link showBtn controls"  disabled>'+
 ((__t=( title ))==null?'':__t)+
-' </button>\n     <!--    <button type="button" class="btn btn-lg btn-link"  disabled>\n          <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate" aria-hidden="true"></span>&nbsp;&nbsp;\n        </button> -->\n        <p>'+
+' </button>\n          <p><kbd>'+
+((__t=( sttEngine ))==null?'':__t)+
+'</kbd> <kbd>'+
+((__t=( languageModel ))==null?'':__t)+
+'</kbd> <code>'+
+((__t=( metadata? metadata.fileName : '' ))==null?'':__t)+
+'</code> </p>\n          <p>'+
 ((__t=( description ))==null?'':__t)+
-'</p>\n\n        ';
+'</p>\n          ';
  if(error){ 
-__p+='\n          <div class="alert alert-danger" role="alert">\n          <h5>Error message <code>'+
+__p+='\n            <div class="alert alert-danger" role="alert">\n            <h5>Error message <code>'+
 ((__t=( sttEngine.toUpperCase() ))==null?'':__t)+
-'</code>: </h5>\n          <p><strong><code>'+
+'</code>: </h5>\n            <p><strong><code>'+
 ((__t=( error.code ))==null?'':__t)+
-' </code>\n          '+
+' </code>\n            '+
 ((__t=( error.error ))==null?'':__t)+
-'</strong></p> \n          <p>'+
-((__t=( error.description ))==null?'':__t)+
-'</p> \n          </div>\n\n          ';
+'</strong></p> \n            <p>'+
+((__t=( (error.description)? error.description : error.message ))==null?'':__t)+
+'</p> \n            </div>\n            ';
  if(sttEngine === "ibm"){ 
-__p+='\n            <div class="alert alert-warning" role="alert"><p>Most likely if this is the first time setting up and using the app, and you have chosen IBM watson as STT enginge, you might have added the wrong credentials for IBM Watson STT service. </p>\n            <p><a class="alert-link" href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/uninstalling.html"  target="_blank">To uninstall the app and start fresh use app cleaner</a></p> \n            <p>Make sure you have created and are adding the credentials for the <a class="alert-link" href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-ibm.html"  target="_blank">IBM Watson STT service</a> and not the IBM bluemix once.</p>\n            <p>If you have used the app for about a month and it was all good and now it has stopped working, your IBM Watson STT service account might have run out of the free trial allowance, check their dashboard to make sure.</p>\n            <br>\n            <p>If this is not your first time using the app check the speed of your internet connection, slow connection might cause delay in transferign the file and resulting errors.</p> \n             </div>\n          ';
+__p+='\n              <div class="alert alert-warning" role="alert"><p>Most likely if this is the first time setting up and using the app, and you have chosen IBM watson as STT enginge, you might have added the wrong credentials for IBM Watson STT service. </p>\n              <p><a class="alert-link" href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/uninstalling.html"  target="_blank">To uninstall the app and start fresh use app cleaner</a></p> \n              <p>Make sure you have created and are adding the credentials for the <a class="alert-link" href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-ibm.html"  target="_blank">IBM Watson STT service</a> and not the IBM bluemix once.</p>\n              <p>If you have used the app for about a month and it was all good and now it has stopped working, your IBM Watson STT service account might have run out of the free trial allowance, check their dashboard to make sure.</p>\n              <br>\n              <p>If this is not your first time using the app check the speed of your internet connection, slow connection might cause delay in transferign the file and resulting errors.</p> \n              </div>\n            ';
  } 
-__p+='\n            <div class="alert alert-warning" role="alert">\n              <p>If you still need help figuring this our reach out at <a class="alert-link" href="mailto:pietro@autoEdit.io?Subject=autoEdit%202_uploading_file_bug">info@autoEdit.io</a> copy and pasting the text from the error in red.</p>\n            </div>\n        ';
+__p+='\n              <div class="alert alert-warning" role="alert">\n                <p>If you still need help figuring this our reach out at <a class="alert-link" href="mailto:pietro@autoEdit.io?Subject=autoEdit%202_uploading_file_bug">info@autoEdit.io</a> copy and pasting the text from the error in red.</p>\n              </div>\n          ';
  } 
-__p+='\n\n      </div>\n      <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n        <button type="button"     class="btn btn-danger btn-xs deleteBtn" >\n          <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>\n        </button>\n      </div>\n\n\n      ';
+__p+='\n        </div>\n          <!-- Icon alert delete button -->\n        <div class="col-xs-3 col-sm-2 cold-md-2 col-lg-1">\n          <button type="button"     class="btn btn-danger btn-xs deleteBtn" >\n            <span class="glyphicon glyphicon-alert" aria-hidden="true"></span>\n          </button>\n        </div>\n      ';
  } 
 __p+='\n    </div>\n    <hr>\n';
 }
@@ -1260,21 +1273,29 @@ var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='   <div class="container">\n\n    <!-- Demo notice  -->\n  ';
+__p+='<div class="container">\n\n  <!-- Demo notice  -->\n';
  if(!window.frontEndEnviromentElectron ){
-__p+='\n   <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n     To view demo/example transcriptions <a href="/demo/#transcriptions"> click here.</a><br>\n     To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n  </div>  \n ';
+__p+='\n <div class="alert alert-warning alert-dismissible" role="alert">\n  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n  <strong>You are viewing the app in demo mode</strong>.<br>\n  <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>\n  <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n   To view demo/example transcriptions <a href="/demo/#transcriptions"> click here.</a><br>\n   To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n</div>  \n';
  }
-__p+='\n    <!-- end demo notice  -->\n\n     <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">New </a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n\n\n    <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">\n        <div class="form-group">\n           <label for="fileUpload">Choose an audio or video file to transcribe</label>\n          ';
+__p+='\n  <!-- end demo notice  -->\n\n   <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#transcriptions">Transcriptions</a></li>\n        <li class="active">New </a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n\n\n  <form id="form">\n  <!-- File "upload" -->\n  <div class="row">\n    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">\n      <div class="form-group">\n         <label for="fileUpload">Choose an audio or video file to transcribe</label>\n        ';
  if(window.process !== undefined ){
-__p+='\n            \n            <button id="btnElectronInputMediaFile" class="btn btn-default btn-xs"  class="very-sweet-looking">Choose a File</button>\n\n            <input id="inputElectronInputMediaFile" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n\n              <p class="help-block" id="inputFilePreview" style="word-wrap:break-word;" ></p>\n\n          ';
+__p+='\n          \n          <button id="btnElectronInputMediaFile" class="btn btn-default btn-xs"  class="very-sweet-looking">Choose a File</button>\n\n          <input id="inputElectronInputMediaFile" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n\n            <p class="help-block" id="inputFilePreview" style="word-wrap:break-word;" ></p>\n\n        ';
  }else{
-__p+='\n\n          <input  name="file" type="file" id="inputMediaFile">\n           ';
+__p+='\n\n        <input  name="file" type="file" id="inputMediaFile">\n         ';
  }
-__p+='\n        </div>\n        <!-- Online/offline -->\n\n      <div class="form-group">\n        <label for="radioSTT">Speech To Text Transcription System</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM Watson</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="speechmaticsOption" name="optradio" value="speechmatics" >Speechmatics </label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="revOption" name="optradio" value="rev" >Rev </label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="genelteOption" value="gentle" name="optradio">Gentle/Kaldi (offline/experimental)</label><br>\n        <label class="radio-inline"><input class="languageRadio" type="radio" id="pocketSphinxOption" name="optradio" value="pocketsphinx">Pocketsphinx (offline/experimental) </label><br>\n        <!-- <label class="radio-inline"><input class="languageRadio" type="radio" id="captionsOptionSrt" name="optradio" value="srt">Caption File <code>.srt</code> </label><br> -->\n        <!-- <label class="radio-inline"><input class="languageRadio" type="radio" id="captionsOptionVtt" name="optradio" value="vtt">Caption File <code>.vtt</code> </label><br> -->\n\n</div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" id="languageTabs" role="tablist">\n     <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>\n    <li role="presentation" ><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n    <li role="presentation"><a href="#speechmatics" aria-controls="speechmatics" role="tab" data-toggle="tab">Speechmatics</a></li>\n    <li role="presentation"><a href="#rev" aria-controls="rev" role="tab" data-toggle="tab">Rev</a></li>\n     <li role="presentation"><a href="#gentle" aria-controls="gentle" role="tab" data-toggle="tab">Gentle</a></li>\n    <li role="presentation"><a href="#pocketsphinx" aria-controls="pocketsphinx" role="tab" data-toggle="tab">Pocketsphinx</a></li>\n    <!-- <li role="presentation"><a href="#srt" aria-controls="captions" role="tab" data-toggle="tab"><code>.srt</code></a></li> -->\n    <!-- <li role="presentation"><a href="#vtt" aria-controls="captions" role="tab" data-toggle="tab"><code>.vtt</code></a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content" >\n     <div role="tabpanel" class="tab-pane active" id="overview">\n\n        <p class="help-block">IBM and Speechmatics are fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Integration with Gentle is a bit more experimental at this stage. Follow the link for more info on setting it up\n        <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis.html" class="externalLink" id="linkToUserManual" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        </p>\n         <p class="help-block">With IBM choose <code>narrowband</code> for telephone recordings, everything else is broadband.\n        </p>\n         <p class="help-block">The IBM option always takes 5 minutes to generate a transcription regardless of the length of the media(audio or video file). In the current version Pocketsphinx and Gentle take slightly more then the duration of the media(audio or video) to do a full transcription <i>(eg 27min will take 30min to transcribe)</i>.</p>\n\n     </div>\n\n    <div role="tabpanel" class="tab-pane " id="ibm">\n      <br>\n    <!-- IBM languages -->\n      <div class="options"> \n      <div class="form-group">\n        <label for="languageModelIBM">IBM Languages:</label>\n        <select class="form-control" id="languageModelIBM">\n          <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n            <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n          <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n          <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n          <!-- <option disabled>_________</option> -->\n          <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n          <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n          <!-- <option disabled>_________</option> -->\n          <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n          <!-- <option disabled>_________</option>          -->\n          <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n          <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n          <!-- <option disabled>_________</option> -->\n          <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n          <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n\n           <option value="ar-AR_BroadbandModel">Modern Standard Arabic - Broadband</option>\n        \n          <option value="ko-KR_BroadbandModel">Korean - Broadband</option>\n          <option value="ko-KR_NarrowbandModel">Korean - Narrowband</option>\n \n          <!-- TODO: add arabic option  -->\n        </select>\n         <p class="help-block">choose the language of your media file. The default is English US.</p>\n         <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n      </div>\n    </div>\n    <!-- Eng IBM Languages -->\n    </div>\n\n    <div role="tabpanel" class="tab-pane" id="speechmatics">\n      <br>\n      <!-- speechmatics languages -->\n      <div class="form-group">\n        <label for="languageModelSpeechmatics">Speechmatics  Languages:</label>\n         <select class="form-control" id="languageModelSpeechmatics">\n            <option value="en">English – Global</option>\n            <option value="en-GB">English – British</option>\n            <option value="en-AU">English – Australian</option>\n            <option value="en-US">English – N. American</option>\n            <option value="bg">Bulgarian</option>\n            <option value="ca">Catalan</option>\n            <option value="hr">Croatian</option>\n            <option value="cs">Czech</option>\n            <option value="da">Danish</option>\n            <option value="nl">Dutch</option>\n            <option value="fi">Finnish</option>\n            <option value="fr">French</option>\n            <option value="de">German</option>\n            <option value="el">Greek</option>\n            <option value="hi">Hindi</option>\n            <option value="hu">Hungarian</option>\n            <option value="it">Italian</option>\n            <option value="ja">Japanese</option>\n            <option value="ko">Korean</option>\n            <option value="lv">Latvian</option>\n            <option value="lt">Lithuanian</option>\n            <option value="pl">Polish</option>\n            <option value="pt">Portuguese</option>\n            <option value="ro">Romanian</option>\n            <option value="ru">Russian</option>\n            <option value="sk">Slovak</option>\n            <option value="sl">Slovenian</option>\n            <option value="es">Spanish</option>\n            <option value="sv">Swedish</option>\n         </select>\n         <p class="help-block">choose the language of your media file.</p>\n      </div>\n      <!-- Eng speechmatics languages -->\n    </div>\n\n    <!-- Rev -->\n    <div role="tabpanel" class="tab-pane" id="rev">\n      <br>\n\n      <div class="form-group">\n        <label for="revOrderNumber">Rev Transcription Order Number</label>\n        <input type="text" name="revOrderNumber" class="form-control" id="inputRevOderNumber" value="" placeholder="TC0564934184">\n        <p class="help-block">Add the Rev transcription order number to retrieve the transcript</p>\n        <p class="help-block">Choose the original media file to recconect to the transcription that you\'d want to use in the editing software of choice when exporting Edit Decision List (EDL)</p>\n        </div>\n\n       \n        <!--  -->\n       <!-- Eng Rev languages -->\n    </div>\n\n    \n    <div role="tabpanel" class="tab-pane" id="gentle">\n      <br>\n      <label for="languageModel">Gentle/Kaldi Speech To Text:</label><br>\n     <i> <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-gentle.html" target="_blank">See User manual for extra setup needed</a>, Only support US English For now, only works on Mac OSX</i></div>\n    \n    <div role="tabpanel" class="tab-pane" id="pocketsphinx">\n      <br>\n      <label for="languageModel">Pocketsphinx Speech To Text:</label><br>\n     <i> Does not require extra setup, only supports US English for now, only works on Mac OSX</i>\n   </div>\n\n    <!--  <div role="tabpanel" class="tab-pane" id="srt">\n      <br>\n      <label for="languageModel">Captions  <code>.srt</code> file:</label><br>\n      <i> coming soon <code>.srt</code></i>\n    </div> -->\n<!-- \n     <div role="tabpanel" class="tab-pane" id="vtt">\n      <br>\n      <label for="languageModel">Captions  <code>.vtt</code> file:</label><br>\n      <i> coming soon <code>.vtt</code></i>\n    </div> -->\n\n  </div>\n\n<hr>\n\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">\n        <div class="form-group">\n          <label for="title">Title of Transcription</label>\n          <input type="text" name="title" value="'+
+__p+='\n      </div>\n      <!-- Online/offline -->\n\n    <div class="form-group">\n      <label for="radioSTT">Speech To Text Transcription System</label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="IBMoption" name="optradio" value="ibm" checked>IBM Watson</label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="speechmaticsOption" name="optradio" value="speechmatics" >Speechmatics </label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="revOption" name="optradio" value="rev" >Rev </label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="genelteOption" value="gentle" name="optradio">Gentle/Kaldi (offline/experimental)</label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="pocketSphinxOption" name="optradio" value="pocketsphinx">Pocketsphinx (offline/experimental) </label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="bbcOption" name="optradio" value="BBC" >BBC <i>(Need to be a BBC employee on BBC Network)</i></label><br>\n      <label class="radio-inline"><input class="languageRadio" type="radio" id="captionsOption" name="optradio" value="captions">Caption File <code>.srt</code> </label><br>\n    \n</div>\n\n<!-- Nav tabs -->\n<ul class="nav nav-tabs" id="languageTabs" role="tablist">\n   <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>\n  <li role="presentation" ><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n  <li role="presentation"><a href="#speechmatics" aria-controls="speechmatics" role="tab" data-toggle="tab">Speechmatics</a></li>\n  <li role="presentation"><a href="#rev" aria-controls="rev" role="tab" data-toggle="tab">Rev</a></li>\n   <li role="presentation"><a href="#gentle" aria-controls="gentle" role="tab" data-toggle="tab">Gentle</a></li>\n  <li role="presentation"><a href="#pocketsphinx" aria-controls="pocketsphinx" role="tab" data-toggle="tab">Pocketsphinx</a></li>\n  <li role="presentation"><a href="#BBC" aria-controls="BBC" role="tab" data-toggle="tab">BBC</a></li>\n  <li role="presentation"><a href="#captions" aria-controls="captions" role="tab" data-toggle="tab"><code>.srt</code></a></li>\n</ul>\n\n<!-- Tab panes -->\n<div class="tab-content" >\n   <div role="tabpanel" class="tab-pane active" id="overview">\n\n      <p class="help-block">IBM and Speechmatics are fast and more accurate while Gentle is free of charge, works offline, and is only in English. Use Gentle if you are working with sensitve informations. Integration with Gentle is a bit more experimental at this stage. Follow the link for more info on setting it up\n      <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis.html" class="externalLink" id="linkToUserManual" target="_blank"><span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n      </p>\n       <p class="help-block">With IBM choose <code>narrowband</code> for telephone recordings, everything else is broadband.\n      </p>\n       <p class="help-block">The IBM option always takes 5 minutes to generate a transcription regardless of the length of the media(audio or video file). In the current version Pocketsphinx and Gentle take slightly more then the duration of the media(audio or video) to do a full transcription <i>(eg 27min will take 30min to transcribe)</i>.</p>\n\n   </div>\n\n  <div role="tabpanel" class="tab-pane " id="ibm">\n    <br>\n  <!-- IBM languages -->\n    <div class="options"> \n    <div class="form-group">\n      <label for="languageModelIBM">IBM Languages:</label>\n      <select class="form-control" id="languageModelIBM">\n        <option value="en-US_BroadbandModel" >US English  - Broadband</option> \n          <option value="en-US_NarrowbandModel">US English  - Narrowband</option>\n        <!-- <option disabled>_________</option> -->\n        <option value="en-UK_BroadbandModel">UK English - Broadband </option>\n        <option value="en-UK_NarrowbandModel">UK English - Narrowband </option>\n        <!-- <option disabled>_________</option> -->\n        <option value="es-ES_BroadbandModel">Spanish - Broadband </option>\n        <option value="es-ES_NarrowbandModel">Spanish - Narrowband </option>\n        <!-- <option disabled>_________</option> -->\n        <option value="fr-FR_BroadbandModel">French - Broadband</option>  \n        <!-- <option disabled>_________</option> -->\n        <option value="ja-JP_BroadbandModel"> Japanese - Broadband</option>\n        <option value="ja-JP_NarrowbandModel"> Japanese - Narrowband </option>\n        <!-- <option disabled>_________</option> -->\n        <option value="ar-AR_BroadbandModel"> Modern Standard Arabic - Broadband </option>\n        <!-- <option disabled>_________</option>          -->\n        <option value="pt-BR_BroadbandModel"> Brazilian Portuguese - Broadband</option>\n        <option value="pt-BR_NarrowbandModel"> Brazilian Portuguese  - Narrowband</option>\n        <!-- <option disabled>_________</option> -->\n        <option value="zh-CN_BroadbandModel"> Mandarin Chinese  - Broadband </option>\n        <option value="zh-CN_NarrowbandModel">Mandarin Chinese  - Narrowband </option>\n\n         <option value="ar-AR_BroadbandModel">Modern Standard Arabic - Broadband</option>\n      \n        <option value="ko-KR_BroadbandModel">Korean - Broadband</option>\n        <option value="ko-KR_NarrowbandModel">Korean - Narrowband</option>\n\n        <!-- TODO: add arabic option  -->\n      </select>\n       <p class="help-block">choose the language of your media file. The default is English US.</p>\n       <p class="help-block">IBM® recommends that you use narrowband model for decoding of telephone speech.</p>\n    </div>\n  </div>\n  <!-- Eng IBM Languages -->\n  </div>\n\n  <div role="tabpanel" class="tab-pane" id="speechmatics">\n    <br>\n    <!-- speechmatics languages -->\n    <div class="form-group">\n      <label for="languageModelSpeechmatics">Speechmatics  Languages:</label>\n       <select class="form-control" id="languageModelSpeechmatics">\n          <option value="en">English – Global</option>\n          <option value="en-GB">English – British</option>\n          <option value="en-AU">English – Australian</option>\n          <option value="en-US">English – N. American</option>\n          <option value="bg">Bulgarian</option>\n          <option value="ca">Catalan</option>\n          <option value="hr">Croatian</option>\n          <option value="cs">Czech</option>\n          <option value="da">Danish</option>\n          <option value="nl">Dutch</option>\n          <option value="fi">Finnish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n          <option value="el">Greek</option>\n          <option value="hi">Hindi</option>\n          <option value="hu">Hungarian</option>\n          <option value="it">Italian</option>\n          <option value="ja">Japanese</option>\n          <option value="ko">Korean</option>\n          <option value="lv">Latvian</option>\n          <option value="lt">Lithuanian</option>\n          <option value="pl">Polish</option>\n          <option value="pt">Portuguese</option>\n          <option value="ro">Romanian</option>\n          <option value="ru">Russian</option>\n          <option value="sk">Slovak</option>\n          <option value="sl">Slovenian</option>\n          <option value="es">Spanish</option>\n          <option value="sv">Swedish</option>\n       </select>\n       <p class="help-block">choose the language of your media file.</p>\n    </div>\n    <!-- Eng speechmatics languages -->\n  </div>\n\n  <!-- Rev -->\n  <div role="tabpanel" class="tab-pane" id="rev">\n    <br>\n\n    <div class="form-group">\n      <label for="revOrderNumber">Rev Transcription Order Number</label>\n      <input type="text" name="revOrderNumber" class="form-control" id="inputRevOderNumber" value="" placeholder="TC0564934184">\n      <p class="help-block">Add the Rev transcription order number to retrieve media file and transcript</p>\n      </div>\n      <!--  -->\n     <!-- Eng Rev languages -->\n  </div>\n\n  \n  <div role="tabpanel" class="tab-pane" id="gentle">\n    <br>\n    <label for="languageModel">Gentle/Kaldi Speech To Text:</label><br>\n   <i> <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-gentle.html" target="_blank">See User manual for extra setup needed</a>, Only support US English For now, only works on Mac OSX</i></div>\n  \n  <div role="tabpanel" class="tab-pane" id="pocketsphinx">\n    <br>\n    <label for="languageModel">Pocketsphinx Speech To Text:</label><br>\n   <i> Does not require extra setup, only supports US English for now, only works on Mac OSX</i>\n </div>\n\n     <!-- BBC -->\n     <div role="tabpanel" class="tab-pane" id="BBC">\n      <br>\n      <div class="form-group">\n        <label for="revOrderNumber">BBC Octo Kaldi Speech To text Service</label>\n        <p class="help-block">This version is only available to BBC employees on BBC Network, and only available for English language</p>\n        <p class="help-block">As a BBC employee you need to be connected to the BBC corporate wifi (Reith) to be able to use this Speech to text option.</p>\n        <p class="help-block alert-warning ">'+
+((__t=( window.areBBCAPIkeysSet()? "" : "Click on <a href='#settings'>settings</a> to set your BBC email address to use with this service, it won't work otherwise" ))==null?'':__t)+
+'</p>\n      </div>\n       <!-- End BBC  -->\n    </div>\n\n    <div role="tabpanel" class="tab-pane" id="captions">\n    <br>\n    <label for="languageModel">Captions  <code>.srt</code> file:</label><br>\n    \n    <!-- srt -->\n    <div class="form-group">\n      <label for="fileUpload">Choose a caption file to <code>.srt</code> to associate with your audio or video file</label>\n     ';
+ if(window.process !== undefined ){
+__p+='\n       <button id="btnElectronInputCaptionFile" class="btn btn-default btn-xs"  class="very-sweet-looking">Choose Caption File</button>\n       <input id="inputElectronInputCaptionFile" name="file" type="file" disabled="disabled" style=" visibility: hidden;"/>\n         <p class="help-block" id="inputCaptionFilePreview" style="word-wrap:break-word;" ></p>\n     ';
+ }else{
+__p+='\n     <input  name="file" type="file" id="inputCaptionFile">\n      ';
+ }
+__p+='\n   </div>\n\n  </div>\n\n</div>\n\n<hr>\n\n    </div><!-- ./col -->\n    <!-- Title and description -->\n    <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">\n      <div class="form-group">\n        <label for="title">Title of Transcription</label>\n        <input type="text" name="title" value="'+
 ((__t=( title ))==null?'':__t)+
-'" class="form-control" id="title" placeholder="e.g. Interview with Elon Musk" required>\n        </div>\n        <div class="form-group">\n          <label for="description">Description (optional)</label>\n          <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Space X and Tesla CEO about the simulation theory">'+
+'" class="form-control" id="title" placeholder="e.g. Interview with Elon Musk" required>\n      </div>\n      <div class="form-group">\n        <label for="description">Description (optional)</label>\n        <textarea class="form-control"  name="description" rows="3" id="description"  placeholder="e.g. Speaking with Space X and Tesla CEO about the simulation theory">'+
 ((__t=( description ))==null?'':__t)+
-'</textarea>\n        </div>\n        <div class="row">\n        <div class="col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">\n         <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n          <a id="submitBtn" class="btn btn-primary">Save Transcription</a>\n          <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>\n       </div><!-- ./col -->\n      </div><!-- ./row -->\n\n    </div><!-- ./col -->\n\n    <!-- Save  -->\n    </div><!-- ./row -->\n  \n  </form>\n  </div>\n\n';
+'</textarea>\n      </div>\n      <div class="row">\n        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n       <!--  <a id="submitBtn" class="btn btn-primary">Save Transcription</a> -->\n        <a id="submitBtn" class="btn btn-primary">Submit</a>\n        <a id="cancel" class="btn btn-default" href="#transcriptions">Cancel</a>\n      </div>\n    </div><!-- ./row -->\n\n  </div><!-- ./col -->\n\n  <!-- Save  -->\n  </div><!-- ./row -->\n\n</form>\n</div>\n';
 }
 return __p;
 };
@@ -1288,7 +1309,7 @@ __p+='  <div class="container">\n    <div class="row">\n      <div class="hidden
 ((__t=( title ))==null?'':__t)+
 '</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n<!-- Export modal + button -->\n<!-- Button trigger modal -->\n<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n  Export <span class="glyphicon glyphicon-save"></span>\n</button>\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  \n        </a>\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL  \n        </a>\n      \n        <br> <br>\n         <p> You can get your text selections as plain text in chronological order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL \n        </a>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL option above.</p>\n\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL of Selections\n        </a></p>\n\n        <p>You can export a JSON of the selections, equivalent to the EDL selection option above.</p>\n\n\n        ';
  if (!window.userAgentSafari) { /* Safari and IE no support for the download attribute */ 
-__p+='\n        <h3><small>HTML5 Media</small></h3>\n\n        <p>You can export HTML5 audio and video previews generated by the app. </p>\n\n        <p>\n          <!-- Btn HTML5 Webm video -->\n          <a id="exporthtml5Video" class="btn btn-primary btn-sm"\n            ';
+__p+='\n        <h3><small>HTML5 Media</small></h3>\n\n        <p>You can export HTML5 audio and video previews generated by the app. </p>\n\n        <p>\n          <!-- Btn HTML5 mp4 video -->\n          <a id="exporthtml5Video" class="btn btn-primary btn-sm"\n            ';
  if (processedVideo) { 
 __p+='download href="'+
 ((__t=( videoOgg ))==null?'':__t)+
@@ -1296,7 +1317,7 @@ __p+='download href="'+
  } else { 
 __p+='disabled="disabled"';
  } 
-__p+='>\n            <span class="glyphicon glyphicon-film" aria-hidden="true"></span>\n            HTML5 Webm video\n          </a>\n\n        <!-- Btn HTML5 Wav audio -->\n          <a id="exportAudio" class="btn btn-primary btn-sm'+
+__p+='>\n            <span class="glyphicon glyphicon-film" aria-hidden="true"></span>\n            HTML5 mp4 video\n          </a>\n\n        <!-- Btn HTML5 ogg audio -->\n          <a id="exportAudio" class="btn btn-primary btn-sm'+
 ((__t=(processedAudio ? '' : ' btn-disabled' ))==null?'':__t)+
 '"\n            ';
  if (processedAudio) { 
@@ -1306,7 +1327,7 @@ __p+='download href="'+
  } else { 
 __p+='disabled="disabled"';
  } 
-__p+='>\n            <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>\n            HTML5 Wav audio\n          </a>\n        </p>\n        ';
+__p+='>\n            <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>\n            HTML5 ogg audio\n          </a>\n        </p>\n        ';
  } 
 __p+='\n\n       <!-- End export option -->\n      </div>\n      <div class="modal-footer" >\n        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- Export end modal + button -->   \n  \n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n    <!--TODO: Remove this div . check view backbone to see if in use tho -->\n      <div id="clientSideEDLhelp" ></div>\n    <!-- end of remove this div  -->\n\n<div id="hilightModeNoticeContainer">\n<div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> \n  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n  <strong>You are in highlight mode.</strong> \n  <p>Click on a word to play from the corresponding part in the video.</p>\n  <p>Select words to include in your final output (EDL video sequence, plain text, etc.)</p>\n</div>\n</div>\n  <div class="row">\n    <!-- Video -->\n    <div class="col-sm-3 col-md-3 col-lg-3 ">\n<!-- hidden-xs  -->\n<div class="hidden-print" id="media">\n  <!--  Media -->\n    <!--  if audio has been processed but video has not -->\n    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n    <!-- also check media type if audio only then use audio  -->\n    ';
  if(processedAudio && !processedVideo) { 
@@ -1326,7 +1347,7 @@ __p+='\n     <!-- Repeating audio code -->\n        <!-- progress circle line if
  }else{ 
 __p+=' <!-- else if using safari  -->\n\n        <!-- if video has been processed -->\n        <video id="'+
 ((__t=( 'videoId_'+ id ))==null?'':__t)+
-'" poster="" width="100%" controls webkit-playsinline>\n          ';
+'" poster="" width="100%" controls playsinline>\n          ';
  if(videoOgg) { 
 __p+='\n          <!-- TODO: video type should be a var, videoOgg var should be changed to videoHTML5?or add new line with webm? -->\n            <source src="'+
 ((__t=( videoOgg ))==null?'':__t)+
@@ -1340,7 +1361,7 @@ __p+=' <!-- if using safari  -->\n<!-- ///////////////////////// -->\n  ';
  }else { 
 __p+='\n    <p>Media preview not ready </p>\n  ';
  } 
-__p+='\n\n<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">\n  <div class="modal-dialog " role="document">\n    <div class="modal-content">\n    <div class="modal-header">\n       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <h4>Keyboard Shortcuts</h4>\n  </div>\n     <div class="modal-body">\n\n         <div class="table-responsive">\n       <table class="table table-striped  table-hover">   \n        <tbody> \n          <tr> \n            <th scope="row">Pause/Play</th> \n              <td> <kbd>cmd</kbd>+<kbd>k</kbd></td> \n              <td>Play pause video</td>\n            </tr> \n            <tr> \n              <th scope="row"></th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> </td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Faster</th> \n                <td> <kbd>command</kbd>+<kbd>l</kbd> </td> \n                <td>Increase video playback rate</td>\n              </tr> \n              <tr> \n                <th scope="row">Slower</th> \n                <td> <kbd>command</kbd>+<kbd>j</kbd> </td> \n                <td>Decrease video playback rate</td>\n              </tr> \n              <tr> \n                <th scope="row">Fast forward</th> \n                <td>  <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> </td> \n                <td>Fast forward <code>5</code> seconds</td>\n              </tr> \n              <tr> \n                <th scope="row"></th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd></td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Rewind</th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd></td> \n                <td>Rewind <code>5</code>  seconds</td>\n              </tr> \n              <tr> \n                <th scope="row"></th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd></td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Increase volume</th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> </td> \n                <td>Raises the audio volume</td>\n              </tr> \n              <tr> \n                <th scope="row">Decrease volume</th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> </td> \n                <td>Lowers the audio volume</td>\n              </tr> \n              <tr> \n                <th scope="row">Show keyboard shortcuts</th> \n                <td> <kbd>shift</kbd>+<kbd>/</kbd> </td> \n                <td>Shows this cheat sheet witht keyboard shortcuts</td>\n              </tr> \n              <tr> \n                <th scope="row">Show inspector console</th> \n                <td> <kbd>Alt</kbd>+<kbd>cmd</kbd>+<kbd>j</kbd> </td> \n                <td>Shows nwsj V8 inspector console, for developers, debugging</td>\n              </tr> \n        </tbody>\n      </table>\n    </div>\n\n    </div>\n     <div class="modal-footer">\n        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n      </div>\n\n</div>\n</div>\n</div>\n<!-- end Keyboard shortcuts -->\n\n\n  <!-- rewind  -->\n  <div class="btn-group" role="group" aria-label="...">\n  <button type="button" id="rewindVideo"  data-toggle="tooltip" data-placement="bottom" title="rewind 5 seconds cmd + shift + j" class="btn btn-default btn-xs">  \n    <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>\n  \n  <!-- decrease speed -->\n  <button type="button"  id="slowVideo"  data-toggle="tooltip" data-placement="bottom" title="speed decrease command+j"   class="btn btn-default btn-xs"> \n    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>\n  </button>\n\n  <!-- play/pause  -->\n  <button type="button" id="pausePlayVideo"   data-toggle="tooltip" data-placement="bottom" title="cmd + k"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  /\n    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>\n  </button>\n\n  <!-- increase speed  -->\n  <button type="button" id="fastVideo"  data-toggle="tooltip" data-placement="bottom" title="speed increase command+l"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>\n  </button>\n  \n  <!-- Fast forward -->\n  <button type="button"  id="fastForwardVideo" data-toggle="tooltip" data-placement="bottom" title="Fast forward 5 seconds command+shift+l"  class="btn btn-default btn-xs">  \n    <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\n</div>\n\n\n<h4><small>Playback Speed</small></h4>\n\n<!--Speed input -->\n<div class="form-group">\n   <!--<label for="speedControll">Playback Speed</label>-->\n    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>\n</div>\n<!--end of Speed input -->\n<div class="btn-group" role="group" aria-label="...">\n  <button type="button" id="volumeDown"  class="btn btn-default btn-xs">\n   <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>\n  </button>\n  <button type="button"  id="volumeUp"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>\n  </button>\n</div>\n</div> <!-- media -->\n<hr>\n  <!-- Metadata info button -->\n    <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">\n    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info\n    </a>\n  <!-- End metadata info button  -->\n  <!--Keyboard shortcuts -->\n<!-- Small modal -->\n\n<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">\n  shortcuts\n</a>\n\n\n<div class="collapse" id="collapseMetadata">\n <div class="well"  style="word-wrap:break-word;">\n    <dl>\n      <dt class="text-muted">Speech To Text System</dt>\n      <dd><kbd>'+
+__p+='\n\n<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">\n  <div class="modal-dialog " role="document">\n    <div class="modal-content">\n    <div class="modal-header">\n       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <h4>Keyboard Shortcuts</h4>\n  </div>\n     <div class="modal-body">\n\n         <div class="table-responsive">\n       <table class="table table-striped  table-hover">   \n        <tbody> \n          <tr> \n            <th scope="row">Pause/Play</th> \n              <td> <kbd>cmd</kbd>+<kbd>k</kbd></td> \n              <td>Play pause video</td>\n            </tr> \n            <tr> \n              <th scope="row"></th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>k</kbd> </td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Faster</th> \n                <td> <kbd>command</kbd>+<kbd>l</kbd> </td> \n                <td>Increase video playback rate</td>\n              </tr> \n              <tr> \n                <th scope="row">Slower</th> \n                <td> <kbd>command</kbd>+<kbd>j</kbd> </td> \n                <td>Decrease video playback rate</td>\n              </tr> \n              <tr> \n                <th scope="row">Fast forward</th> \n                <td>  <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>l</kbd> </td> \n                <td>Fast forward <code>5</code> seconds</td>\n              </tr> \n              <tr> \n                <th scope="row"></th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&rarr;</kbd></td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Rewind</th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>j</kbd></td> \n                <td>Rewind <code>5</code>  seconds</td>\n              </tr> \n              <tr> \n                <th scope="row"></th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&larr;</kbd></td> \n                <td></td>\n              </tr> \n              <tr> \n                <th scope="row">Increase volume</th> \n                <td> <kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&uarr;</kbd> </td> \n                <td>Raises the audio volume</td>\n              </tr> \n              <tr> \n                <th scope="row">Decrease volume</th> \n                <td><kbd>command</kbd>+<kbd>shift</kbd>+<kbd>&darr;</kbd> </td> \n                <td>Lowers the audio volume</td>\n              </tr> \n              <tr> \n                <th scope="row">Show keyboard shortcuts</th> \n                <td> <kbd>shift</kbd>+<kbd>/</kbd> </td> \n                <td>Shows this cheat sheet witht keyboard shortcuts</td>\n              </tr> \n              <tr> \n                <th scope="row">Show inspector console</th> \n                <td> <kbd>Alt</kbd>+<kbd>cmd</kbd>+<kbd>j</kbd> </td> \n                <td>Shows nwsj V8 inspector console, for developers, debugging</td>\n              </tr> \n        </tbody>\n      </table>\n    </div>\n\n    </div>\n     <div class="modal-footer">\n        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>\n      </div>\n\n</div>\n</div>\n</div>\n<!-- end Keyboard shortcuts -->\n\n\n  <!-- rewind  -->\n  <div class="btn-group" role="group" aria-label="...">\n  <button type="button" id="rewindVideo"  data-toggle="tooltip" data-placement="bottom" title="rewind 5 seconds cmd + shift + j" class="btn btn-default btn-xs">  \n    <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>\n  \n  <!-- decrease speed -->\n  <button type="button"  id="slowVideo"  data-toggle="tooltip" data-placement="bottom" title="speed decrease command+j"   class="btn btn-default btn-xs"> \n    <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>\n  </button>\n\n  <!-- play/pause  -->\n  <button type="button" id="pausePlayVideo"   data-toggle="tooltip" data-placement="bottom" title="cmd + k"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-play" aria-hidden="true"></span>  /\n    <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>\n  </button>\n\n  <!-- increase speed  -->\n  <button type="button" id="fastVideo"  data-toggle="tooltip" data-placement="bottom" title="speed increase command+l"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>\n  </button>\n  \n  <!-- Fast forward -->\n  <button type="button"  id="fastForwardVideo" data-toggle="tooltip" data-placement="bottom" title="Fast forward 5 seconds command+shift+l"  class="btn btn-default btn-xs">  \n    <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></button>\n</div>\n<hr>\n<div class="row">\n  <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 timecode-box-left">\n<!-- <h4><small>Current Time</small></h4> -->\n<input type="speed" class="form-control" id="playbackTimeCodes" placeholder="00:00:00:00" disabled>\n</div>\n<div class="col-md-6 col-sm-6 col-lg-6 col-xs-6 timecode-box-right">\n<!-- <h4><small>Duration</small></h4> -->\n<input type="speed" class="form-control" id="videoDuration" placeholder="00:00:00:00" disabled>\n</div>\n</div>\n\n<h4><small>Playback Speed</small></h4>\n\n<!--Speed input -->\n<div class="form-group">\n   <!--<label for="speedControll">Playback Speed</label>-->\n    <input type="speed" class="form-control" id="speedInput" placeholder="0" disabled>\n</div>\n<!--end of Speed input -->\n<div class="btn-group" role="group" aria-label="...">\n  <button type="button" id="volumeDown"  class="btn btn-default btn-xs">\n   <span class="glyphicon glyphicon-volume-down" aria-hidden="true"></span>\n  </button>\n  <button type="button"  id="volumeUp"  class="btn btn-default btn-xs">\n    <span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span>\n  </button>\n</div>\n\n</div> <!-- media -->\n<hr>\n  <!-- Metadata info button -->\n    <a class="btn btn-default btn-xs" role="button" data-toggle="collapse" href="#collapseMetadata" aria-expanded="false" aria-controls="collapseMetadata">\n    <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Info\n    </a>\n  <!-- End metadata info button  -->\n  <!--Keyboard shortcuts -->\n<!-- Small modal -->\n\n<a class="btn btn-default btn-xs" role="button" data-toggle="modal" id="shortcuts" data-target="#keybaordShortcuts" aria-expanded="false" aria-controls="collapseExample">\n  shortcuts\n</a>\n\n\n<div class="collapse" id="collapseMetadata">\n <div class="well"  style="word-wrap:break-word;">\n    <dl>\n      <dt class="text-muted">Speech To Text System</dt>\n      <dd><kbd>'+
 ((__t=( sttEngine ))==null?'':__t)+
 '</kbd></dd>\n      <dt class="text-muted">Language Model</dt>\n      <dd><kbd>'+
 ((__t=( languageModel ))==null?'':__t)+
@@ -1640,6 +1661,7 @@ module.exports = Backbone.View.extend({
     'click .deletePapercut': "deleteAllPapercuts",
     "click #exportEdlJSON": "exportEdlJSON",
     "click #exportEdl": "exportEdl",
+    "click #exportVideoRemix": "exportVideoRemix",
     "click .savePapercutsBtn": "savePapercuts",
     "click .playPapercutsBtn": "playPapercuts",
     "click .stopPapercutsBtn": "stopPapercuts",
@@ -1844,6 +1866,52 @@ module.exports = Backbone.View.extend({
     var tmpPaperedit = JSON.stringify(papereditJson, null, 2);
     var jsonFileName = this.nameFileHelper(papereditJson.title + "_EDL", "json");
     this.exportHelper({ fileName: jsonFileName, fileContent: tmpPaperedit, urlId: "#exportJsonEDL" });
+  },
+
+  exportVideoRemix: function () {
+    console.log('exportVideoRemix');
+    var eventsPapercuts = this.model.attributes.events;
+    var m4RemixFileName = this.nameFileHelper(this.model.attributes.title, "mp4");
+    // Checks 
+    var path = require('path');
+
+    // check if there are src files to input into ffmpeg-remix that are not mp4 preview. eg webm from earlier versions
+    var listOfsrcFilesBool = eventsPapercuts.map(d => {
+      var ext = path.extname(d.papercut[0].src);
+      console.log('ext ', ext);
+      return ext === '.mp4' ? true : false;
+    });
+    console.log('listOfsrcFilesBool ', listOfsrcFilesBool);
+    var isNotValidSequence = listOfsrcFilesBool.includes(false);
+    console.log('isNotValidSequence ', isNotValidSequence);
+
+    if (!isNotValidSequence) {
+      var ffmpegRemixJson = this.autoEditEventPaperCutsJsonToFfmpegRemixJson(eventsPapercuts, m4RemixFileName);
+      window.ffmpegRemix(ffmpegRemixJson, res => {
+        console.log(res);
+        alert('done exporting paper-edit mp4 video preview at: ' + res);
+      });
+      console.log('exportVideoRemix');
+    } else {
+      alert('This feature is only compatible with files uploaded from version 1.0.12 onwards, as we have switched from webm to mp4 for preview, re-ingest older transcriptions and try again.');
+    }
+  },
+  autoEditEventPaperCutsJsonToFfmpegRemixJson(autoEditEventPapercutJson, fileName) {
+    var ffmpegRemixInputArray = autoEditEventPapercutJson.map(event => {
+      return {
+        source: event.papercut[0].src,
+        start: parseFloat(event.papercut[0].startTime),
+        end: parseFloat(event.papercut[event.papercut.length - 1].endTime)
+      };
+    });
+    return {
+      // TODO: edit this using electrong user file path
+      // or prompt dialogue to get user input on where to save.
+      output: fileName,
+      input: ffmpegRemixInputArray,
+      limit: 5 // max ffmpeg parallel processes, default null (unlimited)
+      // ffmpegPath: require('ffmpeg-static').path // optionally set path to ffmpeg binary
+    };
   },
 
   //TODO: both make file helper and exportHelper should be moved in shared util and refactored out of transcription view as well
@@ -2187,7 +2255,7 @@ module.exports = Backbone.View.extend({
   }
 });
 
-},{"../../edl_composer/index":35,"./utils":34,"backbone":37,"file-saver":41,"jquery":42,"moment":43,"node-timecodes":47,"underscore":123}],29:[function(require,module,exports){
+},{"../../edl_composer/index":35,"./utils":34,"backbone":37,"file-saver":41,"jquery":42,"moment":43,"node-timecodes":47,"path":50,"underscore":123}],29:[function(require,module,exports){
 'use strict';
 
 var $ = require('jquery');
@@ -2214,7 +2282,8 @@ module.exports = Backbone.View.extend({
     'click #submitBtnIbmCredentials': 'saveIBM',
     'click #submitBtnSpeechmaticsCredentials': 'saveSpeechmatics',
     'click #submitBtnRevCredentials': 'saveRev',
-    "keypress .form-control": "onEnterListener"
+    'click #submitBtnBBCCredentials': 'saveBBC',
+    'keypress .form-control': 'onEnterListener'
   },
 
   onEnterListener: function (e) {
@@ -2228,52 +2297,72 @@ module.exports = Backbone.View.extend({
 
   saveIBM: function (e) {
     e.preventDefault();
-    //SAVE IBM credentialls  
+    // SAVE IBM credentialls
     var ibmCredentials = {};
     ibmCredentials.username = this.$('input[name=username-ibm]').val().trim();
     ibmCredentials.password = this.$('input[name=password-ibm]').val().trim();
     ibmCredentials.url = this.$('input[name=url-ibm]').val().trim();
-    //TODO: double check this
-    if (ibmCredentials.username != "" && ibmCredentials.password != "") {
-      //save 
+    // TODO: double check this
+    if (ibmCredentials.username != '' && ibmCredentials.password != '') {
+      // save
       window.setWatsonAPIkeys(ibmCredentials);
       window.alert("Thank you! Saved the IBM keys so you don't have to enter them again.");
     } else {
-      alert("Please add valid credentials to save");
+      alert('Please add valid credentials to save');
     }
-    // End Save IBM crdentials 
+    // End Save IBM crdentials
   },
   saveSpeechmatics: function (e) {
     e.preventDefault();
-    //SAVE IBM credentialls  
+    // SAVE IBM credentialls
     var speechmaticsCredentials = {};
     speechmaticsCredentials.username = this.$('input[name=username-speechmatics]').val().trim();
     speechmaticsCredentials.password = this.$('input[name=password-speechmatics]').val().trim();
-    //TODO: double check this
-    if (speechmaticsCredentials.username != "" && speechmaticsCredentials.password != "") {
-      //save 
+    // TODO: double check this
+    if (speechmaticsCredentials.username != '' && speechmaticsCredentials.password != '') {
+      // save
       window.setSpeechmaticsAPIkeys(speechmaticsCredentials);
       window.alert("Thank you! Saved the Speechmatics keys so you don't have to enter them again.");
     } else {
-      alert("Please add valid credentials to save");
+      alert('Please add valid credentials to save');
     }
   },
 
   saveRev: function (e) {
     e.preventDefault();
-    //SAVE IBM credentialls  
+    // SAVE IBM credentialls
     var revCredentials = {};
     revCredentials.username = this.$('input[name=username-rev]').val().trim();
     revCredentials.password = this.$('input[name=password-rev]').val().trim();
     revCredentials.url = this.$('input[name=url-rev]').val().trim();
-    //TODO: double check this
-    if (revCredentials.username != "" && revCredentials.password != "" && revCredentials.url != "") {
-      //save 
+    // TODO: double check this
+    if (revCredentials.username != '' && revCredentials.password != '' && revCredentials.url != '') {
+      // save
       window.setRevAPIkeys(revCredentials);
       window.alert("Thank you! Saved the Rev keys so you don't have to enter them again.");
     } else {
-      alert("Please add valid credentials to save");
+      alert('Please add valid credentials to save');
     }
+  },
+
+  saveBBC: function (e) {
+    e.preventDefault();
+    // SAVE BBC credentialls
+    var bbcCredentials = {};
+    bbcCredentials.email = this.$('input[name=email-bbc]').val().trim();
+    // TODO: double check this
+    if (this.validateEmail(bbcCredentials.email)) {
+      // save
+      window.setBBCAPIkeys(bbcCredentials);
+      window.alert("Thank you! Saved the BBC email address so you don't have to enter it again.");
+    } else {
+      alert('Please add valid BBC credentials to save');
+    }
+  },
+
+  validateEmail: function (email) {
+    const re = /\S+@bbc.co.uk/;
+    return re.test(email);
   },
 
   render: function () {
@@ -2290,7 +2379,7 @@ var Backbone = require('backbone');
 var render = require('./utils').render;
 
 if (window.process !== undefined) {
-  var path = require("path");
+  var path = require('path');
 }
 
 // if(window.process !== undefined){
@@ -2303,19 +2392,21 @@ if (window.process !== undefined) {
 * @extends Backbone.View
 */
 
-//http://mylifeforthecode.com/getting-started-with-standard-dialogs-in-electron/
+// http://mylifeforthecode.com/getting-started-with-standard-dialogs-in-electron/
 module.exports = Backbone.View.extend({
   initialize: function () {
-    this.newFilePath = "";
+    this.newFilePath = '';
+    // check if user is on BBC network?
   },
   events: {
     'click #btnElectronInputMediaFile': 'electronGetFilePath',
+    'click #btnElectronInputCaptionFile': 'electronGetCaptionFilePath',
     'click #submitBtn': 'save',
     'keypress .form-control': 'onEnterListener',
     'change input[type=radio]': 'changedRadio'
   },
 
-  //change view of language tab preferences when making a choice in radio button language options. 
+  // change view of language tab preferences when making a choice in radio button language options.
   changedRadio: function (e) {
     $('#languageTabs a[href="#' + e.currentTarget.value + '"]').tab('show');
     // console.log(e.currentTarget.value)
@@ -2357,39 +2448,55 @@ module.exports = Backbone.View.extend({
       console.log(fileName);
       self.newFilePath = fileName[0];
       console.log(self.newFilePath);
-      document.getElementById("inputFilePreview").innerHTML = self.newFilePath;
+      document.getElementById('inputFilePreview').innerHTML = self.newFilePath;
       // console.log(document.getElementById("title").value);
-      if (document.getElementById("title").value === "") {
+      if (document.getElementById('title').value === '') {
         // self.newFilePath.split("/")
-        document.getElementById("title").value = path.basename(self.newFilePath);
+        document.getElementById('title').value = path.basename(self.newFilePath);
       }
+    });
+  },
+  electronGetCaptionFilePath: function (e) {
+    e.preventDefault();
+
+    var self = this;
+    window.openCaptionsFileDiaglogue(function (fileName) {
+      console.log(fileName);
+      self.captionFilePath = fileName[0];
+      console.log(self.captionFilePath);
+      document.getElementById('inputCaptionFilePreview').innerHTML = self.captionFilePath;
+      // console.log(document.getElementById("title").value);
+      // if(document.getElementById("title").value ===""){
+      //   // self.newFilePath.split("/")
+      //   document.getElementById("title").value =  path.basename(self.newFilePath);
+      // }
     });
   },
 
   save: function (e) {
     console.log(e.target);
-    //TODO: there might be a better way to get values from a form in backbone? 
-    //as well as setup user validation?
+    // TODO: there might be a better way to get values from a form in backbone?
+    // as well as setup user validation?
     e.preventDefault();
     var sttEngine;
-    //reading values from form 
+    // reading values from form
 
-
-    //If using "multiple" in unput  will return all selected files's paths separated with `;`. split(";") to make an array. 
+    // If using "multiple" in unput  will return all selected files's paths separated with `;`. split(";") to make an array.
     // loop through that array to create a list of title, description etc..
-    //before trying this, test how many clips at same time.
+    // before trying this, test how many clips at same time.
     // https://trello.com/c/oDr7bSy7/173-raised-by-ben-need-to-be-able-to-add-a-batch-of-clips-into-new-transcription-not-one-by-one
     var newDescription = this.$('textarea[name=description]').val();
-    //removing # carachter coz it breaks file path as it gets converted to %23
-    //TODO: there might be other symbols that have effect. figure proper way to sanitise input
+    // removing # carachter coz it breaks file path as it gets converted to %23
+    // TODO: there might be other symbols that have effect. figure proper way to sanitise input
     // var newFilePath     = this.$('input[name=file]').val();
     var newLanguage = '';
 
     var newFilePath = this.newFilePath;
+    var captionFilePath = this.captionFilePath;
 
     var radios = document.querySelectorAll('.languageRadio');
     var sttEngine;
-    //see which one has been selected by the user. 
+    // see which one has been selected by the user.
     for (var i = 0; i < radios.length; i++) {
       if (radios[i].type === 'radio' && radios[i].checked) {
         // get value, set checked flag or do whatever you need to
@@ -2397,83 +2504,82 @@ module.exports = Backbone.View.extend({
       }
     }
 
-    var newTitle;
-    if (sttEngine == 'rev') {
-      newTitle = this.$('input[name=revOrderNumber]').val();
-    } else {
-      newTitle = this.$('input[name=title]').val();
-    }
+    var newTitle = this.$('input[name=title]').val();
 
-    //TODO: there might be a better way to do this?
-    //set the language 
+    // TODO: there might be a better way to do this?
+    // set the language
     if (sttEngine === 'ibm') {
-      newLanguage = 'ibm';
+      newLanguage = document.querySelector('#languageModelIBM').value;
     } else if (sttEngine === 'speechmatics') {
-      newLanguage = 'speechmatics';
+      newLanguage = document.querySelector('#languageModelSpeechmatics').value;
     } else if (sttEngine === 'rev') {
-      newLanguage = 'rev';
-    } else if (sttEngine === 'srt') {
-      newLanguage = 'srt';
+      newLanguage = 'US English'; // NA
+    } else if (sttEngine === 'captions') {
+      newLanguage = 'captions language'; // NA
     } else if (sttEngine === 'gentle') {
-      newLanguage = 'gentle';
+      newLanguage = 'US English'; // NA
     } else if (sttEngine === 'pocketsphinx') {
-      newLanguage = 'pocketsphinx';
+      newLanguage = 'US English'; // NA
+    } else if (sttEngine === 'BBC') {
+      newLanguage = 'British English'; // NA
     }
 
-    if (newFilePath == "") {
-      alert("please select a file to transcribe");
-      //TODO: set, select in focus 
-    } else if (newTitle == "") {
-      alert("please give this transcriptiona title");
-      //TODO: Set description in focus 
+    if (newFilePath == '' && sttEngine !== 'rev') {
+      alert('please select a file to transcribe');
+      // TODO: set, select in focus
+    } else if (newTitle == '' && sttEngine !== 'rev') {
+      alert('please give this transcriptiona title');
+      // TODO: Set description in focus
     } else {
-      if (sttEngine === "ibm" || sttEngine === "speechmatics") {
+      if (sttEngine === 'ibm' || sttEngine === 'speechmatics' || sttEngine === 'BBC') {
         if (navigator.onLine) {
-          console.log("SPEECHMATICS-Transcription form ", newTitle, newDescription, newFilePath, newLanguage, sttEngine);
-
-          this.model.save({ title: newTitle,
-            description: newDescription,
-            videoUrl: newFilePath,
-            languageModel: newLanguage,
-            sttEngine: sttEngine
-          }, {
-            success: function (mode, response, option) {
-              Backbone.history.navigate("transcriptions", { trigger: true });
-            },
-            error: function (model, xhr, options) {
-              var errors = JSON.parse(xhr.responseText).errors;
-              alert("ops, something went wrong with saving the transcription:" + errors);
-            }
-          });
+          console.log('STT engine Transcription form ', newTitle, newDescription, newFilePath, newLanguage, sttEngine);
+          // validation to check BBC 
+          if (sttEngine === 'BBC' && !window.areBBCAPIkeysSet()) {
+            alert('To use the BBC service you need to be a BBC employee on the corporate reith network, go to autoEdit setting and add your BBC work email address there');
+          } else {
+            this.model.save({ title: newTitle,
+              description: newDescription,
+              videoUrl: newFilePath,
+              languageModel: newLanguage,
+              sttEngine: sttEngine
+            }, {
+              success: function (mode, response, option) {
+                Backbone.history.navigate('transcriptions', { trigger: true });
+              },
+              error: function (model, xhr, options) {
+                var errors = JSON.parse(xhr.responseText).errors;
+                alert('ops, something went wrong with saving the transcription:' + errors);
+              }
+            });
+          }
+          // <--
         } else {
-          alert("You seem to be offline, check your internet connection and try again if you'd like to use Speechmatics or IBM");
+          alert("You seem to be offline, check your internet connection and try again if you'd like to use Speechmatics, IBM or the BBC Service");
         }
 
-        //captions can be used offline, parse captions with parserComposer module in transcriber option.
-      } else if (sttEngine === "srt") {
-        //  console.log("SRT-Transcription form ", newTitle, newDescription, newFilePath,  newLanguage,  sttEngine);
-        // this.model.save({title: newTitle, 
-        //    description: newDescription,
-        //    videoUrl:newFilePath, 
-        //    languageModel: newLanguage, 
-        //    sttEngine: sttEngine},
-        //    { 
-        //      success: function(mode, response, option){      
-        //         Backbone.history.navigate("transcriptions", {trigger:true}); 
-        //    },
-        //      error: function(model, xhr,options){
-        //        var errors = JSON.parse(xhr.responseText).errors;
-        //        alert("ops, something when wrong with saving the transcription:" + errors);
-        //      }
-        //    });
-
-
-        //pocketsphinx and Gentle handled as fallback cases.
-        // in the "backend" the `sttEngine` will determine which one is uded.
-        // these can be used offline 
-      } else if (sttEngine === "rev") {
+        // captions can be used offline, parse captions with parserComposer module in transcriber option.
+      } else if (sttEngine === 'captions') {
+        console.log('SRT-Transcription form ', newTitle, newDescription, newFilePath, newLanguage, sttEngine);
+        this.model.save({
+          title: newTitle,
+          description: newDescription,
+          videoUrl: newFilePath,
+          captionFilePath: captionFilePath,
+          languageModel: newLanguage,
+          sttEngine: sttEngine
+        }, {
+          success: function (mode, response, option) {
+            Backbone.history.navigate('transcriptions', { trigger: true });
+          },
+          error: function (model, xhr, options) {
+            var errors = JSON.parse(xhr.responseText).errors;
+            alert('ops, something when wrong with saving the transcription:' + errors);
+          }
+        });
+      } else if (sttEngine === 'rev') {
         if (navigator.onLine) {
-          console.log("REV-Transcription form ", newTitle, newDescription, newFilePath, newLanguage, sttEngine);
+          console.log('REV-Transcription form ', newTitle, newDescription, newFilePath, newLanguage, sttEngine);
 
           var revOrderNumber = document.querySelector('#inputRevOderNumber').value.trim();
 
@@ -2488,11 +2594,11 @@ module.exports = Backbone.View.extend({
               revOrderNumber: revOrderNumber
             }, {
               success: function (mode, response, option) {
-                Backbone.history.navigate("transcriptions", { trigger: true });
+                Backbone.history.navigate('transcriptions', { trigger: true });
               },
               error: function (model, xhr, options) {
                 var errors = JSON.parse(xhr.responseText).errors;
-                alert("ops, something went wrong with saving the transcription:" + errors);
+                alert('ops, something went wrong with saving the transcription:' + errors);
               }
             });
           } else {
@@ -2501,23 +2607,23 @@ module.exports = Backbone.View.extend({
         } else {
           alert("You seem to be offline, check your internet connection and try again if you'd like to use Rev");
         }
-      } else if (sttEngine === "gentle" || sttEngine === "pocketsphinx") {
-        //TODO: sort out this repetition
+      } else if (sttEngine === 'gentle' || sttEngine === 'pocketsphinx') {
+        // TODO: sort out this repetition
         this.model.save({ title: newTitle,
           description: newDescription,
           videoUrl: newFilePath,
           languageModel: newLanguage,
           sttEngine: sttEngine }, {
           success: function (mode, response, option) {
-            Backbone.history.navigate("transcriptions", { trigger: true });
+            Backbone.history.navigate('transcriptions', { trigger: true });
           },
           error: function (model, xhr, options) {
             var errors = JSON.parse(xhr.responseText).errors;
-            alert("ops, something when wrong with saving the transcription:" + errors);
+            alert('ops, something when wrong with saving the transcription:' + errors);
           }
         });
       } else {
-        console.error("need to chose a sttEngine");
+        console.error('need to chose a sttEngine');
       }
     }
   },
@@ -2884,14 +2990,12 @@ module.exports = Backbone.View.extend({
   exportHelper(config) {
     if (config.fileContent === "") {
       alert("File " + config.fileName + " seems to be empty");
+    } else {
+      var fileContent = config.fileContent;
+      // var urlId = config.urlId;
+      var formBlob = new Blob([fileContent], { type: 'text/plain' });
+      FileSaver.saveAs(formBlob, config.fileName);
     }
-
-    var fileName = config.fileName; //this.title _ + append time of day to name
-    var fileContent = config.fileContent;
-    var urlId = config.urlId;
-
-    var formBlob = new Blob([fileContent], { type: 'text/plain' });
-    FileSaver.saveAs(formBlob, config.fileName);
   },
 
   /**
@@ -2952,7 +3056,7 @@ module.exports = Backbone.View.extend({
   expoertCaptionsSrt: function () {
     //ISSUE: not working client side only.
     var fileName = this.nameFileHelper(this.model.get("title"), "srt");
-    var srtFileContent = this.model.constructor.returnSrtContent(this.model.get("text"));
+    var srtFileContent = this.model.constructor.returnSrtContent(this.model.get("text"), 35);
     this.exportHelper({ fileName: fileName, fileContent: srtFileContent, urlId: "#expoertCaptionsSrt" });
   },
 
@@ -3199,6 +3303,9 @@ module.exports = Backbone.View.extend({
           $(this).addClass("text-muted");
         }
       });
+      // update current timecode display  
+      document.querySelector('#playbackTimeCodes').value = fromSeconds(vid.currentTime);
+      document.querySelector('#videoDuration').value = fromSeconds(vid.duration);
     };
   },
 
@@ -3829,8 +3936,8 @@ function createSrtContent(srtData, cb) {
   var lines = '';
   for (var i = 0; i < srtData.length; i++) {
     var srtLineO = srtData[i];
-    lines += srtLineO.id + '\n';
-    lines += srtLineO.startTime + ' --> ' + srtLineO.endTime + '\n';
+    lines += i + '\n';
+    lines += fromSecondsForSrt(srtLineO.startTime) + ' --> ' + fromSecondsForSrt(srtLineO.endTime) + '\n';
     lines += srtLineO.text + '\n\n';
   }
   // TODO figure out if callback here is redundant and could just return
@@ -3843,7 +3950,7 @@ function createSrtContent(srtData, cb) {
 
 module.exports.createSrtContent = createSrtContent;
 
-//NOTE: node-timecodes npm lib ( https://github.com/synchronized-tv/node-timecodes) does not support exporting timecodes in format suitable for srt file. which requires a comma instead of a dot for millisercons. Hence adding it here as a helper. Ideally it should be integrated in node timecode library.
+// NOTE: node-timecodes npm lib ( https://github.com/synchronized-tv/node-timecodes) does not support exporting timecodes in format suitable for srt file. which requires a comma instead of a dot for millisercons. Hence adding it here as a helper. Ideally it should be integrated in node timecode library.
 
 /**
 * @funciton padNumber
@@ -3859,11 +3966,11 @@ var padNumber = function (nb) {
   return nb;
 };
 
-//TODO: use node timecode module, require, instead of this function, and then `.replace(".",",")`
-// perhaps add in util 
+// TODO: use node timecode module, require, instead of this function, and then `.replace(".",",")`
+// perhaps add in util
 /**
 * @function fromSecondsForSrt
-* @description converts time in seconds to timecode for srt file 
+* @description converts time in seconds to timecode for srt file
 * [modified from ]{@link https://github.com/Synchronized-TV/node-timecodes/blob/master/src/toSeconds.js}
 * @param{number} seconds - seconds to convdert to 00:00:00,00
 * @returns {string} result - returns string "hh:mm:ss:ms" eg "00:00:00,00"
@@ -3886,7 +3993,7 @@ var fromSecondsForSrt = function (seconds) {
 
   var suffix = ms && padNumber(parseInt(milliseconds, 10), 3) || padNumber(frame, 2);
 
-  return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ',' + suffix + "0";
+  return padNumber(hours) + ':' + padNumber(mins) + ':' + padNumber(secs) + ',' + suffix + '0';
 };
 
 module.exports.fromSecondsForSrt = fromSecondsForSrt;
@@ -8025,7 +8132,7 @@ var ffmpegPath = path.join(
 
 exports.path = ffmpegPath;
 
-}).call(this,require('_process'),"/node_modules/ffmpeg-static")
+}).call(this,require('_process'),"/node_modules/ffmpeg-static-electron")
 },{"_process":51,"os":49,"path":50}],40:[function(require,module,exports){
 (function (process,__dirname){
 var os = require('os')
@@ -8060,7 +8167,7 @@ var ffprobePath = path.join(
 
 exports.path = ffprobePath;
 
-}).call(this,require('_process'),"/node_modules/ffprobe-static")
+}).call(this,require('_process'),"/node_modules/ffprobe-static-electron")
 },{"_process":51,"os":49,"path":50}],41:[function(require,module,exports){
 /* FileSaver.js
  * A saveAs() FileSaver implementation.

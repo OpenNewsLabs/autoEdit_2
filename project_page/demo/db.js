@@ -15,24 +15,29 @@
 var electron = require('electron');
 var currentWindow = electron.remote.getCurrentWindow();
 
-var path = require("path");
+var path = require('path');
 var fs = require('fs');
 var LinvoDB = require('linvodb3');
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
 var medeadown = require('medeadown');
 
-// var dataPath = window.nw.App.dataPath;
-var dataPath = currentWindow.dataPath; 
+var dataPath = currentWindow.dataPath;
 
-// console.log()
-
+// +db path, for now in root of app, to be change so that in config where user
+// can set where they want it, but also provide a default.
+// LinvoDB.dbPath = path.join(process.cwd(), '/db');
+// https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
+// const {app} = require('electron')
+// LinvoDB.dbPath = electron.getPath('appData')
+LinvoDB.dbPath = dataPath;
+console.info('dataPath ', dataPath);
 
 LinvoDB.defaults.store = { db: medeadown };
 
 // +db path, for now in root of app, to be change so that in config where user
 // can set where they want it, but also provide a default.
 // LinvoDB.dbPath = path.join(process.cwd(), '/db');
-LinvoDB.dbPath = dataPath;
+// LinvoDB.dbPath = dataPath;
 
 // setting up transcription model in database.
 var transcriptionModel = 'transcription';
@@ -98,7 +103,7 @@ function makeLinvoCallback(success, error) {
  * @param {object} options - Sucess or failure callback.
  * @returns {object} sucess callback with backbone model containing db id
  */
-DB.create = function(model, success, error){
+DB.create = function(model, success, error) {
   console.debug('DB.create', model.constructor.modelType);
   if (model.constructor.modelType == 'transcription') {
     var newElement = model.toJSON();
@@ -111,8 +116,8 @@ DB.create = function(model, success, error){
         console.error(err);
         return error(err);
       }
-      //TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
-      console.info("Started processing transcription");
+      // TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
+      console.info('Started processing transcription');
       getTimeNow();
 
       // updating backbone with saved transcritpion, containing db id
@@ -134,10 +139,13 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
+        // for caption file conversion
+        captionFilePath: newElement.captionFilePath,
         keys: {
           watson: window.IBMWatsonKeys(),
           speechmatics: window.SpeechmaticsKeys(),
-          rev: window.revKeys()
+          rev: window.revKeys(),
+          bbc: window.BBCKeys()
         },
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
@@ -149,73 +157,77 @@ DB.create = function(model, success, error){
             trs.metadata = respM;
             // saving current transcription
             trs.metadataStatus = true;
-             // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
-            if(trs.processedAudio === true && trs.transcriptionStatus === true){
+            // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
+            if (trs.processedAudio === true && trs.transcriptionStatus === true) {
               trs.status = true;
             }
-            trs.save(function(err) { 
+            trs.save(function(err) {
               model.set(trs);
-              if (err) console.error('error saving tr meta: ',err); 
+              if (err) console.error('error saving tr meta: ',err);
               console.log('trs-cbMetadata: ', JSON.stringify(trs,null,2));
             });
 
-            
+
           });
         },
         cbTranscription: function(respErr, respT) {
           // updating current transcription with transcription json.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            // updating transcription attributes with result         
-            if(respErr){
+            // updating transcription attributes with result
+            if (respErr) {
               trs.status = null;
               trs.error = respErr;
               model.set(trs);
-            }else{
+            }else {
               trs.audioFile = respT.audioFile;
               trs.processedAudio = respT.processedAudio;
               trs.text = respT.text;
               trs.transcriptionStatus = true;
               // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
-              if(trs.processedAudio === true && trs.metadataStatus === true){
+              if (trs.processedAudio === true && trs.metadataStatus === true) {
                 trs.status = true;
               }
-             }//else no error in transcription callback
-              // saving current transcription
-              trs.save(function(err) { 
-                 model.set(trs);
-                 //TODO: add which transcription started done, title and id. eg trs.title, trs.id;
-                 console.info("done processing transcription");
-                 //TODO: could calculate difference between when started - when ended and say it took x long.
-                 getTimeNow();
-                if (err) console.error('error saving tr transcription : ', err); 
-              });
-           
+            }// else no error in transcription callback
+            // saving current transcription
+            trs.save(function(err) {
+              model.set(trs);
+              // TODO: add which transcription started done, title and id. eg trs.title, trs.id;
+              console.info('done processing transcription');
+              // TODO: could calculate difference between when started - when ended and say it took x long.
+              getTimeNow();
+              if (err) console.error('error saving tr transcription : ', err);
+            });
+
           });
         },
         cbVideo: function(respV) {
-          console.log('cbVideo: ', respV);
+          if(err){
+            console.log('cbVideo: ', respV);
+          }
           // updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.error('cbVideo err: ',err);
+            if (err) {
+              console.error('cbVideo err: ',err);
+            }
             console.log('cbVideo inside trs findOne respV', respV);
             // updating transcription attributes with result
             trs.videoOgg = respV.videoOgg;
             trs.processedVideo = respV.processedVideo;
             // saving current transcription
             trs.videoStatus = true;
-            if(trs.metadataStatus === true && trs.transcriptionStatus === true){
+            if (trs.metadataStatus === true && trs.transcriptionStatus === true) {
               trs.status = true;
             }
-            trs.save(function(err) { 
+            trs.save(function(err) {
               model.set(trs);
-              if (err) console.error('error saving tr cbVideo : ', err); 
+              if (err) console.error('error saving tr cbVideo : ', err);
             });
           });
         }
       });
 
     });
-  }else if(model.constructor.modelType == 'paperedit'){
+  } else if (model.constructor.modelType == 'paperedit') {
     var newElementPaperedit = model.toJSON();
     // create transcription element to save in db
     var paperedit = new Paperedit(newElementPaperedit);
@@ -225,13 +237,13 @@ DB.create = function(model, success, error){
         // if we have an error, log it and bail
         console.error(err);
         return error(err);
-      }//.error 
+      }// .error
       // updating backbone with saved transcritpion, containing db id
       model.set(paperedit);
       // returning saved transcription callback
       success(model);
-    });//.save
-  }//.else if 
+    });// .save
+  }// .else if
 };
 
 /**
@@ -249,16 +261,16 @@ DB.read = function(model, success, error) {
     if (model.constructor.modelType === 'transcriptions') {
       // look in database
       Transcription.find({}, makeLinvoCallback(success, error));
-    }else if(model.constructor.modelType === 'paperedits'){
-        Paperedit.find({}, makeLinvoCallback(success, error));
+    } else if (model.constructor.modelType === 'paperedits') {
+      Paperedit.find({}, makeLinvoCallback(success, error));
     }
   } else {
     // for transcription model
     if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
       Transcription.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
-    }else if (model.constructor.modelType === 'paperedit'){
-        Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
+    } else if (model.constructor.modelType === 'paperedit') {
+      Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }
   }
 };
@@ -294,8 +306,8 @@ DB.update = function(model, success, error) {
       // saving transcription to database
       doc.save(makeLinvoCallback(success, error));
     });
-  }else if (model.constructor.modelType == 'paperedit'){
-      Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+  } else if (model.constructor.modelType == 'paperedit') {
+    Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       // NOTE: rather then using update, which did not seemed to be optimised for speed.
       // uses `findOne`, replaces attributes with new once.
@@ -336,8 +348,8 @@ DB.patch = function(model, success, error) {
 
       doc.save(makeLinvoCallback(success, error));
     });
-  }else if (model.constructor.modelType == 'paperedit'){
-     Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+  } else if (model.constructor.modelType == 'paperedit') {
+    Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       doc.title               = model.attributes.title;
       doc.description         = model.attributes.description;
@@ -385,7 +397,7 @@ DB.delete = function(model, success, error) {
         success(model);
       }
     });
-  }else if (model.constructor.modelType == 'paperedit'){
+  } else if (model.constructor.modelType == 'paperedit') {
     Paperedit.remove({ _id: model.get('_id') }, {multi: false }, function (err, numRemoved) {
       if (err) {
         console.error(err);
@@ -407,16 +419,16 @@ DB.delete = function(model, success, error) {
 
 
 
-//helper function for debugging
-function getTimeNow(){
+// helper function for debugging
+function getTimeNow() {
   var now = new Date();
-  var resultSrt = ""+ now.getHours()+":"+ now.getMinutes()+"."+ now.getMilliseconds()+"_"+
-              now.getDate()+"-"+ now.getMonth()+"-"+  now.getFullYear();
+  var resultSrt = '' + now.getHours() + ':' + now.getMinutes() + '.' + now.getMilliseconds() + '_' +
+              now.getDate() + '-' + now.getMonth() + '-' +  now.getFullYear();
   // var result = {
   //   string: resultSrt,
   //   object: now
   // };
-  console.info(resultSrt);          
+  console.info(resultSrt);
   // return result;
 }
 

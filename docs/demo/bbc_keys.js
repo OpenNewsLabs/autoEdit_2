@@ -4,21 +4,14 @@ const electron = require('electron');
 const currentWindow = electron.remote.getCurrentWindow();
 const path = require('path');
 
-var BBCKeysPath; 
-if (!window.ENV_BROSWER) {
-  if(window.ENV_ELECTRON){
-    BBCKeysPath = path.join(currentWindow.dataPath , 'bbcskeys.json');
-  }
-  if(window.ENV_CHROMIUM){
-    // https://forums.adobe.com/thread/1956086
-    BBCKeysPath = path.join(Folder.userData.fsName, 'bbcskeys.json');
-  }
+// var speechmaticsKeysPath;
+
+if (window.process !== 'undefined') {
+  var BBCKeysPath = path.join(currentWindow.dataPath , 'bbcskeys.json');
 }else{
   //not in electron 
-  BBCKeysPath = "";
+  var BBCKeysPath = "";
 }
-
-
 
 var BBCKeys = {email: ""};
 // var speechmaticsKeysSet = false;

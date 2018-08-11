@@ -12,33 +12,67 @@
  */
 // Sharing data path through window object. from main object.
 // https://github.com/electron/electron/issues/1095
-var electron = require('electron');
-var currentWindow = electron.remote.getCurrentWindow();
 
 var path = require('path');
 var fs = require('fs');
+var medeadown = require('medeadown');
 var LinvoDB = require('linvodb3');
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
-var medeadown = require('medeadown');
+var dataPath;
+var tmpMediaFolder;
+var mediaFolder;
+if(window.ENV_ELECTRON){
+  var electron = require('electron');
+  // medeadown = require('medeadown'); 
+  // https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
+  var currentWindow = electron.remote.getCurrentWindow();
+  dataPath = currentWindow.dataPath;
+  LinvoDB.dbPath = dataPath;
+  tmpMediaFolder = path.join(dataPath, 'tmp_media');
+  mediaFolder = path.join(dataPath, 'media');
+  setTmpFolders(tmpMediaFolder,mediaFolder);
+}
+if(window.ENV_CHROMIUM){
+  // var medeadown = require(`${__dirname}/node_modules/medeadown`);
+  // var dataPath = Folder.userData.fsName;
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+    dataPath = adobeDataPath;
+    LinvoDB.dbPath = dataPath;
+    tmpMediaFolder = path.join(adobeDataPath, 'tmp_media');
+    mediaFolder = path.join(adobeDataPath, 'media');
+    console.log('adobeDataPath',adobeDataPath);
+    // if media folder does not exists create it
+    setTmpFolders(tmpMediaFolder,mediaFolder);
+  });
+}
 
-var dataPath = currentWindow.dataPath;
 
-// +db path, for now in root of app, to be change so that in config where user
-// can set where they want it, but also provide a default.
-// LinvoDB.dbPath = path.join(process.cwd(), '/db');
-// https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
-// const {app} = require('electron')
-// LinvoDB.dbPath = electron.getPath('appData')
-LinvoDB.dbPath = dataPath;
-console.info('dataPath ', dataPath);
+function setTmpFolders(tmpMediaFolder,mediaFolder){
+  if (!fs.existsSync(tmpMediaFolder)) {
+    console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
+    console.log(tmpMediaFolder);
+    fs.mkdirSync(tmpMediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('tmpMediaFolder folder was already present');
+    console.log(tmpMediaFolder);
+  }
+  // if temp media folder does not exists create it
+  if (!fs.existsSync(mediaFolder)) {
+    console.log(mediaFolder);
+    console.debug('mediaFolder folder not present, creating mediaFolder folder');
+    fs.mkdirSync(mediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('mediaFolder folder was already present');
+    console.log(mediaFolder);
+  }
+}
+
+
+// console.info('dataPath ', LinvoDB.dataPath);
 
 LinvoDB.defaults.store = { db: medeadown };
-
-// +db path, for now in root of app, to be change so that in config where user
-// can set where they want it, but also provide a default.
-// LinvoDB.dbPath = path.join(process.cwd(), '/db');
-// LinvoDB.dbPath = dataPath;
-
 // setting up transcription model in database.
 var transcriptionModel = 'transcription';
 var papereditModel = 'paperedit';
@@ -55,26 +89,9 @@ var DB = {};
 
 // Setting up media folders for media and tmp media on local file system,
 // user libary application support folder
-var tmpMediaFolder = path.join(dataPath, 'tmp_media');
-var mediaFolder = path.join(dataPath, 'media');
 
-// if media folder does not exists create it
-if (!fs.existsSync(tmpMediaFolder)) {
-  console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
-  fs.mkdirSync(tmpMediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('tmpMediaFolder folder was already present');
-}
 
-// if temp media folder does not exists create it
-if (!fs.existsSync(mediaFolder)) {
-  console.debug('mediaFolder folder not present, creating mediaFolder folder');
-  fs.mkdirSync(mediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('mediaFolder folder was already present');
-}
+
 
 /**
  * Create a callback function for LinvoDB queries
