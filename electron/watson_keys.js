@@ -1,26 +1,21 @@
 "use strict";
 const fs = require('fs');
-
 const path = require('path');
 
-var watsonKeysPath;
+var watsonKeysPath  = "";
 
-if (!window.ENV_BROSWER) {
-  var watsonKeysPath; 
-  if(window.ENV_ELECTRON){
-    const electron = require('electron');
-    const currentWindow = electron.remote.getCurrentWindow();
-    watsonKeysPath = path.join(currentWindow.dataPath , 'wttskeys.json');
-  }
-  if(window.ENV_CHROMIUM){
-    // https://forums.adobe.com/thread/1956086
-    watsonKeysPath = path.join(Folder.userData.fsName, 'wttskeys.json');
-  }
-    
-}else{
-  //not in electron 
-  var watsonKeysPath = "";
+if(window.ENV_ELECTRON){
+  const electron = require('electron');
+  const currentWindow = electron.remote.getCurrentWindow();
+  watsonKeysPath = path.join(currentWindow.dataPath , 'wttskeys.json');
 }
+if(window.ENV_CEP){
+  // https://forums.adobe.com/thread/1956086
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+    watsonKeysPath = path.join(adobeDataPath, 'wttskeys.json');
+  })
+}
+
 
 var watsonKeys = {username: "", password: "", url:""};
 // var watsonKeysSet = false;

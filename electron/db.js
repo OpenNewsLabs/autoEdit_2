@@ -12,40 +12,44 @@
  */
 // Sharing data path through window object. from main object.
 // https://github.com/electron/electron/issues/1095
-
 var path = require('path');
 var fs = require('fs');
-var medeadown = require('medeadown');
+var medeadown = require('medeadown'); 
 var LinvoDB = require('linvodb3');
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
 var dataPath;
 var tmpMediaFolder;
 var mediaFolder;
 if(window.ENV_ELECTRON){
+  console.info('setting db in electron');
   var electron = require('electron');
-  // medeadown = require('medeadown'); 
   // https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
   var currentWindow = electron.remote.getCurrentWindow();
   dataPath = currentWindow.dataPath;
   LinvoDB.dbPath = dataPath;
   tmpMediaFolder = path.join(dataPath, 'tmp_media');
   mediaFolder = path.join(dataPath, 'media');
-  setTmpFolders(tmpMediaFolder,mediaFolder);
+  setTmpFolders(tmpMediaFolder,mediaFolder); 
+  console.log('ENV_ELECTRON dataPath',dataPath,typeof dataPath, LinvoDB.dbPath);
+  
 }
-if(window.ENV_CHROMIUM){
+if(window.ENV_CEP){
+  console.info('setting db in Adobe CEP')  
   // var medeadown = require(`${__dirname}/node_modules/medeadown`);
   // var dataPath = Folder.userData.fsName;
   window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
     dataPath = adobeDataPath;
-    LinvoDB.dbPath = dataPath;
+    LinvoDB.dbPath = adobeDataPath;
     tmpMediaFolder = path.join(adobeDataPath, 'tmp_media');
     mediaFolder = path.join(adobeDataPath, 'media');
-    console.log('adobeDataPath',adobeDataPath);
+    console.log('ENV_CEP adobeDataPath',adobeDataPath,typeof adobeDataPath, LinvoDB.dbPath);
     // if media folder does not exists create it
     setTmpFolders(tmpMediaFolder,mediaFolder);
   });
 }
-
+// for troubleshooting
+window.LinvoDB =  LinvoDB;
+// LinvoDB.dataPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
 
 function setTmpFolders(tmpMediaFolder,mediaFolder){
   if (!fs.existsSync(tmpMediaFolder)) {
@@ -69,10 +73,8 @@ function setTmpFolders(tmpMediaFolder,mediaFolder){
   }
 }
 
-
-// console.info('dataPath ', LinvoDB.dataPath);
-
-LinvoDB.defaults.store = { db: medeadown };
+// LinvoDB.defaults.store = { db: medeadown };
+LinvoDB.defaults.store = {db:require("level-js")}
 // setting up transcription model in database.
 var transcriptionModel = 'transcription';
 var papereditModel = 'paperedit';
@@ -81,18 +83,9 @@ var transcriptionSchema = {};
 var papereditSchema = {};
 var transcriptionOptions = {};
 var papereditOptions = {};
-
 var Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
 var Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
-
 var DB = {};
-
-// Setting up media folders for media and tmp media on local file system,
-// user libary application support folder
-
-
-
-
 /**
  * Create a callback function for LinvoDB queries
  * @param {function} success - Success callback
