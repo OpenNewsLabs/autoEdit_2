@@ -1,5 +1,5 @@
 
-### Deployment as adobe panel - work in progress, under active development
+# Deployment as adobe panel - work in progress, under active development
 
 CEP stands for [`Common Extensibility Platform`](https://www.adobe.io/apis/creativecloud/cep.html) and it's an SDK by Adobe to create panels for the Adobe suite.
 
@@ -32,7 +32,7 @@ Jsx functions - create sequence made of clips segments
 Jsx functions - preview paper edit sequence ? ( might need to create sequence first)
  -->
 
-#### electron vs adobe panel (vs nwjs)
+## electron vs adobe panel (vs nwjs)
 
 It seems like adobe panel CEP and and Electron use slightly different setup of `chromium`.
 
@@ -46,13 +46,13 @@ The main difference is noticeable when calling process. `process.versions` in th
 
 Due to some of these differences the code base for autoEdit has been adjusted to accomodate and target for the two enviroments.
 
-#### Dev enviroment needed for CEP
+## Dev enviroment needed for CEP
 
 - node
 - npm 
 - A copy of [Adobe Premiere](https://www.adobe.com/products/premiere.html)
 
-#### setup 
+## setup 
 
 <!-- [Get setup instructions and panel explanation here](https://github.com/pickercenter/autoedit-panel) -->
 
@@ -69,7 +69,7 @@ At a mimum the files needed in that folder for the CEP panel are
 
 However will see section below for an automated build development step to achieve this programmatically
 
-#####  1. allow un-signed extension
+###  1. allow un-signed extension
 
 
 Since Premiere only accepts signed extension, [you should tell it to accept unsigned extensions like this as well](https://github.com/Adobe-CEP/CEP-Resources/blob/master/CEP_8.x/Documentation/CEP%208.0%20HTML%20Extension%20Cookbook.md#debugging-unsigned-extensions)
@@ -92,7 +92,7 @@ defaults write com.adobe.CSXS.8 PlayerDebugMode 1
 
 You might need to re-start your computer 
 
-##### 2. CEP development in autoEdit
+### 2. CEP development in autoEdit
 
 [Fork branch `autoedit-panel-refactor`](https://github.com/OpenNewsLabs/autoEdit_2/tree/autoedit-panel-refactor)
 
@@ -120,7 +120,7 @@ npm run adobe-panel-dev:watch
 
 With this last comand everytime you save it automatically copies changes over.
 
-##### 3. open CEP panel in Adobe Premiere 
+### 3. open CEP panel in Adobe Premiere 
 
 Last but not Launch Premiere Pro and open this Panel under
 
@@ -130,7 +130,14 @@ Window > Extensions > autoEdit
 
 Everytime you want to update changes in the panel you need to close and reopen it.
 
-##### 3. CEP local server
+### 3. CEP local server
 
 Local server for adobe panel is at [http://localhost:8099/](http://localhost:8099/), there you can see the dev tools inspector and console.
 
+
+
+## some more docs for Adobe dev documentation
+
+- [Official Adobe Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
+- [Semi Official API Docs](http://ppro.aenhancers.com/)
+- [Non Official but very nice API Docs](http://www.brysonmichael.com/premiereapi-home)

@@ -265,17 +265,6 @@ On commit to  master there is a continuos built setup on Travis CI that builds a
 see dedicated README.md in [`adobe-panel-src/README.md`](./adobe-panel-src/README.md) for more details.
 
 
-
-### some more docs for Adobe dev documentation
-- [Official Adobe Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
-- [Semi Official API Docs](http://ppro.aenhancers.com/)
-- [Non Official but very nice API Docs](http://www.brysonmichael.com/premiereapi-home)
-
- -->
-
-
-
-
 ## Build project page
 The project page is visible at [autoedit.io/demo](http://www.autoedit.io).To edit the project page go to `./project_page` flder and edit the [jekyll](https://jekyllrb.com/) site.
 
