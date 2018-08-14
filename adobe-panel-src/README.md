@@ -5,6 +5,8 @@ CEP stands for [`Common Extensibility Platform`](https://www.adobe.io/apis/creat
 
 It is now possible to run autoEdit as an Adobe panel. The idea is that when run inside of adobe as a CEP panel, autoEdit, will have access to same local databse as the desktop application, to allow maximum portability, and have extra acess to features to integrate with adobe premiere, such as sync play with clips in source monitor from transcriptions etc..
 
+![Example autoEdit CEP](https://pbs.twimg.com/media/Dkg0waTW4AALCCM.jpg)
+
 <!-- Add list of featues here organised by autoEdit views
 - *New transcript*
 -  [ ]Upload from local file in premiere browser
