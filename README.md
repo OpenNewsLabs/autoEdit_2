@@ -259,38 +259,21 @@ On commit to  master there is a continuos built setup on Travis CI that builds a
 
 - [ ] PR and help welcome on creating a continuos integration service for Mac and Windows as well
 
-<!-- 
-### Deployment as adobe panel 
 
-Get setup instructions and panel explanation here 
+### Deployment as adobe panel - work in progress, under active development
 
-https://github.com/pickercenter/autoedit-panel
-
-for one off build in local adobe extension folder 
-```
-npm run adobe-panel-dev
-```
-
-For development with watch 
-
-```
-npm run adobe-panel-dev:watch
-```
-
-Local server for adobe panel 
-
-[http://localhost:8099/](http://localhost:8099/)
+see dedicated README.md in [`adobe-panel-src/README.md`](./adobe-panel-src/README.md) for more details.
 
 
---- 
-electrong vs adobe panel vs nwjs
 
-chromium 
-https://electronjs.org/blog/electron-internals-building-chromium-as-a-library
-https://electronjs.org/docs/development/atom-shell-vs-node-webkit
-
+### some more docs for Adobe dev documentation
+- [Official Adobe Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
+- [Semi Official API Docs](http://ppro.aenhancers.com/)
+- [Non Official but very nice API Docs](http://www.brysonmichael.com/premiereapi-home)
 
  -->
+
+
 
 
 ## Build project page
