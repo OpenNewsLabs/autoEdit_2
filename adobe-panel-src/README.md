@@ -44,7 +44,7 @@ It seems like adobe panel CEP and and Electron use slightly different setup of `
 
 [from electron's docs](https://electronjs.org/blog/electron-internals-building-chromium-as-a-library) and [here](https://electronjs.org/docs/development/atom-shell-vs-node-webkit)
 
-The main difference is noticeable when calling process. `process.versions` in the console for CEP and for electron.
+The main difference is noticeable when calling `window.process.versions` in the console for CEP and for electron.
 
 Due to some of these differences the code base for autoEdit has been adjusted to accomodate and target for the two enviroments.
 
@@ -52,7 +52,9 @@ Due to some of these differences the code base for autoEdit has been adjusted to
 
 - node
 - npm 
-- A copy of [Adobe Premiere](https://www.adobe.com/products/premiere.html)
+- You need to have recent version of [Adobe Premiere](https://www.adobe.com/products/premiere.html) on your system
+- Chrome browser to view the dev tools for the CEP panel 
+- [See here fore more details on JSX language](https://jsx.github.io/doc/tutorial.html) used to interact with Adobe Premiere API and [here](https://jsx.github.io/)
 
 ## setup 
 
