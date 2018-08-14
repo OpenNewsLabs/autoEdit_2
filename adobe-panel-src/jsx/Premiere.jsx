@@ -18,7 +18,15 @@ $._PPP = {
 	 return Folder.userData.fsName+"/autoEdit2";
 	},
 
-	set_source_pos: function(pos){
+	get_current_project_panel_selection_absolute_path: function(){
+		var viewIDs = app.getProjectViewIDs(); 
+		// sample code optimized for a single open project
+		viewSelection = app.getProjectViewSelection(viewIDs[0]);
+		// get string with absolute path to media file
+		return viewSelection[0].getMediaPath();
+	},
+
+	set_source_pos: function(pos, playBool){
 		// pos is in the format of seconds.frames (e.g. 10.5 is 10 seconds, 5 frames) or in timecode ('00;00;10;05')
 		// This might be a useful reference: https://forums.adobe.com/thread/2420603
 		
@@ -26,7 +34,10 @@ $._PPP = {
 		qe.source.player.startScrubbing();
 		qe.source.player.scrubTo(String(pos));
 		qe.source.player.endScrubbing();
-		app.sourceMonitor.play(1.0)
+		// if(playBool){
+		app.sourceMonitor.play(1.0);
+		// }
+	
 
 		// $.sleep(3000);
 		// qe.source.player.endScrubbing();

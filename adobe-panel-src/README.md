@@ -7,33 +7,6 @@ It is now possible to run autoEdit as an Adobe panel. The idea is that when run 
 
 ![Example autoEdit CEP](https://pbs.twimg.com/media/Dkg0waTW4AALCCM.jpg)
 
-<!-- Add list of featues here organised by autoEdit views
-- *New transcript*
--  [ ]Upload from local file in premiere browser
-- _Jsx function_ - get media selection from premiere browser?
-
-*Transcription show*
--  [ ] play sync
-Opens source video from Premiere browser bin into source monitor ( or just from file path)
-Mutes autoEdit video
-Plays source monitor
-
-- Click on selection marks selection in. Source monitor (?)
-
-Jsx functions - scrub to position + play
-
-Jsx functions - Mark in and out In Source viewer
-
-Jsx functions - load media into source viewer
-
-*Paper edit*
-- export paperedit sequence into current ( Eg insert at cursor) or new premier sequence
-
-Jsx functions - create sequence made of clips segments
-
-Jsx functions - preview paper edit sequence ? ( might need to create sequence first)
- -->
-
 ## electron vs adobe panel (vs nwjs)
 
 It seems like adobe panel CEP and and Electron use slightly different setup of `chromium`.
@@ -143,3 +116,36 @@ Local server for adobe panel is at [http://localhost:8099/](http://localhost:809
 - [Official Adobe Sample Panel](https://github.com/Adobe-CEP/Samples/tree/master/PProPanel)
 - [Semi Official API Docs](http://ppro.aenhancers.com/)
 - [Non Official but very nice API Docs](http://www.brysonmichael.com/premiereapi-home)
+
+
+---
+## autoEdit adobe JSX integration
+
+List of featues here organised by autoEdit views. [See this google doc, 'adobe JSX functions for autoEdit Panel' for more details](https://docs.google.com/document/d/1PCivPisinsoIOh7NnceuXgh0ks5h_vwLLFX6gKRW0LM/edit?usp=sharing)
+
+### New transcript
+- [ ] Upload from local file in premiere browser
+
+_Jsx function_ - get media selection from premiere browser?
+
+### Transcription show
+-  [ ] play sync
+
+Opens source video from Premiere browser bin into source monitor ( or just from file path)
+Mutes autoEdit video
+Plays source monitor
+
+- Click on selection marks selection in. Source monitor (?)
+
+_Jsx functions_ - scrub to position + play
+
+_Jsx functions_ - Mark in and out In Source viewer
+
+_Jsx functions_ - load media into source viewer
+
+### Paper edit
+- export paperedit sequence into current ( Eg insert at cursor) or new premier sequence
+
+_Jsx functions_ - create sequence made of clips segments
+
+_Jsx functions_ - preview paper edit sequence ? ( might need to create sequence first)
