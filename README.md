@@ -260,7 +260,7 @@ On commit to  master there is a continuos built setup on Travis CI that builds a
 - [ ] PR and help welcome on creating a continuos integration service for Mac and Windows as well
 
 
-### Deployment as adobe panel - work in progress, under active development
+### Deployment as adobe panel - work in progress 🚧
 
 see dedicated README.md in [`adobe-panel-src/README.md`](./adobe-panel-src/README.md) for more details.
 

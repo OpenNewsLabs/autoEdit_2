@@ -1,5 +1,5 @@
 
-# Deployment as adobe panel - work in progress, under active development
+# Deployment as adobe panel - work in progress 🚧
 
 CEP stands for [`Common Extensibility Platform`](https://www.adobe.io/apis/creativecloud/cep.html) and it's an SDK by Adobe to create panels for the Adobe suite.
 
@@ -132,9 +132,7 @@ Everytime you want to update changes in the panel you need to close and reopen i
 
 ### 3. CEP local server
 
-Local server for adobe panel is at [http://localhost:8099/](http://localhost:8099/), there you can see the dev tools inspector and console.
-
-
+Local server for adobe panel is at [http://localhost:8099/](http://localhost:8099/), there you can see the dev tools inspector and console."
 
 ## some more docs for Adobe dev documentation
 
