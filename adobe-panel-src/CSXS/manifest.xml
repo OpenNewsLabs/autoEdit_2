@@ -11,7 +11,7 @@
 			<Locale Code="All" />
 		</LocaleList>
 		<RequiredRuntimeList>
-			<RequiredRuntime Name="CSXS" Version="6.0" />
+			<RequiredRuntime Name="CSXS" Version="7.0" />
 		</RequiredRuntimeList>
 	</ExecutionEnvironment>
 
@@ -26,6 +26,7 @@
 						<Parameter>--allow-file-access-from-files</Parameter>
 						<Parameter>--enable-nodejs</Parameter>
 						<Parameter>--mixed-context</Parameter>
+						<Parameter>--enable-media-stream</Parameter>
 					</CEFCommandLine>
 				</Resources>
 				<Lifecycle>

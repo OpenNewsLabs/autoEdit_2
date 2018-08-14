@@ -16,10 +16,25 @@ var path = require('path');
 var fs = require('fs');
 var medeadown = require('medeadown'); 
 var LinvoDB = require('linvodb3');
+// var medeadown = cep_node.require('medeadown'); 
+// var LinvoDB = cep_node.require('linvodb3');
+var sanitize = require("sanitize-filename");
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
 var dataPath;
 var tmpMediaFolder;
 var mediaFolder;
+
+var transcriptionModel = 'transcription';
+var papereditModel = 'paperedit';
+// Non-strict always, can be left empty
+// https://github.com/Ivshti/linvodb3/blob/d34220d2043d478f6db6ff9aa5075dca39c646bb/README.md#install-initialize-pick-backend
+var transcriptionSchema = {};
+var papereditSchema = {};
+var Transcription;
+var Paperedit;
+var DB = {};
+
+
 if(window.ENV_ELECTRON){
   console.info('setting db in electron');
   var electron = require('electron');
@@ -31,22 +46,40 @@ if(window.ENV_ELECTRON){
   mediaFolder = path.join(dataPath, 'media');
   setTmpFolders(tmpMediaFolder,mediaFolder); 
   console.log('ENV_ELECTRON dataPath',dataPath,typeof dataPath, LinvoDB.dbPath);
+
+  var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+  var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+  Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+  Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
   
 }
 if(window.ENV_CEP){
   console.info('setting db in Adobe CEP')  
-  // var medeadown = require(`${__dirname}/node_modules/medeadown`);
+  //  medeadown = require(`../node_modules/medeadown`);
   // var dataPath = Folder.userData.fsName;
   window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+   console.log('$._PPP.get_user_data_path adobeDataPath',adobeDataPath);
     dataPath = adobeDataPath;
+    // window.cep.fs.writeFile(adobeDataPath+"/test.md", "Your data goes here");
+    window.cep.fs.readFile(path.join(adobeDataPath, 'transcription.db'))
+    // adobeDataPath = process.cwd();
     LinvoDB.dbPath = adobeDataPath;
+    // LinvoDB.dbPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
     tmpMediaFolder = path.join(adobeDataPath, 'tmp_media');
     mediaFolder = path.join(adobeDataPath, 'media');
-    console.log('ENV_CEP adobeDataPath',adobeDataPath,typeof adobeDataPath, LinvoDB.dbPath);
+    console.log('ENV_CEP adobeDataPath', LinvoDB.dbPath);
     // if media folder does not exists create it
     setTmpFolders(tmpMediaFolder,mediaFolder);
+
+    var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+    var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+    Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+    Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
+   
+
   });
 }
+
 // for troubleshooting
 window.LinvoDB =  LinvoDB;
 // LinvoDB.dataPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
@@ -73,19 +106,10 @@ function setTmpFolders(tmpMediaFolder,mediaFolder){
   }
 }
 
-// LinvoDB.defaults.store = { db: medeadown };
-LinvoDB.defaults.store = {db:require("level-js")}
+// LinvoDB.defaults.store = { db: medeadown }; 
+// LinvoDB.defaults.store = {db:require("level-js")};
 // setting up transcription model in database.
-var transcriptionModel = 'transcription';
-var papereditModel = 'paperedit';
-// Non-strict always, can be left empty
-var transcriptionSchema = {};
-var papereditSchema = {};
-var transcriptionOptions = {};
-var papereditOptions = {};
-var Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
-var Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
-var DB = {};
+
 /**
  * Create a callback function for LinvoDB queries
  * @param {function} success - Success callback

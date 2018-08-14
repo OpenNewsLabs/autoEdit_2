@@ -17,6 +17,112 @@
   }
   </script>
   <link rel="stylesheet" href="custom.css">
+
+    <!-- Setup database and electron stuff -->
+    <script>
+      "use strict";
+    
+      // Is browser Eg client side app
+      if(window.process === undefined){
+        window.ENV ='browser';
+        window.ENV_BROSWER = true;
+        window.ENV_ELECTRON = false;
+        window.ENV_CEP = false;
+        console.debug("In browser Enviroment"); 
+      } else {
+        // if not in the browser enviroment 
+        console.info('Using v8 engine v: ', window.process.versions.v8);
+        console.info('Using node v: ', window.process.versions.node);
+         // Is electron 
+        if(window.process.versions.electron !== undefined){
+          window.ENV ='electron';
+          window.ENV_ELECTRON = true;
+          window.ENV_BROSWER = false;
+          window.ENV_CEP = false;
+          console.debug("In Electron Enviroment"); 
+          console.info('In Electron v: ', window.process.versions.electron);
+          console.info('Using chrome v: ', window.process.versions.chrome);
+        }
+        // if it is cep -> is adobe premiere panel 
+        // CEP stands for Adobe Common Extensibility Platform 
+        // https://www.adobe.io/apis/creativecloud/cep.html
+        //  could also check for process.versions.cep or  window.cep_node or  process.versions.chromium
+        if(window.process.versions.cep !== undefined) {
+          window.ENV ='cep';
+          window.ENV_CEP = true;
+          window.ENV_BROSWER = false;
+          window.ENV_ELECTRON = false;
+          console.debug("In Adobe CEP Enviroment"); 
+          console.info('In Chromium v: ', window.process.versions.chromium);
+          console.info('In CEP (Adobe Common Extensibility Platform ) v: ', window.process.versions.cep);
+          console.info('adjusting current working directory for Adobe CEP');
+          console.log('Starting directory: ' + process.cwd());
+          try {
+            process.chdir(__dirname);
+            // process.chdir('..');
+            console.log('New directory: ' + process.cwd());
+          }
+          catch (err) {
+            console.log('chdir: ' + err);
+          }
+          
+        }
+      }
+    
+      // if you drag a file onto the app, it stops from the window opening that file. 
+      // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
+      document.addEventListener('drop', function(e) {
+        // console.log(e);
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      document.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    
+      if(window.ENV_ELECTRON){
+        const {dialog} = require('electron').remote;
+        window.DB = require('./db.js');
+    
+        window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
+        window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
+        window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
+    
+        window.SpeechmaticsKeys = require('./speechmatics_keys.js').getSpeechmaticsAPIkeys;
+        window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
+        window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
+    
+        window.revKeys = require('./rev_keys.js').getRevAPIkeys;
+        window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
+        window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
+    
+        window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
+        window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
+        window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+      }
+    
+      if(window.ENV_CEP){
+        const envPath = `${__dirname}/electron`
+        window.DB = require(`${envPath}/db.js`);
+    
+        window.IBMWatsonKeys = require(`${envPath}/watson_keys.js`).getWatsonAPIkeys;
+        window.setWatsonAPIkeys = require(`${envPath}/watson_keys.js`).setWatsonAPIkeys;
+        window.areWatsonAPIkeysSet = require(`${envPath}/watson_keys.js`).areWatsonAPIkeysSet;
+    
+        window.SpeechmaticsKeys = require(`${envPath}/speechmatics_keys.js`).getSpeechmaticsAPIkeys;
+        window.setSpeechmaticsAPIkeys = require(`${envPath}/speechmatics_keys.js`).setSpeechmaticsAPIkeys;
+        window.areSpeechmaticsAPIkeysSet = require(`${envPath}/speechmatics_keys.js`).areSpeechmaticsAPIkeysSet;
+    
+        window.revKeys = require(`${envPath}/rev_keys.js`).getRevAPIkeys;
+        window.setRevAPIkeys = require(`${envPath}/rev_keys.js`).setRevAPIkeys;
+        window.areRevAPIkeysSet = require(`${envPath}/rev_keys.js`).areRevAPIkeysSet;
+    
+        window.BBCKeys = require(`${envPath}/bbc_keys.js`).getBBCAPIkeys;
+        window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
+        window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
+      } 
+    </script>
 </head>
 <body>
   <!-- NAVBAR  -->
@@ -67,132 +173,26 @@
 
   <div id="main"></div>
 
-  <!-- Setup database and electron stuff -->
-  <script>
-  "use strict";
-
-  // Is browser Eg client side app
-  if(window.process === undefined){
-    window.ENV ='browser';
-    window.ENV_BROSWER = true;
-    window.ENV_ELECTRON = false;
-    window.ENV_CEP = false;
-    console.debug("In browser Enviroment"); 
-  } else {
-    // if not in the browser enviroment 
-    console.info('Using v8 engine v: ', window.process.versions.v8);
-    console.info('Using node v: ', window.process.versions.node);
-     // Is electron 
-    if(window.process.versions.electron !== undefined){
-      window.ENV ='electron';
-      window.ENV_ELECTRON = true;
-      window.ENV_BROSWER = false;
-      window.ENV_CEP = false;
-      console.debug("In Electron Enviroment"); 
-      console.info('In Electron v: ', window.process.versions.electron);
-      console.info('Using chrome v: ', window.process.versions.chrome);
-    }
-    // if it is cep -> is adobe premiere panel 
-    // CEP stands for Adobe Common Extensibility Platform 
-    // https://www.adobe.io/apis/creativecloud/cep.html
-    //  could also check for process.versions.cep or  window.cep_node or  process.versions.chromium
-    if(window.process.versions.cep !== undefined) {
-      window.ENV ='cep';
-      window.ENV_CEP = true;
-      window.ENV_BROSWER = false;
-      window.ENV_ELECTRON = false;
-      console.debug("In Adobe CEP Enviroment"); 
-      console.info('In Chromium v: ', window.process.versions.chromium);
-      console.info('In CEP (Adobe Common Extensibility Platform ) v: ', window.process.versions.cep);
-      console.info('adjusting current working directory for Adobe CEP');
-      console.log('Starting directory: ' + process.cwd());
-      try {
-        process.chdir(__dirname);
-        // process.chdir('..');
-        console.log('New directory: ' + process.cwd());
-      }
-      catch (err) {
-        console.log('chdir: ' + err);
-      }
-      
-    }
-  }
-
-  // if you drag a file onto the app, it stops from the window opening that file. 
-  // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
-  document.addEventListener('drop', function(e) {
-    // console.log(e);
-    e.preventDefault();
-    e.stopPropagation();
-  });
-  document.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-
-  if(window.ENV_ELECTRON){
-    const {dialog} = require('electron').remote;
-    window.DB = require('./db.js');
-
-    window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
-    window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
-    window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
-
-    window.SpeechmaticsKeys = require('./speechmatics_keys.js').getSpeechmaticsAPIkeys;
-    window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
-    window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
-
-    window.revKeys = require('./rev_keys.js').getRevAPIkeys;
-    window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
-    window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
-
-    window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
-    window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
-    window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
-  }
-
-  if(window.ENV_CEP){
-    const envPath = `${__dirname}/electron`
-    window.DB = require(`${envPath}/db.js`);
-
-    window.IBMWatsonKeys = require(`${envPath}/watson_keys.js`).getWatsonAPIkeys;
-    window.setWatsonAPIkeys = require(`${envPath}/watson_keys.js`).setWatsonAPIkeys;
-    window.areWatsonAPIkeysSet = require(`${envPath}/watson_keys.js`).areWatsonAPIkeysSet;
-
-    window.SpeechmaticsKeys = require(`${envPath}/speechmatics_keys.js`).getSpeechmaticsAPIkeys;
-    window.setSpeechmaticsAPIkeys = require(`${envPath}/speechmatics_keys.js`).setSpeechmaticsAPIkeys;
-    window.areSpeechmaticsAPIkeysSet = require(`${envPath}/speechmatics_keys.js`).areSpeechmaticsAPIkeysSet;
-
-    window.revKeys = require(`${envPath}/rev_keys.js`).getRevAPIkeys;
-    window.setRevAPIkeys = require(`${envPath}/rev_keys.js`).setRevAPIkeys;
-    window.areRevAPIkeysSet = require(`${envPath}/rev_keys.js`).areRevAPIkeysSet;
-
-    window.BBCKeys = require(`${envPath}/bbc_keys.js`).getBBCAPIkeys;
-    window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
-    window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
-  } 
-</script>
-
-
 <script>
 //when in electron context, links are opened using defailt browser, rather then electron view, when they have class externalLink
   if (!window.ENV_BROSWER) {
-
     var linksOnPage = document.querySelectorAll("a");
-
     linksOnPage.forEach(function(item){
       if(item.classList[0] == "externalLink" ){
         item.addEventListener("click", function(e){
           e.preventDefault();
-          const {shell} = require('electron')
-
-        shell.openExternal(item.href);
-         
+          if(window.ENV_ELECTRON){
+            const {shell} = require('electron')
+            shell.openExternal(item.href);
+          }
+          if(window.ENV_CEP){
+             // https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#open-url-link-in-default-browser
+            window.cep.util.openURLInDefaultBrowser(item.href)
+          }
         })
       }
     })
   }
-
   </script>
 
  <script>
@@ -239,6 +239,8 @@
         //  function(fileName){
         //   if(cb){cb(fileName)};
         // });
+        
+        // https://github.com/pickercenter/autoedit-panel/blob/master/lib/CEPEngine_extensions.js#L154
       }
       
     }
