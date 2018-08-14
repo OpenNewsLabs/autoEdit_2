@@ -23,7 +23,7 @@ var transcription_generate = require('../lib/interactive_transcription_generator
 var dataPath;
 var tmpMediaFolder;
 var mediaFolder;
-
+ // setup for initialising db path inside enviroment scope 
 var transcriptionModel = 'transcription';
 var papereditModel = 'paperedit';
 // Non-strict always, can be left empty
@@ -33,7 +33,6 @@ var papereditSchema = {};
 var Transcription;
 var Paperedit;
 var DB = {};
-
 
 if(window.ENV_ELECTRON){
   console.info('setting db in electron');
@@ -46,7 +45,7 @@ if(window.ENV_ELECTRON){
   mediaFolder = path.join(dataPath, 'media');
   setTmpFolders(tmpMediaFolder,mediaFolder); 
   console.log('ENV_ELECTRON dataPath',dataPath,typeof dataPath, LinvoDB.dbPath);
-
+  // initialising db path inside enviroment scope 
   var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
   var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
   Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
@@ -70,19 +69,14 @@ if(window.ENV_CEP){
     console.log('ENV_CEP adobeDataPath', LinvoDB.dbPath);
     // if media folder does not exists create it
     setTmpFolders(tmpMediaFolder,mediaFolder);
-
+     // initialising db path inside enviroment scope of 
     var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
     var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
     Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
     Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
    
-
   });
 }
-
-// for troubleshooting
-window.LinvoDB =  LinvoDB;
-// LinvoDB.dataPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
 
 function setTmpFolders(tmpMediaFolder,mediaFolder){
   if (!fs.existsSync(tmpMediaFolder)) {

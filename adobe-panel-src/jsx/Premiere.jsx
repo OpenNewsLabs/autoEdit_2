@@ -26,8 +26,8 @@ $._PPP = {
 		qe.source.player.startScrubbing();
 		qe.source.player.scrubTo(String(pos));
 		qe.source.player.endScrubbing();
+		app.sourceMonitor.play(1.0)
 
-		// app.sourceMonitor.play(1.0)
 		// $.sleep(3000);
 		// qe.source.player.endScrubbing();
 		// app.sourceMonitor.closeClip();
