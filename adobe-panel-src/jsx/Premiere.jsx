@@ -21,9 +21,9 @@ $._PPP = {
 		var seq = app.project.activeSequence;
 		alert(JSON.stringify(seq));
 		var vTrack1 = seq.videoTracks[0];
-		alert(vTrack1);
+		alert(JSON.stringify(vTrack1));
 		var first = app.project.rootItem.children[0];
-		alert(first);
+		alert(JSON.stringify(first));
 		vTrack1.insertClip(first, '00;00;00;00');
 	},
 
