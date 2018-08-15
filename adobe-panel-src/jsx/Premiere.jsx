@@ -13,6 +13,10 @@ $._PPP = {
 		return "done"
 	},
 
+	create_sequence_from_paper_edit: function(options){
+		var options = JSON.parse(options);
+	},
+
 	get_user_data_path: function(){
 	//  alert(Folder.userData.fsName+"/autoEdit2");
 	 return Folder.userData.fsName+"/autoEdit2";
@@ -24,30 +28,36 @@ $._PPP = {
 		var viewIDs = app.getProjectViewIDs(); 
 		// sample code optimized for a single open project
 		// getting selection in project panel 
-		viewSelection = app.getProjectViewSelection(viewIDs[0]);
-		if(viewSelection !== undefined){
+		// if nothing selected it returns an empty array
+		var viewSelection = app.getProjectViewSelection(viewIDs[0]);
+		// if something is selected 
+		if(viewSelection.length !== 0){
 			// path to selected media in 
 			var selectionFilePath = viewSelection[0].getMediaPath();
-			// checking against name
+			// checking that what is selected is same as transcription source file in autoEdit 
+			// by comparing names if name match add to source monitor
+		
 			if(options.fileName === getFilenameFromPath(selectionFilePath) ){
 				// load file in source monitor 
 				app.sourceMonitor.openFilePath(selectionFilePath);
 				playTc(options.timecode);
+			
 			}
 			// if it is not it tries to see if it is present in the filePath
 			// if the transctription source file does not match the file name of the selected file in source monitor
 			else {
 				// check if file exists . can we use fs?
-				var fileName = new File(options.fileName);  
-				if(fileName.exists){
-					app.sourceMonitor.openFilePath(options.fileName);
+				var filePath = new File(options.filePath);  
+				if(filePath.exists){
+					app.sourceMonitor.openFilePath(options.filePath);
 					playTc(options.timecode);
 				} 
 				// if it is not present in either, returns error, file not found, add to project bin and try again.
 				else{
 					// if autoEdit original file path does not exist anymore 
 					// alert message, file not present, add file to premiere bin. 
-					alert('file not present, add file to premiere project panel')
+					alert('media file for this transcription not present, add file to premiere project panel');
+					return 'file-not-found';
 				} 
 			}
 		}
@@ -57,21 +67,23 @@ $._PPP = {
 				// TODO: 
 
 			// see if file exists on user's computer
-			var fileName = new File(options.filePath);  
-				if(fileName.exists){
-					// add project to adobe project  
-					var tmpFilesToImpot = [];
-					tmpFilesToImpot.push(options.filePath)
-					app.project.importFiles(tmpFilesToImpot, 1,app.project.getInsertionBin(),0)
+			var filePath = new File(options.filePath);  
+				if(filePath.exists){
+					// TODO: add project to adobe project  
+					// var tmpFilesToImpot = [];
+					// tmpFilesToImpot.push(options.filePath)
+					// app.project.importFiles(tmpFilesToImpot, 1, app.project.getInsertionBin(),0)
 					
-					app.sourceMonitor.openFilePath(options.fileName);
+					app.sourceMonitor.openFilePath(options.filePath);
 					playTc(options.timecode);
+					return 'done'
 				} 
 				// if it is not present in either, returns error, file not found, add to project bin and try again.
 				else{
 					// if autoEdit original file path does not exist anymore 
 					// alert message, file not present, add file to premiere bin. 
-					alert('file not present, add file to premiere project panel')
+					alert('file not present on computer, add and select file to premiere project panel and try again');
+					return 'file-not-found';
 				} 
 
 		}
