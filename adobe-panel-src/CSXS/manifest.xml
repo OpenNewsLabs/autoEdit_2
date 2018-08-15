@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ExtensionManifest Version="6.0" ExtensionBundleId="com.autoedit.it" ExtensionBundleVersion="1.0.0" ExtensionBundleName="autoEdit" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ExtensionManifest Version="6.0" ExtensionBundleId="com.autoedit2.it" ExtensionBundleVersion="1.0.0" ExtensionBundleName="autoedit2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<ExtensionList>
-		<Extension Id="com.autoedit.it" Version="1.0" />
+		<Extension Id="com.autoedit2.it" Version="1.0" />
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
@@ -16,7 +16,7 @@
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.autoedit.it">
+		<Extension Id="com.autoedit2.it">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./electron/index.html</MainPath>
@@ -34,7 +34,7 @@
 				</Lifecycle>
 				<UI>
 					<Type>Panel</Type>
-					<Menu>autoEdit</Menu>
+					<Menu>autoEdit2</Menu>
 					<Geometry>
 						<Size>
 							<Height>300</Height>
