@@ -29,7 +29,7 @@
     "adobe-panel-dev-lib": "sync-files lib ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/lib",
     "adobe-panel-dev-packagejson": "sync-files ./package.json ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/package.json",
     "adobe-panel-dev-node_modules": "sync-files node_modules ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit-panel/node_modules",
-    "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson",
+    "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson && echo 'built dev autoEdit CEP panel in adobe'",
     "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev"
   },
   "build": {
