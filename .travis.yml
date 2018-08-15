@@ -32,6 +32,7 @@ env:
   global:
     # - TRAVIS_TAG="1.0.12"
     # - UPLOADTOOL_SUFFIX="autoEdit2"
+    - IS_PRERELEASE="true"
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
