@@ -14,7 +14,17 @@ $._PPP = {
 	},
 
 	create_sequence_from_paper_edit: function(options){
-		var options = JSON.parse(options);
+		// var options = JSON.parse(options);
+		// var someID	= "xyz123";
+		// var seqName = prompt('Name of sequence?',	 'Some Descriptive Name', 'Sequence Naming Prompt');
+		// var seq = app.project.createNewSequence(options.sequenceName, someID);
+		var seq = app.project.activeSequence;
+		alert(JSON.stringify(seq));
+		var vTrack1 = seq.videoTracks[0];
+		alert(vTrack1);
+		var first = app.project.rootItem.children[0];
+		alert(first);
+		vTrack1.insertClip(first, '00;00;00;00');
 	},
 
 	get_user_data_path: function(){
