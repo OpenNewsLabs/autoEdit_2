@@ -16,7 +16,7 @@
 	</ExecutionEnvironment>
 
 	<DispatchInfoList>
-		<Extension Id="com.autoedit.it">
+		<Extension Id="com.autoedit2.it">
 			<DispatchInfo >
 				<Resources>
 					<MainPath>./electron/index.html</MainPath>
