@@ -25,7 +25,7 @@ Due to some of these differences the code base for autoEdit has been adjusted to
 
 - node
 - npm 
-- You need to have recent version of [Adobe Premiere](https://www.adobe.com/products/premiere.html) on your system
+- You need to have recent version of [Adobe Premiere](https://www.adobe.com/products/premiere.html) on your system. Version `12.11` to ensure compatibility with all features.
 - Chrome browser to view the dev tools for the CEP panel 
 - [See here fore more details on JSX language](https://jsx.github.io/doc/tutorial.html) used to interact with Adobe Premiere API and [here](https://jsx.github.io/)
 
