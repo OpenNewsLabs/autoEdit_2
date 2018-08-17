@@ -14,17 +14,75 @@ $._PPP = {
 	},
 
 	create_sequence_from_paper_edit: function(options){
-		// var options = JSON.parse(options);
-		// var someID	= "xyz123";
-		// var seqName = prompt('Name of sequence?',	 'Some Descriptive Name', 'Sequence Naming Prompt');
-		// var seq = app.project.createNewSequence(options.sequenceName, someID);
+		// alert(options);
+		var options = JSON.parse(options);
+		var paperEdit = options.edlJson;
+		var sequenceName = options.edlJson.title;
+		// alert(sequenceName);
+
+		// Create sequence 
+		// TODO: find out what's the role of sequence ID. eg does it have to be unique? can you retrieve sequences by ids
+		var someID	= "xyz123";
+		// OR Could get the name of the sequence 
+		// var seqName = prompt('Name of sequence?', '+sequenceName+', 'Sequence Naming Prompt');
+		
+		// var seq = app.project.createNewSequence(sequenceName, someID);
+
+		// OR could add to existing open sequence eg user could chose, add extra options. flag for this.
 		var seq = app.project.activeSequence;
-		alert(JSON.stringify(seq));
+
 		var vTrack1 = seq.videoTracks[0];
-		alert(JSON.stringify(vTrack1));
-		var first = app.project.rootItem.children[0];
-		alert(JSON.stringify(first));
-		vTrack1.insertClip(first, '00;00;00;00');
+
+		// TODO: temporary path - need to reverse in `getEDLJsonDataFromDom`
+		// aldo needs to fix EDL composer index.js either reverse or append
+		var clipEvents = paperEdit.events.reverse();
+		
+		// // find clips from paper-edit events in project panel browser
+		// var clipsInProjectPanel = app.project.rootItem.children;
+		// alert(JSON.stringify(paperEdit.events));
+		for(var i=0;  i< clipEvents.length; i++ ){
+			var papercut = clipEvents[i];
+			// alert(JSON.stringify( papercut));
+		
+			// https://forums.adobe.com/thread/2455401
+			var arrayOfProjectItemsReferencingSomePath = app.project.rootItem.findItemsMatchingMediaPath( papercut.clipName, 1);
+			var clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0]
+			
+			// alert(JSON.stringify(clipInProjectPanel))
+			// var first = app.project.rootItem.children[0];
+
+			// alert(JSON.stringify(first));
+			// var clipInProjectPanel = app.project.rootItem.children.find(function(clipsInProjectPanel) {
+			// 	return clipsInProjectPanel.name ===  papercut.clipName;
+			//   });
+
+			clipInProjectPanel.setInPoint(parseFloat(papercut.startTime));
+			clipInProjectPanel.setOutPoint(parseFloat(papercut.endTime));
+			// insert clip sequence offset is in this format '00;00;00;00' edlJson offset is this format '00:00:28:08'
+			
+			var lastClipEndTime = '00;00;00;00';
+			// first clip
+			if(i===0){
+				vTrack1.insertClip(clipInProjectPanel, '00;00;00;00');
+				// TODO: might need to convert from seconds to `;` notation 
+				
+				// var first = app.project.rootItem.children[0];
+				// var lastCLip = vTrack1.clips[vTrack1.clips.menuItems -1 ];
+				// alert(JSON.stringify(clipInProjectPanel))
+				// parseFlaot(papercut.startTime) + parseFloat(papercut.endTime)
+				// lastClipEndTime = clipInProjectPanel.end.seconds;
+				lastClipEndTime = parseFloat(papercut.endTime);
+			}
+			else {
+				// alert(JSON.stringify(lastClipEndTime))
+				// var lastClip = vTrack1.clips[vTrack1.clips.menuItems -1 ];
+				// ALso if it doesn't work, might need to get the clip from the sequence
+				// lastClipEndTime
+				// alert(lastClipEndTime);
+				// alert(fromSeconds(lastClipEndTime, 25));
+				vTrack1.insertClip(clipInProjectPanel,  lastClipEndTime);		
+			}
+		}	
 	},
 
 	get_user_data_path: function(){
