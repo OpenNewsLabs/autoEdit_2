@@ -18,6 +18,8 @@ $._PPP = {
 		var options = JSON.parse(options);
 		var paperEdit = options.edlJson;
 		var sequenceName = options.edlJson.title;
+		
+	
 		// alert(sequenceName);
 
 		// Create sequence 
@@ -33,8 +35,9 @@ $._PPP = {
 
 		var vTrack1 = seq.videoTracks[0];
 
-		// TODO: temporary path - need to reverse in `getEDLJsonDataFromDom`
-		// aldo needs to fix EDL composer index.js either reverse or append
+		// TODO: data structure from  `getEDLJsonDataFromDom`
+		// but cannot figure out why it arrives in reversed order here, it seems fine in EDL file creation
+		// which uses same function 
 		var clipEvents = paperEdit.events.reverse();
 		
 		// // find clips from paper-edit events in project panel browser
@@ -89,6 +92,8 @@ $._PPP = {
 	//  alert(Folder.userData.fsName+"/autoEdit2");
 	 return Folder.userData.fsName+"/autoEdit2";
 	},
+
+	
 
 	open_file_in_source_monitor_and_play_if_present: function(options){
 		var options = JSON.parse(options);
