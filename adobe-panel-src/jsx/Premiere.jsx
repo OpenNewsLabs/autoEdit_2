@@ -125,10 +125,18 @@ $._PPP = {
 		// no clip selected in project panel  
 		else{
 			// see if file exists in project bin 
-				// TODO: 
-
-			// see if file exists on user's computer
-			var filePath = new File(options.filePath);  
+			// TODO: 
+			var arrayOfProjectItemsReferencingSomePath = app.project.rootItem.findItemsMatchingMediaPath( options.fileName, 1);
+			// if it finds the video element in project panel. loads it source panel.
+			if(arrayOfProjectItemsReferencingSomePath.length !== 0){
+				var clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0];
+				app.sourceMonitor.openFilePath(clipInProjectPanel.getMediaPath());
+				playTc(options.timecode);
+				return 'done';
+			}
+			else {
+				// see if file exists on user's computer
+				var filePath = new File(options.filePath);  
 				if(filePath.exists){
 					// TODO: add project to adobe project  
 					// var tmpFilesToImpot = [];
@@ -137,16 +145,16 @@ $._PPP = {
 					
 					app.sourceMonitor.openFilePath(options.filePath);
 					playTc(options.timecode);
-					return 'done'
-				} 
+					return 'done';
+				} 	
 				// if it is not present in either, returns error, file not found, add to project bin and try again.
-				else{
+				else {
 					// if autoEdit original file path does not exist anymore 
 					// alert message, file not present, add file to premiere bin. 
 					alert('file not present on computer, add and select file to premiere project panel and try again');
 					return 'file-not-found';
 				} 
-
+			}				
 		}
 		
 		function playTc(timecode){
