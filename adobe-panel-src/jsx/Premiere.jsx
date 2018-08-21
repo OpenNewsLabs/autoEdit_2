@@ -14,8 +14,6 @@ $._PPP = {
 	},
 
 	create_sequence_from_paper_edit: function(options){
-		alert('yooo')
-		alert(options); 
 		var options = JSON.parse(options);
 		var paperEdit = options.edlJson;
 		var sequenceName = options.edlJson.title;
