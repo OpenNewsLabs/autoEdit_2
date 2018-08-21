@@ -60,7 +60,7 @@ $(document).ready(function () {
   // Name in page document title
   // TODO: can replace thie with electron's name.
 
-
+  // TODO: need to remove, simplify this
   // For mobile version safari doesn't play webm
   window.userAgentSafari = false;
 
@@ -72,58 +72,8 @@ $(document).ready(function () {
    * packaged as desktop app without too much tweaking.
    */
 
-  if (window.process !== undefined) {
-    console.info('In Electron v ', window.process.versions.electron);
-    console.info('In Chromium v ', window.process.versions.chromium);
-    console.info('Using chrome v ', window.process.versions.chrome);
-    console.info('Using v8 engine v ', window.process.versions.v8);
-    console.info('Using node v ', window.process.versions.node);
-
-    // TODO: update this part with Electron compatible code
-
-    // var gui = window.nw;
-    // Create menu
-    // var menu = new gui.Menu({ type: 'menubar' });
-    // Default mac menu bar comands + copy, cut, paste
-    // TODO: replace with variable for app name, centralize from package.json name.
-    // menu.createMacBuiltin(config.appName);
-    // Append Menu to Window
-    // gui.Window.get().menu = menu;
-
-    // console.debug('node-webkit', window.process.versions['node-webkit']);
-    // console.debug('node', window.process.versions['node']);
-
-    /**
-     * adding NWJS console keyboard shortcut to be able to trigger that in production
-     */
-    // var option = {
-    //   key: 'Ctrl+Alt+J',
-    //   active: function() {
-    //     console.log('Global desktop keyboard shortcut:', this.key, 'active.');
-    //     window.nw.Window.get().showDevTools();
-    //   },
-    //   failed: function(msg) {
-    //     // :(, fail to register the |key| or couldn't parse the |key|.
-    //     console.error(msg);
-    //   }
-    // };
-
-    // // Create a shortcut with |option|.
-    // var shortcut = new gui.Shortcut(option);
-    // // Register global desktop shortcut, which can work without focus.
-    // gui.App.registerGlobalHotKey(shortcut);
-    // // end of console keyboard shortcut
-
-    // // Override all external link clicks:
-    // $('body').on('click', '[target=_blank]', function(eve) {
-    //   eve.preventDefault();
-    //   gui.Shell.openExternal($(this).attr('href'));
-    // });
-    //
-    //
-
-  } else {
-    console.debug('NOT USING Electron ');
+  if (window.ENV_BROSWER) {
+    console.debug('In the browser ');
     // Chrome as both safari and chrome in the user agent
     if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1) {
       window.userAgentSafari = true;
@@ -1142,7 +1092,7 @@ module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
 __p+='<div class="container">\n  <!-- Demo notice  -->\n  ';
- if(!window.frontEndEnviromentElectron ){
+ if(!window.ENV_ELECTRON ){
 __p+='\n  <div class="alert alert-warning alert-dismissible" role="alert">\n    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n    <strong>You are viewing the app in demo mode</strong>.<br>\n    <strong>Which means you cannot create a Paperedit</strong>.<br>\n    <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n    To view demo/example Paperedits <a href="/demo/#paperedits"> click here.</a><br>\n    To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n  </div>  \n  ';
  }
 __p+='\n  <!-- end demo notice  -->\n\n  <!-- Breadcrumb  -->\n  <ol class="breadcrumb">\n    <li><a href="#transcriptions">Paperedits</a></li>\n    <li class="active">New </a></li>\n  </ol>\n  <!--  end Breadcrumb -->\n  <form id="form">\n    <!-- File "upload" -->\n    <div class="row">\n      <div class="col-xs-12 col-sm-5 col-md-5 col-lg-5">\n        <p>Chose a title and description for your paper-edit. </p>\n        <p>Transcriptions that you have previously added in autoEdit will be available in the next view once you click save.</p>\n      </div><!-- ./col -->\n      <!-- Title and description -->\n      <div class="col-xs-12 col-sm-7 col-md-7 col-lg-7">\n        <div class="form-group">\n          <label for="title">Title of Paperedit</label>\n          <input type="text" name="title" value="'+
@@ -1159,9 +1109,25 @@ var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n<style media="screen">\n.highlighted {\n  background-color: yellow;\n\n}\n\n.highlighted-used {\n  background-color: #FFFF99;\n  /*FFFFCC*/\n}\n\n.transcript-n-text.row {\n  height: 70vh;\n  overflow: scroll;\n}\n\n.transcriptionsTabs{\n height: 90vh;\n overflow: scroll;\n}\n\n/*.video {\nheight: 20vh;\n}*/\n\n.embed-responsive-16by9 {\n  padding-bottom: 30%!important;\n}\n\n.syncPlayTest {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n\n/*Dragula style*/\n\n.gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n  -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n  width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n  height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, .5);\n  border-radius: 10px;\n  border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #ffffff;\n}\n\n</style>\n\n\n<div class="container-fluid">\n  <div class="row">\n    <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n      <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#paperedits">Paperedits</a></li>\n        <li class="active">'+
+__p+='\n\n<!-- TODO: This should not not go here but in css folder -->\n<style media="screen">\n.highlighted {\n  background-color: yellow;\n\n}\n\n.highlighted-used {\n  background-color: #FFFF99;\n  /*FFFFCC*/\n}\n\n.transcript-n-text.row {\n  height: 70vh;\n  overflow: scroll;\n}\n\n.transcriptionsTabs{\n height: 90vh;\n overflow: scroll;\n}\n\n/*.video {\nheight: 20vh;\n}*/\n\n.embed-responsive-16by9 {\n  padding-bottom: 30%!important;\n}\n\n.syncPlayTest {\n  background-color: lightgreen;\n  cursor: pointer;\n}\n\n/*Dragula style*/\n\n.gu-mirror {\n  position: fixed !important;\n  margin: 0 !important;\n  z-index: 9999 !important;\n  opacity: 0.8;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";\n  filter: alpha(opacity=80);\n}\n.gu-hide {\n  display: none !important;\n}\n.gu-unselectable {\n  -webkit-user-select: none !important;\n  -moz-user-select: none !important;\n  -ms-user-select: none !important;\n  user-select: none !important;\n}\n.gu-transit {\n  opacity: 0.2;\n  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";\n  filter: alpha(opacity=20);\n}\n\n/*Scrollbar*/\n\n::-webkit-scrollbar {\n  -webkit-appearance: none;\n}\n\n::-webkit-scrollbar:vertical {\n  width: 12px;\n}\n\n::-webkit-scrollbar:horizontal {\n  height: 12px;\n}\n\n::-webkit-scrollbar-thumb {\n  background-color: rgba(0, 0, 0, .5);\n  border-radius: 10px;\n  border: 2px solid #ffffff;\n}\n\n::-webkit-scrollbar-track {\n  border-radius: 10px;\n  background-color: #ffffff;\n}\n\n</style>\n\n<div class="container-fluid">\n  <div class="row">\n      ';
+ if(window.ENV_CEP){
+__p+='\n    <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">\n        ';
+ } 
+__p+='\n\n        ';
+ if(!window.ENV_CEP){
+__p+='\n          <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n         ';
+ } 
+__p+='\n      <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#paperedits">Paperedits</a></li>\n        <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n\n    </div><!-- ./col -->\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice. </p>  <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a></p>\n            <p>You can export a video sequence of the paperedit as video file<code>.mp4</code></p>  \n           <p><a id="exportVideoRemix" class="btn btn-primary btn-sm">\n             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n             Export mp4 file\n           </a></p>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
+'</a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n    </div><!-- ./col -->\n    ';
+ if(!window.ENV_CEP){
+__p+='\n    <div class="col-xs-12 col-sm-1 col-md-1 col-lg-1">\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n    </div><!-- ./col -->\n    ';
+ } 
+__p+='\n  </div><!-- ./row -->\n  <!-- Export modal + button -->\n  <!-- Modal -->\n  <div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n    <div class="modal-dialog" role="document">\n      <div class="modal-content">\n        <div class="modal-header">\n          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n          <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n        </div>\n        <div class="modal-body">\n          <!-- Export options -->\n          <h2><small>Video sequence </small></h2>\n\n         ';
+ if(window.ENV_CEP){
+__p+='\n          <p><a id="btnExportToAdobeSequenceInCep" class="btn btn-primary btn-sm">\n            <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n            Add to sequence <span class="glyphicon glyphicon-save"></span>\n          </a></p>\n         ';
+ } 
+__p+='\n\n          <p>You can export an EDL (edit decision list) to open a video sequence of the paperedit in the video editing software of choice. </p>  <!-- See the user manual for more on this \n            <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.-->\n            <!-- Btn Edl - chronological order | -->\n\n            <p><a id="exportEdl" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL \n            </a></p>\n            <p>You can export a video sequence of the paperedit as video file<code>.mp4</code></p>  \n           <p><a id="exportVideoRemix" class="btn btn-primary btn-sm">\n             <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n             Export mp4 file\n           </a></p>\n\n            <hr>\n            <h2><small>Developer’s options </small> </h2>\n            <p>These are additional advanced export options for developers.</p>\n\n            <p><a id="exportEdlJSON" class="btn btn-primary btn-sm">\n              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n              EDL JSON \n            </a>\n            <!-- End export option -->\n          </div>\n          <div class="modal-footer" >\n            <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n          </div>\n        </div>\n      </div>\n    </div>\n    <!-- Export end modal + button -->   \n  </div><!-- ./col -->\n</div><!-- ./row -->\n\n<!-- Paperedit  -->\n<div class="row">\n  <div id="transcriptSection" class="col-xs-7 col-sm-7 col-md-7 col-lg-7">\n    <!-- <img class="img-responsive hidden-print" src="http://placehold.it/350x150" > -->\n    <!-- Transcripts list  -->\n    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">\n      <!-- Tab panes -->\n      <ul class="nav nav-pills nav-stacked transcriptionsTabs" >\n        ';
  for(var i =0; i<transcriptions.length;i++){ 
 __p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLink"><a  id="'+
 ((__t=( transcriptions[i]._id ))==null?'':__t)+
@@ -1169,7 +1135,11 @@ __p+='\n        <!-- class="active"-->\n        <li class="liTranscriptionTabLin
 ((__t=( transcriptions[i].title ))==null?'':__t)+
 ' </a></li>\n          ';
  }
-__p+='\n        </ul>\n        <!-- Tab paenl End  -->\n      </div>\n      <!-- end transcript list end -->\n      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n        <div class="transcription-tab-content" >\n          <!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- uses hypertranscript.html.ejs template to populate transcription -->\n          </div>   <!--transcript-n -->\n          <!-- End hypertranscript -->\n        </div>\n      </div>\n    </div>\n\n    <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n      <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n      <div class="row">\n        <div id="videoContainer" class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n          <video id="videoPreview" class="videoPlayer" width="400" >\n            <!--   <source src="" type="video/mp4"> -->\n            <!--   <source src="" type="video/ogg"> -->\n            Your browser does not support HTML5 video.\n          </video>\n        </div>\n        <!--  col -->\n      </div>\n      <!--  row -->\n      <!-- <hr> -->\n\n<br>\n    <div class="panel panel-default">\n    <div class="panel-heading">\n\n\n      <div class="btn-group" role="group" aria-label="...">\n      <button type="button" class="btn btn-sm btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  Beta   </button>\n      <button type="button" class="btn btn-sm btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> \n      <button type="button" class="btn btn-sm btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n\n      <!-- TODO: story point should triggere a modal to get the story point info -->\n      <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-sm btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n      <!-- <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-sm btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button> -->\n      <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-sm btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n      </div>\n\n\n    </div><!-- container panel -->\n    <div class="panel-body">\n\n      <div id="sortable" class="transcript-n-text row paperedit">\n        <!-- Paperedit is added here using template papercut.html.ejs -->\n      </div> <!--transcript-n-text -->\n\n    </div><!-- container panel -->\n  </div><!-- container panel -->\n\n\n    </div><!--.row-->\n  </div>  \n</div>   \n</div><!-- end row -->\n</div> <!-- container -->\n\n';
+__p+='\n        </ul>\n        <!-- Tab paenl End  -->\n      </div>\n      <!-- end transcript list end -->\n      <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">\n        <div class="transcription-tab-content" >\n          <!-- hypertranscript -->\n          <div id="transcript-n" class="transcription">\n            <!-- uses hypertranscript.html.ejs template to populate transcription -->\n          </div>   <!--transcript-n -->\n          <!-- End hypertranscript -->\n        </div>\n      </div>\n    </div>\n\n    <div id="papereditSection" class="col-xs-5 col-sm-5 col-md-5 col-lg-5">\n      <!-- <h2 contenteditable="true"><small>Awesome doc about something</small></h2> -->\n      <div class="row">\n        <div id="videoContainer" class="embed-responsive  embed-responsive-16by9 hidden-xs col-xs-12 col-sm-12 col-md-12 col-lg-12">\n          <video id="videoPreview" class="videoPlayer" width="400" >\n            <!--   <source src="" type="video/mp4"> -->\n            <!--   <source src="" type="video/ogg"> -->\n            Your browser does not support HTML5 video.\n          </video>\n        </div>\n        <!--  col -->\n      </div>\n      <!--  row -->\n      <!-- <hr> -->\n\n<br>\n    <div class="panel panel-default">\n    <div class="panel-heading">\n\n\n      <div class="btn-group" role="group" aria-label="...">\n      <button type="button" class="btn btn-sm btn-default playPapercutsBtn"><span class="glyphicon glyphicon-play"  ></span>  Beta   </button>\n      <button type="button" class="btn btn-sm btn-default pausePapercutsBtn"><span class="glyphicon glyphicon-pause"  ></span>  </button> \n      <button type="button" class="btn btn-sm btn-default stopPapercutsBtn"><span class="glyphicon glyphicon-stop"  ></span>  </button>\n\n      <!-- TODO: story point should triggere a modal to get the story point info -->\n      <button type="button" data-toggle="popover" title="add a story point to the paper edit"  data-placement="bottom"  data-content="there might be a better place for this?" class="btn btn-sm btn-default addStoryPointBtn"><span class="  glyphicon glyphicon-plus"  ></span> story point</button>\n      <!-- <button type="button" data-toggle="popover" title="Save Paperedit"  data-placement="bottom"  data-content="click to save Paperedit " class="btn btn-sm btn-default savePapercutsBtn"><span class="glyphicon glyphicon-floppy-disk"  ></span>  </button> -->\n      <button type="button" data-toggle="popover" title="Delete a papercut "  data-placement="bottom"  data-content="drag here a papercut to delete "   class="btn btn-sm btn-default deletePapercut"><span class="glyphicon glyphicon-trash"  ></span>  </button>\n     \n    \n    </div>\n\n      ';
+ if(window.ENV_CEP){
+__p+='\n        <a id="btnExportToAdobeSequenceInCep" class="btn btn-primary btn-sm">\n          Create sequence\n        </a>\n       ';
+ } 
+__p+='\n\n\n    </div><!-- container panel -->\n    <div class="panel-body">\n\n      <div id="sortable" class="transcript-n-text row paperedit">\n        <!-- Paperedit is added here using template papercut.html.ejs -->\n      </div> <!--transcript-n-text -->\n\n    </div><!-- container panel -->\n  </div><!-- container panel -->\n\n\n    </div><!--.row-->\n  </div>  \n</div>   \n</div><!-- end row -->\n</div> <!-- container -->\n\n';
 }
 return __p;
 };
@@ -1180,7 +1150,7 @@ module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
 __p+='<div class="container">\n\n\t<!-- Demo notice  -->\n\t';
- if(!window.frontEndEnviromentElectron ){
+ if(!window.ENV_ELECTRON ){
 __p+='\n\t<div class="alert alert-warning alert-dismissible" role="alert">\n\t\t<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n\t\t<strong>You are viewing the app in demo mode</strong>.<br>\n\t\t<strong>Which means you cannot change settings</strong>.<br>\n\t\t<br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n\t\tTo view demo/example transcriptions <a href="/public/demo/frontEnd/index.html#transcriptions"> click here.</a><br>\n\t\tTo view user manual example <a href="http://www.autoedit.io/user_manual/usage.html"  target="_blank"> click here.</a>\n\t</div>  \n\t';
  }
 __p+='\n\t<!-- end demo notice  -->\n\n\t<!-- Breadcrumb  -->\n\t<ol class="breadcrumb">\n\t\t<li class="active">Settings</li>\n\t</ol>\n\t<!--  end Breadcrumb -->\n\n<div>\n\n  <!-- Nav tabs -->\n  <ul class="nav nav-tabs" role="tablist">\n    <li role="presentation" class="active"><a href="#ibm" aria-controls="ibm" role="tab" data-toggle="tab">IBM</a></li>\n\t<li role="presentation"><a href="#speechmatics" aria-controls="speechmatics" role="tab" data-toggle="tab">Speechmatics</a></li>\n\t<li role="presentation"><a href="#rev" aria-controls="rev" role="tab" data-toggle="tab">Rev</a></li>\n\t<li role="presentation"><a href="#bbc" aria-controls="bbc" role="tab" data-toggle="tab">BBC</a></li>\n    <!-- <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li> -->\n  </ul>\n\n  <!-- Tab panes -->\n  <div class="tab-content">\n    <div role="tabpanel" class="tab-pane active" id="ibm">    \n    \t<br>\n\t<div class="alert alert-info alert-dismissable">\n\t  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>\n\t  <strong>IBM Watson Speech To Text Service Credentials</strong> \n\t  <p>Here you can check or edit your credentials for the IBM Speech To Text service.</p>\n\t\t<p>Note that these are different from your IBM bluemix credentials. </p>\n\t\t<p>You need to activate a Watson Speech To Text Service on Bluemix to get these.</p>\n\t\t<p><a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/setup-stt-apis/setup-stt-apis-ibm.html" class="alert-link" target="_blank">Checkout the user manual for more info</a>.</p>\n\t</div>\n\t\n<!-- IBM credentials form -->\n\t<form id="form">\n\t\t<div class="row">\n\t\t\t<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">\n\t\t\t\t<h3>IBM Watson Speech to text Service credentials</h3>\n\t\t\t\t<div class="form-group">\n\t\t\t\t\t<label for="username">IBM STT Username</label>\n\t\t\t\t\t<input type="title" name="username-ibm" value="'+
@@ -1274,7 +1244,7 @@ module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
 __p+='<div class="container">\n\n  <!-- Demo notice  -->\n';
- if(!window.frontEndEnviromentElectron ){
+ if(!window.ENV_ELECTRON ){
 __p+='\n <div class="alert alert-warning alert-dismissible" role="alert">\n  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n  <strong>You are viewing the app in demo mode</strong>.<br>\n  <strong>Which means you cannot upload an audio or video file for transcription</strong>.<br>\n  <br> To use  a working version of the app <a href="https://github.com/OpenNewsLabs/autoEdit_2/releases"  target="_blank"> download latest the release.</a> <br>\n   To view demo/example transcriptions <a href="/demo/#transcriptions"> click here.</a><br>\n   To view user manual example <a href="https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"  target="_blank"> click here.</a>\n</div>  \n';
  }
 __p+='\n  <!-- end demo notice  -->\n\n   <!-- Breadcrumb  -->\n      <ol class="breadcrumb">\n        <li><a href="#transcriptions">Transcriptions</a></li>\n        <li class="active">New </a></li>\n      </ol>\n      <!--  end Breadcrumb -->\n\n\n  <form id="form">\n  <!-- File "upload" -->\n  <div class="row">\n    <div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">\n      <div class="form-group">\n         <label for="fileUpload">Choose an audio or video file to transcribe</label>\n        ';
@@ -1305,9 +1275,21 @@ var _ = require("underscore");
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='  <div class="container">\n    <div class="row">\n      <div class="hidden-xs col-sm-10 col-lg-10 col-xl-10">\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">'+
+__p+='  <div class="container">\n    <div class="row">\n         ';
+ if(window.ENV_CEP){
+__p+='\n    <div class="hidden-xs col-sm-12 col-md-12 col-lg-12">\n        ';
+ } 
+__p+='\n\n        ';
+ if(!window.ENV_CEP){
+__p+='\n          <div class="hidden-xs col-sm-11 col-md-11 col-lg-11">\n         ';
+ } 
+__p+='\n        <!-- Breadcrumb  -->\n        <ol class="breadcrumb">\n          <li><a href="#transcriptions">Transcriptions</a></li>\n          <li class="active">'+
 ((__t=( title ))==null?'':__t)+
-'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n\n<!-- Export modal + button -->\n<!-- Button trigger modal -->\n<button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n  Export <span class="glyphicon glyphicon-save"></span>\n</button>\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  \n        </a>\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL  \n        </a>\n      \n        <br> <br>\n         <p> You can get your text selections as plain text in chronological order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL \n        </a>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL option above.</p>\n\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL of Selections\n        </a></p>\n\n        <p>You can export a JSON of the selections, equivalent to the EDL selection option above.</p>\n\n\n        ';
+'</a></li>\n        </ol>\n        <!--  end Breadcrumb -->\n      </div><!-- ./col -->\n      ';
+ if(!window.ENV_CEP){
+__p+='\n      <div class="col-xs-12 col-sm-2 col-md-2 col-lg-2 ">\n      <!-- Export modal + button -->\n      <!-- Button trigger modal -->\n      <button type="button" class="btn btn-primary hidden-print" data-toggle="modal" data-target="#exportModal">\n        Export <span class="glyphicon glyphicon-save"></span>\n      </button>\n      </div><!-- ./col -->\n      ';
+ } 
+__p+='\n</div><!-- ./row -->\n\n<!-- Modal -->\n<div class="modal fade hidden-print" id="exportModal" tabindex="-1" role="dialog" aria-labelledby="exportModalLabel">\n  <div class="modal-dialog" role="document">\n    <div class="modal-content">\n      <div class="modal-header">\n        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n        <h4 class="modal-title" id="exportModalLabel">Export Options</h4>\n      </div>\n      <div class="modal-body">\n       <!-- Export options -->\n     \n        <h2><small>Video sequence </small></h2>\n        <p>You can export an EDL (edit decision list) to open a video sequence of text selections in the video editing software. See the user manual for more on this \n         <a id="edlUserManualInfo" <span  class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>.\n        <p>You can export your selections for a video sequence in chronological order.</p> \n        <!-- Btn Edl - chronological order | -->\n\n        <p><a id="exportEdlChronological" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>\n          EDL  \n        </a>\n        <hr>\n        <h2><small>Captions </small></h2>\n\n        <p>Export captions of the full transcription </p>\n\n        <!-- Btn Captions - srt -->\n        <p><a id="expoertCaptionsSrt" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-subtitles" aria-hidden="true"></span>\n          Captions - srt\n        </a></p>\n\n        <hr>\n        <h2><small>Plain text  </small></h2>\n\n        <p>You can export the text of the full transcription as plain text without timecodes.</p>\n\n        <!-- Btn Plain text transcription. -->\n        <p><a id="exportPlainText" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain text transcription\n        </a></p>\n         \n        <p>You can also export timecoded plain text of the full transcription.</p>\n\n        <!-- Btn  Timecoded plain text transcription. -->\n        <p><a id="exportTimecodedTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded plain text transcription\n        </a></p>\n\n        <h2><small>Plain text - Selections </small> </h2>\n\n       <p>You can receive your text selections as plain text in chronological order without timecodes.</p>\n\n        <!-- Btn Plain Text Chronological -->\n        <a id="exportPlainTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Plain Text EDL  \n        </a>\n      \n        <br> <br>\n         <p> You can get your text selections as plain text in chronological order with timecodes.</p>\n\n        <!-- Btn Timecoded Plain Text Chronological -->\n        <p><a id="exportPlainTimecodedTextEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-file" aria-hidden="true"></span>\n          Timecoded Text EDL \n        </a>\n\n        <hr>\n\n        <h2><small>Developer’s options </small> </h2>\n        <p>These are additional advanced export options for developers.</p>\n\n        <h3><small>Json </small></h3>\n        <p>JSON of full transcription </p>\n\n        <!-- Btn Json of transcription  -->\n        <p><a id="exportJsonTranscription" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n          Json of transcription\n        </a></p>\n\n        <p>You can export a JSON of selections in chronological order as they appear in the video. This is equivalent to EDL option above.</p>\n\n\n        <!-- Btn Json  EDL Selection order -->\n        <a id="exportJsonEDL" class="btn btn-primary btn-sm">\n          <span class="glyphicon glyphicon-cloud-download" aria-hidden="true"></span>\n            Json  EDL of Selections\n        </a></p>\n\n        <p>You can export a JSON of the selections, equivalent to the EDL selection option above.</p>\n\n\n        ';
  if (!window.userAgentSafari) { /* Safari and IE no support for the download attribute */ 
 __p+='\n        <h3><small>HTML5 Media</small></h3>\n\n        <p>You can export HTML5 audio and video previews generated by the app. </p>\n\n        <p>\n          <!-- Btn HTML5 mp4 video -->\n          <a id="exporthtml5Video" class="btn btn-primary btn-sm"\n            ';
  if (processedVideo) { 
@@ -1329,7 +1311,7 @@ __p+='disabled="disabled"';
  } 
 __p+='>\n            <span class=" glyphicon glyphicon-headphones" aria-hidden="true"></span>\n            HTML5 ogg audio\n          </a>\n        </p>\n        ';
  } 
-__p+='\n\n       <!-- End export option -->\n      </div>\n      <div class="modal-footer" >\n        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- Export end modal + button -->   \n  \n\n      </div><!-- ./col -->\n    </div><!-- ./row -->\n\n    <!--TODO: Remove this div . check view backbone to see if in use tho -->\n      <div id="clientSideEDLhelp" ></div>\n    <!-- end of remove this div  -->\n\n<div id="hilightModeNoticeContainer">\n<div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> \n  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n  <strong>You are in highlight mode.</strong> \n  <p>Click on a word to play from the corresponding part in the video.</p>\n  <p>Select words to include in your final output (EDL video sequence, plain text, etc.)</p>\n</div>\n</div>\n  <div class="row">\n    <!-- Video -->\n    <div class="col-sm-3 col-md-3 col-lg-3 ">\n<!-- hidden-xs  -->\n<div class="hidden-print" id="media">\n  <!--  Media -->\n    <!--  if audio has been processed but video has not -->\n    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n    <!-- also check media type if audio only then use audio  -->\n    ';
+__p+='\n\n       <!-- End export option -->\n      </div>\n      <div class="modal-footer" >\n        <button type="button" class="btn btn-default " data-dismiss="modal">Close</button>\n      </div>\n    </div>\n  </div>\n</div>\n<!-- Export end modal + button -->   \n  \n\n      \n\n    <!--TODO: Remove this div . check view backbone to see if in use tho -->\n      <div id="clientSideEDLhelp" ></div>\n    <!-- end of remove this div  -->\n\n<div id="hilightModeNoticeContainer">\n<div class="alert alert-info alert-dismissible hidden-print" role="alert" id="hilightModeNotice"> \n  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n  <strong>You are in highlight mode.</strong> \n  <p>Click on a word to play from the corresponding part in the video.</p>\n  <p>Select words to include in your final output (EDL video sequence, plain text, etc.)</p>\n</div>\n</div>\n  <div class="row">\n    <!-- Video -->\n    <div class="col-sm-3 col-md-3 col-lg-3 ">\n<!-- hidden-xs  -->\n<div class="hidden-print" id="media">\n  <!--  Media -->\n    <!--  if audio has been processed but video has not -->\n    <!-- There could also be logic here to check if it\'s safari, and if it\'s safari move to audio only  -->\n    <!-- also check media type if audio only then use audio  -->\n    ';
  if(processedAudio && !processedVideo) { 
 __p+='\n   \n     <div class="alert alert-success alert-dismissible" role="alert">\n        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>\n         Video is being processed  \n         <span id="processingExample" class="glyphicon glyphicon-refresh glyphicon-refresh-animate text-muted" aria-hidden="true"></span>    \n      </div>\n\n      <!-- progress circle line if type of media is video -->\n      <audio id="'+
 ((__t=( 'videoId_'+ id ))==null?'':__t)+
@@ -1381,7 +1363,11 @@ __p+='\n\n<div class="modal fade bs-example-modal-sm" id="keybaordShortcuts" tab
 ((__t=( fromSeconds(metadata.duration) ))==null?'':__t)+
 '</kbd> <span  class="text-muted"></span></dd>\n      <!-- <br> -->\n      <dt class="text-muted">Description </dt>\n      <dd  class="text-muted description">'+
 ((__t=( description ))==null?'':__t)+
-'</dd>\n    </dl>\n</div> <!--end metadada info well-->\n</div>\n<!--end metadada info -->\n\n\n\n</div><!-- ./col -->\n  \n    <!-- Transcription -->\n    <div class="col-xs-12 col-sm-9 col-lg-9 col-xl-9">\n      <div class="panel panel-default">\n        <div class="panel-heading hidden-print">\n          <div class="row">\n          <div class="col-xs-12 col-sm-7 col-lg-7 col-xl-7">\n            <div class="btn-group" role="group" aria-label="...">\n              <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>\n        <!--       <button type="button" class="btn btn-default">Read</button> -->\n              <button type="button"  id="editWords" class="btn btn-default" >Edit </button>\n            \n            </div>\n\n<a type="button" id="clearHighlights" class="btn btn-default" >\n<!-- hilighter icon -->\n<!-- end hilighter icon -->\n Clear highlights\n </a>\n          </div>\n          <!-- search box -->\n          <div class="col-xs-12 col-sm-5 col-lg-5 col-xl-5">\n            <div class="input-group">\n             <span class="input-group-addon">\n               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>\n             </span>\n             <input type="text" class="form-control" id="searchCurrentTranscription" placeholder="Find in transcript">\n            </div>\n          </div>\n          <!-- end search box -->\n          </div>\n        </div>\n        <div class="panel-body transcription">\n          <!-- Paragaph module -->\n          ';
+'</dd>\n    </dl>\n</div> <!--end metadada info well-->\n</div>\n<!--end metadada info -->\n\n\n\n</div><!-- ./col -->\n  \n    <!-- Transcription -->\n    <div class="col-xs-12 col-sm-9 col-lg-9 col-xl-9">\n      <div class="panel panel-default">\n        <div class="panel-heading hidden-print">\n          <div class="row">\n          <div class="col-xs-12 col-sm-7 col-lg-7 col-xl-7">\n            <div class="btn-group" role="group" aria-label="...">\n              <button type="button"  id="highlightWords" class="btn btn-primary active" >Highlight</button>\n        <!--       <button type="button" class="btn btn-default">Read</button> -->\n              <button type="button"  id="editWords" class="btn btn-default" >Edit </button>\n            \n            </div>\n\n\n\n<a type="button" id="clearHighlights" class="btn btn-default" >\n<!-- hilighter icon -->\n<!-- end hilighter icon -->\n Clear highlights\n </a>\n\n ';
+ if(window.ENV_CEP){
+__p+='\n  <a id="btnExportToAdobeSequenceInCep" class="btn btn-primary btn-sm">\n    add to sequence\n  </a>\n  <!-- <a id="btnExportCaptionToProjectPanel" class="btn btn-primary btn-sm">\n      get captions\n    </a> -->\n ';
+ } 
+__p+='\n\n\n          </div>\n          <!-- search box -->\n          <div class="col-xs-12 col-sm-5 col-lg-5 col-xl-5">\n            <div class="input-group">\n             <span class="input-group-addon">\n               <span class="glyphicon glyphicon-search" aria-hidden="true"></span>\n             </span>\n             <input type="text" class="form-control" id="searchCurrentTranscription" placeholder="Find in transcript">\n            </div>\n          </div>\n          <!-- end search box -->\n          </div>\n        </div>\n        <div class="panel-body transcription">\n          <!-- Paragaph module -->\n          ';
  _.each(text, function(paragraph) { 
 __p+='\n          <dl class="dl-horizontal">\n            <dt class="speaker" contenteditable="true">'+
 ((__t=( paragraph.speaker ))==null?'':__t)+
@@ -1667,7 +1653,8 @@ module.exports = Backbone.View.extend({
     "click .stopPapercutsBtn": "stopPapercuts",
     "click .pausePapercutsBtn": "pausePapercuts",
     "click .papercut": "listenerTosetCurrentPapercutForInsert",
-    "keyup #searchCurrentTranscription": "search"
+    "keyup #searchCurrentTranscription": "search",
+    "click #btnExportToAdobeSequenceInCep": "exportToAdobeSequenceInCep"
   },
 
   //keyboard event using mouse trap backbone version 
@@ -2218,6 +2205,16 @@ module.exports = Backbone.View.extend({
     }
   },
 
+  exportToAdobeSequenceInCep: function () {
+    var self = this;
+    // alert('CEP sequence for premiere ')
+    //'" + JSON.stringify({clips: this.model.get('events'), sequenceName: self.mode.get('title') })+"'
+    console.log(JSON.stringify(this.makeEDLJSON(false), null, 2));
+    window.__adobe_cep__.evalScript("$._PPP.create_sequence_from_paper_edit('" + JSON.stringify({ edlJson: this.makeEDLJSON(false) }) + "')", function (response) {
+      // done 
+    });
+  },
+
   // some kind of view listner to make hyper transcript eg click on word, it moves to correspondind part of video. 
   /**
   * @function render
@@ -2443,34 +2440,65 @@ module.exports = Backbone.View.extend({
   electronGetFilePath: function (e) {
     e.preventDefault();
 
-    var self = this;
-    window.openFileDiaglogue(function (fileName) {
-      console.log(fileName);
-      self.newFilePath = fileName[0];
-      console.log(self.newFilePath);
-      document.getElementById('inputFilePreview').innerHTML = self.newFilePath;
-      // console.log(document.getElementById("title").value);
-      if (document.getElementById('title').value === '') {
-        // self.newFilePath.split("/")
-        document.getElementById('title').value = path.basename(self.newFilePath);
-      }
-    });
+    if (window.ENV_ELECTRON) {
+      var self = this;
+      window.openFileDiaglogue(function (fileName) {
+        console.log(fileName);
+        self.newFilePath = fileName[0];
+        console.log(self.newFilePath);
+        document.getElementById('inputFilePreview').innerHTML = self.newFilePath;
+        // console.log(document.getElementById("title").value);
+        if (document.getElementById('title').value === '') {
+          // self.newFilePath.split("/")
+          document.getElementById('title').value = path.basename(self.newFilePath);
+        }
+      });
+    }
+
+    if (window.ENV_CEP) {
+      var self = this;
+      window.__adobe_cep__.evalScript(`$._PPP.get_current_project_panel_selection_absolute_path()`, function (response) {
+        if (response !== "") {
+          self.newFilePath = response;
+          console.log(self.newFilePath);
+          document.getElementById('inputFilePreview').innerHTML = self.newFilePath;
+          console.log(response);
+          if (document.getElementById('title').value === '') {
+            // self.newFilePath.split("/")
+            document.getElementById('title').value = path.basename(self.newFilePath);
+          }
+        }
+      });
+    }
   },
   electronGetCaptionFilePath: function (e) {
     e.preventDefault();
+    if (window.ENV_ELECTRON) {
+      var self = this;
+      window.openCaptionsFileDiaglogue(function (fileName) {
+        console.log(fileName);
+        self.captionFilePath = fileName[0];
+        console.log(self.captionFilePath);
+        document.getElementById('inputCaptionFilePreview').innerHTML = self.captionFilePath;
+        // console.log(document.getElementById("title").value);
+        // if(document.getElementById("title").value ===""){
+        //   // self.newFilePath.split("/")
+        //   document.getElementById("title").value =  path.basename(self.newFilePath);
+        // }
+      });
+    }
 
-    var self = this;
-    window.openCaptionsFileDiaglogue(function (fileName) {
-      console.log(fileName);
-      self.captionFilePath = fileName[0];
-      console.log(self.captionFilePath);
-      document.getElementById('inputCaptionFilePreview').innerHTML = self.captionFilePath;
-      // console.log(document.getElementById("title").value);
-      // if(document.getElementById("title").value ===""){
-      //   // self.newFilePath.split("/")
-      //   document.getElementById("title").value =  path.basename(self.newFilePath);
-      // }
-    });
+    if (window.ENV_CEP) {
+      var self = this;
+      window.__adobe_cep__.evalScript(`$._PPP.get_current_project_panel_selection_absolute_path()`, function (response) {
+        // TODO: add some validation that returned file path is that of a caption file, eg srt. give alert if not.
+        if (response !== "") {
+          self.captionFilePath = response;
+          console.log(self.captionFilePath);
+          document.getElementById('inputCaptionFilePreview').innerHTML = self.captionFilePath;
+        }
+      });
+    }
   },
 
   save: function (e) {
@@ -2524,10 +2552,10 @@ module.exports = Backbone.View.extend({
       newLanguage = 'British English'; // NA
     }
 
-    if (newFilePath == '' && sttEngine !== 'rev') {
+    if (newFilePath == '') {
       alert('please select a file to transcribe');
       // TODO: set, select in focus
-    } else if (newTitle == '' && sttEngine !== 'rev') {
+    } else if (newTitle == '') {
       alert('please give this transcriptiona title');
       // TODO: Set description in focus
     } else {
@@ -2579,30 +2607,36 @@ module.exports = Backbone.View.extend({
         });
       } else if (sttEngine === 'rev') {
         if (navigator.onLine) {
-          console.log('REV-Transcription form ', newTitle, newDescription, newFilePath, newLanguage, sttEngine);
-
-          var revOrderNumber = document.querySelector('#inputRevOderNumber').value.trim();
-
-          if (revOrderNumber !== '') {
-
-            this.model.save({
-              title: newTitle,
-              description: newDescription,
-              videoUrl: newFilePath,
-              languageModel: newLanguage,
-              sttEngine: sttEngine,
-              revOrderNumber: revOrderNumber
-            }, {
-              success: function (mode, response, option) {
-                Backbone.history.navigate('transcriptions', { trigger: true });
-              },
-              error: function (model, xhr, options) {
-                var errors = JSON.parse(xhr.responseText).errors;
-                alert('ops, something went wrong with saving the transcription:' + errors);
-              }
-            });
+          // validation to check BBC 
+          if (sttEngine === 'rev' && !window.areRevAPIkeysSet()) {
+            alert('To use the Rev service you need to add Rev credentials, see settings and user manual for mode details');
           } else {
-            alert('You Need to add a Rev Order Number, to retrieve your transcription');
+
+            console.log('REV-Transcription form ', newTitle, newDescription, newFilePath, newLanguage, sttEngine);
+
+            var revOrderNumber = document.querySelector('#inputRevOderNumber').value.trim();
+
+            if (revOrderNumber !== '') {
+
+              this.model.save({
+                title: newTitle,
+                description: newDescription,
+                videoUrl: newFilePath,
+                languageModel: newLanguage,
+                sttEngine: sttEngine,
+                revOrderNumber: revOrderNumber
+              }, {
+                success: function (mode, response, option) {
+                  Backbone.history.navigate('transcriptions', { trigger: true });
+                },
+                error: function (model, xhr, options) {
+                  var errors = JSON.parse(xhr.responseText).errors;
+                  alert('ops, something went wrong with saving the transcription:' + errors);
+                }
+              });
+            } else {
+              alert('You Need to add a Rev Order Number, to retrieve your transcription');
+            }
           }
         } else {
           alert("You seem to be offline, check your internet connection and try again if you'd like to use Rev");
@@ -2762,6 +2796,7 @@ module.exports = Backbone.View.extend({
   className: 'container-fluid',
   //TODO: change this so that id is interpolated from model this.el.id or this.el.ciud
   id: "transcription-n", //+this.model.id+"",
+  inPointOutPointType: 'inPoint', // helper for adob eintegration when setting and out in source monitor
 
   initialize: function () {
     this.editable = false;
@@ -2826,7 +2861,9 @@ module.exports = Backbone.View.extend({
     //link to user manual 
     "click #edlUserManualInfo": "edlUserManualInfo",
 
-    "focusout .speaker": "updateSpeakerName"
+    "focusout .speaker": "updateSpeakerName",
+    "click #btnExportToAdobeSequenceInCep": "exportToAdobeSequenceInCep" //,
+    // "click #btnExportCaptionToProjectPanel": "exportCaptionToProjectPanel"
   },
 
   updateSpeakerName: function (e) {
@@ -3026,6 +3063,8 @@ module.exports = Backbone.View.extend({
     var edlFileName = this.nameFileHelper(this.model.get("title") + "", "edl");
     this.exportHelper({ fileName: edlFileName, fileContent: edl.compose(), urlId: "#exportEdlChronological" });
   },
+
+  exportHighlightsSelectionsToPremiereSequence: function () {},
 
   /**
   * @function exportEdlSelectionOrder
@@ -3273,9 +3312,9 @@ module.exports = Backbone.View.extend({
     // alert("searching")
     var searchedText = $(e.currentTarget).val();
     var searchTextArray = searchedText.split(" ");
-    //TODO: need to resest the search
-    //make search as a
+    // resest the search
     $(".words").removeClass("searched");
+
     // $( 'p:contains('+searchedText+')' ).css( "text-decoration", "underline" );
     if (searchTextArray.length > 0) {
       for (var i = 0; i < searchTextArray.length; i++) {
@@ -3288,14 +3327,42 @@ module.exports = Backbone.View.extend({
   * @function playWord
   */
   playWord: function (e) {
+    var self = this;
     var wordStartTime = e.currentTarget.dataset.startTime;
     var videoIdElem = "#" + e.currentTarget.dataset.videoId;
     var videoElem = $(videoIdElem)[0];
     videoElem.currentTime = wordStartTime;
-    videoElem.play();
+
     var vid = document.getElementById(e.currentTarget.dataset.videoId);
 
-    vid.ontimeupdate = function () {
+    if (window.ENV_CEP) {
+      console.log(this.model.get('videoUrl'));
+      // you could also use open_file_in_source_monitor_using_path but it might be too prescriptive. 
+      // because if the file path of the source material change, eg different hard drive
+      // then it wouldn't be able to find it,and you are in the media offline situation and need to support for re-link
+      //
+      // could also do if current selection path matches videoUrl path or file name then goes with it
+      // otherwise tries the 
+      //
+      // window.__adobe_cep__.evalScript(`$._PPP.open_current_project_panel_selection_in_source_monitor()`, function (response){
+      // if(response ==="done"){
+      // var setInAndOutPointIsSet =   document.querySelector('#setInOutPointCheckBox').value;
+      // if(setInAndOutPointIsSet){
+      // console.log('setInAndOutPointIsSet',setInAndOutPointIsSet)
+      // }
+      window.__adobe_cep__.evalScript("$._PPP.open_file_in_source_monitor_and_play_if_present('" + JSON.stringify({ timecode: vid.currentTime, fileName: this.model.get('metadata').fileName, filePath: this.model.get('videoUrl'), playBool: false }) + "')", function (response) {
+        // mute autoEdit video 
+        // videoElem.muted = true; 
+        // console.log(response); 
+      });
+      // } else {
+      //   alert("select a clip in source monitor ")
+      // }
+      // })
+
+      // TODO: decide if this only happens in window.ENV_ELECTRON
+      // as in window.ENV_CEP there seems to be no way to know when user click stop in source monitor, so it would keep playing.
+      // eg in CEP could just hilight words until that spot       
       $("span.words").filter(function () {
         if ($(this).data("start-time") < $(videoIdElem)[0].currentTime) {
           $(this).removeClass("text-muted");
@@ -3306,7 +3373,23 @@ module.exports = Backbone.View.extend({
       // update current timecode display  
       document.querySelector('#playbackTimeCodes').value = fromSeconds(vid.currentTime);
       document.querySelector('#videoDuration').value = fromSeconds(vid.duration);
-    };
+    }
+
+    if (window.ENV_ELECTRON) {
+      videoElem.play();
+      vid.ontimeupdate = function () {
+        $("span.words").filter(function () {
+          if ($(this).data("start-time") < $(videoIdElem)[0].currentTime) {
+            $(this).removeClass("text-muted");
+          } else {
+            $(this).addClass("text-muted");
+          }
+        });
+        // update current timecode display  
+        document.querySelector('#playbackTimeCodes').value = fromSeconds(vid.currentTime);
+        document.querySelector('#videoDuration').value = fromSeconds(vid.duration);
+      };
+    }
   },
 
   /**
@@ -3335,7 +3418,7 @@ module.exports = Backbone.View.extend({
   makePaperEdit: function (selection, model) {
     //needed for EDL
     var modelTimecodeOffset = this.model.get("metadata").timecode;
-    /**
+    /** 
     * @function groupContiguosWordsInPapercuts
     * Groups words from selection into array of contiguos words
     * uuses modified version of this code to divide contiguos numbers 
@@ -3421,6 +3504,45 @@ module.exports = Backbone.View.extend({
 
     return makeSection(groupContiguosWordsInPapercuts(selection));
   },
+
+  exportToAdobeSequenceInCep: function () {
+
+    var edlSq = { "title": this.model.get("title") };
+    edlSq.events = [];
+    //ad line number to paper-cuts
+    //NOTE: here you can decide to sort them chronologically(ie by startTime)
+    //TODO: this could probably be moved in the model . eg return chrone order hiligths 
+    for (var k = 0; k < this.model.attributes.highlights.length; k++) {
+      var event = this.model.attributes.highlights[k];
+      event.id = k + 1;
+      edlSq.events.push(event);
+    }
+    //end move in model
+    // var edl = new EDL(edlSq)
+
+    var self = this;
+    if (edlSq.events.length !== 0) {
+      // alert('CEP sequence for premiere ')
+      //'" + JSON.stringify({clips: this.model.get('events'), sequenceName: self.mode.get('title') })+"'
+      // console.log(JSON.stringify( this.makeEDLJSON(false), null,2))
+      window.__adobe_cep__.evalScript("$._PPP.create_sequence_from_paper_edit('" + JSON.stringify({ edlJson: edlSq }) + "')", function (response) {
+        // done 
+      });
+    } else {
+      alert('make at least one selection in the transcription to create a video sequence');
+    }
+  },
+
+  // exportCaptionToProjectPanel: function(){
+  //   // create caption and save as a file 
+  //   var srtPath = "/Users/pietropassarelli/Dropbox/COURSES/UCL_MSC/UCL_COURSES/TERM1/GC04_Systems_Infrastructure-db_Os_compilers/GC04\ Compilers/Readings/extra/compilers/1\ Introduction/1\ -\ 1\ -\ 01-01-\ Introduction\ \(8m20s\).srt";
+  //   // then add to array 
+  //   var filesToImport = [];
+  //   filesToImport.push(srtPath)
+  //   window.__adobe_cep__.evalScript("$._PPP.add_file_to_project_panel('" + JSON.stringify({filestoImport: filesToImport })+"')", function (response){
+  //     // done 
+  //   })
+  // },
 
   //keyboard event using mouse trap backbone version 
   keyboardEvents: {

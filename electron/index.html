@@ -187,7 +187,7 @@
           }
           if(window.ENV_CEP){
              // https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#open-url-link-in-default-browser
-            window.cep.util.openURLInDefaultBrowser(item.href)
+            window.cep.util.openURLInDefaultBrowser(item.href);
           }
         })
       }
@@ -218,8 +218,19 @@
 
       //  https://www.adobe.com/devnet/creativesuite/articles/adobe-cep-apis.html
 
-
       window.openFileDiaglogue = function(cb){
+        var result = window.cep.fs.showOpenDialog();
+        // var result = window.cep.fs.showSaveDialogEx();
+        console.log(result.data[0], result)
+        if(cb){cb(result.data[0])};
+
+        // window.__adobe_cep__.evalScript("$._PPP.open_file_in_source_monitor_and_play_if_present('" + JSON.stringify({timecode: vid.currentTime, fileName: this.model.get('metadata').fileName , filePath: this.model.get('videoUrl'), playBool: false })+"')", function (response){
+        //     // mute autoEdit video 
+        //     // videoElem.muted = true; 
+        //     // console.log(response); 
+        //   })
+     
+
         // var filetypes = new Array();
         // filetypes[0] = "mov";
         // filetypes[1] = "do";
@@ -242,9 +253,39 @@
         
         // https://github.com/pickercenter/autoedit-panel/blob/master/lib/CEPEngine_extensions.js#L154
       }
+
+
+      window.openCaptionsFileDiaglogue = function(cb){
+        var result = window.cep.fs.showSaveDialogEx();
+        console.log(result.data[0], result)
+        if(cb){cb(result.data[0])};
+      }
+
+        window.ffmpegRemix = function (jsonSequence, cb){
+          var result = window.cep.fs.showSaveDialogEx();
+          console.log(result.data, result)
+
+          // https://github.com/electron/electron/blob/master/docs/api/dialog.md#dialogshowsavedialogbrowserwindow-options-callback
+          var savePath = result.data;
+          console.log('savePath',savePath);
+          console.log('jsonSequence.output',jsonSequence.output);
+          // if user does not specify mp4 extension then we should add it othersiwe ffmpeg will fail
+          if(!isVideoFileMp4(savePath)){
+            savePath +='.mp4';
+          }
+          jsonSequence.output = savePath;
+          console.log('jsonSequence.output',jsonSequence.output);
+          // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
+          jsonSequence.ffmpegPath =  require("ffmpeg-static-electron").ffmpegPath;
+          // //call ffmpeg remix
+          remix(jsonSequence,function(err, result) {
+            console.log(err, result);
+              if(cb){cb(savePath)}
+          })
+        }
       
     }
-
+///////////////////////
     if(window.ENV_ELECTRON){
        ffmpegExentions = require("./ffmpeg_extentions.js");
       // TODO: move code below so that it can work in chromium as well
@@ -289,7 +330,7 @@
       jsonSequence.output = savePath;
       console.log('jsonSequence.output',jsonSequence.output);
       // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
-      jsonSequence.ffmpegPath =  require("../config.js").ffmpegPath;
+      jsonSequence.ffmpegPath =  require("ffmpeg-static-electron").path;
       // //call ffmpeg remix
       
       remix(jsonSequence,function(err, result) {
@@ -300,19 +341,19 @@
 
     
   }
+ 
+  /**
+    * Helper function 
+    */
+  function isVideoFileMp4(file){
+      var extname = path.extname(file);
+      if(extname === '.mp4'){
+        return true;
+      }
+      else{
+        return false;
+      }
   }
-
- /**
-  * Helper function 
-  */
- function isVideoFileMp4(file){
-    var extname = path.extname(file);
-    if(extname === '.mp4'){
-      return true;
-    }
-    else{
-      return false;
-    }
 }
 </script>
 

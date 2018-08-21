@@ -19,8 +19,8 @@ module.exports.getCurrentEnviromentType = ffunction getCurrentEnviromentType(){
 
   // if it is chromium -> is adobe premiere panel 
   // could also check for window.cep_node
-  if(window.process.versions.chromium !== undefined) {
-    return 'adobe-panel';
+  if(window.process.versions.cep !== undefined) {
+    return 'cep';
   }
 }
 
@@ -33,7 +33,7 @@ module.exports.isElectronEnv =  function isElectronEnv(){
 }
 
 module.exports.isAdobePanellEnv = function isAdobePanellEnv(){
-  return getCurrentEnviromentType() === 'adobe-panel'? true :false;
+  return getCurrentEnviromentType() === 'cep'? true :false;
 }
 
 module.exports.isDemoEnv =  function isDemoEnv(){

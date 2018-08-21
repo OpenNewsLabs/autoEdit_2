@@ -14,75 +14,65 @@ $._PPP = {
 	},
 
 	create_sequence_from_paper_edit: function(options){
-		// alert(options);
+		alert('yooo')
+		alert(options); 
 		var options = JSON.parse(options);
 		var paperEdit = options.edlJson;
 		var sequenceName = options.edlJson.title;
-		
-	
-		// alert(sequenceName);
-
 		// Create sequence 
-		// TODO: find out what's the role of sequence ID. eg does it have to be unique? can you retrieve sequences by ids
-		var someID	= "xyz123";
-		// OR Could get the name of the sequence 
-		// var seqName = prompt('Name of sequence?', '+sequenceName+', 'Sequence Naming Prompt');
-		
-		// var seq = app.project.createNewSequence(sequenceName, someID);
-
+		var createAnewSequenceBool;
+		if (confirm("Do you want to create a new sequence?")) {
+			createAnewSequenceBool =true;
+		} else {
+			createAnewSequenceBool = false;
+		}
+		var seq;
+		var seqPlayerPosition;
+		if(createAnewSequenceBool){
+			// TODO: find out what's the role of sequence ID. eg does it have to be unique? can you retrieve sequences by ids
+			var someID	= "xyz123";
+			// OR Could get the name of the sequence 
+			// var seqName = prompt('Name of sequence?', '+sequenceName+', 'Sequence Naming Prompt');
+			seq = app.project.createNewSequence(sequenceName, someID);
+			seqPlayerPosition = seq.getPlayerPosition();
+		}else{
+			seq = app.project.activeSequence;
+			// If chose to insert in existing sequence but there is no active seuqnece open 
+			if(seq === undefined){
+				alert('Invalid request. Either chose, create a new sequence, or select an active sequence. Operation has been cancelled.');
+				return 'error';
+			}
+			else{
+				// getting playhead position to decide where to insert the clips in the sequence. 
+				// otherwise default to 0 was inserting always at beginnging of sequence
+				seqPlayerPosition = app.project.activeSequence.getPlayerPosition();
+			}
+		}
 		// OR could add to existing open sequence eg user could chose, add extra options. flag for this.
-		var seq = app.project.activeSequence;
-
+		// var seq = app.project.activeSequence;
 		var vTrack1 = seq.videoTracks[0];
-
 		// TODO: data structure from  `getEDLJsonDataFromDom`
 		// but cannot figure out why it arrives in reversed order here, it seems fine in EDL file creation
 		// which uses same function 
 		var clipEvents = paperEdit.events.reverse();
-		
-		// // find clips from paper-edit events in project panel browser
-		// var clipsInProjectPanel = app.project.rootItem.children;
-		// alert(JSON.stringify(paperEdit.events));
+		// find clips from paper-edit events in project panel browser
 		for(var i=0;  i< clipEvents.length; i++ ){
 			var papercut = clipEvents[i];
-			// alert(JSON.stringify( papercut));
-		
 			// https://forums.adobe.com/thread/2455401
 			var arrayOfProjectItemsReferencingSomePath = app.project.rootItem.findItemsMatchingMediaPath( papercut.clipName, 1);
 			var clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0]
-			
-			// alert(JSON.stringify(clipInProjectPanel))
-			// var first = app.project.rootItem.children[0];
-
-			// alert(JSON.stringify(first));
-			// var clipInProjectPanel = app.project.rootItem.children.find(function(clipsInProjectPanel) {
-			// 	return clipsInProjectPanel.name ===  papercut.clipName;
-			//   });
-
+			// set in and out point for clip 
 			clipInProjectPanel.setInPoint(parseFloat(papercut.startTime));
 			clipInProjectPanel.setOutPoint(parseFloat(papercut.endTime));
-			// insert clip sequence offset is in this format '00;00;00;00' edlJson offset is this format '00:00:28:08'
-			
-			var lastClipEndTime = '00;00;00;00';
+			// insert clip sequence offset is in this format '00;00;00;00' or in seconds. 
+			// edlJson offset is this format '00:00:28:08'
+			var lastClipEndTime = seqPlayerPosition;
 			// first clip
 			if(i===0){
-				vTrack1.insertClip(clipInProjectPanel, '00;00;00;00');
-				// TODO: might need to convert from seconds to `;` notation 
-				
-				// var first = app.project.rootItem.children[0];
-				// var lastCLip = vTrack1.clips[vTrack1.clips.menuItems -1 ];
-				// alert(JSON.stringify(clipInProjectPanel))
-				// parseFlaot(papercut.startTime) + parseFloat(papercut.endTime)
-				// lastClipEndTime = clipInProjectPanel.end.seconds;
-				lastClipEndTime = parseFloat(papercut.endTime);
+				vTrack1.insertClip(clipInProjectPanel,lastClipEndTime);
+				lastClipEndTime = parseFloat(papercut.endTime)+lastClipEndTime;
 			}
 			else {
-				// alert(JSON.stringify(lastClipEndTime))
-				// var lastClip = vTrack1.clips[vTrack1.clips.menuItems -1 ];
-				// ALso if it doesn't work, might need to get the clip from the sequence
-				// lastClipEndTime
-				// alert(lastClipEndTime);
-				// alert(fromSeconds(lastClipEndTime, 25));
 				vTrack1.insertClip(clipInProjectPanel,  lastClipEndTime);		
 			}
 		}	
@@ -226,6 +216,14 @@ $._PPP = {
 		return "done";
 	},
 
+	add_file_to_project_panel: function(options){
+		var options = JSON.parse(options);
+		
+		// array of file paths,  suppress warnings , insertion bin, import as numbered stills
+		// https://github.com/Adobe-CEP/Samples/blob/master/PProPanel/jsx/PPRO/Premiere.jsx#L260
+		app.project.importFiles(options.filestoImport, 1,	app.project.getInsertionBin(),0);
+	},
+	
 	traverse_project_items: function() {
 		if (!app.project.rootItem) return "rootItem is not available";
 
