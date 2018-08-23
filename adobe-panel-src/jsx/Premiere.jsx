@@ -58,7 +58,11 @@ $._PPP = {
 			var papercut = clipEvents[i];
 			// https://forums.adobe.com/thread/2455401
 			var arrayOfProjectItemsReferencingSomePath = app.project.rootItem.findItemsMatchingMediaPath( papercut.clipName, 1);
-			var clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0]
+			var clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0];
+			// TODO: need to had catch for what happens if file is not in project panel.
+			// eg either return error, eg alert cannot continue add clip to project panel
+			// or look for projec ton file system using path?
+
 			// set in and out point for clip 
 			clipInProjectPanel.setInPoint(parseFloat(papercut.startTime));
 			clipInProjectPanel.setOutPoint(parseFloat(papercut.endTime));

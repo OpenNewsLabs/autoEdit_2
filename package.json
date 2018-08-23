@@ -30,7 +30,9 @@
     "adobe-panel-dev-packagejson": "sync-files ./package.json ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/package.json",
     "adobe-panel-dev-node_modules": "sync-files node_modules ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/node_modules",
     "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson",
-    "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev"
+    "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev",
+    "adobe-panel-build": "sync-files adobe-panel-src adobe-panel-build && sync-files electron adobe-panel-build/electron && sync-files lib adobe-panel-build/lib &&  sync-files ./package.json adobe-panel-build/package.json && sync-files node_modules  adobe-panel-build/node_modules",
+    "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
   },
   "build": {
     "appId": "org.autoEdit2.autoEdit2-electron",
@@ -161,6 +163,7 @@
     "browserify-shim": "^3.8.12",
     "copy-dir": "^0.3.0",
     "docco": "^0.7.0",
+    "dotenv": "^6.0.0",
     "electron": "^1.6.10",
     "electron-builder": "*",
     "electron-packager": "*",

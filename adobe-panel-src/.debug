@@ -3,6 +3,7 @@
     <Extension Id="com.autoedit2.it">
         <HostList>
             <Host Name="PPRO" Port="8099"/>
+            <Host Name="AEFT" Port="8098"/>
         </HostList>
     </Extension>
 </ExtensionList>
