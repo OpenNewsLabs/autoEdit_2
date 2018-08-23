@@ -36,10 +36,10 @@ baseurl: ''
 github: "https://github.com/OpenNewsLabs/autoEdit_2"
 demo: "https://opennewslabs.github.io/autoEdit_2/demo/index.html"
 download: "https://github.com/OpenNewsLabs/autoEdit_2/releases"
-guide: "https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/"
+guide: "https://autoedit.gitbook.io/user-manual"
 donate: "https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true"
 mailinglist: "http://eepurl.com/cMzwSX"
-documentation: "https://pietropassarelli.gitbooks.io/autoedit-2-documentation/content/"
+documentation: "https://autoedit.gitbook.io/documentation"
 twitter: "http://tiwtter.com/autoEdit2"
 facebook: "https://www.facebook.com/autoEdit.io"
 # Dates are not included in permalinks

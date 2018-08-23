@@ -1,17 +1,20 @@
 "use strict";
 const fs = require('fs');
-const electron = require('electron');
-const currentWindow = electron.remote.getCurrentWindow();
 const path = require('path');
 
-// var speechmaticsKeysPath;
-
-if (window.process !== 'undefined') {
-  var revKeysPath = path.join(currentWindow.dataPath , 'revkeys.json');
-}else{
-  //not in electron 
-  var revKeysPath = "";
+var revKeysPath = "";
+if(window.ENV_ELECTRON){
+  const electron = require('electron');
+  const currentWindow = electron.remote.getCurrentWindow();
+  revKeysPath = path.join(currentWindow.dataPath , 'revkeys.json');
 }
+if(window.ENV_CEP){
+  // https://forums.adobe.com/thread/1956086
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+    revKeysPath = path.join(adobeDataPath, 'revkeys.json');
+  })
+}
+
 // CLIENT_API_KEY  USER_API_KEY
 var revKeys = {username: "", password: "", url: ""};
 // var speechmaticsKeysSet = false;

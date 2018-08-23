@@ -53,3 +53,19 @@ notes.md
 
 # mac file system 
 .DS_Store
+
+# used for packaging Adobe CEP extension, before packaging and signing, exclude to avoid conflice 
+adobe-panel-build/
+
+# self signed certificate needed for Adobe CEP Panel
+ccextensionsmac/certificate.p12
+
+# including ZXPSignCmd comand
+# ccextensionsmac/ZXPSignCmd
+
+# Packaged app for Adobe CEP Panel Exchange site submission or distribution.
+dist/com.autoedit2.it.zxp
+
+
+# dotenv ENV var
+.env

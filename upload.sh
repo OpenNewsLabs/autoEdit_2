@@ -71,7 +71,7 @@ fi
 
 RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
 RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
-is_prerelease="false"
+is_prerelease="$IS_PRERELEASE"
 
 echo  "Infoss"
 echo $RELEASE_NAME
@@ -212,7 +212,7 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
   fi
 
   echo "Create release..."
-
+# https://docs.travis-ci.com/user/environment-variables/
   if [ -z "$TRAVIS_BRANCH" ] ; then
     TRAVIS_BRANCH="master"
   fi
