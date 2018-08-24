@@ -122,6 +122,13 @@
         window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
         window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
       } 
+
+      if(window.ENV_BROSWER){
+        window.areBBCAPIkeysSet = function(){
+          console.info("placeholder funciton");
+          return false;
+        }
+      }
     </script>
 </head>
 <body>
