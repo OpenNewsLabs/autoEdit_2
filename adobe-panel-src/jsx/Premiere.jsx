@@ -63,6 +63,32 @@ $._PPP = {
 			// eg either return error, eg alert cannot continue add clip to project panel
 			// or look for projec ton file system using path?
 
+			// If it is not in project panel. Use file path to see if it is on file system and can import in premiere
+			if(arrayOfProjectItemsReferencingSomePath.length === 0){
+				// if filePath exisists then import into proejct 
+				var filePath = new File(papercut.filePath);  
+				alert(papercut.filePath);
+				if(filePath.exists){
+					// app.sourceMonitor.openFilePath(options.filePath);
+					// playTc(options.timecode);
+					var importThese = [];
+					importThese.push(papercut.filePath)
+					// import into project panel 
+					app.project.importFiles(importThese, // takes array
+						1,// suppress warnings 
+						app.project.getInsertionBin(),
+						0); // import as numbered stills
+
+				// then re-search and get clip in project.
+				arrayOfProjectItemsReferencingSomePath = app.project.rootItem.findItemsMatchingMediaPath( papercut.clipName, 1);
+			 	clipInProjectPanel = arrayOfProjectItemsReferencingSomePath[0];
+				} else{
+					// if cannot find on file system using file path then abort.
+					alert("Add video for this transcription to project panel and try again")
+					return;
+				}
+			}
+
 			// set in and out point for clip 
 			clipInProjectPanel.setInPoint(parseFloat(papercut.startTime));
 			clipInProjectPanel.setOutPoint(parseFloat(papercut.endTime));
