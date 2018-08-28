@@ -189,6 +189,8 @@ $._PPP = {
 		
 		function playTc(timecode){
 			// enables the undocumented QE DOM which is necessary to control program monitor playback
+			// convert timecode from second to second + frames
+			var timecode = secondsToFrames(timecode);
 			app.enableQE(); 
 			// scrub source monitor to timecode  
 			qe.source.player.startScrubbing();
@@ -199,6 +201,19 @@ $._PPP = {
 				app.sourceMonitor.play(1.0);
 			}
 			return "done";
+		}
+
+		function secondsToFrames(time){
+			var buffer = 3; // amount of frames to jump before the start of the word to make it a little less abrupt
+			var fps = 25;
+			var base = Math.floor(time);
+			var fraction = time - base;
+			var frames = Math.floor(fps * fraction) - buffer;
+			if (frames < 1){
+				frames = fps + frames;
+				base -= 1; 
+			}
+			return String(base) + '.' + String(frames)
 		}
 
 		// TODO: repluce with node file path get name?
