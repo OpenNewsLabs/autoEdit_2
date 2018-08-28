@@ -8,7 +8,7 @@ var ffmpegPath = require('ffmpeg-static-electron').path;
 var ffprobePath = require('ffprobe-static-electron').path;
 
 module.exports = {
-  serverUrl: '',
+  serverUrl: 'http://localhost:3000/api',
   // appName: 'autoEdit 2',
   ffmpegPath: ffmpegPath,
   ffprobePath: ffprobePath,
@@ -26,6 +26,7 @@ module.exports = {
 };
 
 },{"ffmpeg-static-electron":39,"ffprobe-static-electron":40,"path":50}],2:[function(require,module,exports){
+(function (process){
 'use strict';
 
 var $ = require('jquery');
@@ -36,14 +37,21 @@ var Backbone = require('backbone');
 require('bootstrap');
 require('backbone.mousetrap');
 
+const config = require('../../config');
+const enviromentConfig = '../../enviroment_config.json';
+
+console.log('process.env.ENV_DEMO', process.env.ENV_DEMO);
 // Connect up the backend for backbone
 if (typeof window.DB !== 'undefined') {
   Backbone.sync = window.DB;
 } else {
-  Backbone.sync = require('./demo_db');
+  if (enviromentConfig.isDemo) {
+    Backbone.sync = require('./demo_db');
+    window.ENV_DEMO = true;
+  } else {
+    window.ENV_DEMO = false;
+  }
 }
-
-// var config = require('../../config');
 
 // app backbone files
 var TranscriptionRouter = require('./router');
@@ -96,7 +104,8 @@ $(document).ready(function () {
   // }
 });
 
-},{"./demo_db":5,"./router":9,"./router_paperedit":10,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
+}).call(this,require('_process'))
+},{"../../config":1,"./demo_db":5,"./router":9,"./router_paperedit":10,"_process":51,"backbone":37,"backbone.mousetrap":125,"bootstrap":38,"jquery":42}],3:[function(require,module,exports){
 'use strict';
 
 var Backbone = require('backbone');
@@ -109,7 +118,7 @@ var Paperedit = require('../models/paperedit');
  */
 module.exports = Backbone.Collection.extend({
   model: Paperedit,
-  url: config.serverUrl + '/paperedit',
+  url: config.serverUrl + '/paperedits',
   //Sorting models in collection alphabetically 
   comparator: function (model) {
     return model.get('title');
@@ -132,7 +141,7 @@ var Transcription = require('../models/transcription');
  */
 module.exports = Backbone.Collection.extend({
   model: Transcription,
-  url: config.serverUrl + '/transcription',
+  url: config.serverUrl + '/transcriptions',
 
   // initialize: function(){
   //    this.sortVar = 'title';
@@ -255,7 +264,7 @@ var Transcriptions = require('../collections/transcriptions');
 // http://backbonejs.org/#Model
 module.exports = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: path.join(config.serverUrl, 'paperedit'),
+  urlRoot: config.serverUrl + '/paperedits',
   defaults: {
     title: 'Default Title ',
     description: 'Default Description',
@@ -317,7 +326,7 @@ var config = require('../../../config');
 // http://backbonejs.org/#Model
 module.exports = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: path.join(config.serverUrl, 'transcription'),
+  urlRoot: config.serverUrl + '/transcriptions',
   defaults: {
     // title: 'Default Title ',
     // description: 'Default Description',
@@ -3512,6 +3521,7 @@ module.exports = Backbone.View.extend({
 
   // helper function convert highlights into edl json for adobe premiere to create sequence
   highlightsToEdlJson: function () {
+    var self = this;
     var tmpEdl = { edlJson: {
         title: this.model.get('title'),
         events: []
@@ -3522,6 +3532,7 @@ module.exports = Backbone.View.extend({
         startTime: p.startTime.toString(),
         endTime: p.endTime.toString(),
         clipName: p.clipName,
+        filePath: self.model.get('videoUrl'),
         fps: p.fps,
         offset: p.offset,
         id: p.id

@@ -7,7 +7,7 @@ var ffmpegPath        = require('ffmpeg-static-electron').path;
 var ffprobePath       = require('ffprobe-static-electron').path;
 
 module.exports = {
-  serverUrl: '',
+  serverUrl: 'http://localhost:3000/api',
   // appName: 'autoEdit 2',
   ffmpegPath: ffmpegPath,
   ffprobePath: ffprobePath,

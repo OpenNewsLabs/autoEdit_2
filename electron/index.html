@@ -124,11 +124,54 @@
       } 
 
       if(window.ENV_BROSWER){
+        // check
         window.areBBCAPIkeysSet = function(){
           console.info("placeholder funciton");
           return false;
         }
+
+        window.IBMWatsonKeys = function(){
+          console.info("placeholder funciton");
+          return false;
+        }
+        // get
+        window.IBMWatsonKeys = function(){
+          console.info("placeholder funciton");
+          return {"username":"dummy-username","password":"dummy-password","url":"https://stream.watsonplatform.net/speech-to-text/api"};
+        }
+
+      window.SpeechmaticsKeys = function(){
+        console.info("placeholder funciton");
+        return {"username":"dummy-speechmatics-username","password":"dummy-speechmatics-password"}
       }
+
+       window.revKeys = function(){
+        console.info("placeholder funciton");
+        return {"username":"dummy-rev-username","password":"dummy-rev-password","url":"https://www.rev.com/api/v1/orders"}
+      }
+      window.BBCKeys = function(){
+        console.info("placeholder funciton");
+        return {email: "dummy email"}
+      }
+
+      // set
+      window.setSpeechmaticsAPIkeys = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+    
+      window.setWatsonAPIkeys= function(keys){
+        console.info("placeholder funciton", keys);
+      }
+      
+      window.setRevAPIkeys= function(keys){
+        console.info("placeholder funciton", keys);
+      }
+
+      window.setBBCAPIkeys= function(keys){
+        console.info("placeholder funciton", keys);
+      }
+    }
+      
     </script>
 </head>
 <body>
