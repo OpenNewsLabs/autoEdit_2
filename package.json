@@ -1,7 +1,7 @@
 {
   "name": "autoEdit2",
   "productName": "autoEdit2",
-  "version": "1.0.121",
+  "version": "1.0.13",
   "description": "Fast text based video editing",
   "main": "electron/main.js",
   "scripts": {
@@ -19,11 +19,21 @@
     "build:win": "build --win nsis-web --x64",
     "build:linux": "build --linux  --x64",
     "publish:github": "build  --publish always --draft true",
-    "make_demo": "npm run make_js && node ./config/make_demo.js",
+    "make_client": "node ./config/make_client.js --demo false",
+    "make_demo": "npm run make_js && node ./config/make_client.js --demo true",
     "preview_page": "npm run make_demo && jekyll serve  --source project_page  --destination docs",
     "preview_page_no_demo_reload": "jekyll serve  --source project_page  --destination docs",
     "make_page": "npm run make_demo && jekyll  build --source project_page --destination docs",
-    "release": "build"
+    "release": "build",
+    "adobe-panel-dev-src": "sync-files adobe-panel-src ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel",
+    "adobe-panel-dev-electron": "sync-files electron ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/electron",
+    "adobe-panel-dev-lib": "sync-files lib ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/lib",
+    "adobe-panel-dev-packagejson": "sync-files ./package.json ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/package.json",
+    "adobe-panel-dev-node_modules": "sync-files node_modules ~/Library/Application\\ Support/Adobe/CEP/extensions/autoedit2-panel/node_modules",
+    "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson",
+    "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev",
+    "adobe-panel-build": "sync-files adobe-panel-src adobe-panel-build && sync-files electron adobe-panel-build/electron && sync-files lib adobe-panel-build/lib &&  sync-files ./package.json adobe-panel-build/package.json && sync-files node_modules  adobe-panel-build/node_modules",
+    "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
   },
   "build": {
     "appId": "org.autoEdit2.autoEdit2-electron",
@@ -53,7 +63,7 @@
         "!node_modules/ffprobe-static-electron/bin/win${/*}",
         "!node_modules/ffprobe-static-electron/bin/linux${/*}"
       ],
-      "target":[
+      "target": [
         {
           "target": "zip",
           "arch": [
@@ -119,8 +129,11 @@
   "license": "MIT",
   "dependencies": {
     "backbone": "^1.3.3",
+    "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "electron-debug": "^1.1.0",
+    "express": "^4.16.3",
+    "express-list-endpoints": "^3.0.1",
     "ffmpeg-remix": "^0.1.0",
     "ffmpeg-static-electron": "^2.0.1",
     "ffprobe-static-electron": "^2.0.0",
@@ -128,16 +141,19 @@
     "fluent-ffmpeg": "^2.1.0",
     "jquery": "1.12.4",
     "jquery-sortable": "^0.9.13",
+    "leveldown": "^4.0.1",
     "linvodb3": "^3.24.0",
-    "medeadown": "1.1.8",
+    "medeadown": "^1.1.8",
     "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
+    "multer": "^1.3.1",
     "node-fetch": "^2.1.2",
     "node-timecodes": "^2.4.1",
     "node-underscorify": "0.0.14",
     "path": "^0.12.7",
     "request": "^2.81.0",
     "require-globify": "^1.4.1",
+    "sanitize-filename": "^1.6.1",
     "speechmatics": "^2.1.0",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4",
@@ -152,12 +168,16 @@
     "browserify-shim": "^3.8.12",
     "copy-dir": "^0.3.0",
     "docco": "^0.7.0",
+    "dotenv": "^6.0.0",
     "electron": "^1.6.10",
     "electron-builder": "*",
     "electron-packager": "*",
     "jasmine": "^2.5.2",
     "jest": "^22.4.3",
     "jsdoc": "^3.4.1",
+    "onchange": "^4.1.0",
+    "sync-files": "^1.0.3",
+    "watch": "^1.0.2",
     "watchify": "^3.7.0"
   },
   "repository": {
