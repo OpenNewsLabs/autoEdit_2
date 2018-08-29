@@ -62,9 +62,11 @@ script:
   #   fi
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    npm run build:mac;
+    npm run build:mwl;
     ls ./dist;
     find . | grep mac.zip;
+    find . | grep x86_64.AppImage;
+    find . | grep .exe;
     #wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
     bash upload.sh ./dist/autoEdit2-*-mac.zip  ./dist/autoEdit2-*-x86_64.AppImage ./dist/autoEdit2*.exe; 
     fi
