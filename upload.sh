@@ -92,10 +92,16 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   # This adds the description to the release by uploading a file 
   # artifactory doesn't support any kind of "artifact description", so we're uploading a text file containing the
   # relevant details along with the other artifacts
-  tempdir=$(mktemp -d)
-  info_file="$tempdir"/build-info.txt
-  echo "Travis CI build log: https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/" > "$info_file"
+  # tempdir=$(mktemp -d)
+  # info_file="$tempdir"/build-info.txt
+  # echo "Travis CI build log: https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/" > "$info_file"
+  # files+=("$info_file")
+
+  # Using local file with build info for ease of costimuzation
+  info_file=./build-info.txt
+  echo "Travis CI build log: https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/" >> "$info_file"
   files+=("$info_file")
+
 
   set +x
 
