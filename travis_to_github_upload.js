@@ -1,4 +1,7 @@
 require('dotenv').config()
+// TODO: electron builder might already contain this
+// https://www.electron.build/configuration/publish
+
 // takes file to upload as script param
 // knows release name & tag name from ENV var
 
@@ -56,32 +59,6 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
         });
     });
 
-    (async function () {
-        const res = await fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
-        .then((res) =>{
-            return res.text();
-        })
-        .then( (body) =>{
-           return JSON.parse(body)
-        } )
-        .then( (releases) =>{
-            releases.forEach(individualRelease => {
-               if(individualRelease.tag_name === RELEASE_NAME){
-                   console.log('true');
-                   return true;
-               }else{
-                   console.log('false');
-                   return false;
-               }
-            });
-        });
-        const json = await res;
-        if(json === true){
-            console.log(json);
-        }
-        
-    })();
-
     // if the tag name is in the list of releases     
         // GITHUB: delete release
         // delete release
@@ -93,29 +70,50 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
         // https://developer.github.com/v3/repos/releases/#create-a-release
         // POST /repos/:owner/:repo/releases
             // with body description?
-            // var body = { 
-            //     tag_name: RELEASE_NAME,
-            //     target_commitish: 'master',
-            //     name: 'test prerelease draft',
-            //     body: 'some text for body',
-            //     draft: true,
-            //     prerelease: true
-            // };
-            // fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`, { 
-            //     method: 'POST',
-            //     body:    JSON.stringify(body),
-            //     headers: { 'Content-Type': 'application/json',
-            //     // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
-            //                 'Authorization': `token ${process.env.GITHUB_TOKEN}` }
-            //     }).then(res => res.json())
-            //     .then((json) =>{
+            var body = { 
+                tag_name: RELEASE_NAME,
+                target_commitish: 'master',
+                name: 'test prerelease draft',
+                body: 'some text for body',
+                draft: true,
+                prerelease: true
+            };
+            fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`, { 
+                method: 'POST',
+                body:    JSON.stringify(body),
+                headers: { 'Content-Type': 'application/json',
+                // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
+                            'Authorization': `token ${process.env.GITHUB_TOKEN}` }
+                }).then(res => res.json())
+                .then((release) =>{
 
-            //         // get upload url for uploading binary to release
-            //      console.log('test',json.upload_url)
-            //     });
+                    // get upload url for uploading binary to release
+                 console.log('test',release.upload_url, release.id)
+                });
 
     // in both cases - add asset to this release 
         //  https://developer.github.com/v3/repos/releases/#upload-a-release-asset
+
+        var body = { 
+            tag_name: RELEASE_NAME,
+            target_commitish: 'master',
+            name: 'test prerelease draft',
+            body: 'some text for body',
+            draft: true,
+            prerelease: true
+        };
+        fetch(`https://${upload_url}/repos/${TRAVIS_REPO_SLUG}/releases/${RELEASE_ID}/assets?name=${assetName}`, { 
+            method: 'POST',
+            body:    JSON.stringify(body),
+            headers: { 'Content-Type': 'application/json',
+            // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
+                        'Authorization': `token ${process.env.GITHUB_TOKEN}` }
+            }).then(res => res.json())
+            .then((json) =>{
+
+                // get upload url for uploading binary to release
+             console.log('test',json.upload_url)
+            });
             
         // mac
             // ./dist/autoEdit2-1.0.13-mac.zip
