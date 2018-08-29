@@ -97,12 +97,6 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   echo "Travis CI build log: https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/" > "$info_file"
   files+=("$info_file")
 
-  # Using local file with build info for ease of costimuzation
-  # info_file="$PWD"/build-info.txt
-  # echo "Travis CI build log: https://travis-ci.org/$TRAVIS_REPO_SLUG/builds/$TRAVIS_BUILD_ID/" >> "$info_file"
-  # files+=("$info_file")
-
-
   set +x
 
   for file in ${files[@]}; do
@@ -223,18 +217,16 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
     TRAVIS_BRANCH="master"
   fi
 
-BODY=`cat build-info.txt`
-
 # TODO: if body could take from commit message that would be awesome?
   if [ ! -z "$TRAVIS_JOB_ID" ] ; then
     if [ -z "${UPLOADTOOL_BODY+x}" ] ; then
       # TODO: The host could be travis-ci.org (legacy open source) or travis-ci.com (subscription or latest open source).
-      BODY+="Travis CI build log: https://travis-ci.org/$REPO_SLUG/builds/$TRAVIS_BUILD_ID/"
+      BODY="Travis CI build log: https://travis-ci.org/$REPO_SLUG/builds/$TRAVIS_BUILD_ID/"
     else
-      BODY+="$UPLOADTOOL_BODY"
+      BODY="$UPLOADTOOL_BODY"
     fi
   else
-    BODY+="$UPLOADTOOL_BODY"
+    BODY="$UPLOADTOOL_BODY"
   fi
 
   release_infos=$(curl -H "Authorization: token ${GITHUB_TOKEN}" \
