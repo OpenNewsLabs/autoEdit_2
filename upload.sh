@@ -125,8 +125,8 @@ fi
 ######################      Pull Request trigger build       ###
 ################################################################
 
-// TODO: perhaps coment this out? might be good if it only builds from master
-// better workflow.
+# // TODO: perhaps coment this out? might be good if it only builds from master
+# // better workflow.
 
 # PULL REQUEST Tigger Build
 if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
