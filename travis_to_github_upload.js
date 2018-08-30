@@ -92,29 +92,7 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
                 });
 
     // in both cases - add asset to this release 
-        //  https://developer.github.com/v3/repos/releases/#upload-a-release-asset
-
-        var body = { 
-            tag_name: RELEASE_NAME,
-            target_commitish: 'master',
-            name: 'test prerelease draft',
-            body: 'some text for body',
-            draft: true,
-            prerelease: true
-        };
-        fetch(`https://${upload_url}/repos/${TRAVIS_REPO_SLUG}/releases/${RELEASE_ID}/assets?name=${assetName}`, { 
-            method: 'POST',
-            body:    JSON.stringify(body),
-            headers: { 'Content-Type': 'application/json',
-            // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
-                        'Authorization': `token ${process.env.GITHUB_TOKEN}` }
-            }).then(res => res.json())
-            .then((json) =>{
-
-                // get upload url for uploading binary to release
-             console.log('test',json.upload_url)
-            });
-            
+   
         // mac
             // ./dist/autoEdit2-1.0.13-mac.zip
         
@@ -127,3 +105,35 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
         // adobe CEP 
             //npm run adobe-panel-package-sign-build
             // ./dist/com.autoedit2.it.zxp
+
+
+/**
+ * Helper funciton 
+ * add assets to a release
+ * https://developer.github.com/v3/repos/releases/#upload-a-release-asset
+ */
+
+ function adAssetsToRelease(upload_url,TRAVIS_REPO_SLUG,RELEASE_ID){
+    var body = { 
+        tag_name: RELEASE_NAME,
+        target_commitish: 'master',
+        name: 'test prerelease draft',
+        body: 'some text for body',
+        draft: true,
+        prerelease: true
+    };
+    fetch(`https://${upload_url}/repos/${TRAVIS_REPO_SLUG}/releases/${RELEASE_ID}/assets?name=${assetName}`, { 
+        method: 'POST',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json',
+        // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
+                    'Authorization': `token ${process.env.GITHUB_TOKEN}` }
+        }).then(res => res.json())
+        .then((json) =>{
+
+            // get upload url for uploading binary to release
+            console.log('test',json.upload_url)
+        });
+    }
+
+    

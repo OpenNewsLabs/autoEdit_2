@@ -37,6 +37,9 @@
     "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
   },
   "build": {
+    "publish":{
+      "releaseType": "prerelease"
+    },
     "appId": "org.autoEdit2.autoEdit2-electron",
     "asar": false,
     "files": [
