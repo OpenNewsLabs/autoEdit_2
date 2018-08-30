@@ -1,47 +1,20 @@
-# https://github.com/OpenNewsLabs/autoEdit_2/issues/36
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode9.4
-      language: node_js
-      node_js: "8"
-      sudo: required
-    # - os: linux
-    #   language: node_js
-    #   node_js: "8"
-    #   sudo: required
-    #   # services: docker
-    #   addons:
-    #     apt:
-    #       packages:
-    #         - libgnome-keyring-dev
-    #         - icnsutils
-    #         - graphicsmagick
-    #         # - xz-utils
-    #         # - rpm
-    #         # - bsdtar
-
-# cache:
-#   directories:
-#   - node_modules
-#   - $HOME/.electron
-#   - $HOME/.npm
-#   - $HOME/.nvm
+os: osx
+osx_image: xcode9.4
+language: node_js
+node_js: "8"
+sudo: required
 
 env:
   global:
-    # - TRAVIS_TAG="1.0.12"
-    # - UPLOADTOOL_SUFFIX="autoEdit2"
-    - IS_PRERELEASE="true"
     # from https://www.electron.build/configuration/publish#githuboptions
     - EP_DRAFT=false
     - EP_PRE_RELEASE=false
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 
+# specifying npm version as
 # by default travis seemed to sue 4.2.0
 # https://docs.travis-ci.com/user/languages/javascript-with-nodejs/#using-a-specific-npm-version
-# before_install: 
 
 install:
   - node --version
@@ -51,42 +24,12 @@ install:
   - npm run make_js
 
 script:
-  # reading version number from json using bash and assigning to enviroment variable for travis as explained ehre https://gist.github.com/DarrenN/8c6a5b969481725a4413
-  # - |
-  # TRAVIS_TAG=$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
-  # echo $TRAVIS_TAG
-  # - |
-  #   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-  #   echo "INSIDE Travis OS Linux script";
-  #   npm run build:linux;
-  #   find . | grep AppImage;
-  #   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  #   bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage;
-  #   fi
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    npm run build:mwl;
-    # npm run adobe-panel-package-sign-build
-    ls ./dist;
-    find . | grep mac.zip;
-    find . | grep x86_64.AppImage;
-    find . | grep .exe;
-    #wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    # bash upload.sh ./dist/autoEdit2-*-mac.zip  ./dist/autoEdit2-*-x86_64.AppImage ./dist/autoEdit2*.exe; 
-    fi
-  # - |
-  #   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-  #   docker run --rm \
-  #   --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS|APPVEYOR_|CSC_|_TOKEN|_KEY|AWS_|STRIP|BUILD_') \
-  #   -v ${PWD}:/project \
-  #   -v ~/.cache/electron:/root/.cache/electron \
-  #   -v ~/.cache/electron-builder:/root/.cache/electron-builder \
-  #   electronuserland/builder:wine \
-  #   /bin/bash -c "npm run build --win"\
-  #   /bin/bash -c "echo 'in windows command'"\
-  #   # /bin/bash -c "wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh"\
-  #   /bin/bash -c "upload.sh ./dist/autoEdit2-*.exe.zip";
-  #   fi
+  - npm run build:mwl:publish:always;
+# - npm run adobe-panel-package-sign-build
+  - ls ./dist;
+  - find . | grep mac.zip;
+  - find . | grep x86_64.AppImage;
+  - find . | grep .exe;
 
 branches:
   except:

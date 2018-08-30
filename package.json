@@ -15,6 +15,7 @@
     "pack:win": "build --dir --win --x64",
     "build": "build",
     "build:mwl": "electron-builder -mwl",
+    "build:mwl:publish:always": "electron-builder -mwl --publish always",
     "build:mac": "build --mac --x64",
     "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
