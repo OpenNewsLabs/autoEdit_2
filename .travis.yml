@@ -7,8 +7,8 @@ sudo: required
 env:
   global:
     # from https://www.electron.build/configuration/publish#githuboptions
-    - EP_DRAFT=false
-    - EP_PRE_RELEASE=false
+    # - EP_DRAFT=false
+    # - EP_PRE_RELEASE=false
     - ELECTRON_CACHE=$HOME/.cache/electron
     - ELECTRON_BUILDER_CACHE=$HOME/.cache/electron-builder
 

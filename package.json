@@ -16,6 +16,7 @@
     "build": "build",
     "build:mwl": "electron-builder -mwl",
     "build:mwl:publish:always": "electron-builder -mwl --publish always",
+    "git:tag": "git tag",
     "build:mac": "build --mac --x64",
     "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
@@ -38,9 +39,10 @@
     "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
   },
   "build": {
-    "publish":{
+    "publish": {
       "provider": "github",
-      "releaseType": "prerelease"
+      "releaseType": "prerelease",
+      "vPrefixedTagName": false
     },
     "appId": "org.autoEdit2.autoEdit2-electron",
     "asar": false,
@@ -138,6 +140,7 @@
     "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "electron-debug": "^1.1.0",
+    "electron-updater": "^3.1.2",
     "express": "^4.16.3",
     "express-list-endpoints": "^3.0.1",
     "ffmpeg-remix": "^0.1.0",
