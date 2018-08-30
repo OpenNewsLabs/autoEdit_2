@@ -36,60 +36,16 @@ console.log('RELEASE_TITLE ',RELEASE_TITLE);
 console.log("------")
 
 // GITHUB: get list of release from githuhb 
-// https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
-// GET /repos/:owner/:repo/releases
-// https://api.github.com/repos/OpenNewsLabs/autoEdit_2/releases
-// .tag_name
-fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
-    .then((res) =>{
-        return res.text();
-    })
-    .then( (body) =>{
-       return JSON.parse(body)
-    } )
-    .then( (releases) =>{
-        releases.forEach(individualRelease => {
-           if(individualRelease.tag_name === RELEASE_NAME){
-            //    console.log('true');
-               return true;
-           }else{
-            //    console.log('false');
-               return false;
-           }
-        });
-    });
+
 
     // if the tag name is in the list of releases     
         // GITHUB: delete release
-        // delete release
-        //  https://developer.github.com/v3/repos/releases/#delete-a-release
+       
 
     // tag name is not in list of releases
 
         // GITHUB: create new release
-        // https://developer.github.com/v3/repos/releases/#create-a-release
-        // POST /repos/:owner/:repo/releases
-            // with body description?
-            var body = { 
-                tag_name: RELEASE_NAME,
-                target_commitish: 'master',
-                name: 'test prerelease draft',
-                body: 'some text for body',
-                draft: true,
-                prerelease: true
-            };
-            fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`, { 
-                method: 'POST',
-                body:    JSON.stringify(body),
-                headers: { 'Content-Type': 'application/json',
-                // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
-                            'Authorization': `token ${process.env.GITHUB_TOKEN}` }
-                }).then(res => res.json())
-                .then((release) =>{
-
-                    // get upload url for uploading binary to release
-                 console.log('test',release.upload_url, release.id)
-                });
+        
 
     // in both cases - add asset to this release 
    
@@ -108,8 +64,66 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
 
 
 /**
- * Helper funciton 
- * add assets to a release
+ * Helper function - get list of release from githuhb 
+ * https://developer.github.com/v3/repos/releases/#list-releases-for-a-repository
+ * GET /repos/:owner/:repo/releases
+ * https://api.github.com/repos/OpenNewsLabs/autoEdit_2/releases
+ * .tag_name
+ */
+function getListOfReleases(TRAVIS_REPO_SLUG){
+    
+    fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
+    .then((res) =>{
+        return res.text();
+    })
+    .then( (body) =>{
+        return JSON.parse(body)
+    })
+    .then( (releases) =>{
+        // returns array of releases
+        // do something with releases
+        releases.forEach(individualRelease => {
+        if(individualRelease.tag_name === RELEASE_NAME){
+            //    console.log('true');
+            return true;
+        }else{
+            //    console.log('false');
+            return false;
+        }
+        });
+    });
+}
+
+/**
+ * Helper function - create new release
+ * https://developer.github.com/v3/repos/releases/#create-a-release
+ * POST /repos/:owner/:repo/releases
+ */
+function createNewRelease(RELEASE_NAME,TRAVIS_REPO_SLUG){
+    var body = { 
+        tag_name: RELEASE_NAME,
+        target_commitish: 'master',
+        name: 'test prerelease draft',
+        body: 'some text for body',
+        draft: true,
+        prerelease: true
+    };
+    fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`, { 
+        method: 'POST',
+        body:    JSON.stringify(body),
+        headers: { 'Content-Type': 'application/json',
+        // https://help.github.com/articles/authorizing-a-personal-access-token-for-use-with-a-saml-single-sign-on-organization/
+                    'Authorization': `token ${process.env.GITHUB_TOKEN}` }
+        }).then(res => res.json())
+        .then((release) =>{
+
+            // return upload url for uploading binary to release
+            // as well as release id
+            console.log('test',release.upload_url, release.id)
+        });
+}
+/**
+ * Helper funciton - add assets to a release
  * https://developer.github.com/v3/repos/releases/#upload-a-release-asset
  */
 
@@ -134,6 +148,13 @@ fetch(`https://api.github.com/repos/${TRAVIS_REPO_SLUG}/releases`)
             // get upload url for uploading binary to release
             console.log('test',json.upload_url)
         });
-    }
+}
 
-    
+/**
+ * Helper funciton -delete release
+ * https://developer.github.com/v3/repos/releases/#delete-a-release
+ */
+
+ function deleteRelease(){
+
+ }

@@ -38,6 +38,7 @@
   },
   "build": {
     "publish":{
+      "provider": "github",
       "releaseType": "prerelease"
     },
     "appId": "org.autoEdit2.autoEdit2-electron",

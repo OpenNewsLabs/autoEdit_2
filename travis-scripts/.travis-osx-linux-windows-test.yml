@@ -6,20 +6,20 @@ matrix:
       language: node_js
       node_js: "8"
       sudo: required
-    # - os: linux
-    #   language: node_js
-    #   node_js: "8"
-    #   sudo: required
-    #   # services: docker
-    #   addons:
-    #     apt:
-    #       packages:
-    #         - libgnome-keyring-dev
-    #         - icnsutils
-    #         - graphicsmagick
-    #         # - xz-utils
-    #         # - rpm
-    #         # - bsdtar
+    - os: linux
+      language: node_js
+      node_js: "8"
+      sudo: required
+      # services: docker
+      addons:
+        apt:
+          packages:
+            - libgnome-keyring-dev
+            - icnsutils
+            - graphicsmagick
+            # - xz-utils
+            # - rpm
+            # - bsdtar
 
 # cache:
 #   directories:
@@ -51,22 +51,21 @@ install:
   - npm run make_js
 
 script:
-  # reading version number from json using bash and assigning to enviroment variable for travis as explained ehre https://gist.github.com/DarrenN/8c6a5b969481725a4413
+  reading version number from json using bash and assigning to enviroment variable for travis as explained ehre https://gist.github.com/DarrenN/8c6a5b969481725a4413
   # - |
   # TRAVIS_TAG=$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }' | sed 's/[",]//g')
   # echo $TRAVIS_TAG
-  # - |
-  #   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
-  #   echo "INSIDE Travis OS Linux script";
-  #   npm run build:linux;
-  #   find . | grep AppImage;
-  #   # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-  #   bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage;
-  #   fi
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then 
+    echo "INSIDE Travis OS Linux script";
+    npm run build:linux;
+    find . | grep AppImage;
+    # - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+    bash upload.sh ./dist/autoEdit2-*-x86_64.AppImage;
+    fi
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then 
-    npm run build:mwl;
-    # npm run adobe-panel-package-sign-build
+    npm run build:mac;
     ls ./dist;
     find . | grep mac.zip;
     find . | grep x86_64.AppImage;
