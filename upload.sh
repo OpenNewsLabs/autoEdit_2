@@ -1,4 +1,8 @@
 #!/bin/bash
+# CURRENTLY NOT IN USE, using electron builder publishing feautres
+# TODO: this could be used to publish the adobe panel onto releases as well
+
+
 # script used in travis CI continuos deployement, called by .travis.yml 
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
