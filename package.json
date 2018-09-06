@@ -33,7 +33,9 @@
     "adobe-panel-dev": "npm run make_js && npm run adobe-panel-dev-src && npm run adobe-panel-dev-electron && npm run adobe-panel-dev-lib && npm run adobe-panel-dev-node_modules && npm run adobe-panel-dev-packagejson",
     "adobe-panel-dev:watch": "onchange ./lib/** ./package.json ./electron/** ./adobe-panel-src/** -e ./electron/app.js -- npm run adobe-panel-dev",
     "adobe-panel-build": "sync-files adobe-panel-src adobe-panel-build && sync-files electron adobe-panel-build/electron && sync-files lib adobe-panel-build/lib &&  sync-files ./package.json adobe-panel-build/package.json && sync-files node_modules  adobe-panel-build/node_modules",
-    "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
+    "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js",
+    "server":"node webapp/server/index.js"
+
   },
   "build": {
     "appId": "org.autoEdit2.autoEdit2-electron",

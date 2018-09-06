@@ -1,4 +1,4 @@
-
+const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const multer = require('multer');
@@ -52,7 +52,8 @@ app.get('/routes', (req, res) => {
 app.post('/api/transcriptions', jsonParser, function (req, res) {
     console.info('New Transcription');
     console.log(req.body);
-    console.dir(req.file);
+    // fs.writeFileSync(__dirname+'/uploads/file.mp4',req.body.myFile)
+    // console.dir(req.file);
     if (!req.body) return res.sendStatus(400)
     // create user in req.body
     res.json({ res: 'POST request create new transcription', receive: req.body});
