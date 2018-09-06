@@ -173,7 +173,8 @@ DB.create = function(model, success, error) {
           watson: window.IBMWatsonKeys(),
           speechmatics: window.SpeechmaticsKeys(),
           rev: window.revKeys(),
-          bbc: window.BBCKeys()
+          bbc: window.BBCKeys(),
+          assemblyai: window.AssemblyaiAPIkeys()
         },
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
