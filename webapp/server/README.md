@@ -1,6 +1,8 @@
 <!-- https://gist.github.com/simenbrekken/1999230 -->
 # draft 
 
+# draft
+
 ## Transcription 
 
 ### New Transcription 
@@ -29,7 +31,7 @@ PUT Transcription
 
 DELETE Transcription 
 
----
+--- 
 
 ## PaperEdit
 
