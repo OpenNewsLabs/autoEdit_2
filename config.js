@@ -18,8 +18,8 @@ module.exports = {
     twitter: 'https://twitter.com/autoEdit2',
     facebook: 'https://www.facebook.com/autoEdit.io/',
     email: 'mailto:pietro@autoEdit.io?Subject=autoEdit%202'  ,
-    userManual: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/',
-    sttSetup: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis.html',
-    sttSetupIBM: 'https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/setup-stt-apis/setup-stt-apis-ibm.html'
+    userManual: 'https://autoedit.gitbook.io/user-manual',
+    sttSetup: 'https://autoedit.gitbook.io/user-manual/setup-stt-apis',
+    sttSetupIBM: 'https://autoedit.gitbook.io/user-manual/setup-stt-apis/setup-stt-apis-ibm'
   }
 };

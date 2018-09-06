@@ -1,0 +1,39 @@
+{
+    "transcript": {
+       "warning": "Transcript created without a custom model.",
+       "status": "completed",
+       "id": 40,
+       "created": "2018-09-06 00:56:36.085921",
+       "words": [
+          {
+             "end": 460,
+             "text": "You",
+             "start": 0,
+             "confidence": 0.998460287397558
+          },
+          {
+             "start": 420,
+             "confidence": 0.893729746341705,
+             "text": "know",
+             "end": 600
+          },
+          {
+             "text": "demons",
+             "end": 1380,
+             "confidence": 0.944231944648843,
+             "start": 560
+          },
+          {
+             "confidence": 0.888044935464859,
+             "start": 11460,
+             "end": 11620,
+             "text": "know."
+          }
+       ],
+       "audio_src_url": "https://s3-us-west-2.amazonaws.com/blog.assemblyai.com/audio/8-7-2018-post/7510.mp3",
+       "model_id": null,
+       "speaker_count": null,
+       "confidence": 0.944567747738272,
+       "text": "You know demons on tv like that and and for people to expose themselves to being rejected on tv or you know her humiliated by fear factor or um you know."
+    }
+ }

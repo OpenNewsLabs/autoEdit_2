@@ -93,6 +93,11 @@
         window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
         window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
     
+        window.AssemblyaiAPIkeys = require('./assemblyai_keys.js').getAssemblyaiAPIkeys;
+        window.setAssemblyaiAPIkeys = require('./assemblyai_keys.js').setAssemblyaiAPIkeys;
+        window.areAssemblyaiAPIkeysSet = require('./assemblyai_keys.js').areAssemblyaiAPIkeysSet;
+    
+
         window.revKeys = require('./rev_keys.js').getRevAPIkeys;
         window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
         window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
@@ -113,6 +118,11 @@
         window.SpeechmaticsKeys = require(`${envPath}/speechmatics_keys.js`).getSpeechmaticsAPIkeys;
         window.setSpeechmaticsAPIkeys = require(`${envPath}/speechmatics_keys.js`).setSpeechmaticsAPIkeys;
         window.areSpeechmaticsAPIkeysSet = require(`${envPath}/speechmatics_keys.js`).areSpeechmaticsAPIkeysSet;
+
+
+        window.AssemblyaiAPIkeys = require(`${envPath}/assemblyai_keys.js`).getAssemblyaiAPIkeys;
+        window.setAssemblyaiAPIkeys = require(`${envPath}/assemblyai_keys.js`).setAssemblyaiAPIkeys;
+        window.areAssemblyaiAPIkeysSet = require(`${envPath}/assemblyai_keys.js`).areAssemblyaiAPIkeysSet;
     
         window.revKeys = require(`${envPath}/rev_keys.js`).getRevAPIkeys;
         window.setRevAPIkeys = require(`${envPath}/rev_keys.js`).setRevAPIkeys;
@@ -121,6 +131,7 @@
         window.BBCKeys = require(`${envPath}/bbc_keys.js`).getBBCAPIkeys;
         window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
         window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
+        
       } 
 
       if(window.ENV_BROSWER){
