@@ -17,6 +17,119 @@
   }
   </script>
   <link rel="stylesheet" href="custom.css">
+
+    <!-- Setup database and electron stuff -->
+    <script>
+      "use strict";
+    
+      // Is browser Eg client side app
+      if(window.process === undefined){
+        window.ENV ='browser';
+        window.ENV_BROSWER = true;
+        window.ENV_ELECTRON = false;
+        window.ENV_CEP = false;
+        console.debug("In browser Enviroment"); 
+      } else {
+        // if not in the browser enviroment 
+        console.info('Using v8 engine v: ', window.process.versions.v8);
+        console.info('Using node v: ', window.process.versions.node);
+         // Is electron 
+        if(window.process.versions.electron !== undefined){
+          window.ENV ='electron';
+          window.ENV_ELECTRON = true;
+          window.ENV_BROSWER = false;
+          window.ENV_CEP = false;
+          console.debug("In Electron Enviroment"); 
+          console.info('In Electron v: ', window.process.versions.electron);
+          console.info('Using chrome v: ', window.process.versions.chrome);
+        }
+        // if it is cep -> is adobe premiere panel 
+        // CEP stands for Adobe Common Extensibility Platform 
+        // https://www.adobe.io/apis/creativecloud/cep.html
+        //  could also check for process.versions.cep or  window.cep_node or  process.versions.chromium
+        if(window.process.versions.cep !== undefined) {
+          window.ENV ='cep';
+          window.ENV_CEP = true;
+          window.ENV_BROSWER = false;
+          window.ENV_ELECTRON = false;
+          console.debug("In Adobe CEP Enviroment"); 
+          console.info('In Chromium v: ', window.process.versions.chromium);
+          console.info('In CEP (Adobe Common Extensibility Platform ) v: ', window.process.versions.cep);
+          console.info('adjusting current working directory for Adobe CEP');
+          console.log('Starting directory: ' + process.cwd());
+          try {
+            process.chdir(__dirname);
+            // process.chdir('..');
+            console.log('New directory: ' + process.cwd());
+          }
+          catch (err) {
+            console.log('chdir: ' + err);
+          }
+          
+        }
+      }
+    
+      // if you drag a file onto the app, it stops from the window opening that file. 
+      // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
+      document.addEventListener('drop', function(e) {
+        // console.log(e);
+        e.preventDefault();
+        e.stopPropagation();
+      });
+      document.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      });
+    
+      if(window.ENV_ELECTRON){
+        const {dialog} = require('electron').remote;
+        window.DB = require('./db.js');
+    
+        window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
+        window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
+        window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
+    
+        window.SpeechmaticsKeys = require('./speechmatics_keys.js').getSpeechmaticsAPIkeys;
+        window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
+        window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
+    
+        window.revKeys = require('./rev_keys.js').getRevAPIkeys;
+        window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
+        window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
+    
+        window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
+        window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
+        window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+      }
+    
+      if(window.ENV_CEP){
+        const envPath = `${__dirname}/electron`
+        window.DB = require(`${envPath}/db.js`);
+    
+        window.IBMWatsonKeys = require(`${envPath}/watson_keys.js`).getWatsonAPIkeys;
+        window.setWatsonAPIkeys = require(`${envPath}/watson_keys.js`).setWatsonAPIkeys;
+        window.areWatsonAPIkeysSet = require(`${envPath}/watson_keys.js`).areWatsonAPIkeysSet;
+    
+        window.SpeechmaticsKeys = require(`${envPath}/speechmatics_keys.js`).getSpeechmaticsAPIkeys;
+        window.setSpeechmaticsAPIkeys = require(`${envPath}/speechmatics_keys.js`).setSpeechmaticsAPIkeys;
+        window.areSpeechmaticsAPIkeysSet = require(`${envPath}/speechmatics_keys.js`).areSpeechmaticsAPIkeysSet;
+    
+        window.revKeys = require(`${envPath}/rev_keys.js`).getRevAPIkeys;
+        window.setRevAPIkeys = require(`${envPath}/rev_keys.js`).setRevAPIkeys;
+        window.areRevAPIkeysSet = require(`${envPath}/rev_keys.js`).areRevAPIkeysSet;
+    
+        window.BBCKeys = require(`${envPath}/bbc_keys.js`).getBBCAPIkeys;
+        window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
+        window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
+      } 
+
+      if(window.ENV_BROSWER){
+        window.areBBCAPIkeysSet = function(){
+          console.info("placeholder funciton");
+          return false;
+        }
+      }
+    </script>
 </head>
 <body>
   <!-- NAVBAR  -->
@@ -67,87 +180,124 @@
 
   <div id="main"></div>
 
-  <!-- Setup database and nwjs stuff -->
-  <script>
-  "use strict";
-  if (window.process !== undefined) {
-    const {dialog} = require('electron').remote;
-    console.debug("In Electron Enviroment");
-    //TODO: rename across code base, perhaps use ENVIROMENT instead of this. 
-    window.frontEndEnviromentElectron = true;
-    // window.nw = require('nw.gui');
-    window.DB = require('./db.js');
- 
-    window.IBMWatsonKeys = require('./watson_keys.js').getWatsonAPIkeys;
-    window.setWatsonAPIkeys = require('./watson_keys.js').setWatsonAPIkeys;
-    window.areWatsonAPIkeysSet = require('./watson_keys.js').areWatsonAPIkeysSet;
-
-    window.SpeechmaticsKeys = require('./speechmatics_keys.js').getSpeechmaticsAPIkeys;
-    window.setSpeechmaticsAPIkeys = require('./speechmatics_keys.js').setSpeechmaticsAPIkeys;
-    window.areSpeechmaticsAPIkeysSet = require('./speechmatics_keys.js').areSpeechmaticsAPIkeysSet;
-
-    window.revKeys = require('./rev_keys.js').getRevAPIkeys;
-    window.setRevAPIkeys = require('./rev_keys.js').setRevAPIkeys;
-    window.areRevAPIkeysSet = require('./rev_keys.js').areRevAPIkeysSet;
-
-    // if you drag a file onto the app, it stops from the window opening that file. 
-    // TODO: it be awesome if whichever view you are in if you drag a file onto the window, it opens the transcription form view, with that file prepopulated.
-    document.addEventListener('drop', function(e) {
-      // console.log(e);
-      e.preventDefault();
-      e.stopPropagation();
-    });
-  document.addEventListener('dragover', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  });
-
-  } else {
-    console.debug("In Browser Enviroment");
-    window.frontEndEnviromentElectron = false;
-  }
-  </script>
-
-
 <script>
 //when in electron context, links are opened using defailt browser, rather then electron view, when they have class externalLink
-  if (window.process !== undefined) {
-
+  if (!window.ENV_BROSWER) {
     var linksOnPage = document.querySelectorAll("a");
-
     linksOnPage.forEach(function(item){
       if(item.classList[0] == "externalLink" ){
         item.addEventListener("click", function(e){
           e.preventDefault();
-          const {shell} = require('electron')
-
-        shell.openExternal(item.href);
-         
+          if(window.ENV_ELECTRON){
+            const {shell} = require('electron')
+            shell.openExternal(item.href);
+          }
+          if(window.ENV_CEP){
+             // https://github.com/Adobe-CEP/CEP-Resources/wiki/CEP-6-HTML-Extension-Cookbook-for-CC-2015#open-url-link-in-default-browser
+            window.cep.util.openURLInDefaultBrowser(item.href);
+          }
         })
       }
     })
   }
-
   </script>
 
-
  <script>
-  if (window.process !== undefined) {
-    document.write('<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">');
-  } else {
+  if (window.ENV_BROSWER) {
     document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">');
+  } else {
+    document.write('<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">');
   }
   </script>
   <!-- load App UI -->
   <script src="app.js"></script>
 
-
-
   <script>
-  if (window.process !== undefined) {
-  var ffmpegExentions = require("./ffmpeg_extentions.js")
-   // file dialogue opener 
-   const {dialog} = require('electron').remote;
+  if (!window.ENV_BROSWER) {
+    const path = require('path');
+    const remix = require('ffmpeg-remix');
+
+    var ffmpegExentions;
+
+    if (window.ENV_CEP) {
+       ffmpegExentions = require(`${__dirname}/electron/ffmpeg_extentions.js`);
+       // TODO add logic for open dialogue and trigger ffmpeg
+
+      //  https://www.adobe.com/devnet/creativesuite/articles/adobe-cep-apis.html
+
+      window.openFileDiaglogue = function(cb){
+        var result = window.cep.fs.showOpenDialog();
+        // var result = window.cep.fs.showSaveDialogEx();
+        console.log(result.data[0], result)
+        if(cb){cb(result.data[0])};
+
+        // window.__adobe_cep__.evalScript("$._PPP.open_file_in_source_monitor_and_play_if_present('" + JSON.stringify({timecode: vid.currentTime, fileName: this.model.get('metadata').fileName , filePath: this.model.get('videoUrl'), playBool: false })+"')", function (response){
+        //     // mute autoEdit video 
+        //     // videoElem.muted = true; 
+        //     // console.log(response); 
+        //   })
+     
+
+        // var filetypes = new Array();
+        // filetypes[0] = "mov";
+        // filetypes[1] = "do";
+        // filetypes[2] = "psd";
+        
+        // var result = window.cep.fs.showOpenDialog(false,false,'SELECT PSD','/tmp/',ffmpegExentions);
+        // alert(result.data);
+        // if(cb){cb(result.data)};
+
+        // dialog.showOpenDialog(
+        //   {
+        //     properties: ['openFile'],
+        //     filters: [
+        //       {name: 'Movies',extensions: ffmpegExentions},
+        //     ]
+        //   },
+        //  function(fileName){
+        //   if(cb){cb(fileName)};
+        // });
+        
+        // https://github.com/pickercenter/autoedit-panel/blob/master/lib/CEPEngine_extensions.js#L154
+      }
+
+
+      window.openCaptionsFileDiaglogue = function(cb){
+        var result = window.cep.fs.showSaveDialogEx();
+        console.log(result.data[0], result)
+        if(cb){cb(result.data[0])};
+      }
+
+        window.ffmpegRemix = function (jsonSequence, cb){
+          var result = window.cep.fs.showSaveDialogEx();
+          console.log(result.data, result)
+
+          // https://github.com/electron/electron/blob/master/docs/api/dialog.md#dialogshowsavedialogbrowserwindow-options-callback
+          var savePath = result.data;
+          console.log('savePath',savePath);
+          console.log('jsonSequence.output',jsonSequence.output);
+          // if user does not specify mp4 extension then we should add it othersiwe ffmpeg will fail
+          if(!isVideoFileMp4(savePath)){
+            savePath +='.mp4';
+          }
+          jsonSequence.output = savePath;
+          console.log('jsonSequence.output',jsonSequence.output);
+          // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
+          jsonSequence.ffmpegPath =  require("ffmpeg-static-electron").ffmpegPath;
+          // //call ffmpeg remix
+          remix(jsonSequence,function(err, result) {
+            console.log(err, result);
+              if(cb){cb(savePath)}
+          })
+        }
+      
+    }
+///////////////////////
+    if(window.ENV_ELECTRON){
+       ffmpegExentions = require("./ffmpeg_extentions.js");
+      // TODO: move code below so that it can work in chromium as well
+       // file dialogue opener 
+      const {dialog} = require('electron').remote;
 
      window.openFileDiaglogue = function(cb){
       dialog.showOpenDialog(
@@ -162,7 +312,56 @@
       });
      }
 
+     window.openCaptionsFileDiaglogue = function(cb){
+      dialog.showOpenDialog(
+        {
+          properties: ['openFile'],
+          filters: [
+          { name: 'All Files', extensions: ['srt']}
+          ]
+        },
+       function(fileName){
+        if(cb){cb(fileName)};
+      });
+     }
+
+      window.ffmpegRemix = function (jsonSequence, cb){
+      // https://github.com/electron/electron/blob/master/docs/api/dialog.md#dialogshowsavedialogbrowserwindow-options-callback
+      var savePath = dialog.showSaveDialog({});
+      console.log('savePath',savePath);
+      console.log('jsonSequence.output',jsonSequence.output);
+      // if user does not specify mp4 extension then we should add it othersiwe ffmpeg will fail
+      if(!isVideoFileMp4(savePath)){
+        savePath +='.mp4';
+      }
+      jsonSequence.output = savePath;
+      console.log('jsonSequence.output',jsonSequence.output);
+      // jsonSequence.ffmpegPath = require('ffmpeg-static').path; 
+      jsonSequence.ffmpegPath =  require("ffmpeg-static-electron").path;
+      // //call ffmpeg remix
+      
+      remix(jsonSequence,function(err, result) {
+        console.log(err, result);
+          if(cb){cb(savePath)}
+      })
+     }
+
+    
   }
+ 
+  /**
+    * Helper function 
+    */
+  function isVideoFileMp4(file){
+      var extname = path.extname(file);
+      if(extname === '.mp4'){
+        return true;
+      }
+      else{
+        return false;
+      }
+  }
+}
 </script>
 
   </body>

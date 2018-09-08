@@ -12,69 +12,97 @@
  */
 // Sharing data path through window object. from main object.
 // https://github.com/electron/electron/issues/1095
-var electron = require('electron');
-var currentWindow = electron.remote.getCurrentWindow();
-
 var path = require('path');
 var fs = require('fs');
+var medeadown = require('medeadown'); 
 var LinvoDB = require('linvodb3');
+// var medeadown = cep_node.require('medeadown'); 
+// var LinvoDB = cep_node.require('linvodb3');
+var sanitize = require("sanitize-filename");
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
-var medeadown = require('medeadown');
-
-var dataPath = currentWindow.dataPath;
-
-// +db path, for now in root of app, to be change so that in config where user
-// can set where they want it, but also provide a default.
-// LinvoDB.dbPath = path.join(process.cwd(), '/db');
-// https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
-// const {app} = require('electron')
-// LinvoDB.dbPath = electron.getPath('appData')
-LinvoDB.dbPath = dataPath;
-console.info('dataPath ', dataPath);
-
-LinvoDB.defaults.store = { db: medeadown };
-
-// +db path, for now in root of app, to be change so that in config where user
-// can set where they want it, but also provide a default.
-// LinvoDB.dbPath = path.join(process.cwd(), '/db');
-// LinvoDB.dbPath = dataPath;
-
-// setting up transcription model in database.
+var dataPath;
+var tmpMediaFolder;
+var mediaFolder;
+ // setup for initialising db path inside enviroment scope 
 var transcriptionModel = 'transcription';
 var papereditModel = 'paperedit';
 // Non-strict always, can be left empty
+// https://github.com/Ivshti/linvodb3/blob/d34220d2043d478f6db6ff9aa5075dca39c646bb/README.md#install-initialize-pick-backend
 var transcriptionSchema = {};
 var papereditSchema = {};
-var transcriptionOptions = {};
-var papereditOptions = {};
-
-var Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
-var Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
-
+var Transcription;
+var Paperedit;
 var DB = {};
 
-// Setting up media folders for media and tmp media on local file system,
-// user libary application support folder
-var tmpMediaFolder = path.join(dataPath, 'tmp_media');
-var mediaFolder = path.join(dataPath, 'media');
-
-// if media folder does not exists create it
-if (!fs.existsSync(tmpMediaFolder)) {
-  console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
-  fs.mkdirSync(tmpMediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('tmpMediaFolder folder was already present');
+if(window.ENV_ELECTRON){
+  console.info('setting db in electron');
+  var electron = require('electron');
+  // https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
+  var currentWindow = electron.remote.getCurrentWindow();
+  dataPath = currentWindow.dataPath;
+  LinvoDB.dbPath = dataPath;
+  tmpMediaFolder = path.join(dataPath, 'tmp_media');
+  mediaFolder = path.join(dataPath, 'media');
+  setTmpFolders(tmpMediaFolder,mediaFolder); 
+  console.log('ENV_ELECTRON dataPath',dataPath,typeof dataPath, LinvoDB.dbPath);
+  // initialising db path inside enviroment scope 
+  var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+  var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+  Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+  Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
+  
+}
+if(window.ENV_CEP){
+  console.info('setting db in Adobe CEP')  
+  //  medeadown = require(`../node_modules/medeadown`);
+  // var dataPath = Folder.userData.fsName;
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+   console.log('$._PPP.get_user_data_path adobeDataPath',adobeDataPath);
+    dataPath = adobeDataPath;
+    // window.cep.fs.writeFile(adobeDataPath+"/test.md", "Your data goes here");
+    window.cep.fs.readFile(path.join(adobeDataPath, 'transcription.db'))
+    // adobeDataPath = process.cwd();
+    LinvoDB.dbPath = adobeDataPath;
+    // LinvoDB.dbPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
+    tmpMediaFolder = path.join(adobeDataPath, 'tmp_media');
+    mediaFolder = path.join(adobeDataPath, 'media');
+    console.log('ENV_CEP adobeDataPath', LinvoDB.dbPath);
+    // if media folder does not exists create it
+    setTmpFolders(tmpMediaFolder,mediaFolder);
+     // initialising db path inside enviroment scope of 
+    var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+    var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+    Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+    Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
+   
+  });
 }
 
-// if temp media folder does not exists create it
-if (!fs.existsSync(mediaFolder)) {
-  console.debug('mediaFolder folder not present, creating mediaFolder folder');
-  fs.mkdirSync(mediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('mediaFolder folder was already present');
+function setTmpFolders(tmpMediaFolder,mediaFolder){
+  if (!fs.existsSync(tmpMediaFolder)) {
+    console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
+    console.log(tmpMediaFolder);
+    fs.mkdirSync(tmpMediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('tmpMediaFolder folder was already present');
+    console.log(tmpMediaFolder);
+  }
+  // if temp media folder does not exists create it
+  if (!fs.existsSync(mediaFolder)) {
+    console.log(mediaFolder);
+    console.debug('mediaFolder folder not present, creating mediaFolder folder');
+    fs.mkdirSync(mediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('mediaFolder folder was already present');
+    console.log(mediaFolder);
+  }
 }
+
+// LinvoDB.defaults.store = { db: medeadown }; 
+// LinvoDB.defaults.store = {db:require("level-js")};
+// setting up transcription model in database.
 
 /**
  * Create a callback function for LinvoDB queries

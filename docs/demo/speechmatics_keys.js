@@ -1,16 +1,18 @@
 "use strict";
 const fs = require('fs');
-const electron = require('electron');
-const currentWindow = electron.remote.getCurrentWindow();
 const path = require('path');
 
-// var speechmaticsKeysPath;
-
-if (window.process !== 'undefined') {
-  var speechmaticsKeysPath = path.join(currentWindow.dataPath , 'speechmaticskeys.json');
-}else{
-  //not in electron 
-  var speechmaticsKeysPath = "";
+var speechmaticsKeysPath = "";
+if(window.ENV_ELECTRON){
+  const electron = require('electron');
+  const currentWindow = electron.remote.getCurrentWindow();
+  speechmaticsKeysPath = path.join(currentWindow.dataPath , 'speechmaticskeys.json');
+}
+if(window.ENV_CEP){
+  // https://forums.adobe.com/thread/1956086
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+    speechmaticsKeysPath = path.join(adobeDataPath, 'speechmaticskeys.json');
+  })
 }
 
 var speechmaticsKeys = {username: "", password: ""};
