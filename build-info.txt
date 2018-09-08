@@ -1,0 +1,46 @@
+
+# autoEdit release notes 
+
+This version is backwards compatible with previous pre-releases from `1.0.3` onwards.
+
+## For first time users 
+[see these instructions for installing](https://autoedit.gitbook.io/user-manual/installing) 
+## For returning users 
+
+### For clean uninstall 
+[use app cleaner](https://autoedit.gitbook.io/user-manual/uninstalling), this will delete transcriptions you might already have in the app. 
+
+### To keep previous transcriptions
+And make use of new functionalities for latest version. This is only possible if you are  running `1.0.3` onwards and you can just follow [regular instructions for installing](https://autoedit.gitbook.io/user-manual/installing) and drag and drop in applications folder to replace the app. This will keep any transcriptions you currently have in there. 
+
+ When you drag and drop in application folder and chose `replace`.
+
+---
+
+## New Features
+
+...
+
+## Bug fixes and improvements 
+
+...
+
+## Known Bugs
+- There seems to be known bug that happens apparently at random when creating a new transcription, sometimes, unclear why, the metadata is not saved for to the transcription. [see issue for more details on best guess](https://github.com/OpenNewsLabs/autoEdit_2/issues/51). this is still being investigated to figure out root cause.
+
+---
+
+## Keep up to date with upcoming releases 
+
+Sing up to the [mailing list](http://eepurl.com/cMzwSX), follow on [twitter](http://twitter.com/autoEdit2) and [facebook](https://www.facebook.com/autoEdit.io/) to keep up to date with [the latest releases](https://github.com/OpenNewsLabs/autoEdit_2/releases). 
+
+If you have been using autoEdit, I am always super interested in hearing about other people's production and post-production workflow, as well as projects they might have used it for, what has worked best and what hasn't. Say hi at pietro@autoEdit.io, and/or [@pietropassarell](http://twitter.com/pietropassarell) / [@autoEdit2](http://twitter.com/autoEdit2)
+
+## Support 
+
+[There is also a number of different way you can support the project](https://pietropassarelli.gitbooks.io/autoedit2-user-manual/content/support-the-project.html).
+
+[autoEdit.io](www.autoEdit.io) it's free and open source. Free as in free speech as well as in free beer. [Help support the autoEdit project to keep it that way](https://donorbox.org/c9762eef-0e08-468e-90cb-2d00643697f8?recurring=true). Support will go towards fixing bugs, adding features, provide support for users etc...
+
+---
+

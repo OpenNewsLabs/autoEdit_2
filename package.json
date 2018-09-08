@@ -1,7 +1,7 @@
 {
   "name": "autoEdit2",
   "productName": "autoEdit2",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "Fast text based video editing",
   "main": "electron/main.js",
   "scripts": {
@@ -14,6 +14,9 @@
     "pack:linux": "build --dir --linux --x64",
     "pack:win": "build --dir --win --x64",
     "build": "build",
+    "build:mwl": "electron-builder -mwl",
+    "build:mwl:publish:always": "electron-builder -mwl --publish always",
+    "git:tag": "git tag",
     "build:mac": "build --mac --x64",
     "build:mac_app_store": "echo 'Mac App Store Option Not currently implemented'",
     "build:win": "build --win nsis-web --x64",
@@ -36,6 +39,11 @@
     "adobe-panel-package-sign-build": "node sign-and-package-adobe-panel.js"
   },
   "build": {
+    "publish": {
+      "provider": "github",
+      "releaseType": "prerelease",
+      "vPrefixedTagName": false
+    },
     "appId": "org.autoEdit2.autoEdit2-electron",
     "asar": false,
     "files": [
@@ -128,10 +136,12 @@
   "author": "Pietro Passarelli <pietro.passarelli@gmail.com> (http://pietropassarelli.com)",
   "license": "MIT",
   "dependencies": {
+    "assemblyai": "^1.0.0",
     "backbone": "^1.3.3",
     "body-parser": "^1.18.3",
     "bootstrap": "^3.3.7",
     "electron-debug": "^1.1.0",
+    "electron-updater": "^3.1.2",
     "express": "^4.16.3",
     "express-list-endpoints": "^3.0.1",
     "ffmpeg-remix": "^0.1.0",
@@ -147,7 +157,7 @@
     "moment": "^2.15.2",
     "mousetrap": "^1.6.0",
     "multer": "^1.3.1",
-    "node-fetch": "^2.1.2",
+    "node-fetch": "^2.2.0",
     "node-timecodes": "^2.4.1",
     "node-underscorify": "0.0.14",
     "path": "^0.12.7",
@@ -170,7 +180,7 @@
     "docco": "^0.7.0",
     "dotenv": "^6.0.0",
     "electron": "^1.6.10",
-    "electron-builder": "*",
+    "electron-builder": "^20.28.3",
     "electron-packager": "*",
     "jasmine": "^2.5.2",
     "jest": "^22.4.3",
