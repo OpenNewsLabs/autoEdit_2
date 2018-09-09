@@ -164,7 +164,6 @@
     "request": "^2.81.0",
     "require-globify": "^1.4.1",
     "sanitize-filename": "^1.6.1",
-    "speechmatics": "^2.1.0",
     "underscore": "^1.8.3",
     "underscore.string": "^3.3.4",
     "watson-developer-cloud": "2.4.1"
