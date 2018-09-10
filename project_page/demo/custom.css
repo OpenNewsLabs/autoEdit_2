@@ -243,4 +243,20 @@ audio {
   border-bottom: solid orange 2px;
 }
 
- 
+ /* styling timecodes in transcription view */
+
+/* .timecode-box-left{
+  padding-right: 0px;
+} */
+
+input#playbackTimeCodes {
+  padding: 7px;
+}
+
+/* .timecode-box-right{
+  padding-left: 0px;  
+} */
+
+input#videoDuration {
+  padding: 7px;
+}

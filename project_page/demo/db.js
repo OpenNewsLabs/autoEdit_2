@@ -12,64 +12,97 @@
  */
 // Sharing data path through window object. from main object.
 // https://github.com/electron/electron/issues/1095
-var electron = require('electron');
-var currentWindow = electron.remote.getCurrentWindow();
-
-var path = require("path");
+var path = require('path');
 var fs = require('fs');
+var medeadown = require('medeadown'); 
 var LinvoDB = require('linvodb3');
+// var medeadown = cep_node.require('medeadown'); 
+// var LinvoDB = cep_node.require('linvodb3');
+var sanitize = require("sanitize-filename");
 var transcription_generate = require('../lib/interactive_transcription_generator/index.js');
-var medeadown = require('medeadown');
-
-// var dataPath = window.nw.App.dataPath;
-var dataPath = currentWindow.dataPath; 
-
-// console.log()
-
-
-LinvoDB.defaults.store = { db: medeadown };
-
-// +db path, for now in root of app, to be change so that in config where user
-// can set where they want it, but also provide a default.
-// LinvoDB.dbPath = path.join(process.cwd(), '/db');
-LinvoDB.dbPath = dataPath;
-
-// setting up transcription model in database.
+var dataPath;
+var tmpMediaFolder;
+var mediaFolder;
+ // setup for initialising db path inside enviroment scope 
 var transcriptionModel = 'transcription';
 var papereditModel = 'paperedit';
 // Non-strict always, can be left empty
+// https://github.com/Ivshti/linvodb3/blob/d34220d2043d478f6db6ff9aa5075dca39c646bb/README.md#install-initialize-pick-backend
 var transcriptionSchema = {};
 var papereditSchema = {};
-var transcriptionOptions = {};
-var papereditOptions = {};
-
-var Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
-var Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
-
+var Transcription;
+var Paperedit;
 var DB = {};
 
-// Setting up media folders for media and tmp media on local file system,
-// user libary application support folder
-var tmpMediaFolder = path.join(dataPath, 'tmp_media');
-var mediaFolder = path.join(dataPath, 'media');
-
-// if media folder does not exists create it
-if (!fs.existsSync(tmpMediaFolder)) {
-  console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
-  fs.mkdirSync(tmpMediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('tmpMediaFolder folder was already present');
+if(window.ENV_ELECTRON){
+  console.info('setting db in electron');
+  var electron = require('electron');
+  // https://github.com/electron/electron/blob/master/docs/api/app.md#appgetpathname
+  var currentWindow = electron.remote.getCurrentWindow();
+  dataPath = currentWindow.dataPath;
+  LinvoDB.dbPath = dataPath;
+  tmpMediaFolder = path.join(dataPath, 'tmp_media');
+  mediaFolder = path.join(dataPath, 'media');
+  setTmpFolders(tmpMediaFolder,mediaFolder); 
+  console.log('ENV_ELECTRON dataPath',dataPath,typeof dataPath, LinvoDB.dbPath);
+  // initialising db path inside enviroment scope 
+  var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+  var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+  Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+  Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
+  
+}
+if(window.ENV_CEP){
+  console.info('setting db in Adobe CEP')  
+  //  medeadown = require(`../node_modules/medeadown`);
+  // var dataPath = Folder.userData.fsName;
+  window.__adobe_cep__.evalScript(`$._PPP.get_user_data_path()`, function (adobeDataPath){
+   console.log('$._PPP.get_user_data_path adobeDataPath',adobeDataPath);
+    dataPath = adobeDataPath;
+    // window.cep.fs.writeFile(adobeDataPath+"/test.md", "Your data goes here");
+    window.cep.fs.readFile(path.join(adobeDataPath, 'transcription.db'))
+    // adobeDataPath = process.cwd();
+    LinvoDB.dbPath = adobeDataPath;
+    // LinvoDB.dbPath = '/Users/pietropassarelli/Library/Application\ Support/autoEdit2'
+    tmpMediaFolder = path.join(adobeDataPath, 'tmp_media');
+    mediaFolder = path.join(adobeDataPath, 'media');
+    console.log('ENV_CEP adobeDataPath', LinvoDB.dbPath);
+    // if media folder does not exists create it
+    setTmpFolders(tmpMediaFolder,mediaFolder);
+     // initialising db path inside enviroment scope of 
+    var transcriptionOptions = {filename: dataPath+'/transcription.db', store: {db: medeadown}};  
+    var papereditOptions = {filename: dataPath+'/paperedit.db', store: {db: medeadown}};
+    Transcription = new LinvoDB(transcriptionModel, transcriptionSchema, transcriptionOptions);
+    Paperedit = new LinvoDB(papereditModel, papereditSchema, papereditOptions);
+   
+  });
 }
 
-// if temp media folder does not exists create it
-if (!fs.existsSync(mediaFolder)) {
-  console.debug('mediaFolder folder not present, creating mediaFolder folder');
-  fs.mkdirSync(mediaFolder);
-} else {
-  // do nothing, build folder was already there
-  console.debug('mediaFolder folder was already present');
+function setTmpFolders(tmpMediaFolder,mediaFolder){
+  if (!fs.existsSync(tmpMediaFolder)) {
+    console.debug('tmpMediaFolder folder not present, creating tmpMediaFolder folder');
+    console.log(tmpMediaFolder);
+    fs.mkdirSync(tmpMediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('tmpMediaFolder folder was already present');
+    console.log(tmpMediaFolder);
+  }
+  // if temp media folder does not exists create it
+  if (!fs.existsSync(mediaFolder)) {
+    console.log(mediaFolder);
+    console.debug('mediaFolder folder not present, creating mediaFolder folder');
+    fs.mkdirSync(mediaFolder);
+  } else {
+    // do nothing, build folder was already there
+    console.debug('mediaFolder folder was already present');
+    console.log(mediaFolder);
+  }
 }
+
+// LinvoDB.defaults.store = { db: medeadown }; 
+// LinvoDB.defaults.store = {db:require("level-js")};
+// setting up transcription model in database.
 
 /**
  * Create a callback function for LinvoDB queries
@@ -98,7 +131,7 @@ function makeLinvoCallback(success, error) {
  * @param {object} options - Sucess or failure callback.
  * @returns {object} sucess callback with backbone model containing db id
  */
-DB.create = function(model, success, error){
+DB.create = function(model, success, error) {
   console.debug('DB.create', model.constructor.modelType);
   if (model.constructor.modelType == 'transcription') {
     var newElement = model.toJSON();
@@ -111,8 +144,8 @@ DB.create = function(model, success, error){
         console.error(err);
         return error(err);
       }
-      //TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
-      console.info("Started processing transcription");
+      // TODO: add which transcription started processing, title and id. eg transcription.title, transcription.id;
+      console.info('Started processing transcription');
       getTimeNow();
 
       // updating backbone with saved transcritpion, containing db id
@@ -134,10 +167,13 @@ DB.create = function(model, success, error){
         // destFolder:"/media",
         tmpWorkFolder: tmpMediaFolder,
         destFolder: mediaFolder,
+        // for caption file conversion
+        captionFilePath: newElement.captionFilePath,
         keys: {
           watson: window.IBMWatsonKeys(),
           speechmatics: window.SpeechmaticsKeys(),
-          rev: window.revKeys()
+          rev: window.revKeys(),
+          bbc: window.BBCKeys()
         },
         languageModel: newElement.languageModel,
         sttEngine: newElement.sttEngine,
@@ -149,73 +185,77 @@ DB.create = function(model, success, error){
             trs.metadata = respM;
             // saving current transcription
             trs.metadataStatus = true;
-             // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
-            if(trs.processedAudio === true && trs.transcriptionStatus === true){
+            // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
+            if (trs.processedAudio === true && trs.transcriptionStatus === true) {
               trs.status = true;
             }
-            trs.save(function(err) { 
+            trs.save(function(err) {
               model.set(trs);
-              if (err) console.error('error saving tr meta: ',err); 
+              if (err) console.error('error saving tr meta: ',err);
               console.log('trs-cbMetadata: ', JSON.stringify(trs,null,2));
             });
 
-            
+
           });
         },
         cbTranscription: function(respErr, respT) {
           // updating current transcription with transcription json.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            // updating transcription attributes with result         
-            if(respErr){
+            // updating transcription attributes with result
+            if (respErr) {
               trs.status = null;
               trs.error = respErr;
               model.set(trs);
-            }else{
+            }else {
               trs.audioFile = respT.audioFile;
               trs.processedAudio = respT.processedAudio;
               trs.text = respT.text;
               trs.transcriptionStatus = true;
               // trs.processedAudio instead of trs.videoStatus. coz can see audio preview hypertranscript with audio only as well
-              if(trs.processedAudio === true && trs.metadataStatus === true){
+              if (trs.processedAudio === true && trs.metadataStatus === true) {
                 trs.status = true;
               }
-             }//else no error in transcription callback
-              // saving current transcription
-              trs.save(function(err) { 
-                 model.set(trs);
-                 //TODO: add which transcription started done, title and id. eg trs.title, trs.id;
-                 console.info("done processing transcription");
-                 //TODO: could calculate difference between when started - when ended and say it took x long.
-                 getTimeNow();
-                if (err) console.error('error saving tr transcription : ', err); 
-              });
-           
+            }// else no error in transcription callback
+            // saving current transcription
+            trs.save(function(err) {
+              model.set(trs);
+              // TODO: add which transcription started done, title and id. eg trs.title, trs.id;
+              console.info('done processing transcription');
+              // TODO: could calculate difference between when started - when ended and say it took x long.
+              getTimeNow();
+              if (err) console.error('error saving tr transcription : ', err);
+            });
+
           });
         },
         cbVideo: function(respV) {
-          console.log('cbVideo: ', respV);
+          if(err){
+            console.log('cbVideo: ', respV);
+          }
           // updating current transcription with webm html5 video preview.
           Transcription.findOne({ _id: transcription._id }, function (err, trs) {
-            console.error('cbVideo err: ',err);
+            if (err) {
+              console.error('cbVideo err: ',err);
+            }
             console.log('cbVideo inside trs findOne respV', respV);
             // updating transcription attributes with result
             trs.videoOgg = respV.videoOgg;
             trs.processedVideo = respV.processedVideo;
             // saving current transcription
             trs.videoStatus = true;
-            if(trs.metadataStatus === true && trs.transcriptionStatus === true){
+            if (trs.metadataStatus === true && trs.transcriptionStatus === true) {
               trs.status = true;
             }
-            trs.save(function(err) { 
+            trs.save(function(err) {
               model.set(trs);
-              if (err) console.error('error saving tr cbVideo : ', err); 
+              if (err) console.error('error saving tr cbVideo : ', err);
             });
           });
         }
       });
 
     });
-  }else if(model.constructor.modelType == 'paperedit'){
+  } else if (model.constructor.modelType == 'paperedit') {
     var newElementPaperedit = model.toJSON();
     // create transcription element to save in db
     var paperedit = new Paperedit(newElementPaperedit);
@@ -225,13 +265,13 @@ DB.create = function(model, success, error){
         // if we have an error, log it and bail
         console.error(err);
         return error(err);
-      }//.error 
+      }// .error
       // updating backbone with saved transcritpion, containing db id
       model.set(paperedit);
       // returning saved transcription callback
       success(model);
-    });//.save
-  }//.else if 
+    });// .save
+  }// .else if
 };
 
 /**
@@ -249,16 +289,16 @@ DB.read = function(model, success, error) {
     if (model.constructor.modelType === 'transcriptions') {
       // look in database
       Transcription.find({}, makeLinvoCallback(success, error));
-    }else if(model.constructor.modelType === 'paperedits'){
-        Paperedit.find({}, makeLinvoCallback(success, error));
+    } else if (model.constructor.modelType === 'paperedits') {
+      Paperedit.find({}, makeLinvoCallback(success, error));
     }
   } else {
     // for transcription model
     if (model.constructor.modelType === 'transcription') {
       // looks in database using transcription id
       Transcription.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
-    }else if (model.constructor.modelType === 'paperedit'){
-        Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
+    } else if (model.constructor.modelType === 'paperedit') {
+      Paperedit.findOne({ _id: model.get('_id') }, makeLinvoCallback(success, error));
     }
   }
 };
@@ -294,8 +334,8 @@ DB.update = function(model, success, error) {
       // saving transcription to database
       doc.save(makeLinvoCallback(success, error));
     });
-  }else if (model.constructor.modelType == 'paperedit'){
-      Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+  } else if (model.constructor.modelType == 'paperedit') {
+    Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       // NOTE: rather then using update, which did not seemed to be optimised for speed.
       // uses `findOne`, replaces attributes with new once.
@@ -336,8 +376,8 @@ DB.patch = function(model, success, error) {
 
       doc.save(makeLinvoCallback(success, error));
     });
-  }else if (model.constructor.modelType == 'paperedit'){
-     Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
+  } else if (model.constructor.modelType == 'paperedit') {
+    Paperedit.findOne({ _id: model.get('_id') }, function(err, doc) {
       // TODO: there's got to be a better way to do this
       doc.title               = model.attributes.title;
       doc.description         = model.attributes.description;
@@ -385,7 +425,7 @@ DB.delete = function(model, success, error) {
         success(model);
       }
     });
-  }else if (model.constructor.modelType == 'paperedit'){
+  } else if (model.constructor.modelType == 'paperedit') {
     Paperedit.remove({ _id: model.get('_id') }, {multi: false }, function (err, numRemoved) {
       if (err) {
         console.error(err);
@@ -407,16 +447,16 @@ DB.delete = function(model, success, error) {
 
 
 
-//helper function for debugging
-function getTimeNow(){
+// helper function for debugging
+function getTimeNow() {
   var now = new Date();
-  var resultSrt = ""+ now.getHours()+":"+ now.getMinutes()+"."+ now.getMilliseconds()+"_"+
-              now.getDate()+"-"+ now.getMonth()+"-"+  now.getFullYear();
+  var resultSrt = '' + now.getHours() + ':' + now.getMinutes() + '.' + now.getMilliseconds() + '_' +
+              now.getDate() + '-' + now.getMonth() + '-' +  now.getFullYear();
   // var result = {
   //   string: resultSrt,
   //   object: now
   // };
-  console.info(resultSrt);          
+  console.info(resultSrt);
   // return result;
 }
 

@@ -2,6 +2,9 @@ const {app, BrowserWindow, dialog, shell, Menu} = require('electron');
 const path = require('path')
 const url = require('url')
 
+// https://www.electron.build/auto-update
+const { autoUpdater } = require("electron-updater");
+autoUpdater.checkForUpdatesAndNotify();
 
 //require('electron-debug')({showDevTools: true});
 // require('electron-debug')({enabled: true});
@@ -151,3 +154,6 @@ app.on('open-file', (event, path) => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+

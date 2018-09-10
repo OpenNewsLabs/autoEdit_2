@@ -1,7 +1,15 @@
 #!/bin/bash
+# CURRENTLY NOT IN USE, using electron builder publishing feautres
+# TODO: this could be used to publish the adobe panel onto releases as well
+
+
 # script used in travis CI continuos deployement, called by .travis.yml 
 # initially from https://github.com/probonopd/uploadtool/raw/master/upload.sh 
 set +x # Do not leak information
+
+################################################################
+######################  release number of app###################
+################################################################
 
 # reading version number from package.json using bash and assigning to enviroment variable for travis 
 # as explained here https://gist.github.com/DarrenN/8c6a5b969481725a4413
@@ -9,10 +17,18 @@ TRAVIS_TAG=$(cat ./package.json | grep version | head -1 | awk -F: '{ print $2 }
 echo "troubleshooting TRAVIS_TAG"
 echo $TRAVIS_TAG
 
+################################################################
+######################  name of the app ########################
+################################################################
+
 # doing same thing with app name, reading it from package.json to make suffix of release
 UPLOADTOOL_SUFFIX=$(cat ./package.json | grep name | head -1 | awk -F: '{ print $2 }' | sed 's/[" ,]//g')
 echo "troubleshooting UPLOADTOOL_SUFFIX "
 echo $UPLOADTOOL_SUFFIX
+
+################################################################
+#######  takes file to upload as argument  to the script #######
+################################################################
 
 # checks for command line argument to this script
 # Exit immediately if one of the files given as arguments is not there
@@ -30,6 +46,9 @@ echo $UPLOADTOOL_SUFFIX
 echo $TRAVIS_TAG
 echo $TRAVIS_OS_NAME
 
+################################################################
+#####################   NOT SURE WHAT THIS DOES? ###############
+################################################################
 
 if [ $# -eq 0 ]; then
     echo "No artifacts to use for release, giving up."
@@ -44,34 +63,16 @@ else
   echo "Neither sha256sum nor shasum is available, cannot check hashes"
 fi
 
-# echo "printing out the upload suffix"
-# echo  "$UPLOADTOOL_SUFFIX"
 
-# NAME OF RELEASE
-# The calling script (usually .travis.yml) can set a suffix to be used for
-# the tag and release name. This way it is possible to have a release for
-# the output of the CI/CD pipeline (marked as 'continuous') and also test
-# builds for other branches.
-# If this build was triggered by a tag, call the result a Release
-# if [ ! -z "$UPLOADTOOL_SUFFIX" ] ; then
-#   if [ "$UPLOADTOOL_SUFFIX" = "$TRAVIS_TAG" ] ; then
-#     RELEASE_NAME=$TRAVIS_TAG
-#     RELEASE_TITLE="$TRAVIS_TAG $TRAVIS_OS_NAME"
-#     is_prerelease="false"
-#   else
-#     RELEASE_NAME="continuous-$UPLOADTOOL_SUFFIX"
-#     RELEASE_TITLE="Continuous build ($UPLOADTOOL_SUFFIX)"
-#     is_prerelease="true"
-#   fi
-# else
-#   RELEASE_NAME="continuous" # Do not use "latest" as it is reserved by GitHub
-#   RELEASE_TITLE="Continuous build"
-#   is_prerelease="true"
-# fi
+################################################################
+###  Setting Release name, title, and pre-release settings #####
+################################################################
 
-RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
-RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
-is_prerelease="false"
+# RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG-$TRAVIS_OS_NAME"
+RELEASE_NAME="$UPLOADTOOL_SUFFIX-$TRAVIS_TAG"
+# RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG $TRAVIS_OS_NAME"
+RELEASE_TITLE="$UPLOADTOOL_SUFFIX $TRAVIS_TAG"
+is_prerelease="$IS_PRERELEASE"
 
 echo  "Infoss"
 echo $RELEASE_NAME
@@ -99,6 +100,10 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
 
   set +x
 
+################################################################
+######################      ?       ###########################
+################################################################
+
   for file in ${files[@]}; do
     url="${ARTIFACTORY_BASE_URL}/travis-${TRAVIS_BUILD_NUMBER}/"$(basename "$file")
     md5sum=$(md5sum "$file" | cut -d' ' -f1)
@@ -121,6 +126,14 @@ if [ "$ARTIFACTORY_BASE_URL" != "" ]; then
   rm -r "$tempdir"
 fi
 
+
+################################################################
+######################      Pull Request trigger build       ###
+################################################################
+
+# // TODO: perhaps coment this out? might be good if it only builds from master
+# // better workflow.
+
 # PULL REQUEST Tigger Build
 if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
   echo "Release uploading disabled for pull requests"
@@ -140,6 +153,10 @@ if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
   $shatool "$@"
   exit 0
 fi
+
+################################################################
+######################      ?       ###########################
+################################################################
 
 if [ ! -z "$TRAVIS_REPO_SLUG" ] ; then
   # We are running on Travis CI
@@ -162,11 +179,20 @@ else
   fi
 fi
 
+################################################################
+#############               ?                         ##########
+################################################################
 tag_url="https://api.github.com/repos/$REPO_SLUG/git/refs/tags/$RELEASE_NAME"
 tag_infos=$(curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" "${tag_url}")
 echo "tag_infos: $tag_infos"
 tag_sha=$(echo "$tag_infos" | grep '"sha":' | head -n 1 | cut -d '"' -f 4 | cut -d '{' -f 1)
 echo "tag_sha: $tag_sha"
+
+################################################################
+#############               Get release by tag name   ##########
+################################################################
+
+// https://developer.github.com/v3/repos/releases/#get-a-release-by-tag-name
 
 release_url="https://api.github.com/repos/$REPO_SLUG/releases/tags/$RELEASE_NAME"
 echo "Getting the release ID..."
@@ -186,6 +212,13 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
 
   echo "TRAVIS_COMMIT != target_commit_sha, hence deleting $RELEASE_NAME..."
   
+################################################################
+#############     Delete release using id             ##########
+################################################################
+
+// https://developer.github.com/v3/repos/releases/#delete-a-release
+
+
   if [ ! -z "$release_id" ]; then
     delete_url="https://api.github.com/repos/$REPO_SLUG/releases/$release_id"
     echo "Delete the release..."
@@ -200,6 +233,10 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
   # curl -XGET --header "Authorization: token ${GITHUB_TOKEN}" \
   #     "$release_url"
 
+################################################################
+#############      delete Relese with same name?       ##########
+################################################################
+
   if [ "$is_prerelease" = "true" ] ; then
     # if this is a continuous build tag, then delete the old tag
     # in preparation for the new release
@@ -211,8 +248,12 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
         "${delete_url}"
   fi
 
-  echo "Create release..."
+################################################################
+######################      prep release info?     ##############
+################################################################
 
+  echo "Create release..."
+# https://docs.travis-ci.com/user/environment-variables/
   if [ -z "$TRAVIS_BRANCH" ] ; then
     TRAVIS_BRANCH="master"
   fi
@@ -228,6 +269,12 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
   else
     BODY="$UPLOADTOOL_BODY"
   fi
+
+################################################################
+######################      Create release       ################
+################################################################
+
+// https://developer.github.com/v3/repos/releases/#create-a-release
 
   release_infos=$(curl -H "Authorization: token ${GITHUB_TOKEN}" \
        --data '{"tag_name": "'"$RELEASE_NAME"'","target_commitish": "'"$TRAVIS_COMMIT"'","name": "'"$RELEASE_TITLE"'","body": "'"$BODY"'","draft": false,"prerelease": '$is_prerelease'}' "https://api.github.com/repos/$REPO_SLUG/releases")
@@ -249,6 +296,11 @@ if [ -z "$release_url" ] ; then
   exit 1
 fi
 
+
+################################################################
+######################      upload file to release?  ###########
+################################################################
+
 # UPLOAD FILE TO RELEASE
 echo "Upload binaries to the release..."
 
@@ -262,6 +314,11 @@ for FILE in "$@" ; do
        "$upload_url?name=$BASENAME"
   echo ""
 done
+
+
+################################################################
+######################      publish release   ##################
+################################################################
 
 $shatool "$@"
 
