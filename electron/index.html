@@ -348,6 +348,15 @@
     }
 ///////////////////////
     if(window.ENV_ELECTRON){
+      //TODO: find better solution for this. eg add to settings
+      // and modify tweet that clip module.
+      process.env.TWITTER_CONSUMER_KEY = 'NXrtPvWzit6pM6w1JQelf8oWo';
+      process.env.TWITTER_CONSUMER_SECRET = '8xIhB2AQiaSAdrWCOLBicQrudwvZkUExaL0bERZDz6MlCrgPTV';
+      process.env.TWITTER_ACCESS_TOKEN = '75041621-nnBXMffuLievebk1kCxMzaMDOqq6XQBhA1JZOorEZ';
+      process.env.TWITTER_ACCESS_TOKEN_SECRET = 'g70ELrt4r68TeiDeSBeTfTgFDfDHKFnaJ3ugTO2sGBw3O';
+
+
+
        ffmpegExentions = require("./ffmpeg_extentions.js");
       // TODO: move code below so that it can work in chromium as well
        // file dialogue opener 
@@ -398,6 +407,22 @@
         console.log(err, result);
           if(cb){cb(savePath)}
       })
+     }
+
+
+     const tweetThatClip = require('tweet-that-clip'); 
+     window.tweetThatClip  = function(infoToTweet,cb){
+      // set credentials in process.env.
+      console.log('tweetThatClip - started in index.html');
+      // adding path to electron
+      infoToTweet.ffmpegPath =  require("ffmpeg-static-electron").path;
+      tweetThatClip(infoToTweet, (err, res) => {
+        // TODO: add some kind of tweted message
+        console.log('tweeted - index.html');
+        console.log(err, res);
+        cb(err,res);
+      });
+
      }
 
     
