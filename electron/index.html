@@ -105,6 +105,10 @@
         window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
         window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
         window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+
+        window.TwitterAPIkeys = require('./twitter_keys.js').getTwitterAPIkeys;
+        window.setTwitterAPIkeys = require('./twitter_keys.js').setTwitterAPIkeys;
+        window.areTwitterAPIkeysSet = require('./twitter_keys.js').areTwitterAPIkeysSet;
       }
     
       if(window.ENV_CEP){
@@ -132,6 +136,9 @@
         window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
         window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
         
+        window.TwitterAPIkeys = require(`${envPath}/twitter_keys.js`).getTwitterAPIkeys;
+        window.setTwitterAPIkeys = require(`${envPath}/twitter_keys.js`).setTwitterAPIkeys;
+        window.areTwitterAPIkeysSet = require(`${envPath}/twitter_keys.js`).areTwitterAPIkeysSet;
       } 
 
       if(window.ENV_BROSWER){
@@ -178,9 +185,20 @@
         console.info("placeholder funciton", keys);
       }
 
-      window.setBBCAPIkeys= function(keys){
+      window.setBBCAPIkeys = function(keys){
         console.info("placeholder funciton", keys);
       }
+
+      window.TwitterAPIkeys  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+      window.setTwitterAPIkeys  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+      window.areTwitterAPIkeysSet  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+    
     }
       
     </script>
@@ -348,14 +366,6 @@
     }
 ///////////////////////
     if(window.ENV_ELECTRON){
-      //TODO: find better solution for this. eg add to settings
-      // and modify tweet that clip module.
-      process.env.TWITTER_CONSUMER_KEY = '';
-      process.env.TWITTER_CONSUMER_SECRET = '';
-      process.env.TWITTER_ACCESS_TOKEN = '';
-      process.env.TWITTER_ACCESS_TOKEN_SECRET = '';
-
-
 
        ffmpegExentions = require("./ffmpeg_extentions.js");
       // TODO: move code below so that it can work in chromium as well
@@ -416,6 +426,11 @@
       console.log('tweetThatClip - started in index.html');
       // adding path to electron
       infoToTweet.ffmpegPath =  require("ffmpeg-static-electron").path;
+      infoToTweet.credentials = window.TwitterAPIkeys();
+      // TODO: could add burn in captions, either before, or as option inside the twitter module, 
+      // as optional submodule
+      // https://github.com/pietrop/captions_burner/blob/master/lib/burn_srt_on_video.js
+      // console.log('tweetThatClip',process.env.TWITTER_CONSUMER_KEY);
       tweetThatClip(infoToTweet, (err, res) => {
         // TODO: add some kind of tweted message
         console.log('tweeted - index.html');
