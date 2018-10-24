@@ -366,7 +366,7 @@
     }
 ///////////////////////
     if(window.ENV_ELECTRON){
-
+      const fs = require('fs');
        ffmpegExentions = require("./ffmpeg_extentions.js");
       // TODO: move code below so that it can work in chromium as well
        // file dialogue opener 
@@ -422,17 +422,18 @@
      const electron = require('electron');
      const currentWindow = electron.remote.getCurrentWindow();
      const dataPath = currentWindow.dataPath;
-
+     window.dataPath = dataPath;
      const tweetThatClip = require('tweet-that-clip'); 
 
      window.tweetThatClip  = function(infoToTweet){
+       console.log('in index.html',infoToTweet.srtFilePath, infoToTweet.srtFileContent)
+      fs.writeFileSync(infoToTweet.srtFilePath, infoToTweet.srtFileContent)
       return new Promise((resolve, reject)=>{
       // set credentials in process.env.
       console.log('tweetThatClip - started in index.html');
       // adding path to electron
-      infoToTweet.ffmpegPath =  require("ffmpeg-static-electron").path;
+      infoToTweet.ffmpegBin =  require("ffmpeg-static-electron").path;
       infoToTweet.credentials = window.TwitterAPIkeys();
-      infoToTweet.mediaType = 'audio';
       // TODO: tmpDir
       infoToTweet.tmpDir = path.join(dataPath, 'tmp_media');
       // TODO: could add burn in captions, either before, or as option inside the twitter module, 
