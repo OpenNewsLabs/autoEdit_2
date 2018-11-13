@@ -3,8 +3,8 @@ const path = require('path')
 const url = require('url')
 
 // https://www.electron.build/auto-update
-const { autoUpdater } = require("electron-updater");
-autoUpdater.checkForUpdatesAndNotify();
+// const { autoUpdater } = require("electron-updater");
+// autoUpdater.checkForUpdatesAndNotify();
 
 //require('electron-debug')({showDevTools: true});
 // require('electron-debug')({enabled: true});
