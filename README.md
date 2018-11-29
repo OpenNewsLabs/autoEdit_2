@@ -129,6 +129,7 @@ List of contributors that have helped shaped autoEdit by contributing and/or adv
 - [Sanette Tanaka](https://twitter.com/ssktanaka)
 - [Ryan Mark](https://twitter.com/ryanmark)
 - [Katie O'Dowd]()
+- [Bernhard Fasenfest](https://github.com/bfasenfest)
 - [Pietro Passarelli](http://github.com/pietrop)
 
 ### Active contributors 
