@@ -426,8 +426,10 @@
      const tweetThatClip = require('tweet-that-clip'); 
 
      window.tweetThatClip  = function(infoToTweet){
-       console.log('in index.html',infoToTweet.srtFilePath, infoToTweet.srtFileContent)
-      fs.writeFileSync(infoToTweet.srtFilePath, infoToTweet.srtFileContent)
+       if(infoToTweet.captionsBool){
+        fs.writeFileSync(infoToTweet.srtFilePath, infoToTweet.srtFileContent)
+       }
+   
       return new Promise((resolve, reject)=>{
       // set credentials in process.env.
       console.log('tweetThatClip - started in index.html');
