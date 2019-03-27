@@ -1,7 +1,7 @@
 {
   "name": "autoEdit2",
   "productName": "autoEdit2",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "description": "Fast text based video editing app",
   "main": "electron/main.js",
   "scripts": {
