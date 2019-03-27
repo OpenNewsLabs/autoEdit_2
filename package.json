@@ -1,8 +1,8 @@
 {
   "name": "autoEdit2",
   "productName": "autoEdit2",
-  "version": "1.0.15",
-  "description": "Fast text based video editing",
+  "version": "1.0.19",
+  "description": "Fast text based video editing app",
   "main": "electron/main.js",
   "scripts": {
     "test": "jasmine",
@@ -149,7 +149,7 @@
     "ffprobe-static-electron": "^2.0.0",
     "file-saver": "^1.3.8",
     "fluent-ffmpeg": "^2.1.2",
-    "jquery": "1.12.4",
+    "jquery": "^3.3.1",
     "jquery-sortable": "^0.9.13",
     "leveldown": "^4.0.1",
     "linvodb3": "^3.26.0",
