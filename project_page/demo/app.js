@@ -3333,7 +3333,7 @@ module.exports = Backbone.View.extend({
     if (searchTextArray.length > 0) {
       for (var i = 0; i < searchTextArray.length; i++) {
         $('.words[data-text=' + searchTextArray[i] + ']').addClass("searched");
-      }REA;
+      };
     }
   },
 
