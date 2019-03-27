@@ -164,7 +164,7 @@
     "request": "^2.88.0",
     "require-globify": "^1.4.1",
     "sanitize-filename": "^1.6.1",
-    "tweet-that-clip": "^1.0.7",
+    "tweet-that-clip": "^2.0.1",
     "underscore": "^1.9.1",
     "underscore.string": "^3.3.4",
     "watson-developer-cloud": "2.4.1"
