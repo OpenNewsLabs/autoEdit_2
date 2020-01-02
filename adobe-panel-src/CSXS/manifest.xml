@@ -5,7 +5,7 @@
 	</ExtensionList>
 	<ExecutionEnvironment>
 		<HostList>
-			<Host Name="PPRO" Version="9.0" />
+			<Host Name="PPRO" Version="[9.0,14.9]"/>
 		</HostList>
 		<LocaleList>
 			<Locale Code="All" />

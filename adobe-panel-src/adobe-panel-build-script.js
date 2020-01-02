@@ -44,4 +44,4 @@ const autoEditadobeExtensionFolder = `${adobeExtensionsFolder}/${panelExtensionF
 
 // if folder exists delete it
 
-test 3 
+// test 3 
