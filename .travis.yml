@@ -30,6 +30,8 @@ script:
   - find . | grep mac.zip;
   - find . | grep x86_64.AppImage;
   - find . | grep .exe;
+  - npm run adobe-panel-package-sign-build
+  - node travis_to_github_upload.js
 
 branches:
   except:
