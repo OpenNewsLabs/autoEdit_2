@@ -190,6 +190,7 @@ const ghReleaseAssets = require("gh-release-assets");
 async function main() {
   const releases = await getListOfReleases(TRAVIS_REPO_SLUG);
   const lastRelease = releases[0];
+  console.log('lastRelease', JSON.stringify(lastRelease,null,2))
   const uploadUrl = lastRelease.upload_url;
   console.log('uploadUrl', uploadUrl)
 
