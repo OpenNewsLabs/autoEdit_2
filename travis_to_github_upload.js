@@ -191,6 +191,7 @@ async function main() {
   const releases = await getListOfReleases(TRAVIS_REPO_SLUG);
   const lastRelease = releases[0];
   const uploadUrl = lastRelease.upload_url;
+  console.log('uploadUrl', uploadUrl)
 
   ghReleaseAssets(
     {

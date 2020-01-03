@@ -1,7 +1,8 @@
 os: osx
 osx_image: xcode9.4
 language: node_js
-node_js: "8"
+# node_js: "8"
+node_js: "12.13.1"
 sudo: required
 
 env:
