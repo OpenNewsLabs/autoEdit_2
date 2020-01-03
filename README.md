@@ -72,7 +72,7 @@ _How to run build_
 [See documentation section for Travis CI continuous build](https://autoedit.gitbook.io/documentation/overview/deploymentbuild/travis-ci-continuous-build)
 
 
-### Deployment as adobe panel - work in progress 🚧
+### Deployment as adobe panel 
 
 [See documentation section for more info](https://autoedit.gitbook.io/documentation/adobe-panel/autoedit-adobe-cep-panel-dev-setup)
 
