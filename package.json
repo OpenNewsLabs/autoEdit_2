@@ -180,7 +180,7 @@
     "docco": "^0.7.0",
     "dotenv": "^6.0.0",
     "electron": "^1.8.8",
-    "electron-builder": "^20.28.3",
+    "electron-builder": "^22.3.2",
     "electron-packager": "*",
     "gh-release-assets": "^1.1.2",
     "jasmine": "^2.5.2",
