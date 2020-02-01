@@ -4,11 +4,11 @@
  * Example, `.env` file
 
 ZXPSignCmd_PATH="./ccextensionsmac/ZXPSignCmd"
-COUNTRY_CODE=UK
-STATE_OR_PROVINCE=London
-ORGANIZATION=""
-COMMON_NAME=""
-CERTIFICATE_PASSWORD=""
+COUNTRY_CODE="UK"
+STATE_OR_PROVINCE="London"
+ORGANIZATION="NA"
+COMMON_NAME="NA"
+CERTIFICATE_PASSWORD="SomePassword"
 CERTIFICATE_OUTPUT_PATH="./ccextensionsmac/certificate.p12"
 INPUT_DIRECTORY="./adobe-panel-build"
 OUTPUT_ZXP="./dist/com.autoedit2.it.zxp"
@@ -35,7 +35,8 @@ exec('npm run adobe-panel-build', (err, stdout, stderr) => {
 
     // creating a certificate
     // ZXPSignCmd -selfSignedCert <countryCode> <stateOrProvince> <organization> <commonName> <password> <outputPath.p12>
-    exec(`${process.env.ZXPSignCmd_PATH} -selfSignedCert ${process.env.COUNTRY_CODE} ${process.env.STATE_OR_PROVINCE} ${process.env.ORGANIZATION} "${process.env.COMMON_NAME}" ${process.env.CERTIFICATE_PASSWORD} ${process.env.CERTIFICATE_OUTPUT_PATH}`, (err, stdout, stderr) => {
+    const command = `${process.env.ZXPSignCmd_PATH} -selfSignedCert ${process.env.COUNTRY_CODE} ${process.env.STATE_OR_PROVINCE} ${process.env.ORGANIZATION} "${process.env.COMMON_NAME}" ${process.env.CERTIFICATE_PASSWORD} ${process.env.CERTIFICATE_OUTPUT_PATH}`;
+    exec(command, (err, stdout, stderr) => {
         if (err) {
             // node couldn't execute the command
             console.error(err);

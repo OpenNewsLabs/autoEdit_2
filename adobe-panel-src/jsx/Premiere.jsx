@@ -1,3 +1,6 @@
+// from https://community.adobe.com/t5/premiere-pro/jsx-intermittently-getting-json-is-undefined-alert/td-p/9500726
+// adding support for json 
+//@include ./json2.jsx
 if (typeof($) == 'undefined') $ = {};
 $._PPP = {
 	say: function(something) {

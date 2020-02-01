@@ -274,7 +274,7 @@ if [ "$TRAVIS_COMMIT" != "$target_commit_sha" ] ; then
 ######################      Create release       ################
 ################################################################
 
-// https://developer.github.com/v3/repos/releases/#create-a-release
+# // https://developer.github.com/v3/repos/releases/#create-a-release
 
   release_infos=$(curl -H "Authorization: token ${GITHUB_TOKEN}" \
        --data '{"tag_name": "'"$RELEASE_NAME"'","target_commitish": "'"$TRAVIS_COMMIT"'","name": "'"$RELEASE_TITLE"'","body": "'"$BODY"'","draft": false,"prerelease": '$is_prerelease'}' "https://api.github.com/repos/$REPO_SLUG/releases")

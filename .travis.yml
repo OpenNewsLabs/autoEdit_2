@@ -1,7 +1,8 @@
 os: osx
+# https://docs.travis-ci.com/user/reference/osx/#macos-version
 osx_image: xcode9.4
 language: node_js
-node_js: "8"
+node_js: "8" # one of node js travis pre installed versions
 sudo: required
 
 env:
@@ -30,6 +31,14 @@ script:
   - find . | grep mac.zip;
   - find . | grep x86_64.AppImage;
   - find . | grep .exe;
+  - npm run adobe-panel-package-sign-build
+  #  package all files and folders needed inside adobe-panel-build folder
+  # - npm run adobe-panel-build
+  # # creating a certificate
+  # - $ZXPSignCmd_PATH -selfSignedCert $COUNTRY_CODE $STATE_OR_PROVINCE $ORGANIZATION "$COMMON_NAME" $CERTIFICATE_PASSWORD $CERTIFICATE_OUTPUT_PATH
+  # # pack and sign the extension 
+  # - $ZXPSignCmd_PATH -sign $INPUT_DIRECTORY $OUTPUT_ZXP $CERTIFICATE_OUTPUT_PATH $CERTIFICATE_PASSWORD -tsa  $TIMESTAMPS_URL
+  - node travis_to_github_upload.js
 
 branches:
   except:
