@@ -105,6 +105,10 @@
         window.BBCKeys = require('./bbc_keys.js').getBBCAPIkeys;
         window.setBBCAPIkeys = require('./bbc_keys.js').setBBCAPIkeys;
         window.areBBCAPIkeysSet = require('./bbc_keys.js').areBBCAPIkeysSet;
+
+        window.TwitterAPIkeys = require('./twitter_keys.js').getTwitterAPIkeys;
+        window.setTwitterAPIkeys = require('./twitter_keys.js').setTwitterAPIkeys;
+        window.areTwitterAPIkeysSet = require('./twitter_keys.js').areTwitterAPIkeysSet;
       }
     
       if(window.ENV_CEP){
@@ -132,6 +136,9 @@
         window.setBBCAPIkeys = require(`${envPath}/bbc_keys.js`).setBBCAPIkeys;
         window.areBBCAPIkeysSet = require(`${envPath}/bbc_keys.js`).areBBCAPIkeysSet;
         
+        window.TwitterAPIkeys = require(`${envPath}/twitter_keys.js`).getTwitterAPIkeys;
+        window.setTwitterAPIkeys = require(`${envPath}/twitter_keys.js`).setTwitterAPIkeys;
+        window.areTwitterAPIkeysSet = require(`${envPath}/twitter_keys.js`).areTwitterAPIkeysSet;
       } 
 
       if(window.ENV_BROSWER){
@@ -178,9 +185,20 @@
         console.info("placeholder funciton", keys);
       }
 
-      window.setBBCAPIkeys= function(keys){
+      window.setBBCAPIkeys = function(keys){
         console.info("placeholder funciton", keys);
       }
+
+      window.TwitterAPIkeys  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+      window.setTwitterAPIkeys  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+      window.areTwitterAPIkeysSet  = function(keys){
+        console.info("placeholder funciton", keys);
+      }
+    
     }
       
     </script>
@@ -348,6 +366,7 @@
     }
 ///////////////////////
     if(window.ENV_ELECTRON){
+      const fs = require('fs');
        ffmpegExentions = require("./ffmpeg_extentions.js");
       // TODO: move code below so that it can work in chromium as well
        // file dialogue opener 
@@ -397,6 +416,44 @@
       remix(jsonSequence,function(err, result) {
         console.log(err, result);
           if(cb){cb(savePath)}
+      })
+     }
+
+     const electron = require('electron');
+     const currentWindow = electron.remote.getCurrentWindow();
+     const dataPath = currentWindow.dataPath;
+     window.dataPath = dataPath;
+     const tweetThatClip = require('tweet-that-clip'); 
+
+     window.tweetThatClip  = function(infoToTweet){
+       if(infoToTweet.captionsBool){
+        fs.writeFileSync(infoToTweet.srtFilePath, infoToTweet.srtFileContent)
+       }
+   
+      return new Promise((resolve, reject)=>{
+      // set credentials in process.env.
+      console.log('tweetThatClip - started in index.html');
+      // adding path to electron
+      infoToTweet.ffmpegBin =  require("ffmpeg-static-electron").path;
+      infoToTweet.credentials = window.TwitterAPIkeys();
+      // TODO: tmpDir
+      infoToTweet.tmpDir = path.join(dataPath, 'tmp_media');
+      // TODO: could add burn in captions, either before, or as option inside the twitter module, 
+      // as optional submodule
+      // https://github.com/pietrop/captions_burner/blob/master/lib/burn_srt_on_video.js
+      // console.log('tweetThatClip',process.env.TWITTER_CONSUMER_KEY);
+      tweetThatClip(infoToTweet)
+        .then((res) => {
+          // TODO: add some kind of tweted message
+          console.log('tweeted - index.html');
+          console.log(res);
+          // cb(null,res);
+          resolve(res);
+        })
+        .catch((err)=>{
+          // cb(err,null);
+          reject(err);
+        });
       })
      }
 
