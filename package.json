@@ -151,7 +151,7 @@
     "fluent-ffmpeg": "^2.1.0",
     "jquery": "^3.4.1",
     "jquery-sortable": "^0.9.13",
-    "leveldown": "^4.0.1",
+    "leveldown": "^6.1.1",
     "linvodb3": "^3.24.0",
     "medeadown": "^1.1.8",
     "moment": "^2.24.0",
